@@ -1,3 +1,5 @@
+import {organizePages} from './page-organization.js';
+import './page-organization.css';
 // Keep the original controls and visual system; only group existing boxes for layout.
 export function setupOriginalLayout(){
  const $=id=>document.getElementById(id);
@@ -15,4 +17,5 @@ export function setupOriginalLayout(){
  // Give the existing icon navigation its own accessible names without altering its design.
  document.querySelectorAll('.nav-item').forEach(el=>{el.setAttribute('role','button');el.tabIndex=0;el.setAttribute('aria-label',el.title||'المزيد');el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});});
  window.syncPageChrome=id=>{document.querySelectorAll('.nav-item[data-page]').forEach(el=>el.setAttribute('aria-current',el.dataset.page===id?'page':'false'));};
+ organizePages();
 }

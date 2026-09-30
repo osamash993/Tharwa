@@ -1,0 +1,113 @@
+/* Organization only: original surfaces, gold accent, system typography and navigation. */
+.original-app .page{--layout-gap:16px;max-width:1320px}
+.original-app .layout-subtitle{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.6}
+.original-app .layout-header-actions,.original-app .layout-jumps{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.original-app .layout-jumps{margin:0 0 18px}
+.original-app .layout-jump{font:500 12px var(--font);padding:8px 12px;min-height:36px;cursor:pointer}
+.original-app .layout-heading{font:600 14px var(--font);color:var(--text);margin:0 0 12px}
+.original-app .layout-section{margin-top:24px;scroll-margin-top:80px}
+.original-app .layout-home-breakdown,.original-app .layout-goal-summary,.original-app .layout-transactions-tools,.original-app .layout-settings-grid,.original-app .layout-equal-grid,.original-app .layout-map-grid,.original-app .layout-zakat-summary{display:grid;gap:var(--layout-gap);align-items:start;margin-bottom:16px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.original-app .layout-home-breakdown{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:stretch}
+.original-app .layout-home-breakdown>*{min-width:0;margin-bottom:0!important}
+.original-app .layout-goal-summary{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:stretch}
+.original-app .layout-goal-summary>.xr-card{margin-bottom:0!important}
+.original-app .layout-goal-summary>.xr-chips{display:grid;grid-template-columns:1fr;gap:8px;margin:0}
+.original-app .layout-goal-summary .xr-chip{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;min-width:0;padding:12px 14px}
+.original-app .layout-goal-summary>.xr-card{display:flex;align-items:center}
+.original-app .layout-goal-summary>.xr-card>div{width:100%}
+.original-app .layout-stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.original-app .layout-stack>*{margin:0!important;min-width:0}
+.original-app .layout-goal-summary .xr-chip .v{font-size:18px}
+.original-app .layout-goal-categories{min-width:0}
+.original-app .layout-goal-categories>.section-title{font-size:13px;margin:0 0 10px}
+.original-app #page-goals #rebalCard{display:block!important;margin:0!important}
+.original-app #layout-rebalance>.layout-jump{margin-top:10px}
+.original-app #page-goals .rb-row{display:grid;grid-template-columns:100px 1fr auto;gap:12px;padding:13px 0;align-items:center}
+.original-app .layout-transactions-tools{grid-template-columns:minmax(0,1.35fr) minmax(280px,1fr)}
+.original-app .layout-transactions-tools>.card,.original-app .layout-filter-panel>.card{margin:0!important;min-width:0}
+.original-app .layout-filter-panel{min-width:0}
+.original-app #txnFilterCard .filter-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.original-app #txnFilterCard .srch{grid-column:1/-1;min-width:0;width:100%;height:38px}
+.original-app #txnFilterCard .ms-wrap,.original-app #txnFilterCard .ms-btn{min-width:0;width:100%}
+.original-app #txnFilterCard #filterSummary{display:grid!important;grid-template-columns:1fr 1fr;gap:9px!important;line-height:1.6}
+.original-app .layout-history{scroll-margin-top:80px}
+.original-app .layout-settings-grid>*{margin:0!important;min-width:0}
+.original-app .layout-fold{margin:16px 0;border:1px solid var(--bdr);border-radius:18px;background:var(--surf);overflow:hidden;scroll-margin-top:80px}
+.original-app .layout-fold>summary{padding:17px 18px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text);list-style-position:inside}
+.original-app .layout-fold[open]>summary{border-bottom:1px solid var(--bdr);margin-bottom:0}
+.original-app .layout-fold>.layout-settings-grid{padding:16px;margin:0}
+.original-app .layout-fold>.xr-card{border:0;box-shadow:none!important;margin:0!important}
+.original-app .layout-map-grid{grid-template-columns:minmax(0,1.35fr) minmax(280px,1fr);align-items:stretch}
+.original-app .layout-map-grid>*,.original-app .layout-equal-grid>*,.original-app .layout-zakat-summary>*{min-width:0;margin:0!important}
+.original-app #geoMap{height:310px!important;min-height:0!important}
+.original-app #layout-composition>#xrFunds{margin-top:12px}
+.original-app .layout-equal-grid:has(>[style*="display: none"]):not(:has(>[style*="display: block"])){grid-template-columns:minmax(0,1fr)}
+.original-app .layout-zakat-summary{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);scroll-margin-top:80px}
+.original-app .layout-print{width:auto!important;margin:0!important;padding:8px 12px;font-size:12px}
+.original-app .layout-status{font-size:12px!important;line-height:1.6;padding:10px 14px;border:1px solid var(--bdr);border-radius:12px;background:var(--surf);margin-bottom:14px!important}
+.original-app #marketTable{min-width:0}
+.original-app .layout-notes-workspace{border:1px solid var(--bdr);border-radius:20px;background:var(--surf);padding:12px;gap:12px!important;overflow:hidden}
+.original-app .layout-notes-workspace #noteEditor{padding:6px}
+.original-app .page input,.original-app .page select{max-width:100%}
+.original-app .xr-card h3{line-height:1.5}
+.original-app .xr-sub,.original-app .card-sub{line-height:1.7}
+.original-app .layout-section .xr-card{scroll-margin-top:80px}
+@media(min-width:769px){
+ html body.original-app .layout-home-breakdown .stats-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;align-content:stretch}
+ .original-app .layout-home-breakdown .stat-card:nth-last-child(2){grid-column:1/-1}
+ .original-app .layout-home-breakdown .stat-card{padding:18px!important;min-height:100px}
+ .original-app #wealthCard{display:flex;flex-direction:column;justify-content:center;padding:20px}
+ .original-app #wealthCard .card-title{margin-bottom:18px}
+ .original-app #page-assets .reg-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))!important;gap:14px}
+ .original-app #page-portfolio .asset-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))!important;gap:14px}
+ .original-app .layout-history{max-height:calc(100dvh - 140px);min-height:240px;overflow:auto;padding-left:3px;scrollbar-gutter:stable}
+ .original-app .layout-history .txn-month-header{position:sticky;top:0;z-index:2;background:var(--surf)}
+ .original-app #txnInsights,.original-app #assetChips,.original-app #xrChips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+ .original-app #zkChips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+ .original-app .xr-chip{min-width:0;padding:14px 16px}
+ .original-app .xr-chip .v{font-size:18px}.original-app .xr-chip .l{font-size:11px;line-height:1.6}
+ .original-app #marketTable .tbl-wrap{border:1px solid var(--bdr);border-radius:18px;background:var(--surf);padding:8px}
+ .original-app .layout-notes-workspace #notesSidebar{border-radius:13px!important}
+}
+@media(max-width:1000px) and (min-width:769px){
+ .original-app .layout-transactions-tools,.original-app .layout-map-grid{grid-template-columns:minmax(0,1fr)}
+ .original-app .layout-home-breakdown{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media(max-width:768px){
+ .original-app .page{--layout-gap:12px}
+ .original-app .layout-home-breakdown,.original-app .layout-goal-summary,.original-app .layout-transactions-tools,.original-app .layout-settings-grid,.original-app .layout-equal-grid,.original-app .layout-map-grid,.original-app .layout-zakat-summary{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-bottom:14px}
+ .original-app .layout-home-breakdown .stats-row{margin:0!important}
+ .original-app .layout-subtitle{font-size:11px;margin-top:4px;max-width:290px}
+ .original-app .page>.topbar{align-items:flex-start;gap:12px}
+ .original-app .page>.topbar>.layout-header-actions{width:100%}
+ .original-app .layout-jumps{gap:6px;flex-wrap:nowrap;overflow:auto;margin-bottom:16px;padding:1px 0 4px;scrollbar-width:none}
+ .original-app .layout-jumps button{flex-shrink:0}
+ .original-app .layout-jump{font-size:12px;min-height:40px;padding:8px 11px}
+ .original-app .layout-section{margin-top:20px}
+ .original-app .layout-heading{font-size:14px;margin-bottom:10px}
+ .original-app .layout-goal-summary>.xr-chips{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+ .original-app .layout-goal-summary .xr-chip{display:block;padding:11px 8px}
+ .original-app .layout-goal-summary .xr-chip .v{font-size:13px;overflow-wrap:anywhere}
+ .original-app .layout-goal-summary .xr-chip .l{font-size:10px;line-height:1.5;margin-top:4px}
+ .original-app #page-goals .rb-row{grid-template-columns:1fr auto;gap:5px 10px;padding:12px 0}
+ .original-app #page-goals .rb-row .mini{grid-row:2;grid-column:1/-1;font-size:11px}
+ .original-app #page-goals .rb-row .act{min-width:0;font-size:12px}
+ .original-app #txnFilterCard .filter-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .original-app #original-filter-toggle{width:100%;justify-content:center;margin-bottom:0;min-height:42px}
+ .original-app #txnFilterCard.filters-open{margin-top:10px!important}
+ .original-app #page-assets .topbar>.btn-gold{font-size:12px;padding:9px 12px!important}
+ .original-app #page-assets .topbar>.layout-jump{margin-inline-start:auto}
+ .original-app .layout-fold>.layout-settings-grid{padding:12px}
+ .original-app #geoMap{height:230px!important}
+ .original-app .layout-map-grid .xr-row .nm{min-width:0;flex:1}
+ .original-app .layout-map-grid .xr-row .xr-bar{min-width:20px;flex:.6}
+ .original-app #zkChips{gap:8px}
+ .original-app #page-zakat>.topbar>div:last-child{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:7px!important}
+ .original-app #page-zakat>.topbar>div:last-child>button{width:100%!important;min-height:40px;justify-content:center}
+ .original-app #page-zakat>.topbar>div:last-child>.layout-print{grid-column:1/-1}
+ .original-app #zkDebtIn{min-width:0}
+ .original-app #zkDirect select{max-width:106px;font-size:11px!important;min-height:36px}
+ .original-app .layout-notes-workspace{padding:8px;gap:0!important;border-radius:18px}
+ .original-app .layout-notes-workspace #noteEditor{padding:4px}
+ .original-app #notesLayout{height:calc(100dvh - 225px);min-height:380px!important}
+}
