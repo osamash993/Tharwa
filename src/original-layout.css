@@ -21,7 +21,12 @@ html body.original-app #catGoalsGrid{grid-template-columns:minmax(0,1fr)!importa
  .original-hero-grid,.original-detail-grid,.original-goal-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
  html body.original-app .main{padding:14px 14px calc(96px + env(safe-area-inset-bottom))!important;margin:0!important;width:100%!important}
  .original-app .page>.topbar{margin-bottom:14px}.original-app .date-badge{font-size:11px;padding:5px 9px}.original-app .hero-ring{padding:16px!important}.original-app .hero-val{font-size:clamp(27px,8vw,36px)!important}
- .original-app #page-dashboard .hero>div>div:first-child{flex-wrap:wrap;gap:14px!important}.original-app #page-dashboard .cur-switcher{width:100%;max-width:240px}.original-app .cur-btn{min-height:38px}
+ .original-app #page-dashboard .hero>div{position:relative}
+ .original-app #page-dashboard .hero>div>div:first-child{display:block!important}
+ .original-app #page-dashboard .cur-switcher{position:absolute;top:0;left:0;width:auto;max-width:none}
+ .original-app #page-dashboard .hero-label{padding-left:137px}
+ .original-app #page-dashboard .hero-val{font-size:clamp(22px,7vw,30px)!important;white-space:nowrap}
+ .original-app #page-dashboard .hero>div>div:first-child>div:first-child>div:last-child{flex-direction:column;gap:4px}
  .original-app .stats-row{margin-bottom:14px!important}.original-app .stat-card{min-height:62px!important}.original-app .sc-label{font-size:13px!important}.original-app .sc-val{font-size:16px!important}.original-app .sc-invested,.original-app .sc-pnl{font-size:11px!important}
  .original-app #wealthViewDist>div:first-child{height:205px!important;max-width:245px!important}.original-app .perf-card{margin-top:0}
  #original-filter-toggle{display:flex;gap:8px;align-items:center;min-height:42px;margin-bottom:12px;font-size:13px}
@@ -33,6 +38,7 @@ html body.original-app #catGoalsGrid{grid-template-columns:minmax(0,1fr)!importa
  .original-app #moreMenu{max-height:calc(100dvh - 165px);overflow:auto}.original-app .more-menu-item{min-height:44px}.original-app .top-menu .tab-btn{min-height:44px}.original-app #iosBanner{bottom:calc(76px + env(safe-area-inset-bottom))!important}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:359px){.original-app #page-dashboard .hero-val{margin-top:24px}}
 /* Supply only the rial ligature when a device's system font lacks it. */
 @font-face{font-family:RialMark;src:url('/fonts/noto-naskh-arabic-arabic-400-normal.woff2');unicode-range:U+FDFC;font-display:swap}
 :root{--font:-apple-system,BlinkMacSystemFont,'SF Pro Text','IBM Plex Sans Arabic',RialMark,sans-serif}
