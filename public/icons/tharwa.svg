@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>ثروة</title>
+  <rect width="512" height="512" fill="#17191f"/>
+  <path d="M256 112 400 256 256 400 112 256Z" fill="none" stroke="#c9a84c" stroke-width="24" stroke-linejoin="round"/>
+  <path d="M256 195 317 256 256 317 195 256Z" fill="#c9a84c"/>
+</svg>
