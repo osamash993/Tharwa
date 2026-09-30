@@ -1,7 +1,8 @@
 /* Original iOS light/dark design: this file changes layout and access, not the identity. */
 body.original-app:not(.ready)>.app,body.original-app:not(.ready) #fabAdd,body.original-app:not(.ready) #moreMenu,body.original-app:not(.ready) #iosBanner{display:none!important}
 #auth-screen[hidden],[hidden]{display:none!important}
-#auth-screen{min-height:100dvh;display:grid;place-items:center;padding:24px;background:#f2f2f7;color:#1c1c1e}
+#auth-screen{position:relative;z-index:30000;min-height:100dvh;display:grid;place-items:center;padding:24px;background:#f2f2f7;color:#1c1c1e}
+body.original-app:not(.ready) #bgLayer,body.original-app:not(.ready) #bgLayerBlur,body.original-app:not(.ready) #bgOverlay{display:none!important}
 .auth-card{width:min(100%,400px);background:#fff;border:1px solid #dedee3;border-radius:20px;padding:30px 25px;box-shadow:0 8px 32px #00000009}
 .auth-brand{font-size:28px;font-weight:700;margin-bottom:24px;color:#a58432}.auth-kicker{font-size:13px;color:#777;margin-bottom:8px}.auth-card h1{font-size:25px;margin-bottom:10px}.auth-card p{font-size:14px;line-height:1.8}.auth-card label{display:block;font-size:14px;margin-top:20px}.auth-card input{display:block;width:100%;background:#f2f2f7;border:1px solid #d5d5dd;padding:12px;font-size:16px;margin-top:6px;color:#1c1c1e}.auth-submit{border:0;background:#bd9840;color:#fff;font:600 16px var(--font);border-radius:12px;width:100%;padding:13px;margin-top:22px;cursor:pointer}.demo-link{display:block;margin:20px 0;color:#826419;text-align:center;font-size:13px}.auth-card small{display:block;color:#777;font-size:12px;line-height:1.7}.auth-card #auth-error{color:#b53434;margin-top:12px}
 #cloud-error{position:sticky;top:56px;background:#fff0eb;color:#992727;padding:12px 16px;z-index:20000;font-size:14px}#cloud-error[hidden]{display:none}

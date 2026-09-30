@@ -4,7 +4,6 @@ export function setupOriginalLayout(){
  const group=(parent,nodes,cls)=>{const el=document.createElement('div');el.className=cls;nodes[0].before(el);nodes.forEach(n=>el.append(n));return el;};
  const home=$('page-dashboard');
  group(home,[home.querySelector('.hero'),home.querySelector('.hero-ring')],'original-hero-grid');
- group(home,[$('wealthCard'),home.querySelector('.perf-card')],'original-detail-grid');
  // Retain the original goal rows, with the calculator alongside them on larger screens.
  const goals=$('page-goals'),cats=$('catGoalsGrid'),projection=$('gProjMonthly').closest('.glass-card');
  group(goals,[cats,projection],'original-goal-grid');

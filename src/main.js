@@ -51,7 +51,19 @@ function menuAction(id,label,icon,handler){
 const file=document.createElement('input');file.type='file';file.accept='.xlsx';file.hidden=true;document.body.append(file);
 menuAction('th-export','تنزيل الحركات Excel','ti-download',()=>window.portfolioBridge.export());
 menuAction('th-import','استيراد Excel','ti-upload',()=>file.click());
-menuAction('th-exit','تسجيل الخروج','ti-logout',async()=>{if(client)await client.auth.signOut();location.href=location.pathname;});
+let leaving=false;
+function returnToLogin(){
+ if(leaving)return;leaving=true;
+ document.body.classList.remove('ready');screen.hidden=false;
+ // Replace the current entry and discard demo parameters on every logout path.
+ location.replace(location.pathname+'?login=1');
+}
+menuAction('th-exit',demo?'العودة لتسجيل الدخول':'تسجيل الخروج','ti-logout',async()=>{
+ try{
+  if(client&&!demo){const {error}=await client.auth.signOut({scope:'local'});if(error)throw error;}
+  returnToLogin();
+ }catch(e){alert('تعذّر تسجيل الخروج. تحقق من الاتصال وحاول مرة ثانية.');}
+});
 menu.querySelector('.top-menu-sync').append(indicator);
 file.onchange=async()=>{
  try{
@@ -64,8 +76,17 @@ file.onchange=async()=>{
 screen.innerHTML=`<form class="auth-card"><div class="auth-brand">◈ ثروة</div><p class="auth-kicker">مساحتك المالية الخاصة</p><h1>${configured?'أهلاً بعودتك':'المشروع جاهز للربط'}</h1><p>${configured?'سجّل دخولك للوصول إلى محفظتك من الكمبيوتر والموبايل.':'يحتاج التطبيق إعداد اتصال Supabase لبدء الحفظ والمزامنة.'}</p>${configured?'<label>البريد الإلكتروني<input type="email" name="email" autocomplete="username" required dir="ltr"></label><label>كلمة المرور<input type="password" name="password" autocomplete="current-password" required dir="ltr"></label><button class="auth-submit">دخول آمن ←</button>':''}<p id="auth-error" role="alert"></p><a class="demo-link" href="?demo=1">استكشاف الواجهة بدون حفظ</a><small>استخدم حساب التطبيق وكلمة مروره المستقلة. بياناتك المالية محفوظة بشكل خاص.</small></form>`;
 screen.querySelector('form').onsubmit=async e=>{
  e.preventDefault();const form=new FormData(e.currentTarget);const btn=e.currentTarget.querySelector('button');btn.disabled=true;
- const {error}=await client.auth.signInWithPassword({email:form.get('email'),password:form.get('password')});btn.disabled=false;
- if(error)document.getElementById('auth-error').textContent='تعذّر تسجيل الدخول. تحقق من البريد وكلمة المرور.';else await start();
+ const errorBox=document.getElementById('auth-error');errorBox.textContent='';
+ try{
+  const {error}=await client.auth.signInWithPassword({email:form.get('email'),password:form.get('password')});
+  if(error)errorBox.textContent='تعذّر تسجيل الدخول. تحقق من البريد وكلمة المرور.';
+  else {history.replaceState(null,'',location.pathname);await start();}
+ }catch(e){errorBox.textContent='تعذّر الاتصال. تحقق من الإنترنت وحاول مرة ثانية.';}
+ finally{btn.disabled=false;}
 };
 if(demo)await start();
-else if(client){const {data,error}=await client.auth.getSession();if(!error&&data.session)await start();client.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')location.reload();});}
+else if(client){
+ client.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'&&started)returnToLogin();});
+ try{const {data,error}=await client.auth.getSession();if(!error&&data.session&&!new URLSearchParams(location.search).has('login'))await start();}
+ catch(e){document.getElementById('auth-error').textContent='تعذّر التحقق من الجلسة. سجّل دخولك مرة ثانية.';}
+}
