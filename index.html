@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ثروة — المحفظة الشخصية</title>
+
+
+
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+:root{--font:-apple-system,BlinkMacSystemFont,'SF Pro Text','IBM Plex Sans Arabic',sans-serif;--bg:#0d0f14;--surf:#14171f;--surf2:#1c2030;--bdr:var(--wline);--bdr2:var(--hairline);--gold:#c9a84c;--goldL:#e8c97a;--text:#e8e6df;--muted:#7a7d8a;--green:#3ecf8e;--red:#f66d6d;--blue:#5c9fff}
+body{
+  color:var(--text);font-family:var(--font);font-size:15px;direction:rtl;min-height:100vh;overflow-x:hidden;background:#080a10;
+}
+
+/* ═ MORE MENU — Floating popup ═ */
+.more-menu-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);transition:background .15s,color .15s;user-select:none;-webkit-tap-highlight-color:transparent}
+.more-menu-item:hover,.more-menu-item.active{background:var(--surf2);color:var(--text)}
+.more-menu-item i{font-size:18px;flex-shrink:0}
+
+/* More Menu backdrop — شفاف تماماً، فقط لالتقاط الضغطات خارج القائمة */
+#moreMenuBackdrop{
+  display:none;position:fixed;inset:0;z-index:9998;
+  background:transparent;
+}
+/* More Menu popup */
+#moreMenu{
+  position:fixed;
+  bottom:calc(62px + env(safe-area-inset-bottom) + 10px);
+  left:8px;
+  background:var(--surf);
+  border:1px solid var(--bdr2);
+  border-radius:18px;
+  padding:8px;
+  z-index:9999;
+  min-width:170px;
+  box-shadow:0 8px 32px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.4);
+  opacity:0;
+  transform:scale(0.88) translateY(10px);
+  transform-origin:bottom left;
+  pointer-events:none;
+  transition:opacity .2s cubic-bezier(.34,1.56,.64,1),transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+#moreMenu.open{
+  opacity:1;
+  transform:scale(1) translateY(0);
+  pointer-events:auto;
+}
+/* Desktop — اعرض الصفحات الإضافية في السايدبار مباشرة */
+html:not(.is-mobile) #navMoreBtn{display:none!important}
+html:not(.is-mobile) #navExtra{display:flex!important}
+html.is-mobile #navExtra{display:none!important}
+@media(max-width:768px){#navExtra{display:none!important}}
+
+.top-app-bar{
+  position:fixed;top:0;left:0;right:0;z-index:10000;
+  height:56px;
+  background:var(--surf);
+  border-bottom:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+}
+.tab-brand{font-size:16px;font-weight:500;color:var(--text);letter-spacing:.01em}
+.tab-actions{display:flex;align-items:center;gap:6px}
+.tab-btn{
+  width:38px;height:38px;border-radius:10px;border:none;
+  background:transparent;color:var(--muted);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;transition:background .15s;
+}
+.tab-btn:hover{background:var(--surf2);color:var(--text)}
+.tab-btn.green{color:var(--green)}
+.tab-btn.blue{color:var(--blue)}
+.tab-sync{font-size:10px;color:var(--muted);margin-left:4px;white-space:nowrap}
+
+/* ═ LAYOUT ═ */
+.app{display:flex;min-height:100vh;padding-top:56px}
+
+/* ═ SIDEBAR — mobile: bottom bar ═ */
+.sidebar{width:100%;height:calc(62px + env(safe-area-inset-bottom));background:var(--surf);border-top:1px solid var(--bdr);padding:0 8px env(safe-area-inset-bottom);display:flex;flex-direction:row;align-items:center;justify-content:space-around;position:fixed;bottom:0;left:0;right:0;z-index:9999;gap:0}
+.logo{display:none}
+.nav{flex-direction:row;flex:1;justify-content:space-around;display:flex;gap:0;align-items:center}
+.nav-item{width:48px;height:48px;font-size:22px;display:flex;align-items:center;justify-content:center;border-radius:16px;cursor:pointer;color:var(--muted);transition:all .15s;user-select:none}
+.nav-item:hover{background:var(--surf2);color:var(--text)}
+.nav-item.active{background:rgba(201,168,76,.15);color:var(--gold)}
+.sb-bottom{display:none}
+.sync-status{font-size:10px;color:var(--muted)}
+
+/* Top bar */
+.tab-sync{display:none}
+
+/* ═ MAIN ═ */
+.main{margin-right:0;padding:14px 14px calc(86px + env(safe-area-inset-bottom));width:100%;flex:1;min-height:100vh}
+
+/* ═ TYPOGRAPHY ═ */
+.page-title{font-size:1.2rem;font-weight:600}
+.date-badge{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--muted)}
+.page{display:none}.page.active{display:block}
+
+/* ═ HERO ═ */
+.hero{background:linear-gradient(135deg,#1a1d28,#1e2235);border:none;border-radius:24px;padding:20px 18px;margin-bottom:14px;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:14px}
+.hero::before{content:'';position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(201,168,76,.07),transparent 70%);pointer-events:none}
+.hero-label{font-size:11px;letter-spacing:.1em;color:var(--gold);margin-bottom:6px;text-transform:uppercase;opacity:.9}
+.hero-val{font-family:var(--font);font-size:clamp(1.8rem,7vw,2.8rem);font-weight:600;color:#fff;line-height:1;margin-bottom:6px}
+.hero-profit{font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hero-profit .tag{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500}
+.tag-pos{background:rgba(62,207,142,.15);color:var(--green)}
+.tag-neg{background:rgba(246,109,109,.15);color:var(--red)}
+.tag-neu{background:var(--wline);color:var(--muted)}
+.cur-switcher{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}
+.cur-btn{padding:8px;border-radius:20px;border:1px solid var(--bdr);background:transparent;color:var(--muted);font-family:var(--font);font-size:12px;cursor:pointer;transition:all .15s;text-align:center}
+.cur-btn:hover{border-color:var(--gold);color:var(--gold)}
+.cur-btn.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold)}
+/* hero-meta: label يمين + قيمة يسار */
+.hero-meta{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--wline);padding-top:12px}
+.hm-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--wline)}
+.hm-item:last-child{border-bottom:none;padding-bottom:0}
+.hm-item .lb{font-size:12px;color:var(--muted);flex-shrink:0}
+.hm-item .vl{font-size:13px;font-weight:600;direction:ltr;text-align:left;margin-inline-start:auto;color:var(--gold)}
+
+/* ═ STAT CARDS ═ */
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-card{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:14px;cursor:default;transition:background .15s}
+.stat-card:hover{background:var(--surf2)}
+.sc-left{display:flex;flex-direction:column}
+.sc-right{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0}
+/* ديسكتوب: عمودي كما كان */
+html:not(.is-mobile) .stat-card{display:block}
+html:not(.is-mobile) .sc-right{align-items:flex-start}
+html:not(.is-mobile) .sc-val{color:var(--gold)}
+.sc-label{font-size:10.5px;color:var(--muted);letter-spacing:.04em;margin-bottom:6px}
+.sc-val{font-size:15px;font-weight:600;margin-bottom:4px;line-height:1.2;color:var(--gold)}
+.sc-invested{font-size:10.5px;color:var(--muted);margin-bottom:3px}
+.sc-pnl{font-size:11px;font-weight:600}
+.sc-pnl.pos{color:var(--green)}.sc-pnl.neg{color:var(--red)}.sc-pnl.neu{color:var(--muted)}
+.top-app-bar,.sidebar{transition:transform .22s ease}
+html.is-mobile .top-app-bar.bar-hidden{transform:translateY(-130%)}
+
+/* ═ شريط علوي عائم — زجاج بلا خلفية ممتدة ولا اسم ═ */
+html .top-app-bar{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-bottom:none!important;box-shadow:none!important;pointer-events:none;padding:10px 14px!important;height:auto!important}
+.top-app-bar .tab-actions{pointer-events:auto;display:flex;gap:8px}
+.top-app-bar .tab-btn,#btnTopMenu{width:40px;height:40px;border-radius:50%!important;background:var(--bar-bg)!important;backdrop-filter:blur(20px) saturate(180%)!important;-webkit-backdrop-filter:blur(20px) saturate(180%)!important;border:0.5px solid var(--hairline)!important;box-shadow:0 2px 12px rgba(0,0,0,.08)!important;display:flex;align-items:center;justify-content:center}
+.top-menu{position:fixed;top:60px;left:14px;z-index:10001;display:none;flex-direction:column;gap:2px;min-width:182px;padding:6px;border-radius:16px;background:var(--bar-bg);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:0.5px solid var(--hairline);box-shadow:0 10px 34px rgba(0,0,0,.2)}
+.top-menu.open{display:flex}
+.top-menu .tab-btn{width:100%!important;height:auto!important;border-radius:11px!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border:none!important;box-shadow:none!important;display:flex;align-items:center;justify-content:flex-start;gap:9px;padding:10px 12px;font-family:inherit;font-size:12.5px;color:var(--text);cursor:pointer}
+.top-menu .tab-btn:active{background:var(--surf2)!important}
+.top-menu .tab-btn i{color:var(--gold);font-size:15px}
+.top-menu-sync{padding:7px 12px 4px;border-top:1px solid var(--wline);margin-top:3px}
+.top-menu-sync .tab-sync{font-size:9.5px;color:var(--muted)}
+
+/* ═ شريط سفلي: كبسولة عائمة (موبايل فقط) ═ */
+html.is-mobile .sidebar{width:auto!important;right:calc(50% + 32px)!important;left:auto!important;bottom:calc(22px + env(safe-area-inset-bottom))!important;transform:translateX(50%);height:auto!important;border:0.5px solid var(--hairline)!important;border-radius:99px!important;background:var(--bar-bg)!important;backdrop-filter:blur(22px) saturate(180%)!important;-webkit-backdrop-filter:blur(22px) saturate(180%)!important;box-shadow:0 6px 24px rgba(0,0,0,.14)!important;padding:5px!important}
+html.is-mobile .sidebar.bar-hidden{transform:translateX(50%) translateY(150%)}
+html.is-mobile .sidebar .nav{display:flex!important;flex-direction:row!important;gap:2px!important;height:auto!important}
+html.is-mobile .sidebar .nav-item{flex:0 0 auto!important;width:48px!important;height:44px!important;max-width:none!important;padding:0!important;margin:0!important;border-radius:99px!important;display:flex!important;align-items:center;justify-content:center;transition:background-color .18s ease,width .2s ease,color .18s ease;background:transparent!important;-webkit-tap-highlight-color:transparent;user-select:none}
+html.is-mobile .sidebar .nav-item i{font-size:19px!important;line-height:1}
+html.is-mobile .sidebar .nav-item.active{background:var(--gold)!important;color:#fff!important;width:60px!important}
+html.is-mobile .sidebar .nav-item.active i{color:#fff!important}
+html.is-mobile #fabAdd{bottom:calc(22px + env(safe-area-inset-bottom))!important;right:16px!important;width:54px!important;height:54px!important;transition:transform .22s ease,box-shadow .15s!important}
+html.is-mobile #fabAdd.bar-hidden{transform:translateY(160%)!important}
+.sc-expand{display:none}
+html.is-mobile .stat-card{cursor:pointer;-webkit-tap-highlight-color:transparent}
+html.is-mobile .sc-expand.open{display:block;background:var(--surf2)!important;border:none!important;border-bottom:1px solid var(--wline)!important;border-radius:0!important;padding:0 16px 12px!important;margin:0}
+.sc-exp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--wline);font-size:12px}
+.sc-exp-row:last-child{border-bottom:none}
+/* — موبايل: فئات الرئيسية كصندوق سوق موحّد — */
+html.is-mobile .stats-row{display:flex!important;flex-direction:column!important;gap:0!important;background:var(--surf);border:1px solid var(--bdr);border-radius:20px;overflow:hidden}
+html.is-mobile .stat-card{background:transparent!important;border:none!important;border-bottom:1px solid var(--wline)!important;border-radius:0!important;box-shadow:none!important;padding:13px 16px!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html.is-mobile .stat-card.sc-open{background:var(--surf2)!important;border-bottom-color:transparent!important}
+html.is-mobile .stats-row>*:last-child{border-bottom:none!important}
+#dashPulse .mkt-pchip{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:8px;border-radius:12px;padding:8px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent;min-width:0}
+#dashPulse .mkt-pchip:active{background:var(--surf2)}
+#wealthViewDist canvas{max-width:100%!important;max-height:100%!important}
+#dashPulse .mkt-pchip .v{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dashPulse .mkt-pchip .l{font-size:9.5px;color:var(--muted);margin-bottom:1px}
+html.is-mobile .perf-card{display:none}
+html.is-mobile #secGold,html.is-mobile #secStock,html.is-mobile #secProp,html.is-mobile #secCash,html.is-mobile #secExited,html.is-mobile #secOther,html.is-mobile #rebalCard{display:none!important}
+
+/* ═ GRIDS ═ */
+.grid-2{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:14px}
+#donutPerfGrid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:14px}
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:16px 18px;margin-bottom:14px}
+.card-title{font-size:13px;color:var(--text);margin-bottom:12px;font-weight:600}
+.card-sub{font-size:10.5px;color:var(--muted);margin-bottom:12px}
+.card-title i,.section-title i,.sc-label i,.perf-list i,.tc-label i,.hm-item .lb i{color:var(--gold)}
+
+/* ═ TABLES ═ */
+.tbl-wrap{overflow-x:auto;border-radius:11px;border:1px solid var(--bdr);-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--surf2);border-bottom:1px solid var(--bdr)}
+th{padding:10px 12px;color:var(--muted);font-weight:500;text-align:right;white-space:nowrap;font-size:11px}
+td{padding:9px 12px;border-bottom:1px solid var(--wline);white-space:nowrap;font-size:13px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--wline)}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
+.b-buy{background:rgba(62,207,142,.13);color:var(--green)}
+.b-sell{background:rgba(246,109,109,.13);color:var(--red)}
+.b-dep{background:rgba(92,159,255,.13);color:var(--blue)}
+.b-wit{background:rgba(246,109,109,.07);color:#e07070}
+
+/* ═ BUTTONS ═ */
+.btn-gold{width:100%;padding:13px;background:linear-gradient(135deg,var(--goldL),var(--gold));color:#1d1505;border:none;border-radius:12px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;min-height:44px}
+.btn-gold:hover{background:var(--goldL)}
+.btn-outline{padding:11px 16px;background:transparent;color:var(--muted);border:1px solid var(--bdr);border-radius:12px;font-family:var(--font);font-size:13px;cursor:pointer;min-height:44px}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm{padding:8px 14px;background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;color:var(--muted);cursor:pointer;font-size:12px;font-family:var(--font);min-height:38px}
+.btn-sm:hover{color:var(--text)}
+.btn-xs{border:none;background:var(--surf);color:var(--muted);border-radius:6px;padding:6px 12px;cursor:pointer;font-size:12px;font-family:inherit;transition:all .15s}
+.btn-xs:hover{color:var(--red);background:rgba(246,109,109,.1)}
+.btn-primary{flex:1;padding:13px;background:var(--gold);color:#0d0f14;border:none;border-radius:9px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;min-height:44px}
+.btn-primary:hover{background:var(--goldL)}
+.btn-cancel{padding:13px 18px;background:var(--surf2);color:var(--muted);border:1px solid var(--bdr);border-radius:9px;font-family:var(--font);font-size:14px;cursor:pointer;min-height:44px}
+.btn-refresh{padding:10px 20px;background:var(--gold);color:#0d0f14;border:none;border-radius:9px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;min-height:44px}
+.btn-refresh:hover{background:var(--goldL)}
+.btn-refresh:disabled{opacity:.45;cursor:not-allowed}
+.btn-icon{border:none;background:var(--surf);color:var(--muted);border-radius:7px;padding:8px 12px;cursor:pointer;font-size:13px;font-family:var(--font);transition:all .15s;min-height:36px}
+.btn-icon:hover{color:var(--text);background:var(--surf2)}
+.btn-icon.danger:hover{color:var(--red);background:rgba(246,109,109,.1)}
+.btn-soft-gold{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.35);border-radius:10px;color:var(--gold);font-size:12.5px;font-family:inherit;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-soft-gold:hover{background:rgba(201,168,76,.22)}
+
+/* ═ TOPBAR ═ */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+
+/* ═ ASSET CARDS ═ */
+.asset-section{margin-bottom:18px}
+.section-title{font-size:13px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.section-title small{font-size:11px;color:var(--muted);font-weight:400}
+.asset-grid{display:grid;grid-template-columns:1fr;gap:12px;align-items:start}
+.asset-card{background:var(--surf2);border:1px solid var(--bdr);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;transition:background .15s}
+.asset-card:hover{background:var(--cbh)}
+.ac-head{display:flex;justify-content:space-between;align-items:center}
+.ac-name{font-size:14px;font-weight:600}
+.ac-sym{font-size:11px;direction:ltr;color:var(--muted);background:var(--wline);padding:3px 10px;border-radius:20px;white-space:nowrap}
+.ac-meta{font-size:12px;color:var(--muted)}
+.ac-divider{border-top:1px solid var(--bdr);padding-top:10px;margin-top:3px;display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.ac-price-label{font-size:10.5px;color:var(--muted);margin-bottom:3px}
+.ac-price{font-size:1.05rem;font-weight:600;color:var(--gold)}
+.ac-price-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.pnl{font-size:12px;font-weight:600;text-align:left;white-space:nowrap}
+.pnl.pos{color:var(--green)}.pnl.neg{color:var(--red)}.pnl.neu{color:var(--muted)}
+.ac-waiting{font-size:12px;color:var(--muted);border-top:1px solid var(--bdr);padding-top:10px;margin-top:3px}
+.market-input{width:100%;background:var(--surf);border:1px solid var(--bdr);border-radius:7px;padding:10px 12px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;transition:border-color .15s;margin-top:2px;min-height:44px}
+.market-input:focus{border-color:var(--gold)}
+
+/* ═ OTHER SOURCES ═ */
+.other-card{background:var(--surf2);border:1px solid var(--bdr);border-radius:20px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;transition:background .15s}
+.other-card:hover{background:var(--cbh)}
+.other-name{font-size:14px;font-weight:600}
+.other-type-tag{font-size:11px;padding:3px 10px;border-radius:20px}
+.other-type-realized{background:rgba(62,207,142,.12);color:var(--green)}
+.other-type-unrealized{background:rgba(201,168,76,.12);color:var(--gold)}
+.other-val{font-size:1rem;font-weight:600;color:var(--gold)}
+.other-actions{display:flex;gap:6px}
+
+/* ═ REGISTRY ═ */
+.reg-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px}
+.reg-card{background:var(--surf2);border:1px solid var(--bdr);border-radius:20px;padding:16px 18px}
+.reg-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.reg-name{font-size:14px;font-weight:600}
+.reg-type{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--surf);color:var(--muted)}
+.reg-rows{display:flex;flex-direction:column;gap:8px}
+.reg-row{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.reg-row .key{color:var(--muted)}
+.reg-row .val{color:var(--text);direction:ltr;font-size:13px}
+.reg-btns{display:flex;gap:8px;margin-top:12px}
+
+/* ═ TOTALS ═ */
+.tc-label{font-size:10.5px;color:var(--muted)}
+.totals-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.total-card{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:9px 14px;display:flex;flex-direction:column-reverse;gap:2px;text-align:start}
+/* ═ GLOBAL NUMBER & FONT OVERRIDES — يتغلب على inline styles ═ */
+/* خط موحّد (النظام + IBM Plex) لكل الأرقام والنصوص */
+.sc-val,.tc-val,.ac-price,.pnl,.other-val,.perf-pnl,
+.mkt-pos,.mkt-neg,.mkt-num,#heroVal,#retirePct,#gTotalPct,
+#gTotalCur,#gTotalRem,#retirePct,#retireRemaining,
+.txn-cell,.vl,[style*="fmtC"],[style*="fmtS"],
+.perf-nums span{
+  font-family:var(--font)!important;
+  font-weight:600!important;
+}
+/* Desktop market table numbers */
+.mkt-num{font-weight:600!important;font-family:inherit!important}
+/* Transaction amounts */
+.txn-cell{font-weight:600!important}
+/* Perf items */
+.perf-name{font-weight:500!important}
+/* Goals numbers */
+#gTotalPct,#gTotalCur,#gTotalRem,#gTotalGoal,#retireGoalFmt,#retirePct{
+  font-weight:600!important;
+  font-family:inherit!important;
+}
+/* Market desktop table */
+.mkt-table td{font-weight:400!important}
+[direction="ltr"],.ac-sym,.ac-price,.ac-price-sub,.pnl,
+.txn-cell,.mkt-table td,.reg-row .val,.vl,
+#heroVal,#heroSym,.sc-val,.tc-val,.other-val,
+.perf-pnl,.perf-nums,#retirePct,#gTotalPct{
+  font-family:var(--font);
+}
+/* Arabic elements keep IBM Plex */
+body,[lang="ar"],.lb,.fl,.sc-label,.ac-name,.ac-meta,.section-title,
+.page-title,.card-title,.modal-title,.tab-brand{
+  font-family:var(--font);
+}
+.hero-val,.sc-val,.tc-val,.ac-price,.pnl,.other-val,
+#retirePct,#gTotalPct,#gTotalCur,#gTotalRem,#gTotalGoal,
+.perf-pnl,.mkt-pos,.mkt-neg{font-weight:600}
+.sc-val{font-size:1.1rem}
+.tc-val{font-size:15px;font-weight:600}
+#tVal{color:var(--gold)}
+#tCost{color:var(--muted)}
+
+/* ═ REFRESH BAR ═ */
+.refresh-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surf);border:none;border-radius:20px;padding:14px 16px;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.refresh-info .title{font-size:13px;font-weight:500;margin-bottom:3px}
+.refresh-info .status{font-size:12px;color:var(--muted)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinning{display:inline-block;animation:spin .7s linear infinite}
+
+/* ═ PERFORMANCE ═ */
+.perf-list{display:flex;flex-direction:column;gap:12px}
+.perf-item{background:var(--surf2);border-radius:10px;padding:12px 14px}
+.perf-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.perf-name{font-size:13px;font-weight:500}
+.perf-pnl{font-size:12px;font-weight:600}
+.perf-bar-wrap{height:5px;background:var(--wline);border-radius:3px;margin-bottom:7px;overflow:hidden}
+.perf-bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.perf-nums{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+
+/* ═ MARKET ═ */
+.mkt-table{width:100%;border-collapse:collapse;font-size:13px}
+.mkt-table thead tr{background:var(--surf2);border-bottom:1px solid var(--bdr)}
+.mkt-table th{padding:10px 12px;color:var(--muted);font-weight:500;text-align:right;font-size:11px;white-space:nowrap}
+.mkt-table td{padding:10px 12px;border-bottom:0.5px solid var(--hairline);white-space:nowrap;font-size:13px}
+.mkt-table tr:last-child td{border-bottom:none}
+.mkt-table tr:hover td{background:var(--wline)}
+.mkt-pos{color:var(--green);font-weight:600}
+.mkt-neg{color:var(--red);font-weight:600}
+.mkt-bar{height:4px;background:var(--track);border-radius:4px;margin-top:4px;overflow:hidden;min-width:80px}
+.mkt-bar-fill{height:100%;border-radius:4px;background:var(--blue)}
+.mkt-owned{}
+.empty{text-align:center;padding:2rem;color:var(--muted);font-size:14px}
+
+/* ═ TRANSACTIONS ═ */
+.filter-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.fsel{background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:9px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;min-height:40px}
+/* ─ Custom Multi-Select Dropdown ─ */
+.ms-wrap{position:relative;display:inline-block}
+.ms-btn{
+  min-height:40px;padding:7px 12px;
+  background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;
+  color:var(--muted);font-family:var(--font);font-size:13px;
+  cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;
+  transition:border-color .15s,color .15s;
+}
+.ms-btn:hover{border-color:var(--bdr2);color:var(--text)}
+.ms-btn.has-sel{border-color:var(--gold);color:var(--gold)}
+.ms-menu{
+  position:fixed;
+  background:var(--surf);border:1px solid var(--bdr2);
+  border-radius:12px;padding:5px;z-index:99999;
+  min-width:140px;box-shadow:0 8px 28px rgba(0,0,0,.55);
+  animation:msIn .15s ease;
+}
+@keyframes msIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.ms-item{
+  padding:7px 10px;border-radius:8px;cursor:pointer;
+  font-size:13px;color:var(--muted);
+  display:flex;align-items:center;gap:8px;
+  transition:background .12s,color .12s;
+  user-select:none;
+}
+.ms-item:hover{background:var(--surf2);color:var(--text)}
+.ms-item.sel{background:rgba(201,168,76,.12);color:var(--gold)}
+.ms-chk{
+  width:14px;height:14px;flex-shrink:0;
+  accent-color:var(--gold);cursor:pointer;
+  margin:0;
+}
+.srch{flex:1;min-width:0;width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:9px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;min-height:40px}
+.srch::placeholder{color:var(--muted)}
+.txn-month-group{margin-bottom:14px}
+.txn-month-header{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:6px;cursor:pointer}
+.txn-month-label{font-size:14px;font-weight:500;color:var(--text)}
+.txn-month-sum{font-size:12px;color:var(--muted);margin-right:auto}
+.txn-month-toggle{font-size:12px;color:var(--muted)}
+.txn-row{display:grid;gap:0;align-items:center;padding:9px 12px;border-bottom:1px solid var(--wline);transition:background .1s}
+.txn-row:hover{background:var(--wline)}
+.txn-check{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;flex-shrink:0}
+.txn-cell{padding:0 6px;font-size:13px;white-space:nowrap}
+.edit-icon{border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;padding:4px 6px;border-radius:4px;opacity:0;transition:all .15s}
+.txn-row:hover .edit-icon{opacity:1}
+.edit-icon:hover{background:rgba(201,168,76,.15);color:var(--gold)}
+/* على الموبايل: دايماً ظاهرة */
+html.is-mobile .edit-icon{opacity:1!important}
+@media screen and (max-width:768px){.edit-icon{opacity:1!important}}
+
+/* ════════════════════════════════════════
+   ✦ GLASSMORPHISM SYSTEM
+════════════════════════════════════════ */
+
+/* — Top App Bar — */
+.top-app-bar{
+  background:rgba(8,10,16,0.72)!important;
+  backdrop-filter:blur(24px)!important;
+  -webkit-backdrop-filter:blur(24px)!important;
+  border-bottom:1px solid var(--wline)!important;
+}
+
+/* — Sidebar / Bottom Nav — */
+.sidebar{
+  background:rgba(8,10,16,0.78)!important;
+  backdrop-filter:blur(28px)!important;
+  -webkit-backdrop-filter:blur(28px)!important;
+  border-color:var(--wline)!important;
+  box-shadow:0 -4px 32px rgba(0,0,0,0.5)!important;
+}
+
+/* — Hero card + glass-card class — تعتيم فقط بدون blur */
+.hero,.glass-card{
+  background:linear-gradient(135deg,rgba(26,29,40,0.60),rgba(30,34,53,0.55))!important;
+  border:1px solid rgba(201,168,76,0.14)!important;
+  box-shadow:0 8px 40px rgba(0,0,0,0.4),inset 0 1px 0 var(--wline)!important;
+}
+
+/* — Cards (generic) — تعتيم فقط */
+.card{
+  background:rgba(20,24,38,0.58)!important;
+  border:1px solid var(--wline)!important;
+  box-shadow:0 4px 28px rgba(0,0,0,0.35),inset 0 1px 0 var(--wline)!important;
+}
+
+/* — Stat Cards — */
+.stat-card{
+  background:rgba(22,26,42,0.56)!important;
+  border:1px solid var(--wline)!important;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3)!important;
+}
+.stat-card:hover{background:rgba(28,32,52,0.68)!important}
+
+/* — Asset Cards — */
+.asset-card{
+  background:rgba(22,26,42,0.58)!important;
+  border:1px solid var(--wline)!important;
+  box-shadow:0 4px 20px rgba(0,0,0,0.28)!important;
+}
+.asset-card:hover{background:rgba(30,35,58,0.70)!important}
+
+/* — Other Source Cards — */
+.other-card{
+  background:rgba(22,26,42,0.56)!important;
+  border:1px solid var(--wline)!important;
+}
+.other-card:hover{background:rgba(30,35,58,0.68)!important}
+
+/* — Registry Cards — */
+.reg-card{
+  background:rgba(22,26,42,0.58)!important;
+  border:1px solid var(--wline)!important;
+  box-shadow:0 4px 20px rgba(0,0,0,0.28)!important;
+}
+
+/* — Total Cards — */
+.total-card{
+  background:rgba(22,26,42,0.56)!important;
+  border:1px solid var(--wline)!important;
+}
+
+/* — Refresh Bar — */
+.refresh-bar{
+  background:rgba(20,24,38,0.58)!important;
+  border:1px solid var(--wline)!important;
+}
+
+/* — Performance Items — */
+.perf-item{
+  background:rgba(22,26,42,0.56)!important;
+  border:1px solid var(--wline)!important;
+}
+
+/* — Info Box — */
+.info-box{
+  background:rgba(201,168,76,0.07)!important;
+}
+
+/* — Modal / Overlay — */
+.modal{
+  background:rgba(14,17,28,0.88)!important;
+  backdrop-filter:blur(28px)!important;
+  -webkit-backdrop-filter:blur(28px)!important;
+  border:1px solid var(--hairline)!important;
+  box-shadow:0 16px 60px rgba(0,0,0,0.6),inset 0 1px 0 var(--wline)!important;
+}
+.overlay{background:rgba(0,0,0,0.55)!important;backdrop-filter:blur(6px)!important;-webkit-backdrop-filter:blur(6px)!important}
+
+/* — More Menu Popup — */
+#moreMenu{
+  background:rgba(14,17,28,0.88)!important;
+  backdrop-filter:blur(24px)!important;
+  -webkit-backdrop-filter:blur(24px)!important;
+  border:1px solid var(--hairline)!important;
+}
+.more-menu-item:hover,.more-menu-item.active{background:var(--wline)!important}
+
+/* — Dropdown Menus — */
+.ms-menu{
+  background:var(--modal-bg)!important;
+  border:0.5px solid var(--hairline)!important;
+}
+.ms-item:hover{background:var(--seg-bg)!important}
+.ms-item.sel{background:rgba(201,168,76,0.14)!important}
+
+/* — Input Fields — */
+.fi,.fs,.srch,.fsel,.market-input,.import-area{
+  background:var(--wline)!important;
+  border:1px solid var(--hairline)!important;
+}
+.fi:focus,.fs:focus,.srch:focus,.market-input:focus{
+  background:var(--wline)!important;
+  border-color:var(--gold)!important;
+}
+
+/* — Buttons — */
+.btn-sm,.btn-cancel,.btn-outline,.tab-btn,.ms-btn,.btn-icon,.btn-xs{
+  background:var(--wline)!important;
+}
+.btn-sm:hover,.btn-cancel:hover,.tab-btn:hover,.btn-icon:hover,.ms-btn:hover,.ms-btn.has-sel{
+  background:var(--wline)!important;
+}
+.sb-btn-refresh{background:rgba(62,207,142,0.10)!important}
+.sb-btn-save{background:rgba(92,159,255,0.10)!important}
+
+/* — Nav Items — */
+.nav-item:hover{background:var(--wline)!important}
+.nav-item.active{background:rgba(201,168,76,0.18)!important}
+
+/* — Table Backgrounds — */
+thead tr,.mkt-table thead tr{background:var(--th-bg)!important}
+.tbl-wrap{background:var(--surf);border-color:var(--hairline)!important}
+tr:hover td,.mkt-table tr:hover td{background:var(--seg-bg)!important}
+
+/* — Selection Bar — */
+#selectionBar{
+  background:var(--modal-bg)!important;
+  border:1px solid rgba(201,168,76,0.25)!important;
+}
+
+/* — iOS Banner — */
+#iosBanner{
+  background:rgba(20,24,38,0.90)!important;
+}
+
+/* — Currency Buttons — */
+.cur-btn{
+  background:var(--wline)!important;
+  border:1px solid var(--wline)!important;
+}
+.cur-btn.active{background:rgba(201,168,76,0.18)!important;border-color:var(--gold)!important}
+.cur-btn:hover{border-color:var(--gold)!important;background:rgba(201,168,76,0.10)!important}
+
+/* — Badge chips — */
+.badge,.ac-sym,.reg-type,.date-badge{
+  background:var(--wline)!important;
+}
+.b-buy{background:rgba(62,207,142,0.13)!important}
+.b-sell{background:rgba(246,109,109,0.13)!important}
+.b-dep{background:rgba(92,159,255,0.13)!important}
+.b-wit{background:rgba(246,109,109,0.07)!important}
+
+/* — Code blocks — */
+code{background:var(--wline)!important}
+
+/* — col-tag — */
+.col-tag{background:var(--wline)!important}
+
+/* — Clear options in modals — */
+.clear-opt{background:var(--wline)!important;border-color:var(--wline)!important}
+
+/* — Glass shimmer on hero — subtle top border glow */
+.hero::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.05) 0%,transparent 40%);
+  pointer-events:none;border-radius:inherit;
+}
+
+.del-btn{border:none;background:transparent;color:transparent;cursor:pointer;font-size:12px;padding:4px 6px;border-radius:5px;transition:all .15s}
+tr:hover .del-btn{color:var(--muted)}
+.del-btn:hover{background:rgba(246,109,109,.15);color:var(--red)!important}
+.month-select-all{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer}
+.month-select-all input{accent-color:var(--gold);cursor:pointer}
+.pager{display:flex;align-items:center;justify-content:space-between;margin-top:12px;font-size:13px;color:var(--muted)}
+.pager-btns{display:flex;gap:6px}
+
+/* ═ MODAL ═ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:flex-start;justify-content:center;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--surf);border:none;border-radius:0 0 24px 24px;padding:14px 16px 20px;width:100%;max-height:88vh;overflow-y:auto}
+.modal::before{content:'';display:block;width:32px;height:4px;background:var(--hairline);border-radius:2px;margin:0 auto 14px}
+.modal-title{font-size:17px;font-weight:500;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.form-row{margin-bottom:8px}
+.fl{font-size:12px;color:var(--muted);margin-bottom:4px;display:block}
+.fi,.fs{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:9px 12px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border-color .15s;min-height:40px}
+.fi:focus,.fs:focus{border-color:var(--gold)}
+.fi,.fs{min-width:0}.fs option{background:var(--surf);color:var(--text)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.modal-btns{display:flex;gap:10px;margin-top:16px}
+.import-area{width:100%;height:185px;background:var(--surf2);border:1px dashed rgba(201,168,76,.28);border-radius:10px;padding:14px;color:var(--text);font-family:monospace;font-size:13px;outline:none;resize:none;line-height:1.5;direction:ltr}
+.import-area::placeholder{color:var(--muted);direction:rtl}
+.col-map{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:10px 0}
+.col-tag{background:var(--surf2);padding:4px 6px;border-radius:5px;font-size:11px;color:var(--muted);text-align:center}
+.import-msg{font-size:12px;min-height:18px;margin-top:8px}
+.clear-opt{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--surf2);border-radius:10px;cursor:pointer;border:1px solid var(--bdr);font-size:14px}
+.clear-opt:hover{border-color:rgba(246,109,109,.3)}
+.clear-opt input{accent-color:var(--red);width:18px;height:18px;cursor:pointer;flex-shrink:0;margin-top:2px}
+.info-box{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.18);border-radius:14px;padding:14px 16px;font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:14px}
+.info-box b{color:var(--text)}
+code{background:var(--surf2);padding:2px 8px;border-radius:4px;font-size:12px;direction:ltr;display:inline-block}
+
+/* ═ GOALS ═ */
+#catGoalsGrid{display:grid;grid-template-columns:1fr;gap:14px}
+
+/* ═════════════════════════════════════
+   DESKTOP OVERRIDES — min-width: 769px
+═════════════════════════════════════ */
+/* ═══════════════════════════════
+   DESKTOP — only when NOT mobile
+   Uses JS class: html.is-mobile
+═══════════════════════════════ */
+html:not(.is-mobile) .app{flex-direction:row}
+html:not(.is-mobile) .sidebar{width:68px!important;height:calc(100vh - 56px)!important;flex-direction:column!important;position:fixed!important;right:0;top:56px;bottom:0;left:auto!important;border-top:none!important;border-left:1px solid var(--bdr)!important;padding:1.25rem .5rem!important;justify-content:flex-start!important;gap:.5rem!important;overflow-y:auto!important}
+html:not(.is-mobile) .logo{display:block!important;font-family:var(--font);font-size:11px;text-align:center;color:var(--gold);padding-bottom:.5rem;border-bottom:1px solid var(--bdr);width:100%;margin-bottom:4px;line-height:1.3}
+html:not(.is-mobile) .nav{flex-direction:column!important;flex:none!important;width:100%!important;gap:4px!important;justify-content:flex-start!important}
+html:not(.is-mobile) .nav-item{width:44px!important;height:44px!important;font-size:20px!important;margin:0 auto!important}
+html:not(.is-mobile) .sb-bottom{display:none!important}
+html:not(.is-mobile) .tab-sync{display:block!important}
+html:not(.is-mobile) .main{margin-right:68px!important;padding:1.75rem 2rem 2rem!important}
+html:not(.is-mobile) .hero{display:block!important;padding:1.75rem 2rem!important}
+html:not(.is-mobile) .hero-val{font-size:2.8rem!important}
+html:not(.is-mobile) .hero-meta{display:flex!important;flex-direction:row!important;gap:2rem!important;flex-wrap:wrap!important}
+html:not(.is-mobile) .cur-switcher{display:flex!important;gap:6px!important;margin-bottom:1rem!important}
+html:not(.is-mobile) .cur-btn{padding:5px 14px!important}
+html:not(.is-mobile) .stats-row{grid-template-columns:repeat(5,1fr)!important;gap:.75rem!important}
+html:not(.is-mobile) .grid-2{grid-template-columns:1fr 1.5fr!important}
+html:not(.is-mobile) #donutPerfGrid{grid-template-columns:1fr 2fr!important}
+html:not(.is-mobile) .asset-grid{grid-template-columns:repeat(auto-fill,minmax(275px,1fr))!important}
+html:not(.is-mobile) .reg-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))!important}
+html:not(.is-mobile) .totals-row{grid-template-columns:repeat(4,1fr)!important}
+html:not(.is-mobile) #catGoalsGrid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))!important}
+html:not(.is-mobile) .fg{grid-template-columns:1fr 1fr!important;gap:11px!important}
+html:not(.is-mobile) .modal{border-radius:24px!important;width:500px!important;max-width:95vw!important}
+html:not(.is-mobile) .modal::before{display:none!important}
+html:not(.is-mobile) .overlay{align-items:center!important;padding-bottom:0!important;padding-top:0!important}
+
+
+/* ══════════════════════════════════════════════
+   BUTTON CLASSES — تعريف الأزرار (ديسكتوب + موبايل)
+══════════════════════════════════════════════ */
+.sb-btn{
+  width:44px;height:44px;border-radius:10px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-family:inherit;border:none;transition:all .15s;
+  flex-shrink:0;
+}
+.sb-btn-refresh{background:var(--surf2);color:var(--green);border:1px solid rgba(62,207,142,.25)!important;}
+.sb-btn-save{background:var(--surf2);color:var(--blue);border:1px solid rgba(92,159,255,.25)!important;font-size:15px}
+.sb-btn-add{background:var(--gold);color:#0d0f14;font-size:22px;font-weight:700;}
+.sb-btn-add:hover{background:var(--goldL)}
+.sync-status{font-size:9px;color:var(--muted);text-align:center;line-height:1.4;margin-top:4px;display:none}
+html:not(.is-mobile) .sync-status{display:block}
+
+/* ══════════════════════════════════════════════
+   MEDIA QUERY FALLBACK — حماية CSS مستقلة عن JS
+   يعمل حتى لو فشل الكلاس is-mobile
+══════════════════════════════════════════════ */
+@media screen and (max-width: 768px){
+  /* ── هيكل التطبيق ── */
+  .app{flex-direction:column!important}
+
+  /* ── شريط التنقل السفلي ── */
+  .sidebar{
+    width:100%!important;
+    height:calc(62px + env(safe-area-inset-bottom))!important;
+    flex-direction:row!important;
+    position:fixed!important;
+    bottom:0!important;right:0!important;top:auto!important;left:0!important;
+    border-top:1px solid var(--bdr)!important;border-left:none!important;
+    padding:0 6px env(safe-area-inset-bottom) 6px!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:0!important;
+    box-shadow:0 -4px 24px rgba(0,0,0,.55)!important;
+  }
+  .logo{display:none!important}
+
+  /* ── أيقونات التنقل ── */
+  .nav{
+    flex-direction:row!important;
+    flex:1!important;
+    justify-content:space-around!important;
+    display:flex!important;
+    gap:0!important;
+    align-items:center!important;
+  }
+  .nav-item{
+    width:42px!important;height:54px!important;
+    font-size:23px!important;
+    border-radius:10px!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
+  }
+  .nav-item.active{background:rgba(201,168,76,.15)!important;}
+
+  /* ── أزرار الإجراءات (حفظ، تحديث، إضافة) ── */
+  .sb-bottom{
+    flex-direction:row!important;
+    flex-shrink:0!important;
+    margin-top:0!important;
+    width:auto!important;
+    gap:5px!important;
+    align-items:center!important;
+    /* الفاصل على اليمين لأن RTL → الـ nav على اليمين */
+    border-right:1px solid var(--bdr)!important;
+    padding-right:8px!important;
+    border-left:none!important;
+    padding-left:0!important;
+  }
+  .sync-status{display:none!important}
+  .sb-btn{width:40px!important;height:40px!important;border-radius:10px!important;font-size:16px!important;}
+  .sb-btn-refresh{font-size:18px!important}
+  .sb-btn-save{font-size:15px!important}
+
+  /* ── المحتوى الرئيسي ── */
+  .main{margin-right:0!important;padding:14px 14px calc(78px + env(safe-area-inset-bottom))!important}
+
+  /* ── البطل ── */
+  .hero{display:flex!important;flex-direction:column!important;gap:10px!important;padding:16px!important}
+  .hero-val{font-size:clamp(1.6rem,7vw,2.4rem)!important;font-weight:600!important;line-height:1.1!important}
+  .hero-label{font-size:11px!important}
+  .hero-profit .tag{font-size:12px!important;padding:4px 12px!important}
+  .cur-switcher{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;gap:6px!important;margin-bottom:2px!important}
+  .cur-btn{font-size:12px!important;padding:8px!important}
+
+  /* ── قاعدة عامة: بوكس واحد بالسطر على الموبايل ── */
+  .stats-row{grid-template-columns:1fr!important;gap:7px!important}
+  .totals-row{grid-template-columns:1fr 1fr!important;gap:8px!important}
+  .stat-card{padding:9px 12px!important;border-radius:16px!important;display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:8px!important}
+  .sc-left{display:flex!important;flex-direction:column!important;flex:1!important}
+  .sc-right{display:flex!important;flex-direction:column!important;align-items:flex-end!important;flex-shrink:0!important}
+  .sc-label{font-size:11px!important;font-weight:400!important;margin-bottom:0!important}
+  .sc-val{font-size:0.95rem!important;font-weight:600!important;margin-bottom:0!important;direction:ltr!important;text-align:left!important}
+  .sc-invested{font-size:10px!important;color:var(--muted)!important;margin-top:2px!important;margin-bottom:0!important}
+  .sc-pnl{font-size:10px!important;font-weight:600!important;text-align:left!important;direction:ltr!important;margin-top:1px!important}
+
+  /* ── الشبكات — عمود واحد دايماً ── */
+  .grid-2{grid-template-columns:1fr!important}
+  #donutPerfGrid{grid-template-columns:1fr!important;display:flex!important;flex-direction:column!important}
+  #donutPerfGrid>div:first-child{order:2!important}
+  #donutPerfGrid>div:last-child{order:1!important}
+  .asset-grid{grid-template-columns:1fr!important}
+  .reg-grid{grid-template-columns:1fr!important}
+  #catGoalsGrid{grid-template-columns:1fr!important}
+
+  /* ── كروت الأصول ── */
+  .asset-card{padding:12px!important;border-radius:20px!important}
+  .ac-name{font-size:13px!important;font-weight:400!important}
+  .ac-sym{font-size:10px!important}
+  .ac-meta{font-size:11px!important}
+  .ac-price{font-size:1rem!important;font-weight:600!important}
+  .ac-price-label{font-size:10px!important}
+  .pnl{font-size:12px!important;font-weight:600!important}
+
+  /* ── جداول ── */
+  td{padding:8px 10px!important;font-size:12px!important;font-weight:400!important}
+  th{padding:7px 10px!important;font-size:10px!important}
+
+  /* ── مودال ── */
+  .overlay{align-items:flex-start!important;padding-bottom:0!important;padding-top:0!important}
+  .modal{width:100%!important;max-width:100%!important;border-radius:0 0 24px 24px!important;padding:14px 14px 20px!important;max-height:88vh!important}
+  .modal-title{font-size:16px!important;margin-bottom:12px!important;font-weight:400!important}
+  .fi,.fs{font-size:13px!important;padding:9px 12px!important;min-height:42px!important}
+  .fl{font-size:11px!important;margin-bottom:3px!important}
+  .form-row{margin-bottom:7px!important}
+  .fg{grid-template-columns:1fr!important;gap:7px!important}
+  .modal-btns{margin-top:12px!important;gap:8px!important}
+  .btn-primary,.btn-cancel{padding:11px!important;font-size:13px!important;min-height:42px!important}
+
+  /* ── نصوص وأرقام موحّدة ── */
+  body{font-size:13px!important}
+  .page-title{font-size:1.05rem!important;font-weight:500!important}
+  .card{padding:11px 12px!important;border-radius:20px!important;margin-bottom:9px!important}
+  .card-title{margin-bottom:7px!important}
+  .section-title{margin-bottom:7px!important}
+  .mkt-pos,.mkt-neg{font-size:12px!important;font-weight:600!important}
+  .perf-pnl{font-size:11px!important;font-weight:600!important}
+  .other-val{font-weight:600!important}
+  .tc-val{font-size:15px!important;font-weight:600!important}
+  .total-card{border-radius:16px!important}
+
+  /* ── فلاتر وأزرار ── */
+  .filter-row{flex-wrap:wrap!important;gap:6px!important}
+  .topbar{flex-wrap:wrap!important;gap:6px!important;margin-bottom:10px!important}
+  .fsel,.srch{font-size:12px!important;min-height:38px!important;padding:7px 9px!important}
+  .btn-sm{font-size:11px!important;padding:6px 9px!important;min-height:34px!important}
+  .btn-outline,.btn-gold{font-size:12px!important;padding:7px 12px!important;min-height:36px!important}
+}
+/* ═══════════ DESKTOP FRAME v151 — نسخة الموبايل موسّطة بنص الصفحة + بار صفحات علوي ═══════════ */
+html.desk{--desk-w:820px}
+html.desk.is-mobile .app{flex-direction:column!important;padding-top:0!important}
+html.desk.is-mobile .main{max-width:var(--desk-w)!important;margin-inline:auto!important;padding:86px 16px 48px!important}
+html.desk.is-mobile .sidebar{top:14px!important;bottom:auto!important;right:50%!important;left:auto!important;transform:translateX(50%)!important;padding:5px!important}
+html.desk.is-mobile .sidebar.bar-hidden{transform:translateX(50%)!important}
+html.desk.is-mobile .sidebar .nav-item{width:48px!important;height:42px!important}
+html.desk.is-mobile .sidebar .nav-item i{font-size:19px!important}
+html.desk.is-mobile .sidebar .nav-item.active{width:60px!important}
+html.is-mobile .sidebar .nav-item[data-page="notes"]{display:none!important} /* الملاحظات معطّلة */
+html.desk.is-mobile .modal{border-radius:24px!important;width:500px!important;max-width:95vw!important}
+html.desk.is-mobile .modal::before{display:none!important}
+html.desk.is-mobile .overlay{align-items:center!important;padding-top:0!important;padding-bottom:0!important}
+html.desk.is-mobile #moreMenu{top:80px!important;bottom:auto!important;left:50%!important;right:auto!important;transform-origin:top center!important;transform:translateX(-50%) scale(.88) translateY(-10px)!important}
+html.desk.is-mobile #moreMenu.open{transform:translateX(-50%) scale(1) translateY(0)!important}
+html.desk.is-mobile #navMoreBtn{display:none!important}
+html.desk.is-mobile #navExtra{display:flex!important;margin-top:0!important}
+/* — بار علوي زجاجي موحّد (ديسكتوب): الأزرار عالأطراف + النّاف بالنص، مرفوع لفوق — */
+html.desk.is-mobile .top-app-bar{left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:100%!important;max-width:var(--desk-w)!important;top:8px!important;height:64px!important;padding:0 4px!important;align-items:center!important;justify-content:space-between!important}
+html.desk.is-mobile .top-app-bar .tab-btn,html.desk.is-mobile #btnTopMenu{width:44px!important;height:44px!important}
+html.desk.is-mobile .sidebar{top:8px!important}
+html.desk.is-mobile #topMenu{top:64px!important;left:calc(50% - var(--desk-w)/2)!important;right:auto!important;transform-origin:top left!important}
+html.desk.is-mobile #alertsPanel{top:64px!important;left:auto!important;right:calc(50% - var(--desk-w)/2)!important}
+/* — قواعد الموبايل (@media) منعكسة للديسكتوب — */
+html.desk.is-mobile .hero{display:flex!important;flex-direction:column!important;gap:10px!important;padding:16px!important}
+html.desk.is-mobile .hero-val{font-size:clamp(1.6rem,7vw,2.4rem)!important;font-weight:600!important;line-height:1.1!important}
+html.desk.is-mobile .hero-label{font-size:11px!important}
+html.desk.is-mobile .hero-profit .tag{font-size:12px!important;padding:4px 12px!important}
+html.desk.is-mobile .cur-switcher{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;gap:6px!important;margin-bottom:2px!important}
+html.desk.is-mobile .cur-btn{font-size:12px!important;padding:8px!important}
+html.desk.is-mobile .totals-row{grid-template-columns:1fr 1fr!important;gap:8px!important}
+html.desk.is-mobile .stat-card{display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:8px!important}
+html.desk.is-mobile .sc-left{display:flex!important;flex-direction:column!important;flex:1!important}
+html.desk.is-mobile .sc-right{display:flex!important;flex-direction:column!important;align-items:flex-end!important;flex-shrink:0!important}
+html.desk.is-mobile .sc-label{font-size:11px!important;font-weight:400!important;margin-bottom:0!important}
+html.desk.is-mobile .sc-val{font-size:0.95rem!important;font-weight:600!important;margin-bottom:0!important;direction:ltr!important;text-align:left!important}
+html.desk.is-mobile .sc-invested{font-size:10px!important;color:var(--muted)!important;margin-top:2px!important;margin-bottom:0!important}
+html.desk.is-mobile .sc-pnl{font-size:10px!important;font-weight:600!important;text-align:left!important;direction:ltr!important;margin-top:1px!important}
+html.desk.is-mobile .grid-2{grid-template-columns:1fr!important}
+html.desk.is-mobile #donutPerfGrid{grid-template-columns:1fr!important;display:flex!important;flex-direction:column!important}
+html.desk.is-mobile #donutPerfGrid>div:first-child{order:2!important}
+html.desk.is-mobile #donutPerfGrid>div:last-child{order:1!important}
+html.desk.is-mobile .asset-grid{grid-template-columns:1fr!important}
+html.desk.is-mobile .reg-grid{grid-template-columns:1fr!important}
+html.desk.is-mobile #catGoalsGrid{grid-template-columns:1fr!important}
+html.desk.is-mobile .asset-card{padding:12px!important;border-radius:20px!important}
+html.desk.is-mobile .ac-name{font-size:13px!important;font-weight:400!important}
+html.desk.is-mobile .ac-sym{font-size:10px!important}
+html.desk.is-mobile .ac-meta{font-size:11px!important}
+html.desk.is-mobile .ac-price{font-size:1rem!important;font-weight:600!important}
+html.desk.is-mobile .ac-price-label{font-size:10px!important}
+html.desk.is-mobile .pnl{font-size:12px!important;font-weight:600!important}
+html.desk.is-mobile td{padding:8px 10px!important;font-size:12px!important;font-weight:400!important}
+html.desk.is-mobile th{padding:7px 10px!important;font-size:10px!important}
+html.desk.is-mobile .modal-title{font-size:16px!important;margin-bottom:12px!important;font-weight:400!important}
+html.desk.is-mobile .fi,html.desk.is-mobile .fs{font-size:13px!important;padding:9px 12px!important;min-height:42px!important}
+html.desk.is-mobile .fl{font-size:11px!important;margin-bottom:3px!important}
+html.desk.is-mobile .form-row{margin-bottom:7px!important}
+html.desk.is-mobile .fg{grid-template-columns:1fr!important;gap:7px!important}
+html.desk.is-mobile .modal-btns{margin-top:12px!important;gap:8px!important}
+html.desk.is-mobile .btn-primary,html.desk.is-mobile .btn-cancel{padding:11px!important;font-size:13px!important;min-height:42px!important}
+html.desk.is-mobile body{font-size:13px!important}
+html.desk.is-mobile .page-title{font-size:1.05rem!important;font-weight:500!important}
+html.desk.is-mobile .card{padding:11px 12px!important;border-radius:20px!important;margin-bottom:9px!important}
+html.desk.is-mobile .card-title{margin-bottom:7px!important}
+html.desk.is-mobile .section-title{margin-bottom:7px!important}
+html.desk.is-mobile .mkt-pos,html.desk.is-mobile .mkt-neg{font-size:12px!important;font-weight:600!important}
+html.desk.is-mobile .perf-pnl{font-size:11px!important;font-weight:600!important}
+html.desk.is-mobile .other-val{font-weight:600!important}
+html.desk.is-mobile .tc-val{font-size:15px!important;font-weight:600!important}
+html.desk.is-mobile .total-card{border-radius:16px!important}
+html.desk.is-mobile .filter-row{flex-wrap:wrap!important;gap:6px!important}
+html.desk.is-mobile .topbar{flex-wrap:wrap!important;gap:6px!important;margin-bottom:10px!important}
+html.desk.is-mobile .fsel,html.desk.is-mobile .srch{font-size:12px!important;min-height:38px!important;padding:7px 9px!important}
+html.desk.is-mobile .btn-sm{font-size:11px!important;padding:6px 9px!important;min-height:34px!important}
+html.desk.is-mobile .btn-outline,html.desk.is-mobile .btn-gold{font-size:12px!important;padding:7px 12px!important;min-height:36px!important}
+/* ═══════════ END DESKTOP FRAME ═══════════ */
+
+
+/* ══════════════ ميزات v131: نمو الثروة / إعادة التوازن / التوقع / التنبيهات ══════════════ */
+.wr-btns{display:flex;gap:5px}
+.wr-btn{border:1px solid var(--bdr2);background:transparent;color:var(--muted);border-radius:9px;padding:4px 10px;font-size:10.5px;font-family:inherit;cursor:pointer;transition:all .15s}
+.wr-btn.active{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.4);color:var(--gold);font-weight:600}
+.rb-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--wline);font-size:12px}
+.rb-row:last-of-type{border-bottom:none}
+.rb-row .nm{min-width:70px;color:var(--text);font-weight:500}
+.rb-row .mini{flex:1;color:var(--muted);font-size:10.5px}
+.rb-row .act{font-size:12px;font-weight:600;text-align:left}
+.proj-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--wline);font-size:12px}
+.proj-row:last-of-type{border-bottom:none}
+.proj-row .sc{min-width:120px;color:var(--muted);font-size:11.5px}
+.proj-row .res{flex:1;text-align:left}
+.al-add{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 12px}
+.al-add select,.al-add input{background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:10px;padding:8px 11px;font-size:12px;font-family:inherit;outline:none}
+.al-add input{width:110px;direction:ltr;text-align:left}
+.al-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--wline);font-size:12px}
+.al-row:last-child{border-bottom:none}
+.al-row.hit{background:rgba(62,207,142,.05);border-radius:10px;padding:7px 10px}
+.al-row .del{color:var(--muted);cursor:pointer;font-size:15px;margin-right:auto}
+.al-row .del:hover{color:var(--red)}
+#alertsPanel{display:none;position:fixed;top:calc(56px + 8px);left:10px;z-index:9998;background:var(--surf);border:1px solid var(--bdr2);border-radius:16px;padding:12px 14px;width:min(330px,calc(100vw - 20px));max-height:62vh;overflow-y:auto;box-shadow:0 10px 36px rgba(0,0,0,.6)}
+#alertsPanel .ap-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+#alertsPanel .ap-head .t{font-size:12.5px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+#alertsPanel .ap-head .lnk{font-size:10.5px;color:var(--gold);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* ══════════════ FAB — زر إضافة حركة عائم ══════════════ */
+#fabAdd{position:fixed;right:16px;bottom:calc(62px + env(safe-area-inset-bottom) + 14px);width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--goldL),var(--gold));color:#1d1505;display:flex;align-items:center;justify-content:center;font-size:25px;z-index:9000;cursor:pointer;border:none;box-shadow:0 8px 26px rgba(201,168,76,.35),0 3px 10px rgba(0,0,0,.45);transition:transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;user-select:none}
+#fabAdd:hover{transform:scale(1.06);box-shadow:0 8px 24px rgba(201,168,76,.3),0 3px 10px rgba(0,0,0,.3)}
+#fabAdd:active{transform:scale(.92)}
+html:not(.is-mobile) #fabAdd{right:auto;left:24px;bottom:24px;width:56px;height:56px}
+
+/* ══════════════ X-RAY / GEO PAGE ══════════════ */
+.xr-chip{transition:transform .18s,border-color .18s}
+.xr-chip:hover{transform:translateY(-2px);border-color:rgba(201,168,76,.35)}
+.xr-ring-wrap{display:flex;align-items:center;gap:18px}
+.xr-ring{position:relative;width:110px;height:110px;flex-shrink:0}
+.xr-ring svg{transform:rotate(-90deg)}
+.xr-ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.xr-ring .num .n{font-size:26px;font-weight:600;color:var(--text)}
+.xr-ring .num .g{font-size:10px;font-weight:600}
+.xr-score-rows{flex:1}
+.xr-score-rows .xr-row .nm{min-width:120px}
+.xr-scen{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.xr-scen button{border:1px solid var(--bdr2);background:var(--surf2);color:var(--muted);border-radius:12px;padding:8px 13px;font-size:11.5px;font-family:inherit;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.xr-scen button:hover{color:var(--text);border-color:rgba(201,168,76,.4)}
+.xr-scen button.active{background:rgba(246,109,109,.12);border-color:rgba(246,109,109,.5);color:#f66d6d;font-weight:600}
+.xr-stress-out{display:none;background:rgba(246,109,109,.06);border:1px solid rgba(246,109,109,.25);border-radius:14px;padding:14px 16px}
+.xr-stress-out.show{display:block}
+.xr-stress-out .big{font-size:24px;font-weight:600;color:#f66d6d}
+.xr-stress-bar{height:10px;border-radius:99px;background:var(--wline);overflow:hidden;margin:10px 0 6px}
+.xr-stress-bar>div{height:100%;background:linear-gradient(90deg,#f66d6d,#c94c4c);border-radius:99px;transition:width .5s cubic-bezier(.34,1.2,.64,1)}
+.xr-sim-ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.xr-sim-ctrl select,.xr-sim-ctrl input{background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:9px 12px;font-size:12.5px;font-family:inherit;outline:none}
+.xr-sim-ctrl select:focus,.xr-sim-ctrl input:focus{border-color:rgba(201,168,76,.5)}
+.xr-sim-ctrl input{width:130px;direction:ltr;text-align:left}
+.xr-delta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.xr-delta .cell{background:var(--surf2);border:1px solid var(--bdr);border-radius:13px;padding:11px 13px}
+.xr-delta .cell .l{font-size:10px;color:var(--muted);margin-bottom:5px}
+.xr-delta .cell .vals{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;direction:ltr;justify-content:flex-end}
+.xr-delta .cell .from{color:var(--muted);font-weight:400}
+.xr-delta .cell .arr{color:var(--muted);font-size:11px}
+/* — Market mobile list (redesign) — */
+.mkt-pulse{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
+.mkt-pulse::-webkit-scrollbar{display:none}
+.mkt-pchip{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:9px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.mkt-pchip .v{font-size:15px;font-weight:600}
+.mkt-pchip .l{font-size:10.5px;color:var(--muted);white-space:nowrap}
+.mkt-filters{display:flex;gap:7px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.mkt-filters::-webkit-scrollbar{display:none}
+.mkt-fchip{flex-shrink:0;font-family:inherit;font-size:11.5px;font-weight:500;padding:7px 14px;border-radius:99px;border:1px solid var(--bdr);background:var(--surf);color:var(--muted);cursor:pointer}
+.mkt-fchip.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.mkt-list{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;overflow:hidden}
+.mkt-row{border-bottom:1px solid var(--wline)}
+.mkt-row:last-child{border-bottom:none}
+.mkt-rhead{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mkt-rbody{display:none;padding:4px 16px 14px;background:var(--surf2)}
+.mkt-row.open>.mkt-rbody{display:block}
+.mkt-row.open>.mkt-rhead{background:var(--surf2)}
+.mkt-dgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+html.is-mobile #txnLens{display:flex!important}
+html.is-mobile #txnInsights,html.is-mobile #txnFilterCard,html.is-mobile #selectionBar{display:none!important}
+html.is-mobile #txnSummaryMobile{display:block!important}
+html.is-mobile #monthlyChartWrap{display:none!important}
+html.is-mobile #txnBarsMobile,html.is-mobile #txnBarsLeg{display:block!important}
+html.is-mobile #txnYearSeg{display:flex!important}
+html.is-mobile #txnChartToggleBtn{display:none!important}
+.tyr-btn{font-family:inherit;font-size:9.5px;font-weight:500;border:none;background:transparent;color:var(--muted);padding:3px 9px;border-radius:5px;cursor:pointer}
+.tyr-btn.on{background:var(--seg-active);color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+#tmbars{display:flex;justify-content:space-between;gap:4px;margin-top:10px;direction:ltr;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+#tmbars::-webkit-scrollbar{display:none}
+.tmb{flex:1 1 0;min-width:24px;display:flex;flex-direction:column;align-items:center;cursor:pointer;opacity:.45;transition:opacity .15s}
+.tmb.sel{opacity:1}
+.tmb .up{height:46px;width:100%;max-width:26px;display:flex;flex-direction:column-reverse;gap:1.5px;border-bottom:1px solid var(--wline);padding-bottom:1px}
+.tmb .up i{display:block;border-radius:3px}
+.tmb .dn{height:16px;width:100%;max-width:26px;padding-top:1px}
+.tmb .dn i{display:block;background:#9aa0ad;border-radius:3px 3px 6px 6px;opacity:.8}
+.tmb b{font-size:8px;color:var(--muted);font-weight:500;margin-top:4px}
+.tmb.sel b{color:var(--gold);font-weight:600}
+.tmb-leg{display:flex;flex-wrap:wrap;gap:9px;font-size:9px;color:var(--muted);margin-top:8px;justify-content:center}
+.tmb-leg .sw{display:inline-block;width:7px;height:7px;border-radius:2px;margin-left:3px;vertical-align:middle}
+.txn-lens{flex:1;font-family:inherit;font-size:11.5px;font-weight:500;padding:9px;border-radius:12px;border:1px solid var(--bdr);background:var(--surf);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.txn-lens.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+#geoMap{height:400px;width:100%;direction:ltr;border-radius:14px;overflow:hidden}
+html.is-mobile #geoMap{height:260px}
+#geoMap{position:relative}
+#geoMap .jvm-zoom-btn{position:absolute;left:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;background:var(--surf2);color:var(--text);border:1px solid var(--bdr2);border-radius:8px;width:28px;height:28px;font-size:15px;z-index:5}
+#geoMap .jvm-zoom-btn:hover{background:var(--cbh)}
+#geoMap .jvm-zoomin{top:10px}
+#geoMap .jvm-zoomout{top:44px}
+.jvm-tooltip{position:absolute!important;z-index:99999!important;pointer-events:none!important;display:none;white-space:nowrap;background:#171a26!important;border:1px solid var(--hairline)!important;border-radius:10px!important;font-family:var(--font)!important;font-size:12px!important;color:#e8e6df!important;direction:rtl;padding:8px 11px!important;box-shadow:0 6px 24px rgba(0,0,0,.55)!important}
+.jvm-tooltip.active{display:block!important}
+.xr-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:2px 4px 12px}
+.xr-controls .ttl{font-size:12.5px;font-weight:600;color:var(--text);margin-left:auto}
+.xr-check{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.xr-check input{accent-color:var(--gold);width:15px;height:15px;cursor:pointer}
+.xr-check:has(input:checked){color:var(--text)}
+.xr-maplegend{display:flex;align-items:center;gap:8px;justify-content:center;padding-top:8px;font-size:10px;color:var(--muted)}
+.xr-maplegend .grad{width:120px;height:7px;border-radius:99px;background:linear-gradient(90deg,#c9a84c,#33394f)}
+.xr-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.xr-chip{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:9px 14px;display:flex;flex-direction:column;gap:2px;min-width:120px;flex:1}
+.xr-chip .v{font-size:15px;font-weight:600;color:var(--text)}
+.xr-chip .l{font-size:10.5px;color:var(--muted)}
+.xr-chip .v.gold{color:var(--gold)}
+.xr-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+html.is-mobile .xr-grid{grid-template-columns:1fr}
+.xr-card{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:16px 18px}
+.xr-card h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;display:flex;align-items:center;gap:7px}
+.xr-card h3 i{color:var(--gold);font-size:16px}
+.xr-sub{font-size:10.5px;color:var(--muted);margin-bottom:12px}
+.xr-row{display:flex;align-items:center;gap:10px;padding:5px 0}
+.xr-row .nm{font-size:12px;color:var(--text);min-width:110px;display:flex;align-items:center;gap:6px}
+.xr-row .nm .flag{font-size:14px}
+.xr-bar{flex:1;height:7px;background:var(--wline);border-radius:99px;overflow:hidden}
+.xr-bar>div{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--goldL));min-width:2px}
+.xr-row .pct{font-size:11px;color:var(--gold);min-width:42px;text-align:left;font-weight:600}
+.xr-row .val{font-size:10.5px;color:var(--muted);min-width:78px;text-align:left}
+html.is-mobile .xr-row .val{display:none}
+.xr-co{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--wline)}
+.xr-co:last-child{border-bottom:none}
+.xr-co .rank{width:20px;height:20px;border-radius:6px;background:var(--surf2);color:var(--muted);font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.xr-co .who{flex:1;min-width:0}
+.xr-co .who .n{font-size:12.5px;color:var(--text);font-weight:500}
+.xr-co .who .via{font-size:9.5px;color:var(--muted)}
+.xr-co .amt{text-align:left}
+.xr-co .amt .v{font-size:12px;color:var(--gold);font-weight:600}
+.xr-co .amt .p{font-size:9.5px;color:var(--muted)}
+.xr-fund{background:var(--surf);border:1px solid var(--bdr);border-radius:18px;margin-top:10px;overflow:hidden}
+.xr-fund-head{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
+.xr-fund-head:hover{background:var(--wline)}
+.xr-fund-head .ic{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,rgba(201,168,76,.22),rgba(201,168,76,.06));display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:17px;flex-shrink:0}
+.xr-fund-head .t1{font-size:13px;font-weight:600;color:var(--text)}
+.xr-fund-head .t2{font-size:10.5px;color:var(--muted)}
+.xr-fund-head .amt{margin-right:auto;text-align:left}
+.xr-fund-head .amt .v{font-size:13px;color:var(--text);font-weight:600}
+.xr-fund-head .amt .p{font-size:10px;color:var(--gold)}
+.xr-fund-body{display:none;padding:4px 16px 16px;border-top:1px solid var(--bdr)}
+.xr-fund.open .xr-fund-body{display:block}
+.xr-fund .chev{color:var(--muted);transition:transform .2s}
+.xr-fund.open .chev{transform:rotate(180deg)}
+.xr-split{display:flex;height:14px;border-radius:99px;overflow:hidden;margin:10px 0 6px}
+.xr-split>div{height:100%}
+.xr-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10.5px;color:var(--muted)}
+.xr-legend .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:4px;vertical-align:middle}
+.xr-note{font-size:10px;color:var(--muted);margin-top:14px;line-height:1.7;opacity:.75}
+.xr-alert{display:flex;gap:10px;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.25);border-radius:14px;padding:11px 13px;margin-top:10px;font-size:11.5px;color:var(--text);line-height:1.8}
+.xr-alert i{color:var(--gold);font-size:16px;flex-shrink:0;margin-top:2px}
+</style>
+<style>
+/* ══ CSS Variables للشفافية ══ */
+:root{
+  --cb:    rgba(22,26,42,0.58);
+  --cbh:   rgba(28,32,52,0.68);
+  --chero: linear-gradient(135deg,rgba(26,29,40,0.60),rgba(30,34,53,0.55));
+  --hero-val-color: #ffffff;
+  --th-color: #7a7d8a;
+  --th-bg: rgba(22,26,42,0.58);
+  --page-title-color: #e8e6df;
+}
+.hero,.glass-card{ background:var(--chero)!important; border:0.5px solid var(--hairline)!important; }
+.card,.refresh-bar{ background:var(--cb)!important; border:0.5px solid var(--hairline)!important; }
+.stat-card,.total-card,.perf-item,.other-card,.reg-card,.asset-card{ background:var(--cb)!important; border:0.5px solid var(--hairline)!important; }
+.stat-card:hover,.asset-card:hover,.other-card:hover{ background:var(--cbh)!important; }
+.date-badge{ background:var(--cb)!important; }
+thead tr,.mkt-table thead tr{ background:var(--th-bg)!important; }
+th,.mkt-table th{ color:var(--th-color)!important; }
+.hero-val{ color:var(--hero-val-color)!important; }
+.page-title{ color:var(--page-title-color)!important; }
+.top-app-bar{ background:var(--bar-bg)!important; backdrop-filter:saturate(180%) blur(22px)!important; -webkit-backdrop-filter:saturate(180%) blur(22px)!important; border-bottom:0.5px solid var(--hairline)!important; }
+.sidebar{ background:var(--bar-bg)!important; backdrop-filter:saturate(180%) blur(24px)!important; -webkit-backdrop-filter:saturate(180%) blur(24px)!important; }
+.modal{ background:var(--modal-bg)!important; backdrop-filter:saturate(180%) blur(28px)!important; -webkit-backdrop-filter:saturate(180%) blur(28px)!important; border:0.5px solid var(--hairline)!important; }
+#moreMenu{ background:var(--modal-bg)!important; backdrop-filter:saturate(180%) blur(20px)!important; -webkit-backdrop-filter:saturate(180%) blur(20px)!important; border:0.5px solid var(--hairline)!important; }
+/* ═ ASSET SELECT ═ */
+#aAsset{max-height:220px;overflow-y:auto;color-scheme:dark}
+#aAsset option{background:var(--surf);color:var(--text)}
+
+/* ══════════════════════ iOS DESIGN SYSTEM — Light / Dark ══════════════════════ */
+html.ios-dark{
+  --bg:#000000; --surf:#1C1C1E; --surf2:#2C2C2E;
+  --bdr:rgba(84,84,88,.32); --bdr2:rgba(84,84,88,.55); --hairline:rgba(84,84,88,.45);
+  --text:#FFFFFF; --muted:#8E8E93;
+  --gold:#D4A843; --goldL:#E8C97A;
+  --green:#30D158; --red:#FF453A; --blue:#0A84FF;
+  --cb:#1C1C1E; --cbh:#2C2C2E; --chero:#1C1C1E;
+  --bar-bg:rgba(18,18,20,.78); --modal-bg:rgba(28,28,30,.94);
+  --th-bg:#2C2C2E; --hero-val-color:#FFFFFF; --page-title-color:#FFFFFF; --th-color:#8E8E93;
+  --seg-bg:rgba(118,118,128,.24); --seg-active:#636366; --wline:rgba(255,255,255,.06);
+  --card-shadow:none; --track:rgba(120,120,128,.24);
+}
+html.ios-light{
+  --bg:#F2F2F7; --surf:#FFFFFF; --surf2:#F2F2F7;
+  --bdr:rgba(60,60,67,.13); --bdr2:rgba(60,60,67,.24); --hairline:rgba(60,60,67,.18);
+  --text:#1C1C1E; --muted:#8A8A8E;
+  --gold:#BD9840; --goldL:#E3C879;
+  --green:#34C759; --red:#FF3B30; --blue:#007AFF;
+  --cb:#FFFFFF; --cbh:#F7F7FA; --chero:#FFFFFF;
+  --bar-bg:rgba(249,249,249,.82); --modal-bg:rgba(255,255,255,.96);
+  --th-bg:#F2F2F7; --hero-val-color:#1C1C1E; --page-title-color:#1C1C1E; --th-color:#8A8A8E;
+  --seg-bg:rgba(118,118,128,.12); --seg-active:#FFFFFF; --wline:rgba(60,60,67,.14);
+  --card-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.06); --track:rgba(120,120,128,.16);
+}
+/* خط النظام — مثل تطبيقات آبل، مع IBM Plex للعربية */
+body{font-family:var(--font)!important;background:var(--bg)!important}
+#bgLayer{background:var(--bg)!important}
+#bgLayer *,#bgLayerBlur{display:none!important}
+#bgOverlay{background:transparent!important}
+
+/* بطاقات iOS: زوايا متصلة، بدون زجاج، ظل ناعم في اللايت */
+.card,.refresh-bar,.stat-card,.total-card,.other-card,.reg-card,.asset-card,.hero,.glass-card,.xr-card,.xr-fund{
+  border-radius:18px!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  box-shadow:var(--card-shadow)!important;
+}
+.perf-item{border-radius:13px!important;background:var(--surf2)!important}
+.modal{border-radius:20px!important}
+
+/* عناوين iOS */
+.page-title{font-weight:700!important;letter-spacing:-.02em!important;font-size:1.45rem!important}
+.tab-brand{font-weight:600!important;letter-spacing:-.01em!important}
+
+/* شريط التبويب السفلي / الجانبي — تينت بدل الحبة */
+.nav-item{border-radius:12px!important}
+.nav-item.active{background:transparent!important;color:var(--gold)!important}
+.nav-item:hover{background:var(--seg-bg)!important}
+
+/* أزرار الشريط العلوي */
+.tab-btn{border-radius:11px!important;border:0.5px solid var(--hairline)!important;background:var(--surf)!important;color:var(--text)!important}
+
+/* مبدّل العملة = Segmented Control */
+.cur-switcher{background:var(--seg-bg)!important;border-radius:10px!important;padding:2px!important;gap:2px!important}
+.cur-btn{border:none!important;border-radius:8px!important;background:transparent!important;color:var(--muted)!important;font-weight:500!important}
+.cur-btn.active{background:var(--seg-active)!important;color:var(--text)!important;box-shadow:0 1px 4px rgba(0,0,0,.18),0 0 1px rgba(0,0,0,.1)!important}
+.wr-btns{background:var(--seg-bg)!important;border-radius:9px!important;padding:2px!important;gap:2px!important}
+.wr-btn{border:none!important;border-radius:7px!important}
+.wr-btn.active{background:var(--seg-active)!important;color:var(--text)!important;box-shadow:0 1px 3px rgba(0,0,0,.16)!important}
+
+/* أزرار */
+.btn-gold{border-radius:13px!important;font-weight:600!important}
+.btn-outline,.btn-sm{border-radius:11px!important;border:0.5px solid var(--hairline)!important}
+input,select,textarea{border-radius:12px!important}
+
+/* جداول */
+thead tr,.mkt-table thead tr{background:var(--th-bg)!important}
+
+/* مسارات الأشرطة البيضاء الشفافة — تتحول حسب الثيم */
+[style*="background:var(--wline)"],
+[style*="background:var(--wline)"],
+[style*="background:var(--wline)"]{background:var(--track)!important}
+.xr-bar,.xr-stress-bar{background:var(--track)!important}
+
+/* لمسات لايت إضافية */
+html.ios-light .tag{filter:saturate(1.05)}
+html.ios-light .jvm-tooltip{background:#FFFFFF!important;color:#1C1C1E!important;border:0.5px solid rgba(60,60,67,.2)!important}
+html.ios-light #alertsPanel,html.ios-light #moreMenu{box-shadow:0 12px 40px rgba(0,0,0,.16)!important}
+#alertsPanel{border-radius:18px}
+
+/* مبدّل العملة على الديسكتوب — مضغوط */
+html:not(.is-mobile) .cur-switcher{display:inline-flex!important;width:max-content!important;gap:2px!important}
+html:not(.is-mobile) .cur-btn{padding:6px 18px!important;font-size:12px!important}
+
+/* سكرول iOS هادئ */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--track);border-radius:99px}
+::-webkit-scrollbar-track{background:transparent}
+/* iOS: حقل التاريخ الأصلي يتجاهل width:100% مع RTL — نجبره */
+input[type="date"]{
+  display:block!important;width:100%!important;max-width:100%!important;
+  -webkit-appearance:none!important;appearance:none!important;
+  text-align:right;
+}
+input[type="date"]::-webkit-date-and-time-value{text-align:right}
+.fg,.form-row{max-width:100%;min-width:0}
+.modal{overflow-x:hidden!important}
+
+/* منتقي التاريخ والقوائم الأصلية تتبع الثيم */
+html.ios-dark .fi,html.ios-dark .fs,html.ios-dark input,html.ios-dark select{color-scheme:dark}
+html.ios-light .fi,html.ios-light .fs,html.ios-light input,html.ios-light select{color-scheme:light}
+</style>
+
+
+</head>
+<body class="tharwa">
+<div id="auth-screen"></div>
+<div id="cloud-error" role="alert" hidden></div>
+<div id="cloud-indicator" role="status"></div>
+<!-- طبقة الخلفية -->
+<div id="bgLayer"     style="position:fixed;inset:0;z-index:0;pointer-events:none;background:#080a10;overflow:hidden"></div>
+<div id="bgLayerBlur" style="position:fixed;inset:0;z-index:0;pointer-events:none;display:none;overflow:hidden"></div>
+<div id="bgOverlay"   style="position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(8,10,16,0);transition:background .3s"></div>
+<div class="app" style="position:relative;z-index:1">
+
+<!-- ══ TOP APP BAR ══ -->
+<div class="top-app-bar">
+  <div class="tab-actions">
+    <button class="tab-btn" id="btnTheme" title="لايت / دارك" onclick="toggleIosTheme()">
+      <i class="ti ti-moon" id="themeIcon"></i>
+    </button>
+    <button class="tab-btn" id="btnAlertsBell" title="التنبيهات" onclick="toggleAlertsPanel()" style="position:relative">
+      <i class="ti ti-bell" id="alertsBellIcon"></i>
+      <span id="alertsBadge" style="position:absolute;top:3px;left:3px;background:var(--red);color:#fff;font-size:8.5px;min-width:14px;height:14px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 3px;font-weight:600;line-height:1">0</span>
+    </button>
+  </div>
+  <div class="tab-actions">
+    <button class="tab-btn" id="btnTopMenu" title="المزيد" onclick="toggleTopMenu(event)"><i class="ti ti-dots"></i></button>
+  </div>
+</div>
+<div class="top-menu" id="topMenu">
+  <button class="tab-btn green" id="btnGlobalRefresh" title="تحديث الأسعار">
+    <i class="ti ti-refresh" id="globalSpin"></i><span>تحديث الأسعار</span>
+  </button>
+  <button class="tab-btn blue" id="btnManualSave" title="حفظ">
+    <i class="ti ti-device-floppy"></i><span>حفظ</span>
+  </button>
+  <div class="top-menu-sync"><span class="tab-sync" id="syncStatus">—</span></div>
+</div>
+
+<!-- ══ SIDEBAR ══ -->
+<nav class="sidebar">
+  <div class="nav">
+    <div class="nav-item active" data-page="dashboard" title="نظرة عامة"><i class="ti ti-layout-dashboard"></i></div>
+    <div class="nav-item" data-page="portfolio" title="المحفظة"><i class="ti ti-briefcase"></i></div>
+    <div class="nav-item" data-page="market" title="السوق"><i class="ti ti-chart-line"></i></div>
+    <div class="nav-item" data-page="geo" title="الخريطة الاستثمارية"><i class="ti ti-world"></i></div>
+    <!-- المزيد — يفتح قائمة -->
+    <div class="nav-item" id="navMoreBtn" title="المزيد" onclick="toggleMoreMenu()"><i class="ti ti-dots"></i></div>
+  </div>
+  <!-- Desktop extra pages — hidden on mobile -->
+  <div class="nav" id="navExtra" style="margin-top:4px">
+    <div class="nav-item" data-page="transactions" title="الحركات"><i class="ti ti-list"></i></div>
+    <div class="nav-item" data-page="goals" title="الأهداف"><i class="ti ti-target"></i></div>
+    <div class="nav-item" data-page="zakat" title="الزكاة"><i class="ti ti-building-mosque"></i></div>
+    <div class="nav-item" data-page="notes" title="الملاحظات"><i class="ti ti-notes"></i></div>
+    <div class="nav-item" data-page="assets" title="إدارة الأصول"><i class="ti ti-settings"></i></div>
+  </div>
+</nav>
+
+<!-- More Menu Backdrop -->
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+<!-- ════ DASHBOARD ════ -->
+<div id="page-dashboard" class="page active"><wealth-overview></wealth-overview><div class="old-dashboard" hidden>
+  <div class="topbar">
+    <div class="page-title">نظرة عامة</div>
+    <div class="date-badge" id="dateBadge"></div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+  <div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div>
+        <div class="hero-label">إجمالي الثروة</div>
+        <div class="hero-val"><span id="heroVal">0</span> <span id="heroSym" style="font-size:1.4rem;color:var(--gold)">﷼</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;display:flex;gap:4px 12px;flex-wrap:wrap">
+          <span>المستثمر: <span id="heroInvested" style="color:var(--text);font-weight:600;direction:ltr;display:inline-block">—</span></span>
+          <span>مع النقدي والأخرى: <span id="heroInvestedAll" style="color:var(--text);font-weight:600;direction:ltr;display:inline-block">—</span></span>
+        </div>
+      </div>
+      <div class="cur-switcher" style="margin:0;flex-shrink:0">
+        <button class="cur-btn active" data-cur="SAR" onclick="setBaseCurrency('SAR')">ريال</button>
+        <button class="cur-btn" data-cur="JOD" onclick="setBaseCurrency('JOD')">دينار</button>
+        <button class="cur-btn" data-cur="USD" onclick="setBaseCurrency('USD')">دولار</button>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap;white-space:nowrap;overflow-x:auto;scrollbar-width:none;margin-top:8px">
+      <span class="hero-profit" style="display:inline-flex;align-items:center;gap:4px;margin:0;flex-shrink:0"><span id="heroProfitTag" class="tag tag-neu" style="font-size:10px;padding:2.5px 8px">—</span><span id="heroProfitLabel" style="font-size:10px;color:var(--muted)"></span></span>
+      <div id="heroRealized" style="font-size:10px;flex-shrink:0"></div>
+    </div>
+  </div>
+  </div>
+
+  <!-- هدف التقاعد — حلقة تقدم -->
+  <div class="card hero-ring" style="display:flex;align-items:center;gap:16px">
+    <div style="position:relative;width:84px;height:84px;flex-shrink:0">
+      <svg width="84" height="84" viewBox="0 0 84 84" style="transform:rotate(-90deg)">
+        <circle cx="42" cy="42" r="36" fill="none" stroke="var(--wline)" stroke-width="8"/>
+        <circle id="retireRing" cx="42" cy="42" r="36" fill="none" stroke="var(--gold)" stroke-width="8" stroke-linecap="round" stroke-dasharray="226.2" stroke-dashoffset="226.2" style="transition:stroke-dashoffset .8s ease"/>
+      </svg>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+        <div style="font-size:17px;font-weight:600;font-family:inherit;color:var(--gold)" id="retirePct">0%</div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px"><i class="ti ti-target-arrow" style="color:var(--gold)"></i> هدف التقاعد</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:9px">
+        <span style="color:var(--muted)">الهدف الكلي</span>
+        <span style="font-weight:600;font-family:inherit;color:var(--gold);direction:ltr" id="retireGoalFmt">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:6px">
+        <span style="color:var(--muted)">المتبقي</span>
+        <span style="font-weight:600;font-family:inherit;color:var(--muted);direction:ltr" id="retireRemaining">—</span>
+      </div>
+      <div style="font-size:10.5px;color:var(--gold);cursor:pointer;margin-top:9px" onclick="showPage('goals',null)">تفاصيل الأهداف ←</div>
+    </div>
+  </div>
+
+  <!-- نبض اليوم -->
+  <div class="mkt-pulse" id="dashPulse" style="display:none"></div>
+
+  <!-- 5 STAT CARDS -->
+  <div class="stats-row">
+    <div class="stat-card" onclick="toggleScExpand('Property')">
+      <div class="sc-left"><div class="sc-label"><i class="ti ti-building"></i> الأملاك</div><div class="sc-invested" id="scPropInv"></div></div>
+      <div class="sc-right"><div class="sc-val" id="scPropVal">—</div><div class="sc-pnl neu" id="scPropPnl"></div></div>
+    </div>
+    <div class="sc-expand" id="scExpand-Property"></div>
+    <div class="stat-card" onclick="toggleScExpand('Gold')">
+      <div class="sc-left"><div class="sc-label"><i class="ti ti-coin"></i> ذهب</div><div class="sc-invested" id="scGoldInv"></div></div>
+      <div class="sc-right"><div class="sc-val" id="scGoldVal">—</div><div class="sc-pnl neu" id="scGoldPnl"></div></div>
+    </div>
+    <div class="sc-expand" id="scExpand-Gold"></div>
+    <div class="stat-card" onclick="toggleScExpand('Stock')">
+      <div class="sc-left"><div class="sc-label"><i class="ti ti-chart-bar"></i> أسهم</div><div class="sc-invested" id="scStockInv"></div></div>
+      <div class="sc-right"><div class="sc-val" id="scStockVal">—</div><div class="sc-pnl neu" id="scStockPnl"></div></div>
+    </div>
+    <div class="sc-expand" id="scExpand-Stock"></div>
+    <div class="stat-card" onclick="toggleScExpand('Cash')">
+      <div class="sc-left"><div class="sc-label"><i class="ti ti-cash"></i> نقدي</div><div class="sc-invested" id="scCashInv"></div></div>
+      <div class="sc-right"><div class="sc-val" id="scCashVal">—</div><div class="sc-pnl neu" id="scCashPnl"></div></div>
+    </div>
+    <div class="sc-expand" id="scExpand-Cash"></div>
+    <div class="stat-card" onclick="toggleScExpand('Other')">
+      <div class="sc-left"><div class="sc-label"><i class="ti ti-layout-list"></i> أخرى</div><div class="sc-invested" id="scOtherInv"></div></div>
+      <div class="sc-right"><div class="sc-val" id="scOtherVal">—</div><div class="sc-pnl neu" id="scOtherPnl"></div></div>
+    </div>
+    <div class="sc-expand" id="scExpand-Other"></div>
+  </div>
+
+  <!-- توزيع الثروة -->
+  <div class="card" id="wealthCard">
+    <div class="card-title" style="display:flex;align-items:center;gap:6px"><i class="ti ti-chart-pie-2" style="color:var(--gold)"></i> توزيع الثروة</div>
+    <div id="wealthViewDist">
+      <div style="position:relative;height:190px;max-width:230px;margin:0 auto;overflow:hidden">
+        <canvas id="donutChart" role="img" aria-label="توزيع الثروة"></canvas>
+      </div>
+      <div id="donutLeg" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px;font-size:11px"></div>
+    </div>
+  </div>
+
+  <div class="card perf-card">
+    <div class="card-title">أداء الأصول</div>
+    <div id="perfList" class="perf-list"></div>
+  </div>
+</div>
+
+<!-- ════ PORTFOLIO ════ -->
+</div><div id="page-portfolio" class="page">
+  <div class="topbar"><div class="page-title">المحفظة والأرباح</div></div>
+
+  <div style="font-size:11px;color:var(--muted);margin-bottom:14px" id="statusTxt">اضغط ↻ تحديث الأسعار من القائمة الجانبية</div>
+
+  <div class="totals-row" id="totalsRow" style="display:none">
+    <div class="total-card"><div class="tc-label">إجمالي التكلفة</div><div class="tc-val" id="tCost">—</div></div>
+    <div class="total-card"><div class="tc-label">القيمة الحالية</div><div class="tc-val" id="tVal">—</div></div>
+    <div class="total-card"><div class="tc-label">ربح غير محقق</div><div class="tc-val" id="tPnL">—</div></div>
+    <div class="total-card"><div class="tc-label"><i class="ti ti-cash" style="font-size:11px"></i> ربح محقق</div><div class="tc-val" id="tRealized">—</div></div>
+  </div>
+
+  <!-- حاسبة إعادة التوازن -->
+  <div class="card" id="rebalCard" style="margin-bottom:14px">
+    <div class="card-title" style="display:flex;align-items:center;gap:6px"><i class="ti ti-scale" style="color:var(--gold)"></i> إعادة التوازن نحو أهدافك</div>
+    <div id="rebalBody"></div>
+  </div>
+
+  <!-- موبايل: تركيبتك الآن + قائمة المراكز الموحدة -->
+  <div class="card" id="pfAllocCard" style="display:none;padding-bottom:13px">
+    <div class="card-title" style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><i class="ti ti-chart-pie-2" style="color:var(--gold)"></i> تركيبتك الآن</div>
+    <div class="card-sub">اضغط على أي فئة بالشريط لتصفية مراكزك عليها</div>
+    <div id="pfAllocBar" style="display:flex;height:14px;border-radius:99px;overflow:hidden;margin-bottom:10px"></div>
+    <div id="pfAllocLeg" style="display:flex;flex-wrap:wrap;gap:10px;font-size:10px;color:var(--muted)"></div>
+  </div>
+  <div class="mkt-filters" id="pfFilters" style="display:none"></div>
+  <div class="mkt-list" id="pfList" style="display:none;margin-bottom:14px"></div>
+  <div class="card" id="pfRebal" style="display:none">
+    <div class="card-title" style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><i class="ti ti-scale" style="color:var(--gold)"></i> إعادة التوازن</div>
+    <div class="card-sub">أبعد فئاتك عن أهدافها — الشريط يوضح الانحراف</div>
+    <div id="pfRebalBody" style="margin-top:6px"></div>
+  </div>
+
+  <div id="emptyPortfolio" class="empty">استورد بياناتك أو أضف حركات للبدء</div>
+
+  <div class="asset-section" id="secGold"  style="display:none"><div class="section-title"><i class="ti ti-coin"></i> الذهب <small>(عيار 21 — سعر البيع)</small></div><div class="asset-grid" id="goldCards"></div></div>
+  <div class="asset-section" id="secStock" style="display:none"><div class="section-title"><i class="ti ti-chart-bar"></i> الأسهم والصناديق</div><div class="asset-grid" id="stockCards"></div></div>
+  <div class="asset-section" id="secProp"  style="display:none"><div class="section-title"><i class="ti ti-building"></i> الأملاك <small>(أدخل القيمة السوقية)</small></div><div class="asset-grid" id="propCards"></div></div>
+  <div class="asset-section" id="secCash"  style="display:none"><div class="section-title"><i class="ti ti-cash"></i> النقدي</div><div class="asset-grid" id="cashCards"></div></div>
+  <div class="asset-section" id="secExited" style="display:none">
+    <div class="section-title" style="color:var(--muted)"><i class="ti ti-history"></i> سجل المبيعات</div>
+    <div class="asset-grid" id="exitedCards"></div>
+  </div>
+
+  <!-- OTHER SOURCES -->
+  <div class="asset-section" id="secOther">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="section-title" style="margin:0"><i class="ti ti-layout-list"></i> مصادر أخرى</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:var(--muted)">
+          <input type="checkbox" id="chkUnrealized" checked style="accent-color:var(--gold);width:14px;height:14px" onchange="toggleUnrealized(this.checked)">
+          احسب غير المحقق
+        </label>
+        <button class="btn-outline" style="width:auto;padding:7px 14px;font-size:12px" id="btnOpenOther"><i class="ti ti-plus"></i> إضافة</button>
+      </div>
+    </div>
+    <div class="asset-grid" id="otherList">
+      <div class="empty" style="padding:1rem">لم تضف أي مصادر بعد — مثال: عقار بالسعر السوقي، وديعة، سيارة...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TRANSACTIONS ════ -->
+<div id="page-transactions" class="page">
+  <div class="topbar">
+    <div class="page-title">الحركات المالية</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-gold" style="width:auto;padding:9px 16px" id="btnOpenAdd2"><i class="ti ti-plus"></i> إضافة</button>
+    </div>
+  </div>
+
+  <div id="txnSummaryMobile" style="display:none;margin-bottom:14px"></div>
+  <div id="txnInsights" class="xr-chips"></div>
+
+  <!-- العدسات (موبايل) -->
+  <div id="txnLens" style="display:none;gap:7px;margin-bottom:12px">
+    <button class="txn-lens on" data-lens="time" onclick="setTxnLens('time')"><i class="ti ti-calendar"></i> حسب الوقت</button>
+    <button class="txn-lens" data-lens="asset" onclick="setTxnLens('asset')"><i class="ti ti-coins"></i> حسب الأصل</button>
+  </div>
+
+  <!-- جراف الاستثمار الشهري -->
+  <div class="card" id="txnChartCard" style="margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <div class="card-title" style="margin-bottom:0" id="txnChartTitle">الاستثمار الشهري</div>
+      <div id="txnYearSeg" style="display:none;gap:2px;background:var(--seg-bg);border-radius:7px;padding:2px"></div>
+      <button id="txnChartToggleBtn" onclick="toggleMonthlyChart()"
+        style="border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;padding:2px 6px">
+        <i class="ti ti-chevron-up" id="chartToggleIcon"></i>
+      </button>
+    </div>
+    <div id="monthlyChartWrap" style="overflow-x:auto;overflow-y:hidden">
+      <div id="monthlyChartInner">
+        <canvas id="monthlyChart"></canvas>
+      </div>
+    </div>
+    <div id="txnInsightLine" style="display:none;font-size:9.5px;color:var(--muted);margin:2px 0 0;line-height:1.5"></div>
+    <div id="txnBarsMobile" style="display:none"></div>
+    <div id="txnBarsLeg" style="display:none"></div>
+  </div>
+
+  <!-- عرض حسب الأصل (موبايل) -->
+  <div id="txnByAsset" style="display:none"></div>
+
+  <!-- شريط الفلترة -->
+  <div class="card" id="txnFilterCard" style="margin-bottom:14px">
+    <div class="filter-row" style="margin-bottom:.75rem">
+      <input class="srch" id="srch" placeholder="بحث...">
+      <!-- Custom Multi-Select: الشهر -->
+      <div class="ms-wrap" id="msWrap-fMonth">
+        <button class="ms-btn" id="msBtn-fMonth" onclick="msToggle('fMonth')">
+          <span id="msLabel-fMonth">كل الأشهر</span>
+          <i class="ti ti-chevron-down" style="font-size:11px;opacity:.5"></i>
+        </button>
+        <div class="ms-menu" id="msMenu-fMonth" style="display:none;max-height:200px;overflow-y:auto">
+          <!-- تُبنى ديناميكياً -->
+        </div>
+      </div>
+      <!-- Custom Multi-Select: النوع -->
+      <div class="ms-wrap" id="msWrap-fType">
+        <button class="ms-btn" id="msBtn-fType" onclick="msToggle('fType')">
+          <span id="msLabel-fType">كل الأنواع</span>
+          <i class="ti ti-chevron-down" style="font-size:11px;opacity:.5"></i>
+        </button>
+        <div class="ms-menu" id="msMenu-fType" style="display:none">
+          <div class="ms-item" data-val="Property" onclick="msSelectSingle('fType','Property')"><input type="checkbox" class="ms-chk" onclick="event.stopPropagation();msToggleCheck('fType','Property',this)">Property</div>
+          <div class="ms-item" data-val="Gold"     onclick="msSelectSingle('fType','Gold')"><input type="checkbox" class="ms-chk" onclick="event.stopPropagation();msToggleCheck('fType','Gold',this)">Gold</div>
+          <div class="ms-item" data-val="Stock"    onclick="msSelectSingle('fType','Stock')"><input type="checkbox" class="ms-chk" onclick="event.stopPropagation();msToggleCheck('fType','Stock',this)">Stock</div>
+          <div class="ms-item" data-val="Cash"     onclick="msSelectSingle('fType','Cash')"><input type="checkbox" class="ms-chk" onclick="event.stopPropagation();msToggleCheck('fType','Cash',this)">Cash</div>
+        </div>
+      </div>
+      <!-- Custom Multi-Select: العملية -->
+      <div class="ms-wrap" id="msWrap-fAction">
+        <button class="ms-btn" id="msBtn-fAction" onclick="msToggle('fAction')">
+          <span id="msLabel-fAction">كل العمليات</span>
+          <i class="ti ti-chevron-down" style="font-size:11px;opacity:.5"></i>
+        </button>
+        <div class="ms-menu" id="msMenu-fAction" style="display:none">
+          <div class="ms-item" data-val="Buy"        onclick="msSelectSingle('fAction','Buy')"><input type="checkbox" class="ms-chk" onclick="event.stopPropagation();msToggleCheck('fAction','Buy',this)">Buy</div>
+          <div class="ms-item" data-val="Sell"       onclick="msSelectSingle('fAction','Sell')"><input type="checkbox" class="ms-chk" onclick="event.stopPropagation();msToggleCheck('fAction','Sell',this)">Sell</div>
+          <div class="ms-item" data-val="Deposit"    onclick="msSelectSingle('fAction','Deposit')"><input type="checkbox" class="ms-chk" onclick="event.stopPropagation();msToggleCheck('fAction','Deposit',this)">Deposit</div>
+          <div class="ms-item" data-val="Withdrawal" onclick="msSelectSingle('fAction','Withdrawal')"><input type="checkbox" class="ms-chk" onclick="event.stopPropagation();msToggleCheck('fAction','Withdrawal',this)">Withdrawal</div>
+        </div>
+      </div>
+      <button class="btn-sm" id="btnClear">مسح الفلتر</button>
+      <button class="btn-sm" id="btnToggleSel" onclick="toggleSelAll()" style="color:var(--gold)">☑ اختيار الكل</button>
+      <button class="btn-sm" id="btnUndo" onclick="openRestoreModal()" style="color:var(--muted);opacity:.6;cursor:pointer">↩ تراجع</button>
+    </div>
+    <!-- ملخص الفلتر -->
+    <div id="filterSummary" style="display:flex;gap:1.5rem;flex-wrap:wrap;padding-top:.7rem;border-top:1px solid var(--bdr);font-size:11px">
+      <span style="color:var(--muted)">الحركات: <b id="fSumCount" style="color:var(--text)">0</b></span>
+      <span style="color:var(--muted)">إجمالي التكلفة: <b id="fSumCost" style="color:var(--text)">—</b></span>
+      <span style="color:var(--muted)">مدخلات: <b id="fSumIn" style="color:var(--green)">—</b></span>
+      <span style="color:var(--muted)">مخرجات: <b id="fSumOut" style="color:var(--red)">—</b></span>
+    </div>
+  </div>
+
+  <!-- شريط الاختيار والأفعال -->
+  <div id="selectionBar" style="display:none;background:var(--surf2);border:1px solid var(--gold);border-radius:14px;padding:12px 16px;margin-bottom:14px;align-items:center;justify-content:space-between;gap:8px">
+    <span style="font-size:13px;font-weight:500;color:var(--text)" id="selCount">0 حركة محددة</span>
+    <div style="display:flex;gap:8px">
+      <button class="btn-sm" onclick="copySelected()"><i class="ti ti-copy"></i> نسخ</button>
+      <button class="btn-sm" onclick="openDeleteSelected()" style="color:var(--red)"><i class="ti ti-trash"></i> مسح المحدد</button>
+    </div>
+  </div>
+
+  <!-- الحركات مجمّعة بالشهر -->
+  <div id="txnGrouped"></div>
+</div>
+
+<!-- ════ ASSETS ════ -->
+<div id="page-assets" class="page">
+  <div class="topbar">
+    <div class="page-title">إدارة الأصول</div>
+    <button class="btn-gold" style="width:auto;padding:9px 20px" id="btnOpenNewAsset"><i class="ti ti-plus"></i> إضافة أصل جديد</button>
+  </div>
+  <div class="info-box">
+    <div style="margin-bottom:8px"><b>كيف يعمل؟</b> كل أصل تضيفه هنا بيظهر في قائمة "إضافة حركة"، وبيُجلب سعره عند التحديث. للأسهم والذهب أضف رمز Yahoo Finance مثل: <code>ISWD.L</code> · <code>1211.HK</code> · <code>GC=F</code></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      
+    </div>
+  </div>
+
+  <!-- رقائق ملخّص -->
+  <div class="xr-chips" id="assetChips"></div>
+
+  <!-- العملة المحورية -->
+  <div class="glass-card" style="background:var(--surf2);border-radius:20px;padding:16px 18px;margin-bottom:14px;border:1px solid var(--bdr)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <i class="ti ti-coins" style="color:var(--gold);font-size:16px"></i>
+      <span style="font-size:13px;font-weight:600">العملة المحورية</span>
+      <span style="margin-right:auto;font-size:11px;color:var(--muted)">العملة التي تُخزَّن بها جميع البيانات</span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <select id="pivotCurSelect" style="flex:1;background:var(--surf);border:1px solid var(--bdr2);border-radius:10px;padding:9px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none;cursor:pointer;direction:ltr;text-align:right">
+        <option value="SAR">﷼ SAR — ريال سعودي</option>
+        <option value="JOD">د.أ JOD — دينار أردني</option>
+        <option value="USD">$ USD — دولار أمريكي</option>
+      </select>
+      <button onclick="setPivotCurrency($('pivotCurSelect').value)" class="btn-soft-gold">
+        <i class="ti ti-check"></i> تطبيق
+      </button>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--red);opacity:.8;display:flex;align-items:center;gap:5px">
+      <i class="ti ti-alert-triangle" style="font-size:11px"></i>
+      تغيير العملة بعد إدخال بيانات يتطلب مراجعة يدوية لجميع الحركات والقيم
+    </div>
+  </div>
+
+  <div class="reg-grid" id="regGrid"></div>
+</div>
+
+
+<!-- ════ GOALS ════ -->
+<!-- ════ APPEARANCE PAGE ════ -->
+<div id="page-appearance" class="page">
+  <div class="topbar">
+    <div class="page-title">المظهر</div>
+    <button onclick="saveAppearanceToSheet()" id="btnSaveAppearance" class="btn-soft-gold">
+      <i class="ti ti-device-floppy"></i> حفظ الإعدادات
+    </button>
+  </div>
+  <div style="max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
+
+    <!-- الخلفية -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="card-title" style="display:flex;align-items:center;gap:6px;margin-bottom:0"><i class="ti ti-photo" style="color:var(--gold)"></i> الخلفية</div>
+        <button onclick="resetSection('bg')" style="border:none;background:var(--wline);color:var(--muted);border-radius:7px;padding:4px 9px;cursor:pointer;font-size:10px;font-family:inherit">↺ إعادة ضبط</button>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:7px">خلفيات جاهزة</div>
+      <div id="bgPresetsGrid" style="margin-bottom:14px"></div>
+      <div style="border-top:1px solid var(--wline);margin-top:4px;padding-top:12px;display:flex;flex-direction:column;gap:10px">
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;color:var(--muted)">تعتيم الخلفية</span><span id="bgOverlayVal" style="font-size:11px;color:var(--gold)">0%</span></div><input type="range" id="bgOverlaySlider" min="0" max="90" value="0" style="width:100%;accent-color:var(--gold);cursor:pointer" oninput="applyBgOverlay(this.value)"></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;color:var(--muted)">تمويه الخلفية</span><span id="bgBlurVal" style="font-size:11px;color:var(--gold)">0px</span></div><input type="range" id="bgBlurSlider" min="0" max="40" value="0" style="width:100%;accent-color:var(--gold);cursor:pointer" oninput="applyBgBlur(this.value)"></div>
+      </div>
+    </div>
+
+    <!-- الكروت -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="card-title" style="display:flex;align-items:center;gap:6px;margin-bottom:0"><i class="ti ti-layout-cards" style="color:var(--gold)"></i> الكروت</div>
+        <button onclick="resetSection('cards')" style="border:none;background:var(--wline);color:var(--muted);border-radius:7px;padding:4px 9px;cursor:pointer;font-size:10px;font-family:inherit">↺ إعادة ضبط</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;color:var(--muted)">الشفافية (تعتيم)</span><span id="cardOpacityVal" style="font-size:11px;color:var(--gold)">60%</span></div><input type="range" id="cardOpacitySlider" min="0" max="100" value="60" style="width:100%;accent-color:var(--gold);cursor:pointer" oninput="applyCardOpacity(this.value)"></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;color:var(--muted)">تمويه الكروت</span><span id="cardBlurVal" style="font-size:11px;color:var(--gold)">0px</span></div><input type="range" id="cardBlurSlider" min="0" max="30" value="0" style="width:100%;accent-color:var(--gold);cursor:pointer" oninput="applyCardBlur(this.value)"></div>
+        <div style="border-top:1px solid var(--wline);padding-top:10px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:7px">لون الكروت</div>
+          <div style="display:flex;gap:6px">
+            <button onclick="applyCardTint('dark')"   id="tintDark"   style="flex:1;padding:7px 4px;border-radius:8px;font-size:11px;font-family:inherit;cursor:pointer;border:1px solid rgba(201,168,76,0.5);background:rgba(201,168,76,0.12);color:var(--gold)"><span style="width:10px;height:10px;border-radius:50%;background:#0d0f14;display:inline-block;margin-left:4px"></span>داكن</button>
+            <button onclick="applyCardTint('light')"  id="tintLight"  style="flex:1;padding:7px 4px;border-radius:8px;font-size:11px;font-family:inherit;cursor:pointer;border:1px solid var(--wline);background:var(--wline);color:var(--muted)"><span style="width:10px;height:10px;border-radius:50%;background:#e8e6df;display:inline-block;margin-left:4px"></span>فاتح</button>
+            <button onclick="applyCardTint('custom')" id="tintCustom" style="flex:1;padding:7px 4px;border-radius:8px;font-size:11px;font-family:inherit;cursor:pointer;border:1px solid var(--wline);background:var(--wline);color:var(--muted)"><i class="ti ti-color-picker" style="font-size:12px"></i> مخصص</button>
+          </div>
+          <div id="cardTintCustomRow" style="display:none;margin-top:8px;align-items:center;gap:8px">
+            <input type="color" id="cardTintCustomColor" value="#1a1d28" oninput="applyCardTintCustom(this.value)" style="width:32px;height:32px;border:none;border-radius:8px;cursor:pointer;background:none;padding:0">
+            <span style="font-size:11px;color:var(--muted)">لون مخصص</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- الألوان -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="card-title" style="display:flex;align-items:center;gap:6px;margin-bottom:0"><i class="ti ti-palette" style="color:var(--gold)"></i> الألوان</div>
+        <button onclick="resetSection('colors')" style="border:none;background:var(--wline);color:var(--muted);border-radius:7px;padding:4px 9px;cursor:pointer;font-size:10px;font-family:inherit">↺ إعادة ضبط</button>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:7px">لون التمييز</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <input type="color" id="accentColorPicker" value="#c9a84c" oninput="applyAccentColorFree(this.value)" style="width:36px;height:36px;border:none;border-radius:8px;cursor:pointer;padding:0;flex-shrink:0">
+          <div style="flex:1"><div id="accentColorLabel" style="font-size:12px;color:var(--gold)">#c9a84c</div></div>
+          <button onclick="resetAccentColor()" style="border:none;background:var(--wline);color:var(--muted);border-radius:7px;padding:4px 9px;cursor:pointer;font-size:10px;font-family:inherit">↺</button>
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">
+          <div onclick="applyAccentColorFree('#c9a84c')" style="width:22px;height:22px;border-radius:50%;background:#c9a84c;cursor:pointer;border:2px solid var(--hairline)"></div>
+          <div onclick="applyAccentColorFree('#94a3b8')" style="width:22px;height:22px;border-radius:50%;background:#94a3b8;cursor:pointer;border:2px solid var(--hairline)"></div>
+          <div onclick="applyAccentColorFree('#cd7f32')" style="width:22px;height:22px;border-radius:50%;background:#cd7f32;cursor:pointer;border:2px solid var(--hairline)"></div>
+          <div onclick="applyAccentColorFree('#3ecf8e')" style="width:22px;height:22px;border-radius:50%;background:#3ecf8e;cursor:pointer;border:2px solid var(--hairline)"></div>
+          <div onclick="applyAccentColorFree('#5c9fff')" style="width:22px;height:22px;border-radius:50%;background:#5c9fff;cursor:pointer;border:2px solid var(--hairline)"></div>
+          <div onclick="applyAccentColorFree('#a855f7')" style="width:22px;height:22px;border-radius:50%;background:#a855f7;cursor:pointer;border:2px solid var(--hairline)"></div>
+          <div onclick="applyAccentColorFree('#f472b6')" style="width:22px;height:22px;border-radius:50%;background:#f472b6;cursor:pointer;border:2px solid var(--hairline)"></div>
+          <div onclick="applyAccentColorFree('#f66d6d')" style="width:22px;height:22px;border-radius:50%;background:#f66d6d;cursor:pointer;border:2px solid var(--hairline)"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--wline);padding-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:11px;color:var(--muted)">لون رقم الثروة</span><div style="display:flex;align-items:center;gap:8px"><div id="heroValPreview" style="font-size:13px;font-weight:600;color:#fff">١٢٣،٤٥٦</div><input type="color" id="heroValColorPicker" value="#ffffff" oninput="applyHeroValColor(this.value)" style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0"><button onclick="applyHeroValColor('#ffffff')" style="border:none;background:var(--wline);color:var(--muted);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:10px;font-family:inherit">↺</button></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:11px;color:var(--muted)">النص الأساسي</span><div style="display:flex;align-items:center;gap:8px"><div id="textColorPrimaryPreview" style="font-size:12px;color:#e8e6df">نص أساسي</div><input type="color" id="textColorPrimary" value="#e8e6df" oninput="applyTextColor('primary',this.value)" style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0"><button onclick="resetTextColor('primary')" style="border:none;background:var(--wline);color:var(--muted);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:10px;font-family:inherit">↺</button></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:11px;color:var(--muted)">النص الثانوي</span><div style="display:flex;align-items:center;gap:8px"><div id="textColorSecondaryPreview" style="font-size:12px;color:#7a7d8a">نص ثانوي</div><input type="color" id="textColorSecondary" value="#7a7d8a" oninput="applyTextColor('secondary',this.value)" style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0"><button onclick="resetTextColor('secondary')" style="border:none;background:var(--wline);color:var(--muted);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:10px;font-family:inherit">↺</button></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:11px;color:var(--muted)">خلفية هيدر الجداول</span><div style="display:flex;align-items:center;gap:8px"><div id="thColorPreview" style="width:28px;height:18px;border-radius:4px;background:#1a1a2e;border:1px solid var(--hairline)"></div><input type="color" id="thColorPicker" value="#1a1a2e" oninput="applyThColor(this.value)" style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0"><button onclick="applyThColor('#7a7d8a')" style="border:none;background:var(--wline);color:var(--muted);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:10px;font-family:inherit">↺</button></div></div>
+        <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:11px;color:var(--muted)">عناوين الصفحات</span><div style="display:flex;align-items:center;gap:8px"><div id="pageTitlePreview" style="font-size:12px;font-weight:600;color:#e8e6df">نظرة عامة</div><input type="color" id="pageTitlePicker" value="#e8e6df" oninput="applyPageTitleColor(this.value)" style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0"><button onclick="applyPageTitleColor('#e8e6df')" style="border:none;background:var(--wline);color:var(--muted);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:10px;font-family:inherit">↺</button></div></div>
+      </div>
+    </div>
+
+    <!-- إعادة ضبط كاملة -->
+    <button onclick="resetAllAppearance()" style="width:100%;padding:12px;background:rgba(246,109,109,0.08);border:1px solid rgba(246,109,109,0.2);border-radius:12px;color:var(--red);font-size:13px;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+      <i class="ti ti-refresh"></i> إعادة ضبط كل إعدادات المظهر
+    </button>
+  </div>
+</div>
+
+<div id="page-goals" class="page">
+  <div class="topbar">
+    <div class="page-title">الأهداف</div>
+  </div>
+
+  <!-- رقائق ملخّص -->
+  <div class="xr-chips">
+    <div class="xr-chip"><div class="v gold" id="gChipPct">—</div><div class="l">التقدّم الكلي</div></div>
+    <div class="xr-chip"><div class="v" id="gChipDone">—</div><div class="l">فئات مكتملة</div></div>
+    <div class="xr-chip"><div class="v" id="gChipRem">—</div><div class="l">المتبقي للهدف</div></div>
+  </div>
+
+  <!-- الهدف الكلي -->
+  <div class="xr-card" style="border-color:rgba(201,168,76,.2);margin-bottom:14px">
+    <div style="display:flex;align-items:center;gap:16px">
+      <svg width="92" height="92" viewBox="0 0 100 100" style="flex-shrink:0">
+        <circle cx="50" cy="50" r="42" fill="none" stroke-width="9" style="stroke:var(--wline)"/>
+        <circle id="gTotalRing" cx="50" cy="50" r="42" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="263.9" stroke-dashoffset="263.9" transform="rotate(-90 50 50)" style="stroke:var(--gold);transition:stroke-dashoffset .8s ease"/>
+        <text x="50" y="47" text-anchor="middle" font-size="20" id="gTotalPct" style="fill:var(--gold)">0%</text>
+        <text x="50" y="62" text-anchor="middle" font-size="8.5" direction="rtl" style="fill:var(--muted)">هدف التقاعد</text>
+      </svg>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:10.5px;color:var(--muted);margin-bottom:2px">الثروة الحالية</div>
+        <div style="font-size:15px;font-weight:600;font-family:inherit;color:var(--gold)" id="gTotalCur">—</div>
+        <div style="display:flex;justify-content:space-between;margin-top:10px">
+          <div>
+            <div style="font-size:10.5px;color:var(--muted);margin-bottom:2px">الهدف</div>
+            <div style="font-size:13px;font-weight:600;font-family:inherit;color:var(--gold)" id="gTotalGoal">—</div>
+          </div>
+          <div style="text-align:left">
+            <div style="font-size:10.5px;color:var(--muted);margin-bottom:2px">المتبقي</div>
+            <div style="font-size:13px;font-weight:600;font-family:inherit;color:var(--muted)" id="gTotalRem">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- أهداف الفئات -->
+  <div class="section-title">أهداف الفئات</div>
+  <div id="catGoalsGrid"></div>
+
+  <!-- توقع الوصول للهدف -->
+  <div class="glass-card" style="background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:16px 18px;margin-top:14px">
+    <div class="card-title" style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><i class="ti ti-hourglass-high" style="color:var(--gold)"></i> متى تصل هدفك؟</div>
+    <div class="card-sub">بناءً على متوسط استثمارك الشهري الفعلي من حركاتك — أو اكتب مبلغاً مختلفاً</div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+      <span style="font-size:11.5px;color:var(--muted)">ادخار شهري:</span>
+      <input id="gProjMonthly" type="text" inputmode="decimal" oninput="this.dataset.touched=1;updateProjRows()" style="background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:10px;padding:8px 11px;font-size:12px;font-family:inherit;outline:none;width:120px;direction:ltr;text-align:left">
+      <span id="gProjCur" style="font-size:11px;color:var(--muted)"></span>
+    </div>
+    <div id="gProjRows"></div>
+    <div style="font-size:10px;color:var(--muted);opacity:.7;margin-top:8px">العوائد افتراضية للمحاكاة وليست وعداً — الفائدة المركبة تُحسب شهرياً</div>
+  </div>
+</div>
+
+
+
+
+<!-- ════ ZAKAT ════ -->
+<div id="page-zakat" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">الزكاة</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">نسبة زكوية لكل شركة من قوائمها المالية</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px">المصدر: <b id="zkSrcNow" style="color:var(--gold)">—</b></div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn-sm" onclick="openModal('zkMethodM')"><i class="ti ti-book" style="color:var(--gold)"></i> المنهجية</button>
+      <button class="btn-sm" onclick="openModal('zkSetM')"><i class="ti ti-adjustments" style="color:var(--gold)"></i> الإعدادات</button>
+      <button class="btn-sm" id="zkBtnFunds" onclick="zkRefreshAllFunds()"><i class="ti ti-stack-2" style="color:var(--gold)"></i> تحديث المكوّنات</button>
+      <button class="btn-gold" id="zkBtnUpd" style="width:auto;padding:8px 14px;font-size:12px" onclick="zkUpdate(false)"><i class="ti ti-refresh"></i> تحديث</button>
+    </div>
+  </div>
+
+  <div id="zkProgWrap" class="xr-card" style="display:none;margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
+      <span id="zkProgTxt" style="font-size:11.5px;color:var(--text)">—</span>
+      <span style="font-size:10px;color:var(--gold);cursor:pointer;text-decoration:underline;text-underline-offset:3px" onclick="const l=document.getElementById('zkLogBox');l.style.display=l.style.display==='none'?'block':'none'">السجل</span>
+    </div>
+    <div style="height:6px;background:var(--track);border-radius:99px;overflow:hidden">
+      <div id="zkProgFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--goldL));border-radius:99px;transition:width .3s"></div>
+    </div>
+    <div id="zkLogBox" style="display:none;max-height:170px;overflow-y:auto;margin-top:9px;border-top:1px solid var(--wline);padding-top:7px"></div>
+  </div>
+
+  <div class="xr-chips" id="zkChips"></div>
+
+  <div class="xr-card" style="border-color:rgba(201,168,76,.2);margin-bottom:14px">
+    <div style="display:flex;align-items:center;gap:16px">
+      <svg width="92" height="92" viewBox="0 0 100 100" style="flex-shrink:0">
+        <circle cx="50" cy="50" r="42" fill="none" stroke-width="9" style="stroke:var(--wline)"/>
+        <circle id="zkRing" cx="50" cy="50" r="42" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="263.9" stroke-dashoffset="263.9" transform="rotate(-90 50 50)" style="stroke:var(--gold);transition:stroke-dashoffset .8s ease"/>
+        <text x="50" y="47" text-anchor="middle" font-size="17" id="zkRingPct" style="fill:var(--gold)">0%</text>
+        <text x="50" y="62" text-anchor="middle" font-size="8" direction="rtl" style="fill:var(--muted)">من النصاب</text>
+      </svg>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:10.5px;color:var(--gold);margin-bottom:2px">الزكاة المستحقة</div>
+        <div style="font-size:22px;font-weight:600;font-family:inherit;color:var(--gold);direction:ltr;text-align:right" id="zkDue">—</div>
+        <div id="zkStat" style="font-size:11px;margin-top:6px"></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;border-top:1px solid var(--wline);margin-top:12px;padding-top:4px">
+      <div class="hm-item"><span class="lb">وعاء الزكاة</span><span class="vl" id="zkPool">—</span></div>
+      <div class="hm-item"><span class="lb">الخصوم</span><span class="vl" id="zkDebtV" style="color:var(--muted)">—</span></div>
+      <div class="hm-item"><span class="lb">الصافي الخاضع</span><span class="vl" id="zkNet">—</span></div>
+      <div class="hm-item"><span class="lb">النصاب</span><span class="vl" id="zkNis" style="color:var(--muted)">—</span></div>
+    </div>
+  </div>
+
+  <div class="xr-card" id="zkFundsC" style="margin-bottom:14px;display:none">
+    <h3><i class="ti ti-stack-2"></i> الصناديق</h3>
+    <div class="xr-sub">النسبة من أكبر الشركات داخل الصندوق + الباقي بنسبة 100%</div>
+    <div id="zkFundsWarn" style="display:none;background:rgba(224,160,80,.09);border:1px solid rgba(224,160,80,.3);border-radius:12px;padding:10px 12px;margin-bottom:10px;font-size:11px;line-height:1.8"></div>
+    <div id="zkFunds"></div>
+  </div>
+
+  <div class="xr-card" id="zkStocksC" style="margin-bottom:14px;display:none">
+    <h3><i class="ti ti-chart-bar"></i> الأسهم المباشرة</h3>
+    <div class="xr-sub">النسبة من القوائم المالية المنشورة</div>
+    <div id="zkStocks"></div>
+  </div>
+
+  <div class="xr-card" style="margin-bottom:14px">
+    <h3><i class="ti ti-wallet"></i> الأصول المباشرة</h3>
+    <div class="xr-sub">النقد والذهب والأملاك</div>
+    <div id="zkDirect"></div>
+  </div>
+
+  <div class="xr-card" style="margin-bottom:14px">
+    <h3><i class="ti ti-calendar-event"></i> الحول والخصوم</h3>
+    <div style="font-size:11px;color:var(--muted);margin:10px 0 5px">تاريخ بلوغ النصاب</div>
+    <input type="date" id="zkHawlIn" onchange="zkSetOpt('hawlStart',this.value)" style="width:100%;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:9px 12px;font-size:12.5px;font-family:inherit;outline:none">
+    <div id="zkHawlInfo" style="font-size:11.5px;color:var(--muted);margin-top:9px;line-height:1.8"></div>
+    <div style="border-top:1px solid var(--wline);margin-top:14px;padding-top:12px">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:5px">ديون مستحقة عليك</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input id="zkDebtIn" type="text" inputmode="decimal" placeholder="0" oninput="zkSetOpt('debts',this.value)" style="flex:1;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:9px 12px;font-size:12.5px;font-family:inherit;outline:none;direction:ltr;text-align:left">
+        <span id="zkCurLbl" style="font-size:11.5px;color:var(--muted);flex-shrink:0"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="xr-card" id="zkRevC" style="margin-bottom:14px;display:none">
+    <h3><i class="ti ti-alert-triangle"></i> يحتاج مراجعة <span id="zkRevN" style="font-size:11px;color:var(--muted)"></span></h3>
+    <div id="zkRev"></div>
+  </div>
+
+  <div class="xr-card" style="margin-bottom:14px">
+    <h3><i class="ti ti-list-details"></i> تصنيف البنود المالية</h3>
+    <div class="xr-sub">قرارك يُطبَّق على كل الشركات ويُحفظ</div>
+    <div id="zkRules"></div>
+  </div>
+
+  <button class="btn-outline" style="width:100%;margin-bottom:12px" onclick="zkReport()"><i class="ti ti-printer"></i> تقرير للطباعة</button>
+
+  <div class="xr-alert" style="margin-bottom:10px">
+    <i class="ti ti-info-circle"></i>
+    <div>الحساب تقديري وليس فتوى. المنهجية: الأصول الزكوية ÷ إجمالي أصول الشركة، دون خصم الالتزامات، مع هامش احتياط. راجعها مع جهة شرعية قبل الاعتماد.</div>
+  </div>
+</div>
+
+<!-- ════ MARKET ════ -->
+<div id="page-market" class="page">
+  <div class="topbar">
+    <div class="page-title">قراءات السوق</div>
+    <div style="display:flex;gap:7px">
+      <button class="btn-sm" onclick="openAlertModal()" style="display:flex;align-items:center;gap:5px">
+        <i class="ti ti-bell-plus" style="color:var(--gold)"></i> التنبيهات
+      </button>
+      <button class="btn-sm" id="btnManageMarket" onclick="toggleMarketManage()" style="display:flex;align-items:center;gap:5px">
+        <i class="ti ti-settings"></i> إدارة
+      </button>
+    </div>
+  </div>
+  <div id="marketStatus" style="font-size:11px;color:var(--muted);margin-bottom:14px">اضغط تحديث لجلب البيانات</div>
+
+  <!-- Market manage panel -->
+  <div id="marketManagePanel" class="glass-card" style="display:none;background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:16px 18px;margin-bottom:14px">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">اختر الأصول اللي تريد تتابعها + اسحب لتغيير الترتيب</div>
+    <div id="marketManageList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px"></div>
+    <button class="btn-gold" style="width:auto;padding:8px 20px;font-size:12px" onclick="saveMarketOrder()">
+      <i class="ti ti-check"></i> حفظ
+    </button>
+  </div>
+
+  <div id="marketTable"></div>
+</div>
+
+<!-- ══ GEO / X-RAY PAGE ══ -->
+<div id="page-geo" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">الخريطة الاستثمارية</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">أين أموالك فعلياً حول العالم — تحليل شفاف عبر مكوّنات الصناديق</div>
+    </div>
+  </div>
+
+  <div class="xr-chips" id="xrChips"></div>
+
+  <div class="xr-card glass-card" style="padding:14px">
+    <div id="geoMap"></div>
+    <div class="xr-maplegend"><span>أقل</span><div class="grad"></div><span>أكثر</span></div>
+    <div id="geoMapStatus" style="font-size:11px;color:var(--muted);text-align:center;padding:6px 0 0"></div>
+  </div>
+
+  <div class="xr-grid">
+    <div class="xr-card glass-card">
+      <h3><i class="ti ti-map-pin"></i> التوزيع الجغرافي</h3>
+      <div class="xr-sub">حسب موطن الشركات داخل الصناديق — وليس مكان الإدراج</div>
+      <div id="xrCountries"></div>
+    </div>
+    <div class="xr-card glass-card">
+      <h3><i class="ti ti-building-skyscraper"></i> التملّك الحقيقي</h3>
+      <div class="xr-sub">أكبر الشركات التي تملكها فعلياً عبر كل صناديقك مجتمعة</div>
+      <div id="xrCompanies"></div>
+    </div>
+  </div>
+
+  <div class="xr-grid">
+    <div class="xr-card glass-card">
+      <h3><i class="ti ti-chart-pie-3"></i> القطاعات</h3>
+      <div class="xr-sub">التوزيع القطاعي الفعلي لاستثماراتك</div>
+      <div id="xrSectors"></div>
+    </div>
+    <div class="xr-card glass-card">
+      <h3><i class="ti ti-scale"></i> أسواق متقدمة مقابل ناشئة</h3>
+      <div class="xr-sub">مع مؤشر التمركز الجغرافي (HHI)</div>
+      <div id="xrSplit"></div>
+    </div>
+  </div>
+
+  <div class="xr-card glass-card" style="margin-top:14px">
+    <h3><i class="ti ti-stack-2"></i> تداخل الصناديق</h3>
+    <div class="xr-sub">الشركات المشتركة بين صناديقك — هل تشتري نفس الشيء مرتين؟</div>
+    <div id="xrOverlap"></div>
+  </div>
+
+  <div class="xr-grid">
+    <div class="xr-card glass-card">
+      <h3><i class="ti ti-heart-rate-monitor"></i> صحة المحفظة</h3>
+      <div class="xr-sub">تقييم شامل لجودة التنويع — من 100</div>
+      <div class="xr-ring-wrap">
+        <div class="xr-ring">
+          <svg width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="48" fill="none" stroke="var(--wline)" stroke-width="9"/>
+            <circle id="xrRingArc" cx="55" cy="55" r="48" fill="none" stroke="var(--gold)" stroke-width="9" stroke-linecap="round" stroke-dasharray="0 302"/>
+          </svg>
+          <div class="num"><div class="n" id="xrScoreNum">—</div><div class="g" id="xrScoreGrade"></div></div>
+        </div>
+        <div class="xr-score-rows" id="xrScoreRows"></div>
+      </div>
+    </div>
+    <div class="xr-card glass-card">
+      <h3><i class="ti ti-radar-2"></i> رادار التنويع</h3>
+      <div class="xr-sub">كل محور يقيس بُعداً مختلفاً من أبعاد التوزيع</div>
+      <div style="max-width:320px;margin:0 auto"><canvas id="xrRadar"></canvas></div>
+    </div>
+  </div>
+
+  <div class="xr-card glass-card" style="margin-top:14px">
+    <h3><i class="ti ti-flame"></i> اختبار الضغط</h3>
+    <div class="xr-sub">لو صار سيناريو كارثي بكرة الصبح — كم تخسر فعلياً؟ اضغط على سيناريو</div>
+    <div class="xr-scen" id="xrScenBtns"></div>
+    <div class="xr-stress-out" id="xrStressOut"></div>
+  </div>
+
+  <div class="xr-card glass-card" style="margin-top:14px">
+    <h3><i class="ti ti-crystal-ball"></i> ماذا لو؟</h3>
+    <div class="xr-sub">جرّب قرار شراء قبل ما تنفذه — كيف يتغير شكل محفظتك؟</div>
+    <div class="xr-sim-ctrl">
+      <select id="xrSimAsset"></select>
+      <input id="xrSimAmt" type="text" inputmode="decimal" placeholder="المبلغ" oninput="xrSimRun()">
+      <span id="xrSimCur" style="align-self:center;font-size:11.5px;color:var(--muted)"></span>
+    </div>
+    <div class="xr-delta" id="xrSimOut"></div>
+  </div>
+
+  <div style="margin-top:14px">
+    <h3 style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px"><i class="ti ti-microscope" style="color:var(--gold)"></i> داخل كل صندوق</h3>
+    <div style="font-size:10.5px;color:var(--muted)">اضغط على أي صندوق لرؤية مكوناته</div>
+    <div id="xrFunds"></div>
+  </div>
+
+  <div class="xr-note" id="xrFootnote"></div>
+</div>
+
+<!-- ══ NOTES PAGE ══ -->
+<div id="page-notes" class="page">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button onclick="toggleNotesSidebar()"
+        style="border:none;background:var(--surf2);color:var(--muted);border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">
+        <i class="ti ti-layout-sidebar-right" id="notesSidebarToggleIcon"></i>
+      </button>
+      <div class="page-title">الملاحظات</div>
+    </div>
+    <button class="btn-gold" onclick="addNote()" style="width:auto;padding:8px 16px;font-size:12px">
+      <i class="ti ti-plus"></i> جديدة
+    </button>
+  </div>
+
+  <!-- Layout: flex row — في RTL الأول يظهر على اليمين -->
+  <div id="notesLayout" style="display:flex;gap:12px;position:relative;min-height:500px">
+
+    <!-- Sidebar — أول = يمين في RTL ✅ -->
+    <div id="notesSidebar" class="glass-card"
+      style="width:0;overflow:hidden;flex-shrink:0;background:var(--surf2);border-radius:20px;display:flex;flex-direction:column;gap:4px;transition:width .2s,padding .2s;padding:0">
+    </div>
+
+    <!-- Editor — ثاني = يسار، يملأ المساحة المتبقية -->
+    <div id="noteEditor" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px">
+      <div style="color:var(--muted);font-size:13px;padding:40px 0;text-align:center">اختر ملاحظة أو أنشئ واحدة جديدة</div>
+    </div>
+
+    <!-- Mobile overlay backdrop -->
+    <div id="notesSidebarBackdrop"
+      style="display:none;position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.5)"
+      onclick="toggleNotesSidebar()"></div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- ══ MODALS ══ -->
+
+<!-- Restore Deleted Modal -->
+<div class="overlay" id="restoreModal">
+  <div class="modal" style="width:620px">
+    <div class="modal-title">↩ استرجاع الحركات المحذوفة</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:1rem">اختر الحركات التي تريد استرجاعها ثم اضغط "استرجاع"</div>
+    <div id="deletedList" style="max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:1rem">
+      <div class="empty">جاري التحميل...</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:.85rem;border-top:1px solid var(--bdr)">
+      <button onclick="clearAllDeleted()" style="padding:7px 14px;background:rgba(246,109,109,.1);color:var(--red);border:1px solid rgba(246,109,109,.3);border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer"><i class="ti ti-trash"></i> مسح الكل نهائياً</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn-cancel" onclick="closeModal('restoreModal')">إغلاق</button>
+        <button class="btn-primary" id="btnDoRestore" style="opacity:.4;pointer-events:none" disabled>↩ استرجاع المحدد</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Add Transaction -->
+<div class="overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-title">➕ إضافة حركة</div>
+    <div class="fg">
+      <div class="form-row"><label class="fl">التاريخ</label><input class="fi" id="aDate" type="date"></div>
+      <div class="form-row"><label class="fl">الأصل</label><select class="fs" id="aAsset" onchange="onAssetSelect()" style="max-height:220px"><option value="">— اختر أصل —</option></select></div>
+    </div>
+    <div class="form-row"><label class="fl">العملية</label><select class="fs" id="aAction"><option>Buy</option><option>Sell</option><option>Deposit</option><option>Withdrawal</option></select></div>
+    <div class="fg">
+      <div class="form-row"><label class="fl">الكمية</label><input class="fi" id="aQty" type="number" step="any"></div>
+      <div class="form-row"><label class="fl">السعر</label><input class="fi" id="aPrice" type="number" step="any"></div>
+      <div class="form-row"><label class="fl">الرسوم</label><input class="fi" id="aFees" type="number" step="any" placeholder="0"></div>
+      <div class="form-row"><label class="fl">العملة</label><select class="fs" id="aCur"><option value="SAR">﷼ SAR</option><option value="USD">$ USD</option><option value="JOD">د.أ JOD</option><option value="GBp">p GBp</option><option value="GBP">£ GBP</option><option value="HKD">HKD</option><option value="AED">AED</option><option value="EUR">€ EUR</option></select></div>
+      <div class="form-row"><label class="fl" id="aRateLabel">سعر الصرف → ﷼ SAR</label><input class="fi" id="aRate" type="number" step="any" value="1"></div>
+      <div class="form-row"><label class="fl" id="aTotalLabel">التكلفة الإجمالية (SAR)</label><input class="fi" id="aTotal" type="number" step="any" placeholder="أو يُحسب تلقائياً"></div>
+    </div>
+    <div class="form-row" style="grid-column:span 2"><label class="fl">ملاحظات (اختياري)</label><input class="fi" id="aRemarks" placeholder="مثال: من الراتب، للادخار..."></div>
+    <!-- ربط بحساب — يظهر فقط للشراء والبيع -->
+    <div id="linkedAccRow" style="display:none;grid-column:span 2;border-top:1px solid var(--bdr);padding-top:12px;margin-top:2px">
+      <label style="display:flex;align-items:center;gap:9px;cursor:pointer;margin-bottom:10px;user-select:none">
+        <input type="checkbox" id="aLinkChk" onchange="toggleLinkAccount()" style="width:15px;height:15px;accent-color:var(--gold);cursor:pointer;flex-shrink:0">
+        <span id="aLinkLabel" style="font-size:13px">اسحب تلقائياً من حساب</span>
+      </label>
+      <select class="fs" id="aLinkedAcc" style="display:none">
+        <option value="">— اختر الحساب —</option>
+      </select>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px;display:none" id="aLinkNote">
+        سيتم إنشاء حركة مرتبطة تلقائياً على الحساب المختار
+      </div>
+    </div>
+    <div class="modal-btns"><button class="btn-cancel" id="btnCloseAdd">إلغاء</button><button class="btn-primary" id="btnDoAdd">حفظ</button></div>
+  </div>
+</div>
+
+<!-- Import -->
+<div class="overlay" id="importModal">
+  <div class="modal">
+    <div class="modal-title">استيراد من Excel</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:10px">في Excel: اختر الصفوف <b style="color:var(--text)">بدون الهيدر</b> ← <b style="color:var(--gold)">Ctrl+C</b> ← الصق هنا <b style="color:var(--gold)">Ctrl+V</b></div>
+    <div class="col-map"><div class="col-tag">Date</div><div class="col-tag">Asset Type</div><div class="col-tag">Asset Name</div><div class="col-tag">Action</div><div class="col-tag">Qty</div><div class="col-tag">Price</div><div class="col-tag">Fees</div><div class="col-tag">Currency</div><div class="col-tag">Exch.Rate</div><div class="col-tag">Total SAR</div></div>
+    <textarea class="import-area" id="importArea" placeholder="الصق البيانات هنا..."></textarea>
+    <div class="import-msg" id="importMsg"></div>
+    <div class="modal-btns"><button class="btn-cancel" id="btnCloseImport">إلغاء</button><button class="btn-primary" id="btnDoImport">استيراد</button></div>
+  </div>
+</div>
+
+<!-- New Asset -->
+<div class="overlay" id="newAssetModal">
+  <div class="modal">
+    <div class="modal-title">🏷️ إضافة أصل</div>
+    <div class="form-row"><label class="fl">الاسم</label><input class="fi" id="naName" placeholder="مثل: CSPX أو شقة دبي"></div>
+    <div class="fg">
+      <div class="form-row"><label class="fl">النوع</label><select class="fs" id="naType" onchange="onNewAssetTypeChange()"><option value="Stock">Stock</option><option value="Gold">Gold</option><option value="Property">Property</option><option value="Cash">Cash</option></select></div>
+      <div class="form-row"><label class="fl">العملة</label><select class="fs" id="naCurrency"><option value="USD">USD</option><option value="GBp">GBp (بنس)</option><option value="GBP">GBP</option><option value="HKD">HKD</option><option value="JOD">JOD</option><option value="SAR">SAR</option></select></div>
+    </div>
+    <div id="naYahooRow" class="form-row"><label class="fl">رمز Yahoo Finance</label><input class="fi" id="naYahoo" placeholder="مثال: CSPX.L" style="direction:ltr"></div>
+    <div class="form-row"><label class="fl">رمز TradingView</label><input class="fi" id="naTv" placeholder="مثال: LSE:CSPX" style="direction:ltr"></div>
+    <div class="modal-btns"><button class="btn-cancel" id="btnCloseNewAsset">إلغاء</button><button class="btn-primary" id="btnDoNewAsset">إضافة</button></div>
+  </div>
+</div>
+
+<!-- Edit Asset -->
+<div class="overlay" id="editAssetModal">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-edit"></i> تعديل الأصل</div>
+    <input type="hidden" id="eaId">
+    <div class="form-row"><label class="fl">الاسم</label><input class="fi" id="eaName"></div>
+    <div class="fg">
+      <div class="form-row"><label class="fl">النوع</label><select class="fs" id="eaType"><option value="Stock">Stock</option><option value="Gold">Gold</option><option value="Property">Property</option><option value="Cash">Cash</option></select></div>
+      <div class="form-row"><label class="fl">العملة</label><select class="fs" id="eaCurrency"><option value="USD">USD</option><option value="GBp">GBp</option><option value="GBP">GBP</option><option value="HKD">HKD</option><option value="JOD">JOD</option><option value="SAR">SAR</option></select></div>
+    </div>
+    <div class="form-row"><label class="fl">Yahoo Finance</label><input class="fi" id="eaYahoo" style="direction:ltr"></div>
+    <div class="form-row"><label class="fl">TradingView</label><input class="fi" id="eaTv" style="direction:ltr"></div>
+    <div class="modal-btns"><button class="btn-cancel" id="btnCloseEditAsset">إلغاء</button><button class="btn-primary" id="btnDoEditAsset">حفظ</button></div>
+  </div>
+</div>
+
+<!-- Other Source -->
+<div class="overlay" id="otherModal">
+  <div class="modal" style="width:420px">
+    <div class="modal-title" id="otModalTitle"><i class="ti ti-layout-list"></i> إضافة مصدر آخر</div>
+    <input type="hidden" id="otEditId" value="">
+    <div class="form-row"><label class="fl">الوصف</label><input class="fi" id="otName" placeholder="مثال: وديعة بنكية، سيارة، ذهب غير مسجل..."></div>
+    <div style="display:flex;gap:8px;align-items:flex-end">
+      <div style="flex:1"><label class="fl">القيمة</label><input class="fi" id="otValue" type="number" step="any" placeholder="0" oninput="otUpdateSar()"></div>
+      <div><label class="fl">العملة</label><select class="fs" id="otCurrency" style="min-width:90px" onchange="otUpdateSar()">
+        <option value="SAR">﷼ SAR</option>
+        <option value="JOD">د.أ JOD</option>
+        <option value="USD">$ USD</option>
+      </select></div>
+    </div>
+    <div id="otRateRow" style="display:none"><label class="fl">سعر الصرف → ريال (1 عملة = ؟ ريال)</label><input class="fi" id="otRate" type="number" step="any" placeholder="أدخل سعر الصرف" oninput="otUpdateSar()"></div>
+    <div id="otSarPreview" style="font-size:11px;color:var(--gold);margin-bottom:8px;direction:ltr;text-align:right"></div>
+    <div class="form-row">
+      <label class="fl">النوع</label>
+      <select class="fs" id="otType">
+        <option value="realized">محققة — أصل فعلي في حوزتي</option>
+        <option value="unrealized">غير محققة — قيمة متوقعة أو مستقبلية</option>
+      </select>
+    </div>
+    <div class="modal-btns"><button class="btn-cancel" id="btnCloseOther">إلغاء</button><button class="btn-primary" id="btnDoOther">حفظ</button></div>
+  </div>
+</div>
+
+<!-- Clear -->
+<div class="overlay" id="clearModal">
+  <div class="modal" style="width:420px">
+    <div class="modal-title"><i class="ti ti-trash"></i> مسح الحركات</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:1.1rem">اختر ما تريد مسحه:</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1.1rem">
+      <label class="clear-opt"><input type="radio" name="clearRange" value="last"><div><div style="font-weight:500">آخر حركة فقط</div><div style="font-size:11px;color:var(--muted);margin-top:2px">حذف آخر حركة تم إدخالها</div></div></label>
+      <label class="clear-opt"><input type="radio" name="clearRange" value="custom"><div style="flex:1"><div style="font-weight:500">فترة محددة</div><div style="font-size:11px;color:var(--muted);margin-top:2px">اختر من وإلى</div></div></label>
+      <div id="customDateRange" style="display:none;background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:12px;margin-top:-4px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:5px">من تاريخ</label><input type="date" id="clearFrom" class="fi" style="padding:8px 10px;font-size:12px;width:100%"></div>
+          <div><label style="font-size:10px;color:var(--muted);display:block;margin-bottom:5px">إلى تاريخ</label><input type="date" id="clearTo" class="fi" style="padding:8px 10px;font-size:12px;width:100%"></div>
+        </div>
+      </div>
+      <label class="clear-opt"><input type="radio" name="clearRange" value="all"><div><div style="font-weight:500">كل الحركات</div><div style="font-size:11px;color:var(--muted);margin-top:2px">مسح جميع السجلات</div></div></label>
+    </div>
+    <div style="background:rgba(246,109,109,.07);border:1px solid rgba(246,109,109,.18);border-radius:10px;padding:10px 14px;font-size:12px;color:#e07070;margin-bottom:1.1rem;min-height:38px;display:flex;align-items:center" id="clearPreview">اختر خياراً أولاً</div>
+    <div class="modal-btns"><button class="btn-cancel" id="btnCloseClear">إلغاء</button><button id="btnDoClear" style="flex:1;padding:11px;background:var(--red);color:#fff;border:none;border-radius:9px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;opacity:.35;pointer-events:none" disabled>مسح</button></div>
+  </div>
+</div>
+
+<!-- Confirm -->
+<div class="overlay" id="confirmModal">
+  <div class="modal" style="width:360px;text-align:center">
+    <div style="font-size:2.5rem;margin-bottom:.75rem">⚠️</div>
+    <div style="font-size:16px;font-weight:600;margin-bottom:.75rem">هل أنت متأكد؟</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.7" id="confirmMsg"></div>
+    <div class="modal-btns"><button class="btn-cancel" id="btnCancelConfirm" style="flex:1">إلغاء</button><button id="btnConfirmDel" style="flex:1;padding:11px;background:var(--red);color:#fff;border:none;border-radius:9px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">نعم، احذف</button></div>
+  </div>
+</div>
+
+<!-- New Note Modal -->
+<div class="overlay" id="newNoteModal">
+  <div class="modal" style="width:360px;max-width:95vw">
+    <div class="modal-title"><i class="ti ti-notes"></i> ملاحظة جديدة</div>
+    <div class="form-row">
+      <div class="fl">اسم الملاحظة</div>
+      <input class="fi" id="newNoteTitleInput" placeholder="مثال: تحليل السوق..." onkeydown="if(event.key==='Enter') confirmAddNote()">
+    </div>
+    <div class="form-row">
+      <div class="fl">التصنيف</div>
+      <input class="fi" id="newNoteCatInput" placeholder="مثال: استراتيجية، أفكار..." list="noteCatSuggestions" onkeydown="if(event.key==='Enter') confirmAddNote()">
+      <datalist id="noteCatSuggestions"></datalist>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-primary" onclick="confirmAddNote()"><i class="ti ti-plus"></i> إنشاء</button>
+      <button class="btn-cancel" onclick="closeModal('newNoteModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- Goal Edit Modal -->
+<div class="overlay" id="goalEditModal">
+  <div class="modal" style="width:340px;max-width:95vw">
+    <div class="modal-title"><i class="ti ti-target"></i> <span id="goalEditLabel">الهدف</span></div>
+    <div class="form-row">
+      <div class="fl">المبلغ المستهدف <span id="goalCurHint" style="font-size:11px;color:var(--gold);margin-right:4px"></span></div>
+      <input class="fi" type="number" id="goalEditInput" placeholder="0" step="10000" style="direction:ltr;text-align:left">
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px">اتركه فارغاً لإزالة الهدف</div>
+    <div class="modal-btns">
+      <button class="btn-primary" onclick="saveGoalEdit()"><i class="ti ti-check"></i> حفظ</button>
+      <button class="btn-cancel" onclick="closeModal('goalEditModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- iOS Install Banner -->
+<div id="iosBanner" style="display:none;position:fixed;bottom:76px;left:10px;right:10px;background:#1c2030;border:1px solid rgba(201,168,76,.3);border-radius:16px;padding:14px 16px;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,.6);font-family:var(--font)">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="width:40px;height:40px;background:#c9a84c;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">💼</div>
+    <div style="flex:1">
+      <div style="font-size:14px;font-weight:600;color:#e8e6df;margin-bottom:3px">أضف O.db للشاشة الرئيسية</div>
+      <div style="font-size:12px;color:#7a7d8a">اضغط <b style="color:#c9a84c">مشاركة ⬆</b> ثم <b style="color:#c9a84c">إضافة إلى الشاشة الرئيسية</b></div>
+    </div>
+    <button onclick="document.getElementById('iosBanner').style.display='none';localStorage.setItem('iosBannerDismissed','1')" style="background:none;border:none;color:#7a7d8a;font-size:20px;cursor:pointer;padding:4px">✕</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     APPEARANCE SYSTEM — صفحة المظهر
+═══════════════════════════════════════════ -->
+
+<!-- صفحة المظهر -->
+<style>
+#page-appearance .card{ margin-bottom:0; }
+
+/* ── Note Preview Panel ── */
+.note-preview-panel table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13px}
+.note-preview-panel th{background:var(--surf3);color:var(--text);font-weight:600;padding:7px 12px;border:1px solid var(--bdr);text-align:right}
+.note-preview-panel td{padding:6px 12px;border:1px solid var(--bdr);color:var(--text);text-align:right}
+.note-preview-panel tr:nth-child(even) td{background:var(--wline)}
+.note-preview-panel p{margin:4px 0;line-height:1.8}
+.note-preview-panel strong{color:var(--text);font-weight:600}
+.note-preview-panel h1,.note-preview-panel h2,.note-preview-panel h3{color:var(--text);margin:12px 0 6px;font-weight:600}
+.note-preview-panel ul,.note-preview-panel ol{padding-right:20px;margin:6px 0}
+.note-preview-panel li{margin:3px 0}
+.note-preview-panel code{background:var(--surf3);padding:1px 6px;border-radius:4px;font-size:12px}
+.note-preview-panel pre{background:var(--surf3);padding:10px;border-radius:8px;overflow-x:auto}
+</style>
+
+
+
+<div class="overlay" id="alertModal">
+  <div class="modal" style="max-width:420px">
+    <div class="card-title" style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><i class="ti ti-bell-ringing" style="color:var(--gold)"></i> تنبيه سعر جديد</div>
+    <div class="card-sub">يصلك إشعار عند تحديث الأسعار إذا تحقق الشرط — للذهب السعر بالريال/غرام، ولباقي الأصول بعملة الأصل</div>
+    <div class="al-add">
+      <select id="alAsset"></select>
+      <select id="alDir"><option value=">=">وصل أو تجاوز ≥</option><option value="<=">نزل إلى أو أقل ≤</option></select>
+      <input id="alPrice" type="text" inputmode="decimal" placeholder="السعر">
+      <button class="btn-gold" style="width:auto;padding:8px 14px;font-size:12px" onclick="submitAlertModal()"><i class="ti ti-plus"></i> أضف</button>
+    </div>
+    <div id="alList" style="margin-top:10px"></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:12px">
+      <button class="btn-sm" onclick="closeModal('alertModal')">إغلاق</button>
+    </div>
+  </div>
+</div>
+<button id="fabAdd" onclick="openAdd()" title="إضافة حركة"><i class="ti ti-plus"></i></button>
+
+<!-- محرر تركيبة صندوق -->
+<div class="overlay" id="xrFundModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-title">🧩 تعريف تركيبة الصندوق: <span id="xrfName" style="color:var(--gold)"></span></div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:8px">
+      الأدق: الصق رابط ملف CSV الرسمي من صفحة الصندوق على iShares (زر Holdings → Download) ثم اضغط "جلب من iShares" — يستخرج توزيع الدول والقطاعات وأكبر المراكز تلقائياً. أو عدّل الـ JSON يدوياً بالأسفل.
+    </div>
+    <div style="display:flex;gap:7px;margin-bottom:10px">
+      <input id="xrfCsvUrl" type="text" inputmode="url" placeholder="https://www.ishares.com/.../...holdings...csv" style="flex:1;direction:ltr;text-align:left;background:var(--surf);border:1px solid var(--bdr);border-radius:11px;padding:10px 12px;color:var(--text);font-family:ui-monospace,Menlo,monospace;font-size:10.5px;outline:none">
+      <button class="btn-gold" style="width:auto;padding:10px 14px;white-space:nowrap" id="btnXrfCsv" onclick="fetchFundCsvUI()"><i class="ti ti-download"></i> جلب من iShares</button>
+    </div>
+    <textarea id="xrfJson" class="fi" style="min-height:240px;direction:ltr;text-align:left;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;line-height:1.6;resize:vertical"></textarea>
+    <div id="xrfErr" style="font-size:11px;color:var(--red);margin-top:6px;min-height:14px"></div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn-outline" style="width:auto;padding:11px 14px;color:var(--gold)" id="btnXrfAuto" onclick="xrfAutoFetch()"><i class="ti ti-bolt"></i> جلب تلقائي</button>
+      <button class="btn-gold" style="flex:1" id="btnXrfSave" onclick="xrfSave()">حفظ التركيبة</button>
+      <button class="btn-outline" style="width:auto;padding:11px 16px" onclick="closeModal('xrFundModal')">إلغاء</button>
+      <button class="btn-outline" style="width:auto;padding:11px 16px;color:var(--red)" id="btnXrfDelete" onclick="xrfDelete()">حذف التعريف</button>
+    </div>
+  </div>
+</div>
+
+<div id="alertsPanelBackdrop" onclick="closeAlertsPanel()" style="display:none;position:fixed;inset:0;z-index:9997;background:transparent"></div>
+<div id="alertsPanel">
+  <div class="ap-head">
+    <div class="t"><i class="ti ti-bell-ringing" style="color:var(--gold)"></i> التنبيهات</div>
+    <div class="lnk" onclick="closeAlertsPanel();showPage('market',null)">إدارة من صفحة السوق</div>
+  </div>
+  <div id="alertsPanelList"></div>
+</div>
+
+<div id="moreMenuBackdrop" onclick="closeMoreMenu()"></div>
+<div id="moreMenu">
+  <div class="more-menu-item" data-page="transactions" onclick="pickMorePage('transactions')">
+    <i class="ti ti-list"></i><span>الحركات</span>
+  </div>
+  <div class="more-menu-item" data-page="goals" onclick="pickMorePage('goals')">
+    <i class="ti ti-target"></i><span>الأهداف</span>
+  </div>
+  <div class="more-menu-item" data-page="zakat" onclick="pickMorePage('zakat')">
+    <i class="ti ti-building-mosque"></i><span>الزكاة</span>
+  </div>
+  <div class="more-menu-item" data-page="notes" onclick="pickMorePage('notes')" style="display:none">
+    <i class="ti ti-notes"></i><span>الملاحظات</span>
+  </div>
+  <div class="more-menu-item" data-page="assets" onclick="pickMorePage('assets')">
+    <i class="ti ti-settings"></i><span>إدارة الأصول</span>
+  </div>
+</div>
+
+
+<script type="module" src="/src/main.js"></script></body>
+<div class="overlay" id="zkCoM"><div class="modal" style="max-width:560px">
+  <div class="modal-title"><i class="ti ti-building-bank" style="color:var(--gold)"></i> <span id="zkCoT">الشركة</span></div>
+  <div id="zkCoB" style="max-height:66vh;overflow-y:auto"></div>
+  <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('zkCoM')">إغلاق</button></div>
+</div></div>
+
+<div class="overlay" id="zkFundM"><div class="modal" style="max-width:560px">
+  <div class="modal-title"><i class="ti ti-stack-2" style="color:var(--gold)"></i> <span id="zkFundT">الصندوق</span></div>
+  <div id="zkFundB" style="max-height:66vh;overflow-y:auto"></div>
+  <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('zkFundM')">إغلاق</button></div>
+</div></div>
+
+<div class="overlay" id="zkMethodM"><div class="modal" style="max-width:520px">
+  <div class="modal-title"><i class="ti ti-book" style="color:var(--gold)"></i> المنهجية</div>
+  <div style="max-height:66vh;overflow-y:auto;font-size:12px;color:var(--muted);line-height:2">
+    <b style="color:var(--text)">المبدأ</b><br>
+    لا تُضرب المحفظة كاملة في نسبة الزكاة. تُحسب لكل شركة نسبة زكوية من قوائمها المالية، ثم تُطبَّق على قيمة استثمارك فيها.
+    <br><br><b style="color:var(--text)">معادلة الشركة</b>
+    <code style="direction:ltr;display:block;padding:8px;margin:4px 0">النسبة = الأصول الزكوية ÷ إجمالي أصول الشركة</code>
+    الأصول الزكوية: النقد وما في حكمه · الاستثمارات قصيرة الأجل · الأوراق المالية المتداولة · الذمم المدينة · المخزون.<br>
+    لا تدخل: الممتلكات والمعدات · الأصول غير الملموسة · الشهرة · الاستثمارات الاستراتيجية.<br>
+    البنود الإجمالية (مثل مجموع الأصول المتداولة) مستبعدة لمنع ازدواج الحساب.
+    <br><br><b style="color:var(--text)">القيمة السوقية</b><br>
+    لا تُستخدم كمقام في نسبة الشركة — تُستخدم فقط لتحديد قيمة استثمارك.
+    <br><br><b style="color:var(--text)">الالتزامات</b><br>
+    لا تُخصم في هذه النسخة. اختيار محافظ يعطي زكاة أعلى.
+    <br><br><b style="color:var(--text)">هامش الاحتياط</b>
+    <code style="direction:ltr;display:block;padding:8px;margin:4px 0">النهائية = الأصلية × 1.10</code>
+    زيادة نسبية لا نقاط مئوية — 40% تصبح 44%. بحد أقصى 100%.
+    <br><br><b style="color:var(--text)">الصناديق</b>
+    <code style="direction:ltr;display:block;padding:8px;margin:4px 0">النسبة = Σ(وزن × نسبة الشركة) + وزن الباقي × 100%</code>
+    النقد والمشتقات داخل الصندوق تبقى ضمن الباقي.
+    <br><br><b style="color:var(--text)">تعذّر البيانات</b><br>
+    الشركة التي يفشل جلبها تُحتسب 100% — الأكثر تحفظاً — مع تنبيه.
+    <br><br><span style="color:#e0a050">الحساب تقديري وليس فتوى شرعية.</span>
+  </div>
+  <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('zkMethodM')">إغلاق</button></div>
+</div></div>
+
+<div class="overlay" id="zkSetM"><div class="modal" style="max-width:460px">
+  <div class="modal-title"><i class="ti ti-adjustments" style="color:var(--gold)"></i> إعدادات الزكاة</div>
+  <div style="max-height:66vh;overflow-y:auto">
+
+    <div style="font-size:11.5px;font-weight:600;color:var(--text);margin-bottom:4px">مفتاح Financial Modeling Prep</div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:8px;line-height:1.8">
+      سجّل مجاناً في <span style="color:var(--gold)">financialmodelingprep.com</span> ← Dashboard ← انسخ الـ API Key والصقه هنا.
+      مصدر موثّق يرجّع رابط الإيداع الأصلي. بدونه تُستخدم بيانات ياهو.
+    </div>
+    <div style="display:flex;gap:7px">
+      <input id="zkKeyIn" type="password" placeholder="الصق المفتاح هنا" style="flex:1;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:9px 11px;font-size:11px;font-family:inherit;outline:none;direction:ltr;text-align:left">
+      <button class="btn-soft-gold" onclick="zkTestApiKey()" style="white-space:nowrap">اختبر واحفظ</button>
+    </div>
+    <div id="zkKeyOut" style="display:none;font-size:10.5px;margin-top:7px;line-height:1.7"></div>
+    <div id="zkKeyState" style="font-size:10px;color:var(--muted);margin-top:5px"></div>
+
+    <div style="border-top:1px solid var(--wline);margin-top:14px;padding-top:12px">
+      <button class="btn-outline" style="width:100%" onclick="zkRunDiag()"><i class="ti ti-stethoscope"></i> تشخيص المصدر</button>
+      <div id="zkDiagOut" style="display:none;font-size:10.5px;margin-top:8px;padding:9px 11px;border-radius:11px;line-height:1.7"></div>
+    </div>
+
+    <div style="border-top:1px solid var(--wline);margin-top:14px;padding-top:12px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:11.5px;color:var(--muted);min-width:120px">نسبة الزكاة (%)</span>
+        <input id="zkRateIn" type="text" inputmode="decimal" oninput="zkSetOpt('rate',this.value)" style="width:90px;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:8px 11px;font-size:12px;font-family:inherit;outline:none;direction:ltr;text-align:left">
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:11.5px;color:var(--muted);min-width:120px">هامش الاحتياط (%)</span>
+        <input id="zkMarginIn" type="text" inputmode="decimal" oninput="zkSetOpt('margin',this.value)" style="width:90px;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:8px 11px;font-size:12px;font-family:inherit;outline:none;direction:ltr;text-align:left">
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:11.5px;color:var(--muted);min-width:120px">صلاحية البيانات (يوم)</span>
+        <input id="zkCacheIn" type="text" inputmode="decimal" oninput="zkSetOpt('cacheDays',this.value)" style="width:90px;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:8px 11px;font-size:12px;font-family:inherit;outline:none;direction:ltr;text-align:left">
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:11.5px;color:var(--muted);min-width:120px">نسبة «جزء من القيمة»</span>
+        <input id="zkPctIn" type="text" inputmode="decimal" oninput="zkSetOpt('pctVal',this.value)" style="width:90px;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:8px 11px;font-size:12px;font-family:inherit;outline:none;direction:ltr;text-align:left">
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:11.5px;color:var(--muted);min-width:120px">شركات لكل صندوق</span>
+          <input id="zkTopIn" type="text" inputmode="decimal" oninput="zkSetOpt('topN',this.value)" style="width:90px;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:8px 11px;font-size:12px;font-family:inherit;outline:none;direction:ltr;text-align:left">
+        </div>
+        <div id="zkTopHint" style="font-size:10px;color:var(--muted);margin-top:5px;line-height:1.7"></div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--wline);margin-top:14px;padding-top:12px">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px">أساس النصاب</div>
+      <div class="xr-scen" style="margin-bottom:10px">
+        <button id="zkNisG" onclick="zkSetOpt('nisabBase','gold')">ذهب — 85 غرام</button>
+        <button id="zkNisS" onclick="zkSetOpt('nisabBase','silver')">فضة — 595 غرام</button>
+      </div>
+      <div id="zkGoldRow" style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:11.5px;color:var(--muted);min-width:120px">سعر غرام الذهب (24)</span>
+        <input id="zkGoldIn" type="text" inputmode="decimal" placeholder="تلقائي" oninput="zkSetOpt('goldGram',this.value)" style="flex:1;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:8px 11px;font-size:12px;font-family:inherit;outline:none;direction:ltr;text-align:left">
+      </div>
+      <div id="zkSilvRow" style="display:none;gap:8px;align-items:center">
+        <span style="font-size:11.5px;color:var(--muted);min-width:120px">سعر غرام الفضة</span>
+        <input id="zkSilvIn" type="text" inputmode="decimal" oninput="zkSetOpt('silverGram',this.value)" style="flex:1;background:var(--surf2);border:1px solid var(--bdr2);color:var(--text);border-radius:11px;padding:8px 11px;font-size:12px;font-family:inherit;outline:none;direction:ltr;text-align:left">
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--wline);margin-top:14px;padding-top:12px">
+      <button class="btn-outline" style="width:100%" onclick="zkUpdate(true)"><i class="ti ti-refresh"></i> تحديث كل الشركات إجبارياً</button>
+    </div>
+  </div>
+  <div class="modal-btns"><button class="btn-primary" onclick="closeModal('zkSetM')">تم</button></div>
+</div></div>
+
+<script type="module" src="/src/main.js"></script></body>
+</html>

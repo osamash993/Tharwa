@@ -1,0 +1,5 @@
+project_id = "tharwa-portfolio"
+[functions.portfolio-market]
+# Auth is enforced in index.ts using auth.getUser(bearer). The legacy gateway
+# verifier does not support asymmetric Supabase signing keys.
+verify_jwt = false
