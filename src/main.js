@@ -22,6 +22,15 @@ const configured=!!url&&!!key&&!url.includes('YOUR_PROJECT');
 const client=configured?createClient(url,key):null;
 const demo=new URLSearchParams(location.search).get('demo')==='1';
 const screen=document.getElementById('auth-screen');
+// Keep browser chrome in step with login and the app's own light/dark setting.
+function syncBrowserTheme(){
+ const dark=document.body.classList.contains('ready')&&document.documentElement.classList.contains('ios-dark');
+ document.querySelector('meta[name="theme-color"]').content=dark?'#000000':'#f2f2f7';
+}
+const browserThemeObserver=new MutationObserver(syncBrowserTheme);
+browserThemeObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
+browserThemeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+syncBrowserTheme();
 const indicator=document.getElementById('cloud-indicator');
 window.cloudFailure=e=>{
  const box=document.getElementById('cloud-error');box.hidden=false;

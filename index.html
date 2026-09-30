@@ -1192,6 +1192,11 @@ input[type="date"]::-webkit-date-and-time-value{text-align:right}
 /* منتقي التاريخ والقوائم الأصلية تتبع الثيم */
 html.ios-dark .fi,html.ios-dark .fs,html.ios-dark input,html.ios-dark select{color-scheme:dark}
 html.ios-light .fi,html.ios-light .fs,html.ios-light input,html.ios-light select{color-scheme:light}
+/* Safari uses the page canvas behind its bars and safe-area margins. */
+html{background:#f2f2f7;color-scheme:light}
+body.original-app:not(.ready){background:#f2f2f7!important;color-scheme:light}
+html.ios-dark:has(body.original-app.ready){background:#000;color-scheme:dark}
+html.ios-light:has(body.original-app.ready){background:#f2f2f7;color-scheme:light}
 </style>
 
 
