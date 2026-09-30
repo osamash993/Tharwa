@@ -102,7 +102,7 @@ const CUR_RATES = {
   JOD: 0.188,
   USD: 1 / 3.756
 };
-const FONT_CANVAS = "system-ui,-apple-system,'IBM Plex Sans Arabic',sans-serif";
+const FONT_CANVAS = "system-ui,-apple-system,'IBM Plex Sans Arabic',RialMark,sans-serif";
 if (typeof Chart !== 'undefined') {
   Chart.defaults.font.family = FONT_CANVAS;
   Chart.defaults.color = '#7a7d8a';
@@ -2237,6 +2237,7 @@ function renderTxnTable() {
   if (fTypes.length) f = f.filter(t => fTypes.includes(t.assetType));
   if (fActs.length) f = f.filter(t => fActs.includes(t.action));
   if (fMonths.length) f = f.filter(t => fMonths.some(m => (t.date || '').startsWith(m)));
+  window._visibleTxnIds = f.map(t => t.id);
   let sumIn = 0,
     sumOut = 0;
   f.forEach(t => {
@@ -2327,6 +2328,7 @@ function renderTxnTable() {
     html += `<div class="mkt-filters" style="margin-bottom:12px">` + FILT.map(([k, l]) => `<button class="mkt-fchip${_txnMobileFilter === k ? ' on' : ''}" onclick="setTxnMobileFilter('${k}')">${l}</button>`).join('') + `</div>`;
     const selValid = _txnSelectedMonth && mGroups[_txnSelectedMonth];
     const listMonths = selValid ? [_txnSelectedMonth] : mMonths;
+    window._visibleTxnIds = listMonths.flatMap(m => mGroups[m].map(t => t.id));
     if (selValid) {
       const [yy, mm2] = _txnSelectedMonth.split('-');
       const mLbl = `${monthNamesAr[parseInt(mm2) - 1] || mm2} ${yy}`;
@@ -2389,6 +2391,7 @@ function renderTxnTable() {
               </div>
             </div>
             <div class="mkt-rbody">
+              <label class="th-txn-select" onclick="event.stopPropagation()"><input type="checkbox" ${selectedIds.has(t.id) ? 'checked' : ''} onchange="toggleSel(${t.id},this.checked)"> تحديد الحركة</label>
               ${cellsHtml ? `<div class="mkt-dgrid" style="margin-top:8px">${cellsHtml}</div>` : ''}
               ${linkHtml}${remHtml}
               <div style="display:flex;gap:8px;margin-top:10px">
@@ -2553,7 +2556,8 @@ function toggleSel(id, checked) {
   renderTxnTable();
 }
 function toggleMonthSel(m, checked) {
-  const items = txns.filter(t => (t.date || '').startsWith(m));
+  const visible = new Set(window._visibleTxnIds || []);
+  const items = txns.filter(t => visible.has(t.id) && (t.date || '').startsWith(m));
   items.forEach(t => {
     if (checked) selectedIds.add(t.id);else selectedIds.delete(t.id);
   });
@@ -2566,47 +2570,21 @@ function clearSelection() {
   renderTxnTable();
 }
 function toggleSelAll() {
-  const btn = document.getElementById('btnToggleSel');
-  if (selectedIds.size > 0) {
-    selectedIds.clear();
-    if (btn) {
-      btn.textContent = '☑ اختيار الكل';
-      btn.style.color = 'var(--gold)';
-    }
-  } else {
-    const srch = (document.getElementById('srch')?.value || '').toLowerCase();
-    const fType = document.getElementById('fType')?.value || '';
-    const fAct = document.getElementById('fAction')?.value || '';
-    let f = [...txns];
-    if (srch) f = f.filter(t => t.assetName.toLowerCase().includes(srch));
-    if (fType) f = f.filter(t => t.assetType === fType);
-    if (fAct) f = f.filter(t => t.action === fAct);
-    f.forEach(t => selectedIds.add(t.id));
-    if (btn) {
-      btn.textContent = '☐ إلغاء الكل';
-      btn.style.color = 'var(--muted)';
-    }
-  }
+  if (selectedIds.size) selectedIds.clear();
+  else (window._visibleTxnIds || []).forEach(id => selectedIds.add(id));
   updateSelectionBar();
   renderTxnTable();
 }
+
 function exportToExcel() {
   return window.downloadTransactions(txns);
 }
 function toggleAllSel(checked) {
-  const srch = ($('srch')?.value || '').toLowerCase();
-  const fType = $('fType')?.value || '';
-  const fAct = $('fAction')?.value || '';
-  let f = [...txns];
-  if (srch) f = f.filter(t => t.assetName.toLowerCase().includes(srch));
-  if (fType) f = f.filter(t => t.assetType === fType);
-  if (fAct) f = f.filter(t => t.action === fAct);
-  f.forEach(t => {
-    if (checked) selectedIds.add(t.id);else selectedIds.delete(t.id);
-  });
+  (window._visibleTxnIds || []).forEach(id => checked ? selectedIds.add(id) : selectedIds.delete(id));
   updateSelectionBar();
   renderTxnTable();
 }
+
 function updateSelectionBar() {
   const bar = $('selectionBar');
   if (!bar) return;
@@ -2614,6 +2592,7 @@ function updateSelectionBar() {
   bar.style.display = n > 0 ? 'flex' : 'none';
   st('selCount', `${n} حركة محددة`);
   const btn = document.getElementById('btnToggleSel');
+  if (btn && n > 0) btn.textContent = '☐ إلغاء التحديد';
   if (btn && n === 0) {
     btn.textContent = '☑ اختيار الكل';
     btn.style.color = 'var(--gold)';
@@ -3068,14 +3047,14 @@ function checkPriceAlerts() {
   }
   updateAlertsBadge();
 }
-function applyIosTheme(t) {
+function applyIosTheme(t, persist = true) {
   const h = document.documentElement;
   h.classList.toggle('ios-light', t === 'light');
   h.classList.toggle('ios-dark', t !== 'light');
   const ic = $('themeIcon');
   if (ic) ic.className = t === 'light' ? 'ti ti-sun' : 'ti ti-moon';
   localStorage.setItem('pf_ios_theme', t);
-  portfolioAPI.saveSetting('iosTheme', t);
+  if (persist) portfolioAPI.saveSetting('iosTheme', t);
   if (typeof renderAll === 'function') renderAll();
   if ($('page-transactions')?.classList.contains('active')) setTimeout(renderMonthlyChart, 60);
 }
@@ -5884,17 +5863,17 @@ function drawGeoMap(X) {
       zoomMax: 8,
       regionStyle: {
         initial: {
-          fill: '#e2e5d8',
-          stroke: '#faf9f3',
+          fill: _lt ? '#E4E2DC' : '#2C2C2E',
+          stroke: _lt ? '#F2F2F7' : '#000000',
           strokeWidth: 0.4
         },
         hover: {
-          fill: '#bdc9a8',
+          fill: _lt ? '#D2CFC6' : '#3A3A3C',
           cursor: 'pointer'
         }
       },
       visualizeData: {
-        scale: ['#dfe5d3', '#476b43'],
+        scale: [_lt ? '#EFE9DA' : '#33394f', '#c9a84c'],
         values: vals
       },
       onRegionTooltipShow(event, tooltip, code) {
@@ -6625,10 +6604,12 @@ function renderGoalsPage(totalCur, byType, otherTotal) {
     label: 'النقدي',
     cur: byType.Cash.cur
   }];
+
+  // الهدف الكلي = مجموع أهداف الفئات
   const sumGoals = cats.reduce((a, c) => a + (catGoals[c.key] || 0), 0);
   if (sumGoals > 0 && sumGoals !== retireGoal) {
     retireGoal = sumGoals;
-    null;
+
   }
   const totalPct = retireGoal > 0 ? totalCur / retireGoal * 100 : 0;
   const remaining = Math.max(0, retireGoal - totalCur);
@@ -6642,6 +6623,7 @@ function renderGoalsPage(totalCur, byType, otherTotal) {
   if (gi) gi.value = '';
   const grid = $('catGoalsGrid');
   if (!grid) return;
+  // تحديث الحلقة + الرقائق
   const _ring = $('gTotalRing');
   if (_ring) {
     const _c = 263.9;
@@ -6655,19 +6637,29 @@ function renderGoalsPage(totalCur, byType, otherTotal) {
   const _withGoal = cats.filter(c => (catGoals[c.key] || 0) > 0).length;
   st('gChipDone', _withGoal > 0 ? _done + ' / ' + _withGoal : '—');
   st('gChipRem', fmtC(remaining));
-  grid.innerHTML = cats.map(cat => {
+  grid.innerHTML = '<div class="xr-card">' + cats.map(cat => {
     const goal = catGoals[cat.key] || 0;
     const pp = goal > 0 ? cat.cur / goal * 100 : 0;
+    const barPct = Math.min(100, pp);
     const exceeded = pp > 100;
-    const icon = {Property:'ti-building',Gold:'ti-coin',Stock:'ti-chart-bar',Cash:'ti-cash'}[cat.key];
-    return `<button class="th-goal-card" onclick="openGoalEdit('${cat.key}','${cat.label}',${goal})">
-      <span class="th-goal-card-top"><span><i class="ti ${icon}"></i> ${cat.label}</span><i class="ti ti-arrow-up-left"></i></span>
-      <strong class="th-goal-card-pct">${goal > 0 ? pp.toFixed(0) + '<small>%</small>' : '<small>حدّد هدفك</small>'}</strong>
-      <span class="th-goal-track"><span style="width:${Math.min(100,Math.max(0,pp))}%"></span></span>
-      <span class="th-goal-amounts"><span>الحالي <b>${fmtC(cat.cur)}</b></span><span>${exceeded ? 'تجاوز الهدف' : 'المتبقي'} <b>${goal > 0 ? fmtC(Math.abs(goal-cat.cur)) : '—'}</b></span></span>
-    </button>`;
-  }).join('');
+    const icon = {
+      Property: 'ti-building',
+      Gold: 'ti-coin',
+      Stock: 'ti-chart-bar',
+      Cash: 'ti-cash'
+    }[cat.key] || 'ti-circle';
+    return `<div class="xr-row" style="cursor:pointer" onclick="openGoalEdit('${cat.key}','${cat.label}',${goal})">
+        <div class="nm"><i class="ti ${icon}" style="color:var(--gold);font-size:14px"></i> ${cat.label}</div>
+        <div class="xr-bar"><div style="width:${goal > 0 ? barPct : 0}%;${exceeded ? 'background:var(--green)' : ''}"></div></div>
+        <div class="pct" style="${exceeded ? 'color:var(--green)' : ''}">${goal > 0 ? pp.toFixed(0) + '%' : '+ هدف'}</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);padding:0 0 8px;margin-bottom:6px;${cat.key !== 'Cash' ? 'border-bottom:1px solid var(--wline)' : ''}">
+        <span>الحالي: <b style="color:var(--gold);font-weight:600;font-family:inherit">${fmtC(cat.cur)}</b></span>
+        ${goal > 0 ? `<span>${exceeded ? 'تجاوز' : 'متبقي'}: <b style="color:${exceeded ? 'var(--green)' : 'var(--muted)'};font-weight:600;font-family:inherit">${fmtC(Math.abs(goal - cat.cur))}</b></span>` : `<span style="color:var(--gold)">حدّد هدفاً ←</span>`}
+      </div>`;
+  }).join('') + '</div>';
 }
+// btnRefreshHome removed — using globalRefresh
 document.querySelectorAll('.cur-btn').forEach(b => b.classList.toggle('active', b.dataset.cur === baseCur));
 renderAll();
 async function refreshMarket() {
@@ -7294,7 +7286,7 @@ function initApp(data) {
         customXray = JSON.parse(s.customXray) || {};
       } catch (e) {}
     }
-    applyIosTheme("light");
+    if (s.iosTheme) applyIosTheme(String(s.iosTheme), false);
     if (s.pivotCur) pivotCur = String(s.pivotCur);
     if (s.retireGoal) retireGoal = parseFloat(s.retireGoal) || 2800000;
     if (s.propVals) {
@@ -7860,7 +7852,7 @@ function _applyNotesSidebar() {
       sb.style.right = '0';
       sb.style.left = '';
       sb.style.bottom = 'calc(62px + env(safe-area-inset-bottom))';
-      sb.style.width = isMobile() ? '272px' : '250px';
+      sb.style.width = isMobile() ? '220px' : '220px';
       sb.style.zIndex = '200';
       sb.style.boxShadow = '4px 0 24px rgba(0,0,0,.5)';
       sb.style.borderRadius = '0 0 0 16px';

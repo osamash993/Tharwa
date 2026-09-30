@@ -1186,7 +1186,7 @@ html.ios-light .fi,html.ios-light .fs,html.ios-light input,html.ios-light select
 
 
 </head>
-<body class="tharwa">
+<body class="original-app">
 <div id="auth-screen"></div>
 <div id="cloud-error" role="alert" hidden></div>
 <div id="cloud-indicator" role="status"></div>
@@ -1246,7 +1246,7 @@ html.ios-light .fi,html.ios-light .fs,html.ios-light input,html.ios-light select
 <main class="main">
 
 <!-- ════ DASHBOARD ════ -->
-<div id="page-dashboard" class="page active"><wealth-overview></wealth-overview><div class="old-dashboard" hidden>
+<div id="page-dashboard" class="page active">
   <div class="topbar">
     <div class="page-title">نظرة عامة</div>
     <div class="date-badge" id="dateBadge"></div>
@@ -1352,7 +1352,7 @@ html.ios-light .fi,html.ios-light .fs,html.ios-light input,html.ios-light select
 </div>
 
 <!-- ════ PORTFOLIO ════ -->
-</div><div id="page-portfolio" class="page">
+<div id="page-portfolio" class="page">
   <div class="topbar"><div class="page-title">المحفظة والأرباح</div></div>
 
   <div style="font-size:11px;color:var(--muted);margin-bottom:14px" id="statusTxt">اضغط ↻ تحديث الأسعار من القائمة الجانبية</div>
@@ -2271,7 +2271,7 @@ html.ios-light .fi,html.ios-light .fs,html.ios-light input,html.ios-light select
   <div class="more-menu-item" data-page="zakat" onclick="pickMorePage('zakat')">
     <i class="ti ti-building-mosque"></i><span>الزكاة</span>
   </div>
-  <div class="more-menu-item" data-page="notes" onclick="pickMorePage('notes')" style="display:none">
+  <div class="more-menu-item" data-page="notes" onclick="pickMorePage('notes')">
     <i class="ti ti-notes"></i><span>الملاحظات</span>
   </div>
   <div class="more-menu-item" data-page="assets" onclick="pickMorePage('assets')">
@@ -2280,7 +2280,7 @@ html.ios-light .fi,html.ios-light .fs,html.ios-light input,html.ios-light select
 </div>
 
 
-<script type="module" src="/src/main.js"></script></body>
+
 <div class="overlay" id="zkCoM"><div class="modal" style="max-width:560px">
   <div class="modal-title"><i class="ti ti-building-bank" style="color:var(--gold)"></i> <span id="zkCoT">الشركة</span></div>
   <div id="zkCoB" style="max-height:66vh;overflow-y:auto"></div>
@@ -2389,6 +2389,6 @@ html.ios-light .fi,html.ios-light .fs,html.ios-light input,html.ios-light select
   </div>
   <div class="modal-btns"><button class="btn-primary" onclick="closeModal('zkSetM')">تم</button></div>
 </div></div>
-
-<script type="module" src="/src/main.js"></script></body>
+<script type="module" src="/src/main.js"></script>
+</body>
 </html>
