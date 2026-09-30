@@ -4,10 +4,20 @@ import {marked} from 'marked';
 import DOMPurify from 'dompurify';
 import '@tabler/icons-webfont/dist/tabler-icons.min.css';
 import './theme.css';
+import 'jsvectormap/dist/jsvectormap.css';
+import './pages.css';
+import {composePages} from './page-layouts.js';
 import './overview.js';
 import {createAPI} from './api.js';
 import {supabaseUrl, supabasePublishableKey} from './public-config.js';
 
+window.loadTharwaMap=async()=>{
+ const {default:VectorMap}=await import('jsvectormap');
+ window.jsVectorMap=VectorMap;
+ await import('jsvectormap/dist/maps/world.js');
+ window._geoWorldLoaded=true;
+};
+composePages();
 window.Chart=Chart;window.marked={setOptions:opts=>marked.setOptions(opts),parse:md=>DOMPurify.sanitize(marked.parse(md))};window.sanitizeHTML=x=>DOMPurify.sanitize(x);
 const url=import.meta.env.VITE_SUPABASE_URL||supabaseUrl,key=import.meta.env.VITE_SUPABASE_ANON_KEY||supabasePublishableKey;
 const configured=!!url&&!!key&&!url.includes('YOUR_PROJECT');
@@ -38,6 +48,7 @@ async function start(){
 const nav=[['dashboard','نظرة عامة'],['portfolio','الأصول'],['transactions','الحركات'],['goals','الأهداف'],['market','الأسواق'],['geo','التحليل'],['zakat','الزكاة'],['notes','الملاحظات']];
 const header=document.createElement('header');header.className='th-header';header.innerHTML=`<a class="th-brand" href="#"><span class="th-mark">◈</span> ثروة</a><nav aria-label="الرئيسية">${nav.map(([id,label])=>`<button data-nav="${id}">${label}</button>`).join('')}</nav><div class="th-actions"><button id="th-export" title="تنزيل الحركات Excel" aria-label="تنزيل الحركات Excel"><i class="ti ti-download"></i></button><button id="th-import" title="استيراد الملف" aria-label="استيراد الملف"><i class="ti ti-upload"></i></button><button id="th-refresh" title="تحديث الأسعار" aria-label="تحديث الأسعار"><i class="ti ti-refresh"></i></button><button id="th-settings" title="إدارة الأصول" aria-label="إدارة الأصول"><i class="ti ti-settings"></i></button><button id="th-exit" title="تسجيل الخروج" aria-label="تسجيل الخروج"><i class="ti ti-logout"></i></button></div>`;
 document.querySelector('.app').prepend(header);
+window.syncPageChrome('dashboard');
 header.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{window.portfolioBridge.go(b.dataset.nav);header.querySelectorAll('[data-nav]').forEach(x=>x.classList.toggle('active',x===b));});
 header.querySelector('.th-brand').onclick=e=>{e.preventDefault();window.portfolioBridge.go('dashboard');};
 header.querySelector('#th-export').onclick=()=>window.portfolioBridge.export();

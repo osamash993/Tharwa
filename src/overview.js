@@ -1,8 +1,9 @@
 import {template} from './overview-template.js';
+import densityCSS from './overview-density.css?inline';
 const names={property:'العقار',gold:'الذهب',stocks:'الأسهم',cash:'النقدي',other:'مصادر أخرى'};
 const types={property:'Property',gold:'Gold',stocks:'Stock',cash:'Cash'};
 class WealthOverview extends HTMLElement{
- constructor(){super();this.attachShadow({mode:'open'}).innerHTML=template;this.active=null;}
+ constructor(){super();this.attachShadow({mode:'open'}).innerHTML=template.replace('</style>',densityCSS+'</style>');this.active=null;}
  connectedCallback(){
   const r=this.shadowRoot;
   r.querySelectorAll('[data-asset]').forEach(b=>b.addEventListener('click',()=>this.open(b)));

@@ -5852,29 +5852,13 @@ let _geoLibPromise = null,
   _geoMapObj = null;
 function loadGeoLibs() {
   if (window.jsVectorMap && window._geoWorldLoaded) return Promise.resolve();
-  if (_geoLibPromise) return _geoLibPromise;
-  _geoLibPromise = new Promise((res, rej) => {
-    const css = document.createElement('link');
-    css.rel = 'stylesheet';
-    css.href = 'https://cdn.jsdelivr.net/npm/jsvectormap@1.6.0/dist/jsvectormap.min.css';
-    document.head.appendChild(css);
-    const s1 = document.createElement('script');
-    s1.src = 'https://cdn.jsdelivr.net/npm/jsvectormap@1.6.0/dist/jsvectormap.min.js';
-    s1.onload = () => {
-      const s2 = document.createElement('script');
-      s2.src = 'https://cdn.jsdelivr.net/npm/jsvectormap@1.6.0/dist/maps/world.js';
-      s2.onload = () => {
-        window._geoWorldLoaded = true;
-        res();
-      };
-      s2.onerror = () => rej(new Error('map data'));
-      document.head.appendChild(s2);
-    };
-    s1.onerror = () => rej(new Error('lib'));
-    document.head.appendChild(s1);
+  if (!_geoLibPromise) _geoLibPromise = window.loadTharwaMap().catch(error => {
+    _geoLibPromise = null;
+    throw error;
   });
   return _geoLibPromise;
 }
+
 function drawGeoMap(X) {
   const el = $('geoMap');
   if (!el) return;
@@ -5882,6 +5866,7 @@ function drawGeoMap(X) {
   if (status) status.textContent = 'جاري تحميل الخريطة...';
   loadGeoLibs().then(() => {
     if (!$('page-geo') || !$('page-geo').classList.contains('active')) return;
+    _geoMapObj?.destroy();
     el.innerHTML = '';
     _geoMapObj = null;
     const vals = {};
@@ -5899,17 +5884,17 @@ function drawGeoMap(X) {
       zoomMax: 8,
       regionStyle: {
         initial: {
-          fill: _lt ? '#E4E2DC' : '#2C2C2E',
-          stroke: _lt ? '#F2F2F7' : '#000000',
+          fill: '#e2e5d8',
+          stroke: '#faf9f3',
           strokeWidth: 0.4
         },
         hover: {
-          fill: _lt ? '#D2CFC6' : '#3A3A3C',
+          fill: '#bdc9a8',
           cursor: 'pointer'
         }
       },
       visualizeData: {
-        scale: [_lt ? '#EFE9DA' : '#33394f', '#c9a84c'],
+        scale: ['#dfe5d3', '#476b43'],
         values: vals
       },
       onRegionTooltipShow(event, tooltip, code) {
@@ -5924,6 +5909,7 @@ function drawGeoMap(X) {
   });
 }
 function showPage(id, el) {
+  window.syncPageChrome?.(id);
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   if (el) el.classList.add('active');else document.querySelector(`[data-page="${id}"]`)?.classList.add('active');
@@ -6669,27 +6655,18 @@ function renderGoalsPage(totalCur, byType, otherTotal) {
   const _withGoal = cats.filter(c => (catGoals[c.key] || 0) > 0).length;
   st('gChipDone', _withGoal > 0 ? _done + ' / ' + _withGoal : '—');
   st('gChipRem', fmtC(remaining));
-  grid.innerHTML = '<div class="xr-card">' + cats.map(cat => {
+  grid.innerHTML = cats.map(cat => {
     const goal = catGoals[cat.key] || 0;
     const pp = goal > 0 ? cat.cur / goal * 100 : 0;
-    const barPct = Math.min(100, pp);
     const exceeded = pp > 100;
-    const icon = {
-      Property: 'ti-building',
-      Gold: 'ti-coin',
-      Stock: 'ti-chart-bar',
-      Cash: 'ti-cash'
-    }[cat.key] || 'ti-circle';
-    return `<div class="xr-row" style="cursor:pointer" onclick="openGoalEdit('${cat.key}','${cat.label}',${goal})">
-        <div class="nm"><i class="ti ${icon}" style="color:var(--gold);font-size:14px"></i> ${cat.label}</div>
-        <div class="xr-bar"><div style="width:${goal > 0 ? barPct : 0}%;${exceeded ? 'background:var(--green)' : ''}"></div></div>
-        <div class="pct" style="${exceeded ? 'color:var(--green)' : ''}">${goal > 0 ? pp.toFixed(0) + '%' : '+ هدف'}</div>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);padding:0 0 8px;margin-bottom:6px;${cat.key !== 'Cash' ? 'border-bottom:1px solid var(--wline)' : ''}">
-        <span>الحالي: <b style="color:var(--gold);font-weight:600;font-family:inherit">${fmtC(cat.cur)}</b></span>
-        ${goal > 0 ? `<span>${exceeded ? 'تجاوز' : 'متبقي'}: <b style="color:${exceeded ? 'var(--green)' : 'var(--muted)'};font-weight:600;font-family:inherit">${fmtC(Math.abs(goal - cat.cur))}</b></span>` : `<span style="color:var(--gold)">حدّد هدفاً ←</span>`}
-      </div>`;
-  }).join('') + '</div>';
+    const icon = {Property:'ti-building',Gold:'ti-coin',Stock:'ti-chart-bar',Cash:'ti-cash'}[cat.key];
+    return `<button class="th-goal-card" onclick="openGoalEdit('${cat.key}','${cat.label}',${goal})">
+      <span class="th-goal-card-top"><span><i class="ti ${icon}"></i> ${cat.label}</span><i class="ti ti-arrow-up-left"></i></span>
+      <strong class="th-goal-card-pct">${goal > 0 ? pp.toFixed(0) + '<small>%</small>' : '<small>حدّد هدفك</small>'}</strong>
+      <span class="th-goal-track"><span style="width:${Math.min(100,Math.max(0,pp))}%"></span></span>
+      <span class="th-goal-amounts"><span>الحالي <b>${fmtC(cat.cur)}</b></span><span>${exceeded ? 'تجاوز الهدف' : 'المتبقي'} <b>${goal > 0 ? fmtC(Math.abs(goal-cat.cur)) : '—'}</b></span></span>
+    </button>`;
+  }).join('');
 }
 document.querySelectorAll('.cur-btn').forEach(b => b.classList.toggle('active', b.dataset.cur === baseCur));
 renderAll();
@@ -7883,7 +7860,7 @@ function _applyNotesSidebar() {
       sb.style.right = '0';
       sb.style.left = '';
       sb.style.bottom = 'calc(62px + env(safe-area-inset-bottom))';
-      sb.style.width = '200px';
+      sb.style.width = isMobile() ? '272px' : '250px';
       sb.style.zIndex = '200';
       sb.style.boxShadow = '4px 0 24px rgba(0,0,0,.5)';
       sb.style.borderRadius = '0 0 0 16px';
@@ -7897,7 +7874,7 @@ function _applyNotesSidebar() {
       sb.style.zIndex = '';
       sb.style.boxShadow = '';
       sb.style.borderRadius = '16px';
-      sb.style.width = '200px';
+      sb.style.width = isMobile() ? '272px' : '250px';
       if (bd) bd.style.display = 'none';
     }
   } else {
@@ -8357,18 +8334,10 @@ function deleteNote(id, skipConfirm) {
   renderNotes();
 }
 function adjustNotesLayout() {
-  if (!isMobile() && !_notesSidebarOpen) {
-    _notesSidebarOpen = true;
-    const sb = document.getElementById('notesSidebar');
-    const ic = document.getElementById('notesSidebarToggleIcon');
-    if (sb) {
-      sb.style.width = '180px';
-      sb.style.padding = '10px 8px';
-      sb.style.overflowY = 'auto';
-    }
-    if (ic) ic.className = 'ti ti-layout-sidebar-right';
-  }
+  if (!isMobile()) _notesSidebarOpen = true;
+  _applyNotesSidebar();
 }
+
 let _goalEditKey = null;
 function openGoalEdit(key, label, current) {
   _goalEditKey = key;
