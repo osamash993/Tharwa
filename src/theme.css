@@ -12,3 +12,4 @@ html body.tharwa .main{margin:0!important;margin-inline:0!important;padding:0 4%
 html body.tharwa>.app{margin:0 auto!important;max-width:1536px!important;width:100%!important;display:block!important}
 html body.tharwa .sidebar{display:none!important}
 @media(max-width:768px){html body.tharwa .main{padding:0 22px 40px!important}}
+html body.tharwa:not(.ready)>.app,html body.tharwa:not(.ready) #fabAdd,html body.tharwa:not(.ready) #moreMenu{display:none!important}
