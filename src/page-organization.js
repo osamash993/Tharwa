@@ -1,3 +1,4 @@
+import {buildWorkspaces} from './workspaces.js';
 // Move the original nodes, so IDs, event handlers and financial calculations stay intact.
 export function organizePages(){
  const $=id=>document.getElementById(id);
@@ -13,7 +14,7 @@ export function organizePages(){
  };
  const jump=(label,page,target)=>{
   const b=document.createElement('button');b.type='button';b.className='btn-sm layout-jump';b.textContent=label;
-  b.onclick=()=>{window.portfolioBridge.go(page);requestAnimationFrame(()=>{const el=target?$(target):$('page-'+page);if(el instanceof HTMLDetailsElement)el.open=true;el.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});});};return b;
+  b.onclick=()=>{window.portfolioBridge.go(page);requestAnimationFrame(()=>{const el=target?$(target):$('page-'+page);window.revealPortfolioSection?.(el);if(el instanceof HTMLDetailsElement)el.open=true;el.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});});};return b;
  };
  const jumps=(page,items)=>{
   const nav=document.createElement('nav');nav.className='layout-jumps';nav.setAttribute('aria-label','انتقال داخل الصفحة');
@@ -94,4 +95,5 @@ export function organizePages(){
  $('marketStatus').classList.add('layout-status');
  $('marketManagePanel').classList.add('layout-manage-panel');
  $('notesLayout').classList.add('layout-notes-workspace');
+ buildWorkspaces();
 }

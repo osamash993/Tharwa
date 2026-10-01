@@ -1,5 +1,6 @@
 import {organizePages} from './page-organization.js';
 import './page-organization.css';
+import './workspaces.css';
 // Keep the original controls and visual system; only group existing boxes for layout.
 export function setupOriginalLayout(){
  const $=id=>document.getElementById(id);
