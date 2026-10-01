@@ -343,3 +343,59 @@ html body.workspaces-ready #page-market .quote-head-gold{grid-template-columns:1
 .workspaces-ready .quote-head-gold .quote-price{order:2;border-top:1px solid var(--bdr);padding-top:10px}.workspaces-ready .quote-head-gold .quote-ounce{order:3}
 .workspaces-ready .quote-head-gold .quote-day>i{display:none}
 .workspaces-ready .quote-range-empty{height:7px;border-radius:99px;background:var(--wline);margin-top:6px}
+/* Keep the complete overview above the mobile navigation on the first screen. */
+@media(max-width:768px){
+ .workspaces-ready #page-dashboard>.topbar{margin-bottom:8px;min-height:0}
+ html body.workspaces-ready #page-dashboard>.first-glance{padding:14px!important;border-radius:22px!important}
+ .workspaces-ready .first-glance .glance-heading{margin-bottom:8px;font-size:11px}
+ .workspaces-ready .first-glance .cur-switcher{padding:2px}
+ .workspaces-ready .first-glance .cur-btn{padding:4px 9px!important;min-height:27px;font-size:10px!important}
+ html body.workspaces-ready .first-glance .glance-main{gap:10px}
+ .workspaces-ready .first-glance .glance-label{font-size:10px}
+ .workspaces-ready .first-glance .glance-value{margin:3px 0;gap:7px}
+ .workspaces-ready .first-glance .glance-value #heroVal{font-size:30px}
+ .workspaces-ready .first-glance .glance-value #heroSym{font-size:15px!important}
+ .workspaces-ready .first-glance .glance-performance{margin:5px 0 8px;gap:4px}
+ .workspaces-ready .first-glance .glance-performance #heroProfitTag{font-size:10px!important;padding:3px 6px!important}
+ .workspaces-ready .first-glance .glance-costs>div,.workspaces-ready .first-glance .glance-goal-numbers>div{gap:2px}
+ .workspaces-ready .first-glance .glance-costs span,.workspaces-ready .first-glance .glance-goal-numbers span{font-size:9px}
+ .workspaces-ready .first-glance .glance-retirement{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 10px;padding-top:9px}
+ .workspaces-ready .first-glance .glance-section-title{font-size:11px;gap:6px}
+ .workspaces-ready .first-glance .glance-goal-link{font-size:10px;padding:7px 0;white-space:nowrap}
+ .workspaces-ready .first-glance .glance-progress-caption{margin:0;gap:0;align-items:center}
+ .workspaces-ready .first-glance .glance-progress-caption #retirePct{font-size:20px!important}
+ .workspaces-ready .first-glance .glance-progress-caption>span{display:none}
+ .workspaces-ready .first-glance .glance-progress-track{grid-column:1/-1;margin:0;height:6px}
+ .workspaces-ready .first-glance .glance-goal-numbers{grid-column:1/-1;gap:10px}
+ .workspaces-ready .first-glance #dayOverview{margin-top:10px;padding-top:9px}
+ .workspaces-ready .first-glance #dayOverview .ws-heading{margin-bottom:6px}
+ .workspaces-ready .first-glance #dayOverview h2{font-size:11px}
+ .workspaces-ready .first-glance #dayOverview .ws-heading p{font-size:8px}
+ .workspaces-ready .first-glance .day-tile{min-height:0;padding:5px 10px;gap:3px}
+ .workspaces-ready .first-glance .day-tile:nth-child(n+3){padding-top:7px;margin-top:4px}
+ .workspaces-ready .first-glance .day-label{font-size:9px;line-height:1.3}
+ .workspaces-ready .first-glance .day-value{font-size:17px;line-height:1.15;gap:12px}
+ .workspaces-ready .first-glance .day-best .day-value{font-size:14px}
+ .workspaces-ready .first-glance .day-detail{font-size:9px;line-height:1.35;padding-left:8px}
+ .workspaces-ready .first-glance .day-tile>i{font-size:9px;left:2px;bottom:5px}
+}
+@media(max-width:768px) and (max-height:700px){
+ .workspaces-ready #page-dashboard>.topbar{margin-bottom:5px}
+ html body.workspaces-ready #page-dashboard>.first-glance{padding:11px 13px!important}
+ .workspaces-ready .first-glance .glance-heading{margin-bottom:5px}
+ html body.workspaces-ready .first-glance .glance-main{gap:7px}
+ .workspaces-ready .first-glance .glance-value #heroVal{font-size:28px}
+ .workspaces-ready .first-glance .glance-performance{margin:3px 0 6px}
+ .workspaces-ready .first-glance .glance-retirement{padding-top:6px;gap:5px 9px}
+ .workspaces-ready .first-glance #dayOverview{margin-top:7px;padding-top:7px}
+ .workspaces-ready .first-glance #dayOverview .ws-heading{margin-bottom:4px}
+ .workspaces-ready .first-glance .day-tile{padding-top:3px;padding-bottom:3px;gap:2px}
+ .workspaces-ready .first-glance .day-tile:nth-child(n+3){padding-top:5px;margin-top:3px}
+}
+@media(max-width:768px) and (max-height:625px){
+ html body.workspaces-ready #page-dashboard>.topbar{margin-top:-6px;margin-bottom:3px!important}
+ html body.workspaces-ready #page-dashboard>.topbar .page-title{font-size:19px!important}
+ html body.workspaces-ready #page-dashboard>.first-glance{padding-block:5px!important}
+ .workspaces-ready .first-glance .glance-heading{margin-bottom:2px}
+ .workspaces-ready .first-glance .cur-btn{min-height:25px}
+}
