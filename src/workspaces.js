@@ -30,14 +30,23 @@ export function buildWorkspaces(){
  stats.querySelectorAll('.stat-card').forEach(el=>{el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-expanded','false');el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});el.addEventListener('click',()=>requestAnimationFrame(()=>stats.querySelectorAll('.stat-card').forEach(c=>c.setAttribute('aria-expanded',String(c.nextElementSibling?.classList.contains('open'))))));});
  const shortcuts=create('div','ws-home-shortcuts');[['الحركات','transactions','list'],['الأهداف','goals','target'],['الزكاة','zakat','building-mosque']].forEach(([label,id,icon])=>{const b=create('button','');b.innerHTML=`<i class="ti ti-${icon}"></i><span>${label}</span><span>←</span>`;b.onclick=()=>{window.portfolioBridge.go(id);scrollTo({top:0,behavior:'instant'});};shortcuts.append(b);});stats.before(shortcuts);
  heading(footer,'التوزيع وخطتك القادمة');
+ const day=create('section','day-overview');day.id='dayOverview';heading(day,'ملخّص اليوم','مراكزك حسب آخر تحديث للأسعار');day.append($('dashPulse'));shortcuts.after(day);
 
  const pf=$('page-portfolio');pf.querySelector('.topbar').after($('totalsRow'));$('totalsRow').classList.add('ws-portfolio-summary');
- const holdings=create('div','ws-holdings');[$('pfAllocCard'),$('pfFilters'),$('pfList'),$('emptyPortfolio'),...pf.querySelectorAll(':scope>.asset-section:not(#secOther)')].forEach(n=>holdings.append(n));
+ const holdings=create('div','ws-holdings');[$('pfAllocCard'),$('pfFilters'),$('pfList'),$('emptyPortfolio'),...pf.querySelectorAll(':scope>.asset-section:not(#secOther):not(#secProp):not(#secCash)')].forEach(n=>holdings.append(n));
  const pws=workspace('portfolio',[
-  ['مراكزي','briefcase',[holdings]],['مصادر أخرى','layout-list',[$('secOther')]]
+  ['مراكزي','briefcase',[holdings]],['مصادر أخرى','layout-list',[$('secCash'),$('secProp'),$('secOther')]]
  ]);
  pws.panels[0].prepend($('totalsRow'));pws.panels[0].append($('statusTxt'));
- heading(pws.panels[1],'الثروة خارج المراكز الاستثمارية','العقارات والودائع والمصادر الأخرى');
+ pws.panels[0].classList.add('investment-workspace');pws.panels[1].classList.add('sources-workspace');
+ heading(pws.panels[0],'مراكزي الاستثمارية','الأسهم والصناديق والذهب · الإجمالي يشمل هذه المراكز فقط');
+ const sourcesSummary=create('div','sources-summary');
+ sourcesSummary.innerHTML='<div class="sources-main"><span>إجمالي المصادر الأخرى</span><strong id="sourcesTotal">—</strong></div><div class="sources-breakdown"><div><span>النقدي</span><strong id="sourcesCash">—</strong></div><div><span>الأملاك</span><strong id="sourcesProperty">—</strong></div><div><span>المصادر اليدوية المحتسبة</span><strong id="sourcesManual">—</strong></div></div>';
+ pws.panels[1].prepend(sourcesSummary);
+ heading(pws.panels[1],'النقدي والأملاك والمصادر الأخرى','الإجمالي يحترم خيارات تضمين المصادر واحتساب غير المحقق');
+ $('secOther').querySelector('.section-title').textContent='مصادر مضافة يدويًا';
+ $('emptyPortfolio').textContent='لا توجد مراكز أسهم أو ذهب — أضف حركة للبدء';
+ $('pfAllocCard').querySelector('.card-title').lastChild.textContent=' توزيع مراكزي الاستثمارية';
 
  const tx=$('page-transactions'),filter=tx.querySelector('.layout-filter-panel');
  const tws=workspace('transactions',[
@@ -88,7 +97,7 @@ export function buildWorkspaces(){
  $('layout-asset-settings').open=true;$('layout-asset-settings').querySelector('summary').hidden=true;
  heading(rws.panels[0],'الأصول حسب الفئة','تعريف الأصل ورمزه وعملته في مكان واحد');
 
- const market=$('page-market');market.querySelector('.topbar').after($('dashPulse'));market.classList.add('ws-market');
+ const market=$('page-market');market.classList.add('ws-market');
  const marketSection=group(market,'ws-market-board',[$('marketTable')]);heading(marketSection,'قائمة المتابعة','اضغط على الأصل لعرض تفاصيله');marketSection.after($('marketStatus'));
 
  const notes=$('page-notes');

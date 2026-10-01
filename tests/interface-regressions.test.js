@@ -20,3 +20,20 @@ test('loading the saved theme does not write a setting back to the database',()=
 test('restoring the original interface never restores Google Apps Script connections',()=>{
  for(const text of [source,fs.readFileSync(new URL('../index.html',import.meta.url),'utf8')])assert.doesNotMatch(text,/google\.script\.run|script\.google\.com\/macros|SpreadsheetApp/);
 });
+test('portfolio sections reconcile investments, cash, property and included manual sources',()=>{
+ const groups=[
+  {assetType:'Stock',assetName:'Partial stock',buyQ:100,sellQ:50,buySAR:1000,sellSAR:600,fifoAvgCost:10,realizedPnL:150},
+  {assetType:'Gold',assetName:'Gold',buyQ:2,sellQ:0,buySAR:400,sellSAR:0,fifoAvgCost:200},
+  {assetType:'Stock',assetName:'Sold',buyQ:10,sellQ:10,buySAR:100,sellSAR:300,fifoAvgCost:0,realizedPnL:200},
+  {assetType:'Cash',assetName:'Account',buyQ:0,sellQ:0,depSAR:800,wthSAR:100},
+  {assetType:'Property',assetName:'Home',buyQ:1,sellQ:0,buySAR:900,sellSAR:0}
+ ];
+ const context=vm.createContext({buildGroups:()=>groups,isExited:g=>['Stock','Gold'].includes(g.assetType)&&g.buyQ===g.sellQ,getLivePrice:()=>null,propVals:{Home:{sar:1200}},pN:v=>Number(v)||0,includeUnrealized:true,otherSrc:[{type:'realized',value:1000},{type:'unrealized',value:200},{type:'realized',value:300,included:false}]});
+ vm.runInContext(functions(['groupCurrentValue','calcTotals','calcPortfolioSections']),context);
+ let s=context.calcPortfolioSections();
+ assert.equal(s.investmentValue,900);assert.equal(s.investmentCost,900);assert.equal(s.realized,350);
+ assert.equal(s.cash,700);assert.equal(s.property,1200);assert.equal(s.manual,1200);assert.equal(s.sourcesValue,3100);
+ assert.equal(s.investmentValue+s.sourcesValue,context.calcTotals().totalCur);
+ context.includeUnrealized=false;s=context.calcPortfolioSections();assert.equal(s.sourcesValue,2900);assert.equal(s.manual,1000);assert.equal(s.investmentValue+s.sourcesValue,context.calcTotals().totalCur);
+ context.getLivePrice=name=>name==='Partial stock'?{priceSAR:12}:null;s=context.calcPortfolioSections();assert.equal(s.investmentValue,1000);assert.equal(s.investmentCost,900);
+});

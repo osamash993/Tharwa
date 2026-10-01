@@ -42,7 +42,7 @@ window.portfolioAPI=api.rpc;
 window.downloadTransactions=async txns=>{try{const {exportTransactions,download}=await import('./workbook.js');download(await exportTransactions(txns),'Tharwa_Transactions_'+new Date().toISOString().slice(0,10)+'.xlsx');}catch(e){window.cloudFailure(e);}};
 window.refreshOverview=()=>{};
 window.reloadPortfolio=async()=>{const data=await api.call('loadAll');window.portfolioBridge.load(data);};
-async function loadScript(path){await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=import.meta.env.BASE_URL+path;s.onload=resolve;s.onerror=reject;document.body.append(s);});}
+async function loadScript(path){await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=import.meta.env.BASE_URL+path+'?v='+encodeURIComponent(import.meta.url);s.onload=resolve;s.onerror=reject;document.body.append(s);});}
 let started=false;
 async function start(){
  if(started)return;started=true;

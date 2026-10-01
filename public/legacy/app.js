@@ -473,7 +473,7 @@ function getLivePrice(assetName) {
 }
 function groupCurrentValue(g) {
   const netQ = g.buyQ - g.sellQ;
-  const cost = g.assetType === 'Cash' ? g.depSAR - g.wthSAR : g.buySAR - g.sellSAR;
+  const cost = g.assetType === 'Cash' ? g.depSAR - g.wthSAR : ['Stock', 'Gold'].includes(g.assetType) ? Math.max(0, netQ) * (g.fifoAvgCost || 0) : g.buySAR - g.sellSAR;
   if (g.assetType === 'Cash') return {
     cur: cost,
     cost,
@@ -1070,60 +1070,48 @@ function goMarketAsset(id) {
     });
   }, 150);
 }
+function escapePortfolioText(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 function renderDashPulse() {
   const el = $('dashPulse');
   if (!el) return;
-  try {
-    const grps = buildGroups();
-    const list = assets.filter(a => a.yahooSym && a.type !== 'Property' && a.type !== 'Cash').map(a => {
-      const raw = marketData[a.yahooSym];
-      const price = typeof raw === 'object' ? raw?.price : raw;
-      const chg = typeof raw === 'object' ? raw?.changePct ?? null : null;
-      const cur = typeof raw === 'object' && raw?.currency || a.currency || 'USD';
-      const isGoldAsset = a.isGold || a.type === 'Gold';
-      const grp = grps.find(g => g.assetName === a.name);
-      const netQ = grp ? grp.buyQ - grp.sellQ : 0;
-      let pnl = null;
-      if (netQ > 0 && grp && price != null) {
-        const curP = isGoldAsset ? (price * 0.997 * 0.02055 - 5) / 0.188 : toSAR(price, cur);
-        pnl = netQ * curP - netQ * (grp.fifoAvgCost || 0);
-      }
-      return {
-        a,
-        chg,
-        pnl,
-        owned: netQ > 0
-      };
-    }).filter(x => x.owned);
-    const withChg = list.filter(x => x.chg != null);
-    if (!withChg.length) {
-      el.style.display = 'none';
-      return;
-    }
-    let up = null,
-      dn = null,
-      best = null;
-    withChg.forEach(x => {
-      if (x.chg > 0 && (!up || x.chg > up.chg)) up = x;
-      if (x.chg < 0 && (!dn || x.chg < dn.chg)) dn = x;
-    });
-    list.forEach(x => {
-      if (x.pnl != null && (!best || x.pnl > best.pnl)) best = x;
-    });
-    const ups = withChg.filter(x => x.chg > 0).length,
-      dns = withChg.filter(x => x.chg < 0).length;
-    const chip = (html, label, act) => `<div class="mkt-pchip" onclick="${act}"><div style="min-width:0"><div class="l">${label}</div><div class="v" style="direction:ltr;text-align:right">${html}</div></div><i class="ti ti-chevron-left" style="font-size:10px;color:var(--muted);opacity:.5;flex-shrink:0"></i></div>`;
-    let h = '';
-    if (up) h += chip(`<span style="color:var(--green)">${up.a.name} +${fmt(up.chg, 2)}%</span>`, 'أكبر رابح اليوم', `goMarketAsset('${up.a.id}')`);
-    if (dn) h += chip(`<span style="color:var(--red)">${dn.a.name} ${fmt(dn.chg, 2)}%</span>`, 'أكبر خاسر اليوم', `goMarketAsset('${dn.a.id}')`);
-    h += chip(`<span style="color:var(--green)">${ups}▲</span> · <span style="color:var(--red)">${dns}▼</span>`, 'أصولك اليوم', `goMarketAsset('')`);
-    if (best && best.pnl != null) h += chip(`<span style="color:var(--gold)">${best.pnl >= 0 ? '+' : '-'}${fmtC(Math.abs(best.pnl))}</span>`, 'أفضل مركز · ' + best.a.name, `goMarketAsset('${best.a.id}')`);
-    el.innerHTML = h;
-    el.style.display = 'grid';
-  } catch (e) {
-    el.style.display = 'none';
-  }
+  const groups = buildGroups();
+  const owned = assets.filter(a => a.yahooSym && ['Stock','Gold'].includes(a.type)).map(a => {
+    const g = groups.find(g => g.assetName === a.name);
+    const raw = marketData[a.yahooSym];
+    if (!g || isExited(g) || g.buyQ - g.sellQ <= 0) return null;
+    const value = groupCurrentValue(g);
+    return {a, change: typeof raw === 'object' && Number.isFinite(raw?.changePct) ? raw.changePct : null, pnl: value.hasPx ? value.cur - value.cost : null};
+  }).filter(Boolean);
+  const quoted = owned.filter(x => x.change !== null);
+  const up = quoted.filter(x => x.change > 0).sort((a,b)=>b.change-a.change)[0];
+  const down = quoted.filter(x => x.change < 0).sort((a,b)=>a.change-b.change)[0];
+  const best = owned.filter(x => x.pnl !== null).sort((a,b)=>b.pnl-a.pnl)[0];
+  const tile = (label, value, detail, tone, id='') => `<button class="day-tile ${tone}" onclick="${escapePortfolioText('goMarketAsset('+JSON.stringify(String(id))+')')}"><span class="day-label">${label}</span><strong class="day-value">${value}</strong><span class="day-detail">${detail}</span><i class="ti ti-chevron-left" aria-hidden="true"></i></button>`;
+  const missing = owned.length ? 'بانتظار الأسعار' : 'لا توجد مراكز';
+  const ups = quoted.filter(x=>x.change>0).length, downs = quoted.filter(x=>x.change<0).length;
+  el.innerHTML = tile('أصولك اليوم', quoted.length ? `<span class="day-up">${ups} ↑</span><span class="day-down">${downs} ↓</span>` : '—', quoted.length ? `${quoted.length} من ${owned.length} أصل لديها تغيّر يومي` : missing, 'day-count')
+    + tile('أكبر رابح اليوم', up ? '+'+fmt(up.change,2)+'%' : '—', up ? escapePortfolioText(up.a.name) : quoted.length ? 'لا يوجد أصل صاعد' : missing, 'day-positive', up?.a.id)
+    + tile('أكبر خاسر اليوم', down ? fmt(down.change,2)+'%' : '—', down ? escapePortfolioText(down.a.name) : quoted.length ? 'لا يوجد أصل هابط' : missing, 'day-negative', down?.a.id)
+    + tile('أفضل مركز · منذ الشراء', best ? (best.pnl>=0?'+':'−')+fmtC(Math.abs(best.pnl)) : '—', best ? escapePortfolioText(best.a.name) : missing, 'day-best', best?.a.id);
+  el.style.display = 'grid';
 }
+function calcPortfolioSections(groups = buildGroups()) {
+  const result = {investmentValue:0, investmentCost:0, realized:0, cash:0, property:0, manual:0};
+  groups.forEach(g => {
+    if (['Stock','Gold'].includes(g.assetType)) result.realized += g.realizedPnL || 0;
+    if (isExited(g)) return;
+    const v = groupCurrentValue(g);
+    if (['Stock','Gold'].includes(g.assetType)) {result.investmentValue += v.cur;result.investmentCost += v.cost;}
+    else if (g.assetType === 'Cash') result.cash += v.cur;
+    else if (g.assetType === 'Property') result.property += v.cur;
+  });
+  result.manual = otherSrc.filter(s => s.included !== false && (s.type === 'realized' || (s.type === 'unrealized' && includeUnrealized))).reduce((sum,s)=>sum+pN(s.value),0);
+  result.sourcesValue = result.cash + result.property + result.manual;
+  return result;
+}
+
 (function () {
   let _lastScrollY = 0,
     _downAcc = 0,
@@ -1238,7 +1226,7 @@ function renderPfMobile(grps) {
     if (_r) _r.style.display = 'none';
     return;
   }
-  grps = grps || buildGroups();
+  grps = (grps || buildGroups()).filter(g => ['Stock','Gold'].includes(g.assetType));
   const items = grps.map(g => {
     const v = groupCurrentValue(g);
     return {
@@ -1264,7 +1252,7 @@ function renderPfMobile(grps) {
     sums[it.g.assetType] = (sums[it.g.assetType] || 0) + Math.max(0, it.cur);
     total += Math.max(0, it.cur);
   });
-  const otherTotal = (typeof otherSrc !== 'undefined' ? otherSrc || [] : []).filter(s => s.included !== false).reduce((a, s) => a + Math.max(0, pN(s.value)), 0);
+  const otherTotal = 0; // Manual sources have their own workspace and total.
   const grand = total + otherTotal;
   if (grand > 0) {
     let bar = '',
@@ -1285,7 +1273,7 @@ function renderPfMobile(grps) {
     alloc.style.display = '';
   } else alloc.style.display = 'none';
   const fch = (k, lb) => `<button class="mkt-fchip${pfFilter === k ? ' on' : ''}" onclick="setPfFilter('${k}')">${lb}</button>`;
-  flt.innerHTML = fch('all', 'الكل') + fch('Stock', 'أسهم') + fch('Gold', 'ذهب') + fch('Cash', 'نقدي') + fch('Property', 'أملاك') + fch('up', 'رابح ▲') + fch('down', 'خاسر ▼');
+  flt.innerHTML = fch('all', 'الكل') + fch('Stock', 'أسهم') + fch('Gold', 'ذهب') + fch('up', 'رابح ▲') + fch('down', 'خاسر ▼');
   flt.style.display = 'flex';
   let show = items;
   if (PF_TYPES[pfFilter]) show = items.filter(it => it.g.assetType === pfFilter);else if (pfFilter === 'up') show = items.filter(it => !it.exited && it.hasPx && it.profit > 1);else if (pfFilter === 'down') show = items.filter(it => !it.exited && it.hasPx && it.profit < -1);
@@ -1407,40 +1395,7 @@ function renderPfMobile(grps) {
       </div>
     </div>`;
   }).join('');
-  let othersRow = '';
-  if (pfFilter === 'all' && typeof otherSrc !== 'undefined' && otherSrc.length) {
-    const srcRows = otherSrc.map(s => {
-      const inc = s.included !== false;
-      return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--wline);font-size:11px;opacity:${inc ? 1 : .55}">
-        <input type="checkbox" ${inc ? 'checked' : ''} style="width:14px;height:14px;accent-color:var(--gold);flex-shrink:0;cursor:pointer" onclick="event.stopPropagation()" onchange="toggleOtherIncluded(${s.id},this.checked)">
-        <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)">${s.name} <span style="font-size:8.5px;color:var(--muted)">${s.type === 'realized' ? 'محققة' : 'غير محققة'}</span></span>
-        <span style="font-weight:600;font-family:inherit;color:var(--gold);direction:ltr;flex-shrink:0">${fmtC(pN(s.value))}</span>
-        <button onclick="event.stopPropagation();openEditOther(${s.id})" style="background:none;border:none;color:var(--muted);cursor:pointer;padding:2px;flex-shrink:0"><i class="ti ti-edit" style="font-size:13px"></i></button>
-      </div>`;
-    }).join('');
-    othersRow = `<div class="mkt-row" data-pfid="__other__">
-      <div class="mkt-rhead" onclick="togglePfRow(this.parentNode)">
-        <div style="flex:1;min-width:0">
-          <div style="font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:6px">مصادر أخرى <span style="font-size:9px;font-weight:500;color:var(--muted);background:var(--surf2);border:1px solid var(--bdr);border-radius:99px;padding:1px 7px">${otherSrc.length} مصدر</span></div>
-          <div style="font-size:10px;color:var(--muted);margin-top:1px">ودائع، مكافآت، التزامات...</div>
-        </div>
-        <div style="flex-shrink:0;direction:ltr">
-          <div style="font-size:14px;font-weight:600;font-family:inherit;color:var(--gold)">${fmtC(otherTotal)}</div>
-        </div>
-      </div>
-      <div class="mkt-rbody">
-        <div style="margin-top:4px">${srcRows}</div>
-        <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
-          <button onclick="event.stopPropagation();$('btnOpenOther')&&$('btnOpenOther').click()" style="flex:1;font-family:inherit;font-size:11.5px;font-weight:500;padding:9px;border-radius:11px;border:1px solid rgba(201,168,76,.35);background:rgba(201,168,76,.12);color:var(--gold);cursor:pointer"><i class="ti ti-plus"></i> إضافة مصدر</button>
-          <label style="display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--muted);cursor:pointer" onclick="event.stopPropagation()">
-            <input type="checkbox" ${$('chkUnrealized') && $('chkUnrealized').checked ? 'checked' : ''} style="accent-color:var(--gold);width:13px;height:13px" onchange="toggleUnrealized(this.checked)">
-            احسب غير المحقق
-          </label>
-        </div>
-      </div>
-    </div>`;
-  }
-  list.innerHTML = rows + othersRow || '<div class="empty" style="border:none">لا نتائج لهذا الفلتر</div>';
+  list.innerHTML = rows || '<div class="empty" style="border:none">لا نتائج لهذا الفلتر</div>';
   list.style.display = 'block';
   const rbc = $('pfRebal'),
     rbb = $('pfRebalBody');
@@ -1495,7 +1450,7 @@ function renderPortfolio() {
   grps.forEach(g => {
     if (byType[g.assetType]) byType[g.assetType].push(g);
   });
-  $('emptyPortfolio').style.display = grps.length ? 'none' : 'block';
+  $('emptyPortfolio').style.display = grps.some(g=>['Stock','Gold'].includes(g.assetType)) ? 'none' : 'block';
   let tCost = 0,
     tVal = 0;
   const goldHTML = byType.Gold.filter(g => !isExited(g)).map(g => {
@@ -1585,6 +1540,7 @@ function renderPortfolio() {
       </div>
       ${mValSAR > 0 ? `<div style="font-size:10px;color:var(--muted);margin-top:4px">= ${fmtC(mValSAR)}</div>` : ''}
       ${pnl != null ? `<div class="pnl ${pnl >= 0 ? 'pos' : 'neg'}" style="margin-top:4px">${pnl >= 0 ? '▲' : '▼'} ${fmtC(Math.abs(pnl))} (${pct >= 0 ? '+' : ''}${fmt(pct, 1)}%)</div>` : ''}
+      <div class="source-actions"><button class="btn-sm" onclick="${escapePortfolioText('pfQuickTxn('+JSON.stringify(g.assetName)+')')}">إضافة حركة</button><button class="btn-sm" onclick="${escapePortfolioText('pfEditAsset('+JSON.stringify(g.assetName)+')')}">تعديل الأصل</button></div>
     </div>`;
   }).join('');
   const cashHTML = byType.Cash.map(g => {
@@ -1592,6 +1548,7 @@ function renderPortfolio() {
     return `<div class="asset-card"><div class="ac-head"><div class="ac-name"><i class="ti ti-cash"></i> ${g.assetName}</div></div>
       <div class="ac-meta">إيداع: ${fmtC(g.depSAR)} · سحب: ${fmtC(g.wthSAR)}</div>
       <div style="font-size:1rem;font-weight:600;font-family:inherit;color:${net >= 0 ? 'var(--green)' : 'var(--red)'};border-top:1px solid var(--bdr);padding-top:9px;margin-top:3px">${net >= 0 ? '+' : '-'}${fmtC(Math.abs(net))}</div>
+      <div class="source-actions"><button class="btn-sm" onclick="${escapePortfolioText('pfQuickTxn('+JSON.stringify(g.assetName)+')')}">إضافة حركة</button><button class="btn-sm" onclick="${escapePortfolioText('pfEditAsset('+JSON.stringify(g.assetName)+')')}">تعديل الأصل</button></div>
     </div>`;
   }).join('');
   const sellGroups = grps.filter(g => (g.assetType === 'Gold' || g.assetType === 'Stock' || g.assetType === 'Property') && g.sellHistory?.length);
@@ -1669,6 +1626,9 @@ function renderPortfolio() {
     s.style.display = items.length ? 'block' : 'none';
     c.innerHTML = html || '<div class="empty">لا توجد بيانات</div>';
   });
+  const sections = calcPortfolioSections(grps);
+  tCost = sections.investmentCost; tVal = sections.investmentValue;
+  [['sourcesTotal',sections.sourcesValue],['sourcesCash',sections.cash],['sourcesProperty',sections.property],['sourcesManual',sections.manual]].forEach(([id,value])=>st(id,fmtC(value)));
   $('totalsRow').style.display = 'grid';
   {
     const pnl = tVal - tCost;
@@ -1679,7 +1639,7 @@ function renderPortfolio() {
       el.textContent = (pnl >= 0 ? '+' : '-') + fmtC(Math.abs(pnl));
       el.style.color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
     }
-    const totalRealized = grps.reduce((s, g) => s + (g.realizedPnL || 0), 0);
+    const totalRealized = sections.realized;
     const rEl = $('tRealized');
     if (rEl) {
       if (totalRealized === 0) {
@@ -1730,7 +1690,7 @@ function renderOtherSources() {
       </div>
       <div class="ac-divider" style="margin-top:auto">
         <div>
-          <div class="ac-price-label">${inc ? 'مضمّنة في الإجمالي' : 'مستثناة من الإجمالي'}</div>
+          <div class="ac-price-label">${inc && (s.type === 'realized' || includeUnrealized) ? 'مضمّنة في الإجمالي' : 'مستثناة من الإجمالي'}</div>
           <div class="ac-price">${fmtC(pN(s.value))}</div>
         </div>
         <div style="display:flex;gap:6px">
@@ -6815,13 +6775,14 @@ function toggleMktRow(rowEl) {
   if (!rowEl) return;
   const id = rowEl.getAttribute('data-mid');
   const wasOpen = rowEl.classList.contains('open');
-  document.querySelectorAll('.mkt-row.open').forEach(r => r.classList.remove('open'));
+  document.querySelectorAll('#marketTable .mkt-row.open').forEach(r => {r.classList.remove('open');r.querySelector('.quote-head')?.setAttribute('aria-expanded','false');});
   if (wasOpen) {
     mktOpenRow = null;
     return;
   }
   rowEl.classList.add('open');
   mktOpenRow = id;
+  rowEl.querySelector('.quote-head')?.setAttribute('aria-expanded','true');
 }
 function mktQuickAlert(name) {
   openAlertModal(name);
@@ -7024,7 +6985,7 @@ function renderMarketTable() {
     const pulse = `<div class="mkt-pulse">
       <div class="mkt-pchip"><div class="v" style="color:var(--green)">${ups} ▲</div><div class="l">رابح اليوم</div></div>
       <div class="mkt-pchip"><div class="v" style="color:var(--red)">${downs} ▼</div><div class="l">خاسر اليوم</div></div>
-      ${big ? `<div class="mkt-pchip"><div class="v" style="color:var(--gold)">${big.changePct >= 0 ? '+' : ''}${fmt(big.changePct, 2)}%</div><div class="l">أكبر حركة · ${big.a.name}</div></div>` : ''}
+      <div class="mkt-pchip"><div class="v" style="color:var(--gold)">${big ? (big.changePct >= 0 ? '+' : '') + fmt(big.changePct, 2) + '%' : '—'}</div><div class="l">أكبر حركة${big ? ' · ' + escapePortfolioText(big.a.name) : ''}</div></div>
       <div class="mkt-pchip"><div class="v">${ownedN}</div><div class="l">أصل مشتري</div></div>
     </div>`;
     const fch = (k, lb) => `<button class="mkt-fchip${mktFilter === k ? ' on' : ''}" onclick="setMktFilter('${k}')">${lb}</button>`;
@@ -7032,8 +6993,7 @@ function renderMarketTable() {
     let list = items;
     if (mktFilter === 'up') list = items.filter(it => it.changePct != null && it.changePct > 0);else if (mktFilter === 'down') list = items.filter(it => it.changePct != null && it.changePct < 0);else if (mktFilter === 'owned') list = items.filter(it => it.isOwned);
     const rowsHtml = list.map(it => {
-      const pill = it.changePct != null ? `<div style="font-size:11px;font-weight:600;font-family:inherit;color:#fff;background:${it.changePct >= 0 ? 'var(--green)' : 'var(--red)'};border-radius:7px;padding:2.5px 9px;direction:ltr;white-space:nowrap;min-width:78px;text-align:center;box-sizing:border-box">${it.changePct >= 0 ? '▲ +' : '▼ '}${fmt(Math.abs(it.changePct), 2)}%</div>` : `<div style="font-size:11px;color:var(--muted);min-width:78px;text-align:center">—</div>`;
-      let mini = '';
+      const pill = `<span class="quote-change ${it.changePct == null ? 'quote-neutral' : it.changePct >= 0 ? 'quote-up' : 'quote-down'}">${it.changePct != null ? (it.changePct >= 0 ? '+' : '−') + fmt(Math.abs(it.changePct),2) + '%' : '—'}</span>`;
       let pct52 = null,
         barColor = 'var(--gold)',
         lo = '',
@@ -7043,7 +7003,7 @@ function renderMarketTable() {
         barColor = pct52 > 66 ? 'var(--green)' : pct52 > 33 ? 'var(--gold)' : 'var(--red)';
         lo = it.isGoldAsset ? fmt((it.low52 * 0.997 * 0.02055 - 5) / 0.188 * sarToBase(1), 0) + CUR_SYMS[baseCur] : fmt(it.low52, 1);
         hi = it.isGoldAsset ? fmt((it.high52 * 0.997 * 0.02055 - 5) / 0.188 * sarToBase(1), 0) + CUR_SYMS[baseCur] : fmt(it.high52, 1);
-        mini = `<div style="width:54px;flex-shrink:0"><div style="height:5px;background:var(--wline);border-radius:99px;position:relative"><div style="position:absolute;right:${pct52.toFixed(0)}%;top:50%;transform:translate(50%,-50%);width:11px;height:11px;border-radius:50%;background:${barColor};border:2px solid var(--surf)"></div></div></div>`;
+
       }
       const cell = (l, v, vs = '') => `<div style="background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:8px 11px"><div style="font-size:10px;color:var(--muted)">${l}</div><div style="font-size:12.5px;font-weight:600;font-family:inherit;margin-top:2px;direction:ltr;text-align:right;color:var(--muted);${vs}">${v}</div></div>`;
       const pnlColor = it.pnlSAR != null ? it.pnlSAR >= 0 ? 'var(--green)' : 'var(--red)' : 'var(--muted)';
@@ -7051,7 +7011,7 @@ function renderMarketTable() {
       const bar52full = pct52 != null ? `<div style="margin:8px 0 12px">
         <div style="display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted);margin-bottom:4px"><span>أدنى 52 أسبوع · ${lo}</span><span>أعلى · ${hi}</span></div>
         <div style="height:7px;background:var(--wline);border-radius:99px;position:relative"><div style="position:absolute;right:${pct52.toFixed(0)}%;top:50%;transform:translate(50%,-50%);width:13px;height:13px;border-radius:50%;background:${barColor};border:2.5px solid var(--surf);box-shadow:0 1px 4px rgba(0,0,0,.18)"></div></div>
-      </div>` : '';
+      </div>` : '<div class="quote-range-missing">نطاق 52 أسبوع غير متوفر</div>';
       const body = `<div class="mkt-rbody">
         ${bar52full}
         <div class="mkt-dgrid">
@@ -7064,25 +7024,19 @@ function renderMarketTable() {
           <button onclick="event.stopPropagation();mktQuickAlert('${(it.a.name || '').replace(/'/g, "\\'")}')" style="flex:1;font-family:inherit;font-size:11.5px;font-weight:500;padding:9px;border-radius:11px;border:1px solid rgba(201,168,76,.35);background:rgba(201,168,76,.12);color:var(--gold);cursor:pointer"><i class="ti ti-bell-plus"></i> نبّهني عند سعر…</button>
         </div>
       </div>`;
-      return `<div class="mkt-row" data-mid="${it.a.id}">
-        <div class="mkt-rhead" onclick="toggleMktRow(this.parentNode)">
-          <div style="flex:1;min-width:0">
-            <div style="font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:6px">${it.a.name}${it.isOwned ? `<span style="font-size:9px;font-weight:500;color:var(--muted);background:var(--surf2);border:1px solid var(--bdr);border-radius:99px;padding:1px 7px">مشتري</span>` : ''}</div>
-            ${it.aname ? `<div style="font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${it.aname}</div>` : ''}
-          </div>
-          ${mini}
-          <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px;direction:ltr">
-            <div style="font-size:14px;font-weight:600;font-family:inherit;color:var(--gold)">${it.displayPrice}${it.displayCur ? ` <span style="font-size:9.5px;color:var(--muted);font-weight:500">${it.displayCur}</span>` : ''}</div>
-            ${pill}
-          </div>
-        </div>
+      return `<div class="mkt-row quote-row" data-mid="${escapePortfolioText(it.a.id)}">
+        <button type="button" class="mkt-rhead quote-head" aria-expanded="false" onclick="toggleMktRow(this.parentNode)">
+          <span class="quote-identity"><strong>${escapePortfolioText(it.a.name)}</strong><span class="quote-symbol">${escapePortfolioText(it.a.yahooSym || it.aname || '—')}</span><span class="quote-owned">${it.isOwned ? 'في محفظتك' : 'متابعة فقط'}</span></span>
+          <span class="quote-price"><span class="quote-caption">آخر سعر</span><strong>${it.isGoldAsset && it.price != null ? fmt((it.price * 0.997 * 0.02055 - 5) / 0.188 * sarToBase(1), 1) : it.displayPrice}</strong><span class="quote-currency">${it.isGoldAsset ? CUR_SYMS[baseCur] + ' / غرام' : it.displayCur || '—'}</span></span>
+          <span class="quote-day"><span class="quote-caption">التغيّر اليومي</span>${pill}<i class="ti ti-chevron-down" aria-hidden="true"></i></span>
+        </button>
         ${body}
       </div>`;
     }).join('');
     el.innerHTML = pulse + filters + `<div class="mkt-list">${rowsHtml || '<div class="empty">لا نتائج لهذا الفلتر</div>'}</div>`;
     if (mktOpenRow) {
       const r = el.querySelector(`.mkt-row[data-mid="${mktOpenRow}"]`);
-      if (r) r.classList.add('open');
+      if (r) {r.classList.add('open');r.querySelector('.quote-head')?.setAttribute('aria-expanded','true');}
     }
     return;
   }
