@@ -1524,7 +1524,7 @@ function renderPortfolio() {
       pct = cost > 0 && pnl != null ? pnl / cost * 100 : null;
     const selCur = stored.cur || 'SAR';
     const dispVal = stored.raw || '';
-    return `<div class="asset-card"><div class="ac-head"><div class="ac-name"><i class="ti ti-building"></i> ${g.assetName}</div></div>
+    return sourcePositionCard(g.assetName, 'أملاك', fmtC(mValSAR > 0 ? mValSAR : cost), 'مستثمر: ' + fmtC(cost), `<div class="source-detail-title">تقييم الأصل</div>
       <div class="ac-meta">التكلفة: ${fmtC(cost)}</div>
       <label style="font-size:10px;color:var(--muted);margin-top:6px;display:block;margin-bottom:4px">القيمة السوقية الحالية</label>
       <div style="display:flex;gap:6px;align-items:center">
@@ -1541,15 +1541,15 @@ function renderPortfolio() {
       ${mValSAR > 0 ? `<div style="font-size:10px;color:var(--muted);margin-top:4px">= ${fmtC(mValSAR)}</div>` : ''}
       ${pnl != null ? `<div class="pnl ${pnl >= 0 ? 'pos' : 'neg'}" style="margin-top:4px">${pnl >= 0 ? '▲' : '▼'} ${fmtC(Math.abs(pnl))} (${pct >= 0 ? '+' : ''}${fmt(pct, 1)}%)</div>` : ''}
       <div class="source-actions"><button class="btn-sm" onclick="${escapePortfolioText('pfQuickTxn('+JSON.stringify(g.assetName)+')')}">إضافة حركة</button><button class="btn-sm" onclick="${escapePortfolioText('pfEditAsset('+JSON.stringify(g.assetName)+')')}">تعديل الأصل</button></div>
-    </div>`;
+    `);
   }).join('');
   const cashHTML = byType.Cash.map(g => {
     const net = g.depSAR - g.wthSAR;
-    return `<div class="asset-card"><div class="ac-head"><div class="ac-name"><i class="ti ti-cash"></i> ${g.assetName}</div></div>
+    return sourcePositionCard(g.assetName, 'نقدي', fmtC(net), 'سيولة جاهزة', `<div class="source-detail-title">حركة الرصيد</div>
       <div class="ac-meta">إيداع: ${fmtC(g.depSAR)} · سحب: ${fmtC(g.wthSAR)}</div>
       <div style="font-size:1rem;font-weight:600;font-family:inherit;color:${net >= 0 ? 'var(--green)' : 'var(--red)'};border-top:1px solid var(--bdr);padding-top:9px;margin-top:3px">${net >= 0 ? '+' : '-'}${fmtC(Math.abs(net))}</div>
       <div class="source-actions"><button class="btn-sm" onclick="${escapePortfolioText('pfQuickTxn('+JSON.stringify(g.assetName)+')')}">إضافة حركة</button><button class="btn-sm" onclick="${escapePortfolioText('pfEditAsset('+JSON.stringify(g.assetName)+')')}">تعديل الأصل</button></div>
-    </div>`;
+    `);
   }).join('');
   const sellGroups = grps.filter(g => (g.assetType === 'Gold' || g.assetType === 'Stock' || g.assetType === 'Property') && g.sellHistory?.length);
   const exitedHTML = sellGroups.map(g => {
@@ -1670,6 +1670,11 @@ function savePropValWithCur(name, rawVal, cur) {
 function savePropVal(name, val) {
   savePropValWithCur(name, val, 'SAR');
 }
+function sourcePositionCard(name, type, value, subtitle, content, included = true) {
+  const sourceKey = type + ':' + name;
+  const open = [...document.querySelectorAll('details.source-position[open]')].some(el => el.dataset.sourceKey === sourceKey);
+  return `<details class="asset-card source-position" data-source-key="${escapePortfolioText(sourceKey)}" ${open ? 'open' : ''} style="opacity:${included ? 1 : .6}"><summary class="mkt-rhead"><span class="source-identity"><strong>${escapePortfolioText(name)} <small>${type}</small></strong><span>${subtitle}</span></span><span class="source-value">${value}<i class="ti ti-chevron-down" aria-hidden="true"></i></span></summary><div class="source-body">${content}</div></details>`;
+}
 function renderOtherSources() {
   const el = $('otherList');
   if (!el) return;
@@ -1679,7 +1684,7 @@ function renderOtherSources() {
   }
   el.innerHTML = otherSrc.map(s => {
     const inc = s.included !== false;
-    return `<div class="asset-card" style="opacity:${inc ? 1 : .6}">
+    return sourcePositionCard(s.name, s.type === 'realized' ? 'محققة' : 'غير محققة', fmtC(pN(s.value)), inc && (s.type === 'realized' || includeUnrealized) ? 'مضمّنة في الإجمالي' : 'مستثناة من الإجمالي', `
       <div class="ac-head">
         <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
           <input type="checkbox" ${inc ? 'checked' : ''} style="width:15px;height:15px;accent-color:var(--gold);cursor:pointer;flex-shrink:0"
@@ -1698,7 +1703,7 @@ function renderOtherSources() {
           <button class="btn-xs" onclick="delOther(${s.id})"><i class="ti ti-trash"></i></button>
         </div>
       </div>
-    </div>`;
+    `, inc);
   }).join('');
 }
 function toggleOtherIncluded(id, included) {
@@ -6900,7 +6905,7 @@ function renderMarketTable() {
         <div style="font-weight:500">${a.name}${isOwned ? '<span style="font-size:9px;background:rgba(201,168,76,.15);color:var(--gold);padding:1px 6px;border-radius:10px;margin-right:6px">مشتري</span>' : ''}</div>
         ${aname ? `<div style="font-size:10px;color:var(--muted);margin-top:2px">${aname}</div>` : ''}
       </td>
-      <td class="mkt-num" style="font-weight:600;color:var(--gold)">${displayPrice}${displayCur ? ` <span style="font-size:10px;color:var(--muted)">${displayCur}</span>` : ''}</td>
+      <td class="mkt-num" style="font-weight:600;color:var(--gold)">${displayPrice}${displayCur ? ` <span style="font-size:10px;color:var(--muted)">${displayCur}</span>` : ''}${isGoldAsset ? `<div class="quote-ounce-desktop">الأونصة <b dir="ltr">${price != null ? '$' + fmt(price, 2) + ' USD' : '—'}</b></div>` : ''}</td>
       <td class="mkt-num ${chgClass}">${changePct != null ? (changePct >= 0 ? '▲ +' : '▼ ') + fmt(Math.abs(changePct), 2) + '%' : '—'}</td>
       <td>${bar52 || '—'}</td>
       <td class="mkt-num" style="color:var(--muted)">${ma200Display}</td>
@@ -7010,10 +7015,9 @@ function renderMarketTable() {
       const pnlVal = it.pnlSAR != null ? (it.pnlSAR >= 0 ? '▲ ' : '▼ ') + fmtC(Math.abs(it.pnlSAR)) + (it.pnlPct != null ? ' (' + (it.pnlPct >= 0 ? '+' : '') + fmt(it.pnlPct, 1) + '%)' : '') : null;
       const bar52full = pct52 != null ? `<div style="margin:8px 0 12px">
         <div style="display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted);margin-bottom:4px"><span>أدنى 52 أسبوع · ${lo}</span><span>أعلى · ${hi}</span></div>
-        <div style="height:7px;background:var(--wline);border-radius:99px;position:relative"><div style="position:absolute;right:${pct52.toFixed(0)}%;top:50%;transform:translate(50%,-50%);width:13px;height:13px;border-radius:50%;background:${barColor};border:2.5px solid var(--surf);box-shadow:0 1px 4px rgba(0,0,0,.18)"></div></div>
-      </div>` : '<div class="quote-range-missing">نطاق 52 أسبوع غير متوفر</div>';
+        <div style="height:7px;background:var(--wline);border-radius:99px;position:relative"><div style="position:absolute;left:${pct52.toFixed(0)}%;top:50%;transform:translate(-50%,-50%);width:13px;height:13px;border-radius:50%;background:${barColor};border:2.5px solid var(--surf);box-shadow:0 1px 4px rgba(0,0,0,.18)"></div></div>
+      </div>` : '<div class="quote-range-missing"><span>نطاق 52 أسبوع غير متوفر</span><div class="quote-range-empty"></div></div>';
       const body = `<div class="mkt-rbody">
-        ${bar52full}
         <div class="mkt-dgrid">
           ${cell('متوسط 200 يوم', it.ma200Txt)}
           ${it.isOwned ? cell('الكمية', it.qtyTxt) : ''}
@@ -7025,11 +7029,13 @@ function renderMarketTable() {
         </div>
       </div>`;
       return `<div class="mkt-row quote-row" data-mid="${escapePortfolioText(it.a.id)}">
-        <button type="button" class="mkt-rhead quote-head" aria-expanded="false" onclick="toggleMktRow(this.parentNode)">
+        <button type="button" class="mkt-rhead quote-head${it.isGoldAsset ? ' quote-head-gold' : ''}" aria-expanded="false" onclick="toggleMktRow(this.parentNode)">
           <span class="quote-identity"><strong>${escapePortfolioText(it.a.name)}</strong><span class="quote-symbol">${escapePortfolioText(it.a.yahooSym || it.aname || '—')}</span><span class="quote-owned">${it.isOwned ? 'في محفظتك' : 'متابعة فقط'}</span></span>
           <span class="quote-price"><span class="quote-caption">آخر سعر</span><strong>${it.isGoldAsset && it.price != null ? fmt((it.price * 0.997 * 0.02055 - 5) / 0.188 * sarToBase(1), 1) : it.displayPrice}</strong><span class="quote-currency">${it.isGoldAsset ? CUR_SYMS[baseCur] + ' / غرام' : it.displayCur || '—'}</span></span>
           <span class="quote-day"><span class="quote-caption">التغيّر اليومي</span>${pill}<i class="ti ti-chevron-down" aria-hidden="true"></i></span>
+          ${it.isGoldAsset ? `<span class="quote-price quote-ounce"><span class="quote-caption">الأونصة عالميًا</span><strong>${it.price != null ? '$' + fmt(it.price, 2) : '—'}</strong><span class="quote-currency">USD / أونصة</span></span>` : ''}
         </button>
+        <div class="quote-range-visible">${bar52full}</div>
         ${body}
       </div>`;
     }).join('');

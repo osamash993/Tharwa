@@ -25,12 +25,22 @@ export function buildWorkspaces(){
  // Overview: wealth first, independent asset tiles, then planning and distribution.
  const home=$('page-dashboard'),hero=home.querySelector('.hero'),stats=home.querySelector('.stats-row'),retire=home.querySelector('.hero-ring');
  const heroShell=home.querySelector('.original-hero-grid'),oldBreakdown=home.querySelector('.layout-home-breakdown');
- heroShell.before(hero);hero.after(stats);const footer=group(home,'ws-home-footer',[retire,$('wealthCard')]);heroShell.remove();oldBreakdown.remove();
+ heroShell.before(hero);hero.after(stats);const footer=group(home,'ws-home-footer',[$('wealthCard')]);heroShell.remove();oldBreakdown.remove();
  home.classList.add('ws-home');hero.classList.add('ws-wealth');
  stats.querySelectorAll('.stat-card').forEach(el=>{el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-expanded','false');el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});el.addEventListener('click',()=>requestAnimationFrame(()=>stats.querySelectorAll('.stat-card').forEach(c=>c.setAttribute('aria-expanded',String(c.nextElementSibling?.classList.contains('open'))))));});
  const shortcuts=create('div','ws-home-shortcuts');[['الحركات','transactions','list'],['الأهداف','goals','target'],['الزكاة','zakat','building-mosque']].forEach(([label,id,icon])=>{const b=create('button','');b.innerHTML=`<i class="ti ti-${icon}"></i><span>${label}</span><span>←</span>`;b.onclick=()=>{window.portfolioBridge.go(id);scrollTo({top:0,behavior:'instant'});};shortcuts.append(b);});stats.before(shortcuts);
- heading(footer,'التوزيع وخطتك القادمة');
- const day=create('section','day-overview');day.id='dayOverview';heading(day,'ملخّص اليوم','مراكزك حسب آخر تحديث للأسعار');day.append($('dashPulse'));shortcuts.after(day);
+ heading(footer,'توزيع الثروة');
+ const day=create('section','day-overview');day.id='dayOverview';heading(day,'ملخّص اليوم','مراكزك حسب آخر تحديث للأسعار');day.append($('dashPulse'));
+ // Reuse live values and currency controls, but compose one overview rather than nested cards.
+ const live={};['heroVal','heroSym','heroInvested','heroInvestedAll','heroProfitTag','heroProfitLabel','heroRealized','retirePct','retireGoalFmt','retireRemaining'].forEach(id=>live[id]=$(id)||retire.querySelector('#'+id));
+ const currencies=hero.querySelector('.cur-switcher');
+ hero.replaceChildren();hero.classList.add('first-glance');
+ hero.innerHTML='<header class="glance-heading"><span><i class="ti ti-sparkles" aria-hidden="true"></i> نظرة أولى</span></header><div class="glance-main"><section class="glance-wealth"><span class="glance-label">إجمالي ثروتك الآن</span><div class="glance-value" data-live="heroVal heroSym"></div><div class="glance-performance" data-live="heroProfitTag heroProfitLabel heroRealized"></div><div class="glance-costs"><div><span>رأس المال المستثمر</span><strong data-live="heroInvested"></strong></div><div><span>مع النقدي والمصادر الأخرى</span><strong data-live="heroInvestedAll"></strong></div></div></section><section class="glance-retirement"><div class="glance-section-title"><span><i class="ti ti-target-arrow"></i> طريقك للتقاعد</span><button type="button" class="glance-goal-link">التفاصيل ←</button></div><div class="glance-progress-caption"><strong data-live="retirePct"></strong><span>من الهدف</span></div><div class="glance-progress-track"><div id="retireBar"></div></div><div class="glance-goal-numbers"><div><span>هدف التقاعد</span><strong data-live="retireGoalFmt"></strong></div><div><span>المتبقي للوصول</span><strong data-live="retireRemaining"></strong></div></div></section></div>';
+ hero.querySelectorAll('[data-live]').forEach(n=>n.dataset.live.split(' ').forEach(id=>n.append(live[id])));
+ hero.querySelector('.glance-heading').append(currencies);
+ hero.querySelector('.glance-goal-link').onclick=()=>window.portfolioBridge.go('goals');
+ retire.remove();hero.append(day);
+
 
  const pf=$('page-portfolio');pf.querySelector('.topbar').after($('totalsRow'));$('totalsRow').classList.add('ws-portfolio-summary');
  const holdings=create('div','ws-holdings');[$('pfAllocCard'),$('pfFilters'),$('pfList'),$('emptyPortfolio'),...pf.querySelectorAll(':scope>.asset-section:not(#secOther):not(#secProp):not(#secCash)')].forEach(n=>holdings.append(n));

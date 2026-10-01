@@ -245,3 +245,101 @@ html body.workspaces-ready #totalsRow{grid-template-columns:1.3fr repeat(3,minma
 @media(max-width:768px){html body.workspaces-ready #totalsRow{grid-template-columns:repeat(3,minmax(0,1fr))!important}.workspaces-ready #totalsRow .total-card:nth-child(2){flex-direction:row;grid-column:1/-1}.workspaces-ready #totalsRow .tc-val{font-size:13px!important}.workspaces-ready #totalsRow .total-card:nth-child(2) .tc-val{font-size:24px!important}}
 .workspaces-ready .day-best .day-value{display:block;font-size:clamp(14px,4vw,18px);white-space:nowrap}
 .workspaces-ready #marketTable>.mkt-pulse .v{direction:ltr}
+/* A single first-glance surface: wealth, retirement and the daily brief. */
+html body.workspaces-ready #page-dashboard>.first-glance{display:block!important;grid-column:1/-1;padding:25px!important;min-height:0;border:1px solid #ddc991!important;background:linear-gradient(120deg,#fffdf8,#f4ead0)!important;box-shadow:0 8px 25px #9975250c!important;border-radius:26px!important;margin:0 0 16px;overflow:hidden;color:var(--text)}
+html.ios-dark body.workspaces-ready #page-dashboard>.first-glance{background:linear-gradient(120deg,#24231e,#302a1c)!important;border-color:#655636!important}
+.first-glance:before,.first-glance:after{display:none!important}
+.workspaces-ready .first-glance .glance-heading{display:flex!important;align-items:center;justify-content:space-between;gap:10px;margin-bottom:22px;font-size:12px;color:var(--gold);font-weight:600}
+.workspaces-ready .first-glance .cur-switcher{position:static!important;background:var(--surf)!important;border:1px solid var(--bdr);border-radius:11px;padding:3px;max-width:none!important}
+.workspaces-ready .first-glance .cur-btn{padding:6px 10px!important;min-height:30px;font-size:11px!important}
+html body.workspaces-ready .first-glance .glance-main{display:grid!important;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:30px}
+.workspaces-ready .glance-label{font-size:12px;color:var(--muted)}
+.workspaces-ready .glance-value{display:flex;align-items:baseline;gap:9px;margin:7px 0;line-height:1.2;min-width:0}
+.workspaces-ready .glance-value #heroVal{font-size:38px;font-weight:650;letter-spacing:-1px;color:var(--text);direction:ltr}
+.workspaces-ready .glance-value #heroSym{font-size:18px!important}
+.workspaces-ready .glance-performance{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:10px;margin:9px 0 16px}
+.workspaces-ready .glance-performance #heroProfitTag{font-size:11px!important;padding:4px 8px!important}
+.workspaces-ready .glance-costs{display:flex;gap:25px}
+.workspaces-ready .glance-costs>div,.workspaces-ready .glance-goal-numbers>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.workspaces-ready .glance-costs span,.workspaces-ready .glance-goal-numbers span{font-size:10px;color:var(--muted)}
+.workspaces-ready .glance-costs strong,.workspaces-ready .glance-goal-numbers strong{font-size:13px;font-weight:600;overflow-wrap:anywhere}
+.workspaces-ready .glance-retirement{border-inline-start:1px solid #bd984030;padding-inline-start:30px}
+.workspaces-ready .glance-section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;font-weight:600}
+.workspaces-ready .glance-goal-link{border:0;background:none;color:var(--gold);font:inherit;font-size:11px;cursor:pointer;padding:8px 0}
+.workspaces-ready .glance-progress-caption{display:flex;align-items:baseline;gap:8px;margin:9px 0}
+.workspaces-ready .glance-progress-caption #retirePct{font-size:28px!important;color:var(--gold);font-weight:650}
+.workspaces-ready .glance-progress-caption>span{font-size:11px;color:var(--muted)}
+.workspaces-ready .glance-progress-track{height:7px;border-radius:20px;background:#b9953d26;overflow:hidden;margin-bottom:13px}
+.workspaces-ready #retireBar{height:100%;width:0;background:var(--gold);border-radius:inherit;transition:width .6s}
+.workspaces-ready .glance-goal-numbers{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.workspaces-ready .first-glance #dayOverview{margin:23px 0 0;border-top:1px solid #bd984030;padding-top:16px}
+.workspaces-ready .first-glance #dayOverview .ws-heading{display:flex;margin-bottom:12px;gap:10px}
+.workspaces-ready .first-glance #dayOverview h2{font-size:12px}
+.workspaces-ready .first-glance #dayOverview .ws-heading p{font-size:9px;margin:0}
+html body.workspaces-ready .first-glance #dayOverview #dashPulse{gap:0;background:none}
+.workspaces-ready .first-glance .day-tile{background:none;border:0;border-inline-start:1px solid #bd984030;box-shadow:none;border-radius:0;padding:2px 16px;min-height:86px;gap:6px}
+.workspaces-ready .first-glance .day-tile:first-child{border-inline-start:0;padding-inline-start:0}
+.workspaces-ready .first-glance .day-value{font-size:20px}
+.workspaces-ready .first-glance .day-best .day-value{font-size:17px}
+.workspaces-ready .first-glance .day-detail{font-size:10px}
+.workspaces-ready .first-glance .day-tile>i{left:5px;bottom:5px}
+.workspaces-ready .ws-home-footer{grid-template-columns:1fr}
+.workspaces-ready #page-dashboard>.ws-home-shortcuts{grid-column:1/-1;flex-direction:row}
+/* Shared portfolio card language, including expanded controls. */
+html body.workspaces-ready #page-portfolio .asset-section{padding:0;background:none;border:0;box-shadow:none;margin-bottom:22px}
+html body.workspaces-ready #page-portfolio :is(.asset-card,#pfList .mkt-row){background:var(--surf)!important;border:1px solid var(--bdr)!important;border-radius:19px!important;box-shadow:none!important;overflow:hidden}
+html body.workspaces-ready #page-portfolio .source-position{padding:0!important;display:block;min-height:0!important}
+.workspaces-ready .source-position summary{list-style:none}
+.workspaces-ready .source-position summary::-webkit-details-marker{display:none}
+.workspaces-ready .source-position .mkt-rhead{padding:18px 14px;min-height:84px;display:flex;gap:12px}
+.workspaces-ready .source-identity{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.workspaces-ready .source-identity strong{font-size:13.5px;line-height:1.5;font-weight:600;overflow-wrap:anywhere}
+.workspaces-ready .source-identity small{font-size:9px;font-weight:500;color:var(--muted);background:var(--surf2);border:1px solid var(--bdr);border-radius:99px;padding:1px 7px;display:inline-block}
+.workspaces-ready .source-identity>span{font-size:10px;color:var(--muted)}
+.workspaces-ready .source-value{font-size:14px;font-weight:600;color:var(--gold);direction:ltr;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.workspaces-ready .source-value i{font-size:11px;color:var(--muted);transition:transform .2s}
+.workspaces-ready .source-position[open] .source-value i{transform:rotate(180deg)}
+.workspaces-ready .source-body{padding:16px;background:var(--surf2);border-top:1px solid var(--bdr)}
+.workspaces-ready .source-detail-title{font-size:12px;font-weight:600;margin-bottom:10px}
+.workspaces-ready .source-actions button{flex:1;min-height:38px;border-radius:11px;color:var(--gold);background:#bd984018;border:1px solid #bd984040;font-family:inherit;font-size:11.5px}
+.workspaces-ready .sources-workspace .asset-grid{align-items:start;gap:12px}
+html body.workspaces-ready .sources-summary{display:grid;grid-template-columns:1.3fr repeat(3,minmax(0,1fr))}
+.workspaces-ready .sources-main{flex-direction:column;align-items:flex-start;justify-content:center;padding:22px 20px;gap:8px}
+.workspaces-ready .sources-main>span{font-size:10px;color:var(--muted)}
+.workspaces-ready .sources-main strong{font-size:22px}
+.workspaces-ready .sources-breakdown{display:contents}
+.workspaces-ready .sources-breakdown>div{padding:22px 20px;justify-content:center}
+.workspaces-ready .sources-breakdown strong{font-size:22px;color:var(--gold)}
+/* 52-week ranges stay visible even when a quote is closed. */
+.workspaces-ready .quote-range-visible{padding:0 16px 8px;direction:ltr}
+.workspaces-ready .quote-range-visible .quote-range-missing{margin:0;border:0;padding:8px 0 12px;font-size:10px;direction:rtl}
+.workspaces-ready .quote-ounce-desktop{margin-top:6px;font-size:10px;color:var(--muted);white-space:nowrap}
+.workspaces-ready .quote-gold-pair{display:flex;justify-content:space-between;align-items:center;margin:0 16px 12px;padding:8px 10px;background:var(--surf2);border-radius:9px;font-size:11px;color:var(--muted)}
+.workspaces-ready .quote-gold-pair b{color:var(--gold);font-size:14px}
+@media(max-width:768px){
+ html body.workspaces-ready #page-dashboard>.first-glance{padding:19px!important}
+ html body.workspaces-ready .first-glance .glance-main{grid-template-columns:1fr;gap:17px}
+ .workspaces-ready .first-glance .glance-heading{margin-bottom:17px}
+ .workspaces-ready .glance-value #heroVal{font-size:34px}
+ .workspaces-ready .glance-costs{justify-content:space-between;gap:10px}
+ .workspaces-ready .glance-costs strong,.workspaces-ready .glance-goal-numbers strong{font-size:12px}
+ .workspaces-ready .glance-retirement{padding:13px 0 0;border-inline-start:0;border-top:1px solid #bd984030}
+ .workspaces-ready .glance-progress-caption{margin:4px 0 8px}.workspaces-ready .glance-progress-caption #retirePct{font-size:24px!important}
+ .workspaces-ready .first-glance #dayOverview{margin-top:17px;padding-top:13px}
+ .workspaces-ready .first-glance #dayOverview .ws-heading{display:flex;align-items:center}
+ .workspaces-ready .first-glance .day-tile{padding:10px 12px;min-height:88px}
+ .workspaces-ready .first-glance .day-tile:nth-child(odd){border-inline-start:0;padding-inline-start:0}
+ .workspaces-ready .first-glance .day-tile:nth-child(n+3){border-top:1px solid #bd984030;padding-top:13px}
+ .workspaces-ready .first-glance .day-value{font-size:18px}.workspaces-ready .first-glance .day-best .day-value{font-size:15px}
+ html body.workspaces-ready .sources-summary{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .workspaces-ready .sources-main{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;padding:22px}
+ .workspaces-ready .sources-main strong{font-size:24px}
+ .workspaces-ready .sources-breakdown>div{padding:14px 10px}.workspaces-ready .sources-breakdown strong{font-size:13px}
+ html body.workspaces-ready .sources-workspace .asset-grid{grid-template-columns:1fr!important}
+}
+@media(prefers-reduced-motion:reduce){.workspaces-ready #retireBar{transition:none}}
+html body.workspaces-ready #page-market .quote-head-gold{grid-template-columns:1fr 1fr;gap:14px;min-height:0}
+.workspaces-ready .quote-head-gold .quote-identity{order:0}.workspaces-ready .quote-head-gold .quote-day{order:1;align-items:flex-end}
+.workspaces-ready .quote-head-gold .quote-price{order:2;border-top:1px solid var(--bdr);padding-top:10px}.workspaces-ready .quote-head-gold .quote-ounce{order:3}
+.workspaces-ready .quote-head-gold .quote-day>i{display:none}
+.workspaces-ready .quote-range-empty{height:7px;border-radius:99px;background:var(--wline);margin-top:6px}
