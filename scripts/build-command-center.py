@@ -51,6 +51,7 @@ js=js.replace("const ll=LL[cc];if(!ll)return;const d=((((-ll[1])", "const ll=LL[
 js=js.replace("if(!f0)return '<div class=\"mapfb\">الخريطة غير متاحة</div>';", "if(!f0)return '<div class=\"mapfb\">'+((cc==='EZ'||cc==='EU')?'تعرّض إقليمي مجمّع · موضع الخريطة تمثيلي، وليس توزيعاً بين الدول':'الخريطة غير متاحة')+'</div>';")
 replace("const B=baseCur,bv=", "const B=baseCur,bv=") if False else None
 js=js.replace('inset:0 auto 0 0;right:auto;', 'inset-block:0;inset-inline-start:0;')
+js=js.replace('order.forEach((el,k)=>', 'order.filter(Boolean).forEach((el,k)=>')
 # RTL bars preserve label/value ordering; canvas positive angles run clockwise.
 replace(old_functions['renderDiv'],old_functions['renderDiv'].replace('direction:ltr','direction:rtl').replace('left:','inset-inline-start:').replace('right:','inset-inline-end:').replace('translateX(-50%)','translateX(50%)'))
 replace('b.dir=b.chg<0?-1:1;', 'b.dir=b.chg>0?-1:b.chg<0?1:0;')
@@ -98,6 +99,10 @@ markup=re.sub(r'<script[^>]*>[\s\S]*?</script>','',html)
 markup=re.sub(r'<link[^>]+fonts.googleapis.com[^>]+>', '<link rel="stylesheet" href="./fonts.css">',markup)
 markup=markup.replace('<div id="nwList"></div>', '<div id="nwList" tabindex="0" aria-label="أخبار الاستثمارات — قائمة قابلة للتمرير"></div>')
 markup=markup.replace('<div class="p">\n      <div class="ph"><h3><i class="ti ti-news">', '<div class="p news-panel">\n      <div class="ph"><h3><i class="ti ti-news">')
+markup=re.sub(r'<div class="demo">[\s\S]*?</div>', '', markup)
+markup=markup.replace('<div id="evList" style="max-height:236px;overflow-y:auto;scrollbar-width:none"></div>', '<div id="evList" tabindex="0" aria-label="قائمة الأحداث — تمرير عمودي"></div>')
+markup=markup.replace('<div class="p">\n      <div class="ph"><h3><i class="ti ti-atom-2">', '<div class="p analysis-panel">\n      <div class="ph"><h3><i class="ti ti-atom-2">')
+markup=markup.replace('<div class="p">\n      <div class="ph"><h3><i class="ti ti-radar">', '<div class="p events-panel">\n      <div class="ph"><h3><i class="ti ti-radar">')
 markup=markup.replace('</head>','<link rel="stylesheet" href="./integration.css">\n<script src="./safety.js"></script>\n</head>')
 markup=markup.replace('</body>','<script src="./geo-vendor.js"></script>\n<script src="./app.js"></script>\n</body>')
 markup=markup.replace('تصوّر — البنية والحسابات من O.db · القيم والأخبار تجريبية','O.db · بيانات محفظتك · <a href="#" onclick="ENGINE.legacy();return false">الواجهة السابقة</a>')

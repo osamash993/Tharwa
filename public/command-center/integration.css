@@ -34,3 +34,40 @@ html{color-scheme:dark}body{min-width:0}.empty{padding:20px 12px;color:var(--mut
 .month-report .kg{gap:8px}.month-report .cell{padding:10px;min-width:0}.month-report .cell .l{font-size:10px;line-height:1.6}.month-report .cell .v{font-size:16px;overflow-wrap:anywhere}.month-report .mh{align-items:center}.month-report .px>b{font-size:30px}.month-nav{display:flex;gap:6px;margin-top:9px}.month-nav button{padding:3px 10px}.month-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:18px}.month-layout>*,.month-layout aside{min-width:0}.month-chart{padding:12px 12px 24px}.month-chart .cleg{font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}.month-plot{display:flex;direction:rtl;gap:8px;height:130px;position:relative}.month-column{flex:1;min-width:0;border:0;padding:0;position:relative;background:none;color:var(--muted);cursor:pointer}.month-columns{height:100%;display:flex;align-items:flex-end;gap:2px}.month-columns i{display:block;flex:1;background:#4fd8ff38;min-width:0}.month-columns s{display:block;width:4px;background:var(--warn)}.month-column.selected i{background:var(--c);box-shadow:0 0 15px var(--c60)}.month-column>span{position:absolute;top:100%;left:0;right:0;font:10px var(--num);padding-top:4px}.month-average{position:absolute;left:0;right:0;border-top:1px dashed #a1bac5;pointer-events:none;z-index:1}.month-split{display:flex;align-items:center;gap:9px;padding:7px 0;font-size:11px}.month-split>span{min-width:50px;max-width:35%;overflow-wrap:anywhere}.month-split>div{flex:1;background:var(--c07);height:5px;display:flex;direction:rtl}.month-split i{height:100%;background:var(--c)}.month-split>b{font-size:12px;white-space:nowrap}.month-transactions{max-height:240px;overflow:auto}.month-analysis p{padding:9px 0;margin:0;border-bottom:1px solid var(--c07);font-size:12px;line-height:1.8}.month-cash{border-top:1px solid var(--c20);margin-top:12px;padding-top:10px;font-size:12px}.month-cash summary{cursor:pointer;color:var(--c)}
 @media(max-width:1000px){.grid>.col>.news-panel:last-child{flex:auto;min-height:0}.news-panel #nwList{flex:auto;max-height:480px}}
 @media(max-width:700px){.month-layout{grid-template-columns:1fr}.month-report .kg{grid-template-columns:repeat(2,minmax(0,1fr))}.month-report .px>b{font-size:22px}.month-report .mh{gap:10px}.month-plot{gap:4px}.month-chart .cleg span{display:none}.month-transactions{max-height:300px}}
+/* Layout feedback: visible vertical lists, consistent RTL, and full panel space. */
+#evList{max-height:236px;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#4fd8ff88 #4fd8ff0a;scrollbar-gutter:stable;padding-inline-end:8px}
+#evList::-webkit-scrollbar,#labSide::-webkit-scrollbar{display:block;width:6px}
+#evList::-webkit-scrollbar-thumb,#labSide::-webkit-scrollbar-thumb{background:#4fd8ff88;border-radius:4px}
+#evList .row,#labSide .row,.month-transactions .row,.month-cash .row{margin-inline:0;padding-inline:0;min-width:0}
+#evList .row .t{font-size:12px;line-height:1.65;overflow-wrap:anywhere}
+#evList .row .s{white-space:normal;line-height:1.65;overflow-wrap:anywhere}
+#evList .row>.vl{min-width:32px}
+#radar>svg{max-width:320px;margin-inline:auto}
+#radar text{font-family:var(--ui);font-size:9.5px}
+#radar text[font-family]{font-family:var(--num);font-size:10px}
+.gp{overflow:visible}.gp>.globe{overflow:hidden}
+.lab>.analysis-panel{display:flex;flex-direction:column}
+.analysis-panel .labg{flex:1;min-height:560px;align-items:stretch}
+.analysis-panel .labstage{height:auto;min-height:560px;min-width:0}
+.analysis-panel #labSide{max-height:none;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#4fd8ff66 transparent}
+.bars{direction:rtl;min-width:0}.bar{min-width:0}
+.month-report .month-columns s{width:8px;flex:0 0 8px;background:repeating-linear-gradient(135deg,#a4c8d7 0 2px,#365866 2px 4px);text-decoration:none}
+.month-legend{justify-content:flex-start!important;gap:12px!important;align-items:center;color:#92b1bf;font-size:10px!important}
+.month-legend>span{display:inline-flex!important;align-items:center;gap:5px}
+.month-legend i{display:inline-block;width:11px;height:7px}
+.month-legend .purchase-key{background:var(--c)}
+.month-legend .sale-key{background:repeating-linear-gradient(135deg,#a4c8d7 0 2px,#365866 2px 4px)}
+.month-legend .average-key{height:0;border-top:1px dashed #a1bac5}
+.month-legend small{margin-inline-start:auto;font-size:9px;color:var(--muted)}
+/* Fit content to its container; keep scrolling vertical in dialogs and lists. */
+.hb{overflow-x:hidden}.hb>*,.mg>*,.month-layout>*,.kg>*,.kg2>*{min-width:0;max-width:100%}
+.month-transactions{overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;padding-inline-end:8px}
+.month-transactions .row,.month-cash .row{gap:8px}.month-transactions .row>.n,.month-cash .row>.n{flex-shrink:0}
+.month-transactions .nm,.month-cash .nm{overflow-wrap:anywhere}
+.month-transactions .nm .t,.month-cash .nm .t{flex-wrap:wrap}.month-transactions .nm .s,.month-cash .nm .s{white-space:normal;overflow-wrap:anywhere}
+.stabs,.settings-layout>.stabs{overflow-x:visible;flex-wrap:wrap;min-width:0}
+.tscroll{overflow-x:visible;max-width:100%}.tscroll .tbl{min-width:0;width:100%;table-layout:fixed}
+.tbl th,.tbl td,.tbl td .mu{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:820px){.analysis-panel .labg{min-height:0}.analysis-panel .labstage{height:380px;min-height:380px}.analysis-panel #labSide{max-height:380px}.settings-layout>.stabs{flex-wrap:wrap}.settings-layout>.stabs button{flex:1 1 100px;justify-content:center;padding:8px}.tscroll .tbl{min-width:0;font-size:10px}.tbl th,.tbl td{padding:6px 3px}.month-legend{gap:8px!important}.month-legend small{display:none}}
+body.reduce .holo,body.reduce .hb>*{animation:none!important;clip-path:none!important;opacity:1;filter:none}
+@media(max-width:820px){.analysis-panel .labg{flex:none;grid-template-rows:380px auto}}

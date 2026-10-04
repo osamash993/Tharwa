@@ -525,7 +525,7 @@ details.zf .in{padding:0 10px 8px}
 body.reduce *{animation-duration:.01s!important;transition-duration:.01s!important}
 @media (max-width:820px){.tscroll .tbl{min-width:620px}.fgrid{grid-template-columns:1fr}.achips button{min-width:0;flex:1 1 40%}.zstep{grid-template-columns:22px 1fr}.zstep .vv{grid-column:2;align-items:flex-start}}
 </style>
-<link rel="stylesheet" href="./integration.css?v=66c70882f9a9">
+<link rel="stylesheet" href="./integration.css?v=a1070f9b77aa">
 <script src="./safety.js?v=ea4c0564aed2"></script>
 </head>
 <body class="booting">
@@ -692,7 +692,7 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
     </div>
   </section>
   <section class="lab">
-    <div class="p">
+    <div class="p analysis-panel">
       <div class="ph"><h3><i class="ti ti-atom-2"></i> مختبر التحليل</h3>
         <div class="tabs" id="labTabs"><button data-t="orbit" class="on" onclick="setLab('orbit')">المنظومة المدارية</button><button data-t="net" onclick="setLab('net')">شبكة التداخل</button><button data-t="heat" onclick="setLab('heat')">الخريطة الحرارية</button></div>
         <span class="tag">ANALYSIS LAB</span></div>
@@ -705,11 +705,11 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
         <div id="labSide"></div>
       </div>
     </div>
-    <div class="p">
+    <div class="p events-panel">
       <div class="ph"><h3><i class="ti ti-radar"></i> رادار الأحداث</h3><span class="tag">EVENT RADAR</span></div>
       <canvas id="radarEv"></canvas>
       <div class="cell" id="evNext" style="margin:10px 0 6px"></div>
-      <div id="evList" style="max-height:236px;overflow-y:auto;scrollbar-width:none"></div>
+      <div id="evList" tabindex="0" aria-label="قائمة الأحداث — تمرير عمودي"></div>
       <div class="sub" style="margin:8px 0 0">الأحداث من المصادر المتاحة وإعداداتك؛ التوقعات موسومة بوضوح</div>
     </div>
   </section>
@@ -730,12 +730,12 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
 </div>
 <div class="ov" id="ov" onclick="if(event.target===this)closeHolo()"><div class="holo" id="holo"><button class="x" onclick="closeHolo()">✕</button><div class="hb" id="hb" onscroll="moreHint()"></div><div class="more"><i class="ti ti-chevrons-down"></i></div><i class="fold"></i></div></div>
 <button class="fab" title="إضافة حركة (N)" onclick="openTxForm()"><i class="ti ti-plus"></i></button>
-<div class="demo">O.db · بيانات محفظتك · <a href="#" onclick="ENGINE.legacy();return false">الواجهة السابقة</a></div>
+
 
 
 
 
 <script src="./geo-vendor.js?v=a2a10de3c276"></script>
-<script src="./app.js?v=cade8b28e4fd"></script>
+<script src="./app.js?v=248e6d3ce1be"></script>
 </body>
 </html>
