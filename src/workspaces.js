@@ -7,6 +7,10 @@ export function buildWorkspaces(){
  const card=id=>$(id).closest('.card,.xr-card,.glass-card');
  const heading=(parent,title,sub)=>{const h=create('div','ws-heading');h.append(create('h2','',title));if(sub)h.append(create('p','',sub));parent.prepend(h);};
  const switchers=[];
+ const side=document.querySelector('.sidebar');
+ const brand=create('div','desktop-nav-brand');brand.innerHTML='<span>◈ ثروة</span><small>مساحتك المالية</small>';side.prepend(brand);
+ side.querySelectorAll('.nav-item[data-page]').forEach(n=>{const label=create('span','desktop-nav-label',n.title);label.setAttribute('aria-hidden','true');n.append(label);});
+
  function workspace(id,items){
   const page=$('page-'+id);page.querySelector(':scope>.layout-jumps')?.remove();
   const nav=create('nav','ws-nav');nav.setAttribute('aria-label','أقسام '+page.querySelector('.page-title').textContent);

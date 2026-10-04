@@ -1811,7 +1811,7 @@ let _txnLens = 'time';
 function setTxnLens(v) {
   _txnLens = v;
   document.querySelectorAll('.txn-lens').forEach(b => b.classList.toggle('on', b.dataset.lens === v));
-  const timeEls = [$('txnChartCard'), $('txnGrouped')];
+  const timeEls = [$('txnGrouped')];
   const assetEl = $('txnByAsset');
   if (v === 'asset') {
     timeEls.forEach(e => {
@@ -1952,10 +1952,6 @@ function renderTxnByAsset() {
 function updateTxnInsightLine() {
   const line = $('txnInsightLine');
   if (!line) return;
-  if (!isMobile()) {
-    line.style.display = 'none';
-    return;
-  }
   const buyByMonth = {};
   txns.forEach(t => {
     if (t.action === 'Buy') {
@@ -1994,6 +1990,8 @@ let _txnSelectedMonth = null;
 function selectTxnMonth(m) {
   _txnSelectedMonth = _txnSelectedMonth === m ? null : m;
   renderTxnTable();
+  setTxnLens('time');
+  window.revealPortfolioSection?.($('txnGrouped'));
 }
 function setTxnMobileFilter(v) {
   _txnMobileFilter = v;
@@ -2007,7 +2005,7 @@ function setTxnYear(y) {
 function renderTxnYearSeg(years, active) {
   const seg = $('txnYearSeg');
   if (!seg) return;
-  if (!isMobile() || years.length < 2) {
+  if (years.length < 2) {
     seg.style.display = 'none';
     return;
   }
@@ -2018,11 +2016,6 @@ function renderTxnBarsMobile(months, groups, selM) {
   const box = $('txnBarsMobile'),
     leg = $('txnBarsLeg');
   if (!box) return;
-  if (!isMobile()) {
-    box.style.display = 'none';
-    if (leg) leg.style.display = 'none';
-    return;
-  }
   const CATC = {
     Stock: '#8A6D2F',
     Gold: '#BD9840',
@@ -2054,18 +2047,18 @@ function renderTxnBarsMobile(months, groups, selM) {
       up
     };
   });
-  const UPMAX = 46,
-    DNMAX = 16;
+  const UPMAX = isMobile() ? 46 : 92,
+    DNMAX = isMobile() ? 16 : 32;
   box.innerHTML = `<div id="tmbars">` + data.map(d => {
     const [, mo] = d.m.split('-');
     const lbl = monthShort[parseInt(mo) - 1] || mo;
     const seg = k => d.cat[k] > 0 ? `<i style="height:${(d.cat[k] / maxUp * UPMAX).toFixed(1)}px;background:${CATC[k]}"></i>` : '';
     const dn = d.sell > 0 ? `<i style="height:${(d.sell / maxDn * DNMAX).toFixed(1)}px"></i>` : '';
-    return `<div class="tmb${d.m === selM ? ' sel' : ''}" onclick="selectTxnMonth('${d.m}')">
+    return `<button type="button" title="${d.m}" class="tmb${d.m === selM ? ' sel' : ''}" onclick="selectTxnMonth('${d.m}')">
       <div class="up">${seg('Stock')}${seg('Gold')}${seg('Property')}</div>
       <div class="dn">${dn}</div>
       <b>${lbl}</b>
-    </div>`;
+    </button>`;
   }).join('') + `</div>`;
   box.style.display = 'block';
   if (leg) {
@@ -2086,10 +2079,6 @@ function renderTxnBarsMobile(months, groups, selM) {
 function renderTxnSummaryMobile(invested, liquidated, netToMkt, year, byCat) {
   const box = $('txnSummaryMobile');
   if (!box) return;
-  if (!isMobile()) {
-    box.style.display = 'none';
-    return;
-  }
   const posC = netToMkt >= 0 ? 'var(--gold)' : 'var(--red)';
   const posArrow = netToMkt >= 0 ? '▲' : '▼';
   const CATC = {
@@ -2234,9 +2223,12 @@ function renderTxnTable() {
   if (!container) return;
   if (!months.length) {
     container.innerHTML = '<div class="empty">لا توجد حركات</div>';
+    renderTxnBarsMobile([], {}, null);renderTxnSummaryMobile(0,0,0,'',{});renderTxnYearSeg([], '');
+    if ($('txnInsightLine')) $('txnInsightLine').style.display='none';
+    window._visibleTxnIds=[];updateSelectionBar();
     return;
   }
-  if (isMobile()) {
+  { // One transaction presentation shared by phone and desktop.
     const monthNamesAr = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
     const CATC = {
       Stock: '#8A6D2F',
@@ -2414,94 +2406,6 @@ function renderTxnTable() {
     updateSelectionBar();
     return;
   }
-  container.innerHTML = months.map(m => {
-    const _ct = $('txnChartTitle');
-    if (_ct) _ct.textContent = 'الاستثمار الشهري';
-    const _lens = $('txnLens');
-    if (_lens) _lens.style.display = 'none';
-    const _il = $('txnInsightLine');
-    if (_il) _il.style.display = 'none';
-    const _ba = $('txnByAsset');
-    if (_ba) _ba.style.display = 'none';
-    const _sm = $('txnSummaryMobile');
-    if (_sm) _sm.style.display = 'none';
-    const _bm = $('txnBarsMobile');
-    if (_bm) _bm.style.display = 'none';
-    const _bl = $('txnBarsLeg');
-    if (_bl) _bl.style.display = 'none';
-    const items = groups[m];
-    const [y, mo] = m.split('-');
-    const monthLabel = `${monthNames[parseInt(mo) - 1] || mo} ${y}`;
-    const collapsed = collapsedMonths.has(m);
-    const monthTotal = items.reduce((a, t) => {
-      const sg = t.action === 'Buy' || t.action === 'Deposit' ? 1 : -1;
-      return a + sg * Math.abs(pN(t.totalCostSAR));
-    }, 0);
-    const allSel = items.every(t => selectedIds.has(t.id));
-    const _allThree = ['SAR', 'JOD', 'USD'];
-    const _extraCurs = _allThree.filter(c => c !== baseCur);
-    const _fxRate = c => c === 'SAR' ? 1 : fx[c] || {
-      JOD: 5.30,
-      USD: 3.75
-    }[c];
-    const _sym = c => c === 'SAR' ? '﷼' : c === 'JOD' ? 'د.أ' : c === 'USD' ? '$' : c;
-    const rowsHTML = items.map(t => {
-      const sg = t.action === 'Buy' || t.action === 'Deposit' ? '' : '-';
-      const costColor = sg ? 'var(--red)' : 'var(--text)';
-      const _rateCol = txnRateVisible ? ' 55px' : '';
-      const colsTemplate = txnCostExpanded ? `60px 80px 1fr 100px 90px 90px 65px 55px${_rateCol} 110px 85px 85px 1fr` : `60px 80px 1fr 100px 90px 90px 65px 55px${_rateCol} 130px 1fr`;
-      const costCells = txnCostExpanded ? _extraCurs.map(c => `<div class="txn-cell" style="color:var(--muted);font-size:11px">${fmt(Math.abs(pN(t.totalCostSAR)) / _fxRate(c), 1)}</div>`).join('') : '';
-      return `<div class="txn-row" style="grid-template-columns:${colsTemplate}">
-        <div style="display:flex;align-items:center;gap:3px;padding:0 4px">
-          <input type="checkbox" class="txn-check" ${selectedIds.has(t.id) ? 'checked' : ''} onchange="toggleSel(${t.id},this.checked)">
-          <button class="edit-icon" style="opacity:1;font-size:11px;padding:2px 4px" onclick="startEdit(${t.id})" title="تعديل"><i class="ti ti-edit"></i></button>
-          <button class="edit-icon" style="opacity:1;font-size:11px;padding:2px 4px;color:var(--red)" onclick="delTxn(${t.id})" title="حذف"><i class="ti ti-trash"></i></button>
-        </div>
-        <div class="txn-cell" style="color:var(--muted);font-size:11px">${(t.date || '').slice(5)}</div>
-        <div class="txn-cell" style="font-weight:500;color:${typeC[t.assetType] || 'var(--text)'}">${t.assetName}</div>
-        <div class="txn-cell"><span class="badge ${bc(t.action)}">${t.action}</span></div>
-        <div class="txn-cell" style="color:var(--muted)">${t.qty ? fmt(pN(t.qty), 2) : '-'}</div>
-        <div class="txn-cell" style="color:var(--muted)">${t.price ? fmt(pN(t.price), 2) : '-'}</div>
-        <div class="txn-cell" style="color:var(--muted)">${t.fees ? fmt(pN(t.fees), 0) : '-'}</div>
-        <div class="txn-cell" style="color:var(--muted);font-size:10px">${t.currency || 'SAR'}</div>
-        ${txnRateVisible ? `<div class="txn-cell" style="color:var(--muted);font-size:10px">${t.rate || 1}</div>` : ''}
-        <div class="txn-cell" style="font-weight:600;font-family:inherit;color:${costColor}">${sg}${fmtC(Math.abs(pN(t.totalCostSAR)))}</div>
-        ${costCells}
-        <div class="txn-cell" style="color:var(--muted);font-size:11px;white-space:normal;word-break:break-word">${t.remarks || ''}</div>
-      </div>`;
-    }).join('');
-    const _rateColHdr = txnRateVisible ? ' 55px' : '';
-    const hdrCols = txnCostExpanded ? `60px 80px 1fr 100px 90px 90px 65px 55px${_rateColHdr} 110px 85px 85px 1fr` : `60px 80px 1fr 100px 90px 90px 65px 55px${_rateColHdr} 130px 1fr`;
-    const costHdrLabel = `${CUR_SYMS[baseCur] || ''} ${baseCur}`;
-    const extraHdrCols = txnCostExpanded ? _extraCurs.map(c => `<div style="font-size:10px;color:var(--muted)">${_sym(c)} ${c}</div>`).join('') : '';
-    const expandBtn = `<button onclick="event.stopPropagation();toggleCostColumns()" title="${txnCostExpanded ? 'إخفاء العملات' : 'إظهار كل العملات'}" style="background:none;border:none;cursor:pointer;padding:0 2px;color:var(--muted);font-size:11px;line-height:1">${txnCostExpanded ? '◀' : '▶'}</button>`;
-    return `<div class="txn-month-group card" style="padding:0;overflow:hidden;margin-bottom:1rem">
-      <div class="txn-month-header" style="min-width:900px" onclick="toggleMonth('${m}')">
-        <input type="checkbox" class="txn-check" title="اختيار كل الشهر" onclick="event.stopPropagation()" onchange="toggleMonthSel('${m}',this.checked)" ${allSel && items.length ? 'checked' : ''}>
-        <div class="txn-month-label">${monthLabel}</div>
-        <div class="txn-month-sum">${items.length} حركة</div>
-        <div class="txn-month-toggle">${collapsed ? '▼' : '▲'}</div>
-      </div>
-      ${collapsed ? '' : `<div style="border-top:1px solid var(--bdr)">
-        <div style="display:grid;grid-template-columns:${hdrCols};padding:6px 12px;border-bottom:1px solid var(--bdr);background:var(--surf2);align-items:center">
-          <div style="font-size:10px;color:var(--muted)">☑</div>
-          <div style="font-size:10px;color:var(--muted)">التاريخ</div>
-          <div style="font-size:10px;color:var(--muted)">الأصل</div>
-          <div style="font-size:10px;color:var(--muted)">العملية</div>
-          <div style="font-size:10px;color:var(--muted)">الكمية</div>
-          <div style="font-size:10px;color:var(--muted)">السعر</div>
-          <div style="font-size:10px;color:var(--muted)">الرسوم</div>
-          <div style="font-size:10px;color:var(--muted);display:flex;align-items:center;gap:2px">عملة <button onclick="event.stopPropagation();toggleRateCol()" title="${txnRateVisible ? 'إخفاء سعر الصرف' : 'إظهار سعر الصرف'}" style="background:none;border:none;cursor:pointer;padding:0 1px;color:var(--muted);font-size:10px;line-height:1;opacity:.6">${txnRateVisible ? '◀' : '▶'}</button></div>
-          ${txnRateVisible ? `<div style="font-size:10px;color:var(--muted)">صرف</div>` : ''}
-          <div style="display:flex;align-items:center;gap:3px;font-size:10px;color:var(--muted)">${expandBtn} التكلفة · ${costHdrLabel}</div>
-          ${extraHdrCols}
-          <div style="font-size:10px;color:var(--muted)">ملاحظات</div>
-        </div>
-        ${rowsHTML}
-      </div>`}
-    </div>`;
-  }).join('');
-  updateSelectionBar();
 }
 function toggleCostColumns() {
   txnCostExpanded = !txnCostExpanded;
@@ -7510,7 +7414,7 @@ function applyChartFilter(month, assetType) {
   });
 }
 function renderMonthlyChart() {
-  if (isMobile()) return;
+  if (document.body.classList.contains('workspaces-ready') || isMobile()) return;
   const dc = $('monthlyChart');
   if (!dc) return;
   if (!monthlyChartVisible) return;
