@@ -76,8 +76,8 @@ function renderPf(){
    +`<div class="sect"><i class="ti ti-arrows-diff"></i> تركيبتك مقابل الهدف</div>`
    +cats.map(([k,l])=>{const tg=catGoals[k]/sg*100,cu=T.by[k].cur/tot*100;
      return `<div class="clk" onclick="openCat('${k}')" style="padding:5px 0"><div style="display:flex;justify-content:space-between;font-size:11px"><span>${l}</span><span><span class="n" style="color:var(--cb)">${fmt(cu,1)}%</span> <span class="mu">· الهدف</span> <span class="n mu">${fmt(tg,1)}%</span></span></div>
-       <div style="height:4px;background:var(--c07);margin-top:4px;position:relative"><i style="position:absolute;inset:0 auto 0 0;right:auto;width:${cu}%;background:var(--c);box-shadow:0 0 6px var(--c35)"></i></div>
-       <div style="height:4px;background:var(--c07);margin-top:2px;position:relative"><i style="position:absolute;inset:0 auto 0 0;right:auto;width:${tg}%;background:repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 4px,transparent 4px 7px)"></i></div></div>`;}).join('')
+       <div style="height:4px;background:var(--c07);margin-top:4px;position:relative"><i style="position:absolute;inset-block:0;inset-inline-start:0;width:${cu}%;background:var(--c);box-shadow:0 0 6px var(--c35)"></i></div>
+       <div style="height:4px;background:var(--c07);margin-top:2px;position:relative"><i style="position:absolute;inset-block:0;inset-inline-start:0;width:${tg}%;background:repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 4px,transparent 4px 7px)"></i></div></div>`;}).join('')
    +`<div class="leg" style="margin-top:8px"><span><i style="background:var(--c)"></i>الآن</span><span><i style="background:repeating-linear-gradient(90deg,#fff 0 3px,transparent 3px 5px)"></i>الهدف</span></div>`;
 }
 function natFmtAvg(p){const a=AS[p.n];const unit=p.avg;const nat=a.cur==='GBp'?unit/FX.GBP*100:a.cur==='SARg'?unit:unit/FX[a.cur];return natFmt(nat,a.cur);}
@@ -315,7 +315,15 @@ function renderDiv(M){
 
 const MON_AR=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 function monthStats(i){const k=selectedYear+'-'+String(i+1).padStart(2,'0'),L=TXNS.filter(t=>t[0].startsWith(k)),buy=L.filter(t=>t[2]==='Buy'),sell=L.filter(t=>t[2]==='Sell');return {k,m:MON[i],L,buy,sell,inv:buy.reduce((s,t)=>s+txSAR(t),0),liq:sell.reduce((s,t)=>s+txSAR(t),0)};}
-function openMonth(i){const m=monthStats(i);openHolo(modalHead(m.k,'حركات الشهر')+`<div class="kg2">${cell('استثمرت',fmtC(m.inv))}${cell('سيّلت',fmtC(m.liq))}</div><div class="sect">الاستثمارات</div>`+(m.L.map(txRow).join('')||'<p class="empty">لا حركات</p>')+'<div class="sect">الحسابات النقدية</div>'+CTX.map((c,j)=>c.d.startsWith(m.k)?ctxRow(c,j):'').join(''));}
+function openMonth(i){
+ selM=i;activeDialog={fn:'openMonth',args:[i]};const m=monthReport(i),net=m.inv-m.liq,max=Math.max(1,m.average,...m.months.map(x=>Math.max(x.inv,x.liq))),delta=m.average?(m.inv/m.average-1)*100:null;
+ const title=new Date(selectedYear,i,1).toLocaleDateString('ar-SA-u-ca-gregory',{month:'long',year:'numeric'}),cash=CTX.map((c,j)=>({c,j})).filter(({c})=>c.d.startsWith(m.k));
+ const chart=m.months.map((x,j)=>`<button class="month-column ${j===i?'selected':''}" onclick="openMonth(${j})" aria-label="${x.k}: مشتريات ${fmtC(x.inv)}، مبيعات ${fmtC(x.liq)}" title="${x.k} · ${fmtC(x.inv)}"><div class="month-columns"><i style="height:${x.inv/max*100}%"></i><s style="height:${x.liq/max*100}%"></s></div><span>${x.m}</span></button>`).join('');
+ const signed=v=>v==null?'غير متاح':(v>0?'+':'')+fmtC(v),top=Object.entries(m.byCategory).sort((a,b)=>b[1]-a[1])[0];
+ openHolo(`<div class="month-report"><div class="mh"><div><div class="code">MONTH REPORT · ${m.k}</div><h2>${title}</h2><div class="full">${m.L.length} حركة · ${m.buy.length} شراء · ${m.sell.length} بيع</div></div><div class="px"><div class="mu">صافي ما وجّهته للسوق</div><b class="n ${net<0?'dn':'up'}">${net<0?'▼':'▲'} ${fmtC(Math.abs(net))}</b><div class="month-nav"><button class="fbtn sm" aria-label="الشهر السابق" onclick="changeReportMonth(-1)">→</button><button class="fbtn sm" aria-label="الشهر التالي" onclick="changeReportMonth(1)">←</button></div></div></div>
+ <div class="kg">${cell('استثمرت',fmtC(m.inv))}${cell('سيّلت',fmtC(m.liq))}${cell('مقابل متوسط الأشهر النشطة',delta==null?'—':(delta>0?'+':'')+fmt(delta,1)+'%')}${cell('قيمة المتبقي من مشتريات الشهر اليوم',m.current==null?'غير متاح':fmtC(m.current))}${cell('ربح / خسارة المتبقي',signed(m.unrealized),m.unrealized<0?'dn':'up')}${cell('ربح محقق من مبيعات الشهر',signed(m.realized),m.realized<0?'dn':'up')}${cell('أكبر حركة',m.largest?esc(m.largest[1])+' · '+fmtC(txSAR(m.largest)):'—')}${cell('ترتيب الاستثمار',m.rank?m.rank+' / '+m.active.length:'—')}</div>
+ <div class="month-layout"><div><div class="chartbox month-chart"><div class="cleg">مشتريات ▰ · مبيعات ▥ · متوسط ┄ <span>اضغط أي شهر للتنقّل</span></div><div class="month-plot"><div class="month-average" style="bottom:${m.average/max*100}%" title="المتوسط ${fmtC(m.average)}"></div>${chart}</div></div><div class="sect">التحليل</div><div class="month-analysis">${top?`<p>تركيز مشتريات الشهر: <b>${esc(KLF[top[0]]||top[0])}</b> بنسبة <b class="n">${fmt(percent(top[1],m.inv),1)}%</b>.</p>`:'<p>لا مشتريات مسجلة خلال هذا الشهر.</p>'}<p>متوسط الاستثمار في الأشهر ذات الحركات: <b class="n">${fmtC(m.average)}</b> · ${m.active.length} أشهر في ${selectedYear}.</p><p>صافي الشراء بعد البيع: <b class="n">${signed(net)}</b>. التحويلات النقدية المرتبطة غير مكررة ضمن هذا الرقم.</p><p>تقييم اليوم يخص الكميات المتبقية من دفعات هذا الشهر حسب FIFO، والربح المحقق يخص مبيعات الشهر.</p></div></div><aside><div class="sect">حسب الفئة</div>${monthBreakdown(m.byCategory,KLF)}<div class="sect">حسب الأصل</div>${monthBreakdown(m.byAsset)}<div class="sect">حركات الشهر</div><div class="month-transactions">${m.L.map(txRow).join('')||'<p class="empty">لا حركات استثمارية</p>'}</div>${cash.length?`<details class="month-cash"><summary>الحسابات النقدية · ${cash.length} حركة</summary>${cash.map(({c,j})=>ctxRow(c,j)).join('')}</details>`:''}</aside></div></div>`);
+}
 
 
 
@@ -522,9 +530,7 @@ function ambRender(){
   $('ambGoal').setAttribute('width',(gp*1.2).toFixed(1));$('ambGoalT').innerHTML=`هدف التقاعد <b class="n" style="color:#fff">${fmt(gp,1)}%</b>`;
   $('ambHold').innerHTML=`<div style="font-family:var(--hud);font-size:9px;letter-spacing:3px;color:var(--c);direction:ltr;text-align:left;margin-bottom:4px">HOLDINGS</div>`+
     POS.map(p=>`<div class="r"><span>${p.n}</span><span class="n" style="color:#fff">${natFmt(p.p,p.cur)}</span><span class="n" style="color:${p.chg<0?'var(--warn)':'var(--c)'};width:62px;text-align:left">${p.chg>=0?'+':''}${fmt(p.chg,2)}%</span></div>`).join('');
-  const items=[...POS.map(p=>`<span><b>${p.n}</b> <span class="n">${natFmt(p.p,p.cur)}</span> <span class="n" style="color:${p.chg<0?'var(--warn)':'var(--c)'}">${p.chg>=0?'▲':'▼'}${fmt(Math.abs(p.chg),2)}%</span></span>`),
-    ...NEWS.map(n=>`<span><span class="sep">◆</span> ${n.t}</span>`),...EV.slice(0,4).map(e=>`<span><span class="sep">◷</span> ${e.t} — بعد <b class="n">${e.days}</b> يوم</span>`)].join('');
-  $('ambTick').innerHTML=items+items;
+  renderMarketTicker('ambTick');
 }
 function ambTickClock(){const d=new Date();$('ambClock').textContent=d.toTimeString().slice(0,5);$('ambDate').textContent=d.toLocaleDateString('ar-SA-u-ca-gregory-nu-latn',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   const c=$('ambCd');if(c&&EV[0])c.textContent=cd(EV[0]);}
@@ -692,7 +698,7 @@ function openCat(k){
 function openGoals(){const T=totals(),done=Object.keys(catGoals).filter(k=>catGoals[k]>0&&T.by[k]?.cur>=catGoals[k]).length;openHolo(modalHead('RETIREMENT TARGET','هدف التقاعد')+`<div class="kg2">${cell('الثروة',fmtC(T.total))}${cell('الهدف',fmtC(T.goal))}${cell('المتبقي',fmtC(Math.max(0,T.goal-T.total)))}${cell('فئات مكتملة',done+' / '+Object.keys(catGoals).length)}</div><div class="mg"><div>${$('goals').innerHTML}</div><div>${$('pj').innerHTML}</div></div>`);}
 
 
-function renderFx(){const list=Object.entries(FX).filter(([c,v])=>['SAR','USD','JOD','GBP','HKD'].includes(c)&&c!==baseCur&&v>0).map(([c,v])=>`<span>${c}/${baseCur}<b>${fmt(v/(FX[baseCur]||1),4)}</b></span>`);if(S.goldOunce)list.push(`<span>XAU/USD<b>${fmt(S.goldOunce,2)}</b></span>`);$('fx').innerHTML=list.join('')+list.join('');}
+function renderFx(){renderMarketTicker('fx');if(ambOn)renderMarketTicker('ambTick');}
 const tk=()=>$('clock').textContent=new Date().toTimeString().slice(0,8);tk();setInterval(tk,1000);
 document.querySelectorAll('#curSeg button').forEach(b=>b.onclick=()=>stCur(b.dataset.c));
 
@@ -892,7 +898,7 @@ function stBody(){
  if(stTab==='events')return `<div class="empty">${sourceErrors.calendar?'بعض المصادر غير متاحة: '+esc(sourceErrors.calendar):'تظهر المواعيد المتاحة فقط. توقع الهدف تقديري.'}</div>`+(ST.events||[]).map((e,i)=>srow(esc(e.t),esc(e.d),`<button class="fbtn wr" onclick="removeEvent(${i})">حذف</button>`)).join('')+`<div class="fgrid"><input id="evD" class="fi" type="date"><input id="evT" class="fi" placeholder="الموعد"></div><button class="fbtn" onclick="stAddEvent()">إضافة موعد خاص</button>`;
  return `<div class="sect">التصدير</div><div class="factions"><button class="fbtn" onclick="stExport('xlsx')">Excel</button><button class="fbtn" onclick="stExport('csv')">CSV</button><button class="fbtn" onclick="stExport('json')">نسخة JSON</button><button class="fbtn" onclick="ENGINE.legacy();parent.document.getElementById('th-import').click()">استيراد Excel</button></div><div class="sect">مصادر مكوّنات الصناديق</div>`+Object.keys(XRAY_DATA).map(n=>srow(n,esc(S.composition[n]?.source||'البيانات الحالية'),`<button class="fbtn" onclick="stHold('${n}',this)">تحديث</button>`)).join('')+`<div class="sect">سلة المحذوفات</div>`+(DELETED.map((t,i)=>srow(t.assetName,t.date+' · '+t.action,`<button class="fbtn" onclick="stRestore(${i})">استرجاع</button>`)).join('')||'<p class="empty">فارغة</p>')+`<div class="sect">الحساب</div><p>المزامنة تلقائية كل بضع ثوانٍ. مفاتيح المصادر الخارجية تبقى على الخادم.</p><button class="fbtn wr" onclick="ENGINE.logout()">تسجيل الخروج</button>`;
 }
-async function stCur(c){await safeAction(()=>ENGINE.currency(c));syncSnapshot();if($('stBody'))stRefresh();}
+async function stCur(c){await safeAction(()=>ENGINE.currency(c));syncSnapshot();if($('stBody'))stRefresh();if(!S.status.demo)await loadTickerQuotes();}
 async function stGoal(k,v){const n=+v;if(!(n>=0))return;await safeAction(()=>ENGINE.setting('catGoals',{...catGoals,[k]:n*(FX[baseCur]||1)}));syncSnapshot();}
 function stIdle(v){return saveCC('idle',+v);}
 function stSpin(v){return saveCC('spin',v);}
@@ -1005,7 +1011,7 @@ function syncSnapshot(force=false){
  document.querySelectorAll('#curSeg button').forEach(b=>b.classList.toggle('on',b.dataset.c===baseCur));
  const changed=key=>force||baseCur!==old.baseCur||S.includeUnrealized!==old.includeUnrealized||JSON.stringify(S.marketHidden)!==JSON.stringify(old.marketHidden)||JSON.stringify(old[key])!==JSON.stringify(S[key]);
  if(changed('totals'))renderHero();if(changed('POS')||changed('CASH')||changed('PROP')||changed('OTHER')||changed('catGoals'))renderPf();
- if(changed('AS')||changed('POS')){renderMkt();renderFx();renderNews();}
+ if(changed('AS')||changed('POS')||changed('FX')){renderMkt();renderFx();renderNews();}
  if(changed('XR'))renderXrHud();if(changed('TXNS')||changed('CTX'))renderTx();
  if(changed('totals')||changed('catGoals')||changed('monthly'))renderGoals();
  if(changed('XR')||changed('POS')||changed('cc')||changed('zakat'))renderLab();
@@ -1046,7 +1052,7 @@ async function loadExternal(){
  if(news.ok!==false){NEWS.splice(0,NEWS.length,...(news.items||[]).map(n=>({...n,a:ENGINE.clean(n.a),t:ENGINE.clean(n.t),ago:n.date?new Date(n.date).toLocaleDateString('ar-SA-u-ca-gregory'):n.source||'Yahoo',via:ENGINE.clean(n.via||''),related:(n.related||[]).map(r=>({...r,a:ENGINE.clean(r.a),via:ENGINE.clean(r.via),assets:(r.assets||[r.a]).map(ENGINE.clean)}))})));sourceErrors.news=null;}else sourceErrors.news=news.error;
  if(cal.ok!==false){calendarData=(cal.items||[]).map(e=>({...e,t:ENGINE.clean(e.t),s:ENGINE.clean(e.s),on:e.asset?`openAsset('${ENGINE.clean(e.asset)}')`:`openCalendarEvent('${e.d}','${ENGINE.clean(e.t)}')`}));sourceErrors.calendar=cal.unavailable?.join('، ')||null;}else sourceErrors.calendar=cal.error;
  if(quotes.ok!==false)companyQuotes=quotes.quotes||{};else sourceErrors.quotes=quotes.error;
- renderNews();renderLab();updateConnection();if(ambOn)ambRender();
+ renderNews();renderLab();updateConnection();if(ambOn)ambRender();await loadTickerQuotes();
 }
 function companySymbols(){return Object.values(XR.companies).sort((a,b)=>b.val-a.val).slice(0,35).map(c=>({key:c.k,symbol:companySymbol(c)})).filter(x=>x.symbol);}
 function companySymbol(c){
@@ -1196,5 +1202,64 @@ function registrySettings(){const list=ENGINE.assets();return `<div class="secti
 async function deleteRegistry(i){const a=ENGINE.assets()[i];if(!a)return;const raw=parent.commandStorage.raw();if(raw.txns.some(t=>t.assetName===a.name)){openHolo(modalHead('ASSET MANAGEMENT',a.name)+`<div class="news-context"><p>هذا الأصل مرتبط بحركات مالية. حذفه من السجل وحده يترك حركات بدون أصل.</p><p>تقدر تخفيه من العرض مع الحفاظ على رصيده وسجله، أو ترجع للحركات وتراجعها أولاً.</p></div><div class="factions"><button class="fbtn" onclick="hideRegistry('${a.id}')">إخفاء الأصل</button><button class="fbtn ghost" onclick="openSettings('assets')">رجوع</button></div>`);return;}if(!confirm('حذف '+a.name+' من سجل الأصول؟'))return;const list=ENGINE.assets();list.splice(i,1);await safeAction(()=>ENGINE.saveAssets(list));syncSnapshot();openSettings('assets');}
 async function hideRegistry(id){if(!(S.marketHidden||[]).includes(String(id)))await toggleAssetVisibility(id);openSettings('assets');}
 function freshnessSettings(){const st=parent.commandStorage.status();return `<div class="section-heading"><h3>حالة التحديث</h3><button class="fbtn sm" onclick="refreshLive(this)">تحديث الآن</button></div><div class="kg2">${cell('مزامنة المحفظة',st.demo?'وضع التجربة':formatStamp(st.lastSync))}${cell('الاتصال',st.online?'متصل':'غير متصل')}</div><p class="freshness-note">وقت السعر هو وقت آخر تداول أرسله المصدر. قد يبقى قديماً عندما يكون السوق مغلقاً.</p>`+S.registry.filter(a=>a.yh).map(a=>srow(a.n,(a.marketOpen===true?'السوق مفتوح':a.marketOpen===false?'السوق مغلق':'حالة السوق غير متاحة'),`<span class="n">${formatStamp(a.timestamp*1000)}</span>`)).join('');}
+
+// Market strips use measured, identical groups: distance / speed stays readable.
+const marketTickerStates=new Map();
+let tickerFxQuotes={};
+function tickerCurrencies(){return Object.keys(FX).filter(c=>/^[A-Z]{3}$/.test(c)&&c!==baseCur&&FX[c]>0);}
+function marketTickerItems(){
+ const items=Object.entries(AS).filter(([n,a])=>a.yh&&assetVisible(n)).map(([n,a])=>({name:n,price:natFmt(a.p,a.cur),change:a.chg}));
+ for(const c of tickerCurrencies()){const q=tickerFxQuotes[c+'/'+baseCur];items.push({name:c+'/'+baseCur,price:fmt(q?.price??FX[c]/(FX[baseCur]||1),4),change:q?.changePct??null});}
+ if(S.goldOunce!=null)items.push({name:'XAU/USD',price:fmt(S.goldOunce,2),change:Object.values(AS).find(a=>a.t==='Gold')?.chg??null});
+ return items;
+}
+function tickerItemHTML(item){
+ const v=item.change,known=v!=null&&Number.isFinite(Number(v)),cls=!known||v===0?'mu':v>0?'up':'dn';
+ return `<span class="ticker-item"><b>${esc(item.name)}</b><span class="n">${esc(item.price)}</span><span class="n ${cls}">${!known?'— غير متاح':(v>0?'▲ +':v<0?'▼ −':'• ')+fmt(Math.abs(v),2)+'%'}</span></span>`;
+}
+function renderMarketTicker(id){
+ const el=$(id);if(!el)return;
+ let state=marketTickerStates.get(id);
+ if(!state){state={el,signature:'',width:0,animation:null};marketTickerStates.set(id,state);state.observer=new ResizeObserver(()=>layoutMarketTicker(state));state.observer.observe(el.parentElement);}
+ const html=marketTickerItems().map(tickerItemHTML).join('')||'<span class="ticker-item">لا أسعار مرتبطة متاحة</span>';
+ if(html!==state.signature){state.signature=html;const group=document.createElement('div');group.className='ticker-group';group.innerHTML=html;el.replaceChildren(group);state.width=0;}
+ requestAnimationFrame(()=>layoutMarketTicker(state));
+}
+function layoutMarketTicker(state){
+ const {el}=state,viewport=el.parentElement.clientWidth;if(!viewport)return;
+ const first=el.firstElementChild;if(!first)return;
+ // Expand short sets to a viewport before duplicating so the loop has no blank tail.
+ first.innerHTML=state.signature;
+ const natural=first.getBoundingClientRect().width;if(!natural)return;
+ first.innerHTML=state.signature.repeat(Math.max(1,Math.ceil(viewport/natural)));
+ const width=Math.round(first.getBoundingClientRect().width*64)/64;
+ if(width===state.width&&el.children.length===2)return;
+ const old=state.animation,progress=old&&state.duration?(Number(old.currentTime)||0)%state.duration/state.duration:0;
+ if(old)old.cancel();while(el.children.length>1)el.lastElementChild.remove();
+ const copy=first.cloneNode(true);copy.setAttribute('aria-hidden','true');el.append(copy);
+ state.width=width;state.duration=width/28*1000;
+ state.animation=el.animate([{transform:'translateX(0)'},{transform:`translateX(-${width}px)`}],{duration:state.duration,iterations:Infinity,easing:'linear'});
+ state.animation.currentTime=progress*state.duration;
+}
+
+async function loadTickerQuotes(){
+ const currency=baseCur,requests=tickerCurrencies().map(c=>({key:c+'/'+currency,symbol:c+currency+'=X'}));
+ for(let i=0;i<requests.length;i+=40){const result=await ENGINE.market('getCompanyQuotes',requests.slice(i,i+40));if(result.ok!==false)Object.assign(tickerFxQuotes,result.quotes||{});}
+ renderFx();
+}
+function monthReport(i){
+ const m=monthStats(i),months=MON.map((_,j)=>monthStats(j)),active=months.filter(x=>x.L.length),average=active.length?active.reduce((s,x)=>s+x.inv,0)/active.length:0;
+ const byAsset={},byCategory={},replays={};let current=0,cost=0,missing=false,missingRealized=false,realized=0;
+ for(const t of m.L){const name=t[1],a=AS[name]||{};replays[name]??=ENGINE.fifoReplay(name);const replay=replays[name][t[8].id];
+  if(t[2]==='Buy'){byAsset[name]=(byAsset[name]||0)+txSAR(t);byCategory[a.t||'Other']=(byCategory[a.t||'Other']||0)+txSAR(t);
+   const lot=replay?.lot;if(!lot){missing=true;continue;}cost+=lot.qty*lot.p;if(lot.qty>0){const unit=a.p==null?null:toSAR(a.p,a.cur);if(unit==null||!Number.isFinite(unit))missing=true;else current+=lot.qty*unit;}
+  }else if(t[2]==='Sell'){if(replay?.pnl==null)missingRealized=true;else realized+=replay.pnl;}
+ }
+ const largest=[...m.L].sort((a,b)=>txSAR(b)-txSAR(a))[0];
+ return {...m,months,active,average,byAsset,byCategory,current:missing?null:current,unrealized:missing?null:current-cost,realized:missingRealized?null:realized,largest,rank:m.inv>0?active.filter(x=>x.inv>m.inv).length+1:null};
+}
+function monthBreakdown(values,labels={}){const entries=Object.entries(values).sort((a,b)=>b[1]-a[1]),max=Math.max(1,...entries.map(x=>x[1]));return entries.map(([k,v])=>`<div class="month-split"><span>${esc(labels[k]||k)}</span><div><i style="width:${v/max*100}%"></i></div><b class="n">${fmtC(v)}</b></div>`).join('')||'<p class="mu">لا مشتريات خلال الشهر</p>';}
+function changeReportMonth(delta){let next=selM+delta;if(next<0){selectedYear--;next=11;}if(next>11){selectedYear++;next=0;}openMonth(next);renderTx();}
+
 
 installCommandCenter();boot();

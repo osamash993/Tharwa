@@ -1,5 +1,4 @@
 function modalHead(code,title,sub=''){return `<div class="mh"><div><div class="code">${code}</div><h2>${esc(title)}</h2><div class="full">${sub}</div></div></div>`;}
-function openMonth(i){const m=monthStats(i);openHolo(modalHead(m.k,'حركات الشهر')+`<div class="kg2">${cell('استثمرت',fmtC(m.inv))}${cell('سيّلت',fmtC(m.liq))}</div><div class="sect">الاستثمارات</div>`+(m.L.map(txRow).join('')||'<p class="empty">لا حركات</p>')+'<div class="sect">الحسابات النقدية</div>'+CTX.map((c,j)=>c.d.startsWith(m.k)?ctxRow(c,j):'').join(''));}
 function openAsset(n){
   const asset=AS[n];if(!asset)return;const f=ENGINE.fifo(n),p=S.POS.find(x=>x.n===n)||{...asset,n,qty:0,val:0,cost:0,avg:0,pnl:0,realized:f.realized,sells:f.sells};const T=totals(),w=percent(p.val,T.total),nat=p.cur==='GBp'?p.avg/FX.GBP*100:p.cur==='SARg'?p.avg:p.avg/FX[p.cur];
   const rp=(p.p-p.lo)/(p.hi-p.lo)*100,ap=Math.max(0,Math.min(100,(nat-p.lo)/(p.hi-p.lo)*100));

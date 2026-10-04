@@ -28,7 +28,7 @@ function syncSnapshot(force=false){
  document.querySelectorAll('#curSeg button').forEach(b=>b.classList.toggle('on',b.dataset.c===baseCur));
  const changed=key=>force||baseCur!==old.baseCur||S.includeUnrealized!==old.includeUnrealized||JSON.stringify(S.marketHidden)!==JSON.stringify(old.marketHidden)||JSON.stringify(old[key])!==JSON.stringify(S[key]);
  if(changed('totals'))renderHero();if(changed('POS')||changed('CASH')||changed('PROP')||changed('OTHER')||changed('catGoals'))renderPf();
- if(changed('AS')||changed('POS')){renderMkt();renderFx();renderNews();}
+ if(changed('AS')||changed('POS')||changed('FX')){renderMkt();renderFx();renderNews();}
  if(changed('XR'))renderXrHud();if(changed('TXNS')||changed('CTX'))renderTx();
  if(changed('totals')||changed('catGoals')||changed('monthly'))renderGoals();
  if(changed('XR')||changed('POS')||changed('cc')||changed('zakat'))renderLab();
@@ -71,7 +71,6 @@ function newsExposure(n){return Math.max(0,...(n.related||[{a:n.a,via:n.via}]).m
 function rankNews(list){const pool=list.map(n=>{const hours=n.date?Math.max(0,(Date.now()-Date.parse(n.date))/36e5):168,weight=percent(newsExposure(n),S.totals.total);return {n,score:Math.max(0,40-hours*.45)+Math.min(35,weight*2)+(n.headline?15:0)+(!n.via?10:0),topic:n.related?.find(r=>r.headline)?.symbol||n.related?.[0]?.symbol||n.via||n.a};});const out=[],used={};while(pool.length){pool.sort((a,b)=>(b.score-(used[b.topic]||0)*45)-(a.score-(used[a.topic]||0)*45));const pick=pool.shift();out.push(pick.n);used[pick.topic]=(used[pick.topic]||0)+1;}return out;}
 function newsRequests(){const direct=S.POS.filter(p=>p.yh&&assetVisible(p.n)).sort((a,b)=>b.val-a.val).map(p=>({name:p.n,symbol:p.yh,company:p.full,assets:[p.n]}));const components=companySymbols().map(x=>{const c=XR.companies[x.key],assets=c.via.map(v=>v.f).filter(assetVisible);return {...x,name:assets[0],company:c.ar,via:c.ar,assets};}).filter(x=>x.name);const selected=[],perFund={};for(const x of components){if((perFund[x.name]||0)>=2)continue;selected.push(x);perFund[x.name]=(perFund[x.name]||0)+1;}for(const x of components)if(selected.length<12&&!selected.some(y=>y.symbol===x.symbol))selected.push(x);return [...new Map([...direct,...selected].map(x=>[x.symbol,x])).values()].slice(0,24);}
 
-function renderFx(){const list=Object.entries(FX).filter(([c,v])=>['SAR','USD','JOD','GBP','HKD'].includes(c)&&c!==baseCur&&v>0).map(([c,v])=>`<span>${c}/${baseCur}<b>${fmt(v/(FX[baseCur]||1),4)}</b></span>`);if(S.goldOunce)list.push(`<span>XAU/USD<b>${fmt(S.goldOunce,2)}</b></span>`);$('fx').innerHTML=list.join('')+list.join('');}
 function renderTx(){
  const years=[...new Set([new Date().getFullYear(),...TXNS.map(t=>+t[0].slice(0,4)),...CTX.map(t=>+t.d.slice(0,4))])].filter(Number.isFinite).sort((a,b)=>b-a);
  $('txnYearLabel').innerHTML=`<select aria-label="السنة" onchange="selectedYear=+this.value;renderTx()">${years.map(y=>`<option ${y===selectedYear?'selected':''}>${y}</option>`).join('')}</select>`;
@@ -120,7 +119,7 @@ async function loadExternal(){
  if(news.ok!==false){NEWS.splice(0,NEWS.length,...(news.items||[]).map(n=>({...n,a:ENGINE.clean(n.a),t:ENGINE.clean(n.t),ago:n.date?new Date(n.date).toLocaleDateString('ar-SA-u-ca-gregory'):n.source||'Yahoo',via:ENGINE.clean(n.via||''),related:(n.related||[]).map(r=>({...r,a:ENGINE.clean(r.a),via:ENGINE.clean(r.via),assets:(r.assets||[r.a]).map(ENGINE.clean)}))})));sourceErrors.news=null;}else sourceErrors.news=news.error;
  if(cal.ok!==false){calendarData=(cal.items||[]).map(e=>({...e,t:ENGINE.clean(e.t),s:ENGINE.clean(e.s),on:e.asset?`openAsset('${ENGINE.clean(e.asset)}')`:`openCalendarEvent('${e.d}','${ENGINE.clean(e.t)}')`}));sourceErrors.calendar=cal.unavailable?.join('، ')||null;}else sourceErrors.calendar=cal.error;
  if(quotes.ok!==false)companyQuotes=quotes.quotes||{};else sourceErrors.quotes=quotes.error;
- renderNews();renderLab();updateConnection();if(ambOn)ambRender();
+ renderNews();renderLab();updateConnection();if(ambOn)ambRender();await loadTickerQuotes();
 }
 function companySymbols(){return Object.values(XR.companies).sort((a,b)=>b.val-a.val).slice(0,35).map(c=>({key:c.k,symbol:companySymbol(c)})).filter(x=>x.symbol);}
 function companySymbol(c){

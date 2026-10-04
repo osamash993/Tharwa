@@ -50,6 +50,7 @@ js=js.replace("${fmt(LL[cc][0],1)}°N ${fmt(LL[cc][1],1)}°E", "${geoPositionLab
 js=js.replace("const ll=LL[cc];if(!ll)return;const d=((((-ll[1])", "const ll=LL[cc];if(!ll){setFocus(cc);return;}const d=((((-ll[1])")
 js=js.replace("if(!f0)return '<div class=\"mapfb\">الخريطة غير متاحة</div>';", "if(!f0)return '<div class=\"mapfb\">'+((cc==='EZ'||cc==='EU')?'تعرّض إقليمي مجمّع · موضع الخريطة تمثيلي، وليس توزيعاً بين الدول':'الخريطة غير متاحة')+'</div>';")
 replace("const B=baseCur,bv=", "const B=baseCur,bv=") if False else None
+js=js.replace('inset:0 auto 0 0;right:auto;', 'inset-block:0;inset-inline-start:0;')
 # RTL bars preserve label/value ordering; canvas positive angles run clockwise.
 replace(old_functions['renderDiv'],old_functions['renderDiv'].replace('direction:ltr','direction:rtl').replace('left:','inset-inline-start:').replace('right:','inset-inline-end:').replace('translateX(-50%)','translateX(50%)'))
 replace('b.dir=b.chg<0?-1:1;', 'b.dir=b.chg>0?-1:b.chg<0?1:0;')
