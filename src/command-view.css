@@ -1,0 +1,12 @@
+/* Styles belong only to the new root. Legacy components are not restyled. */
+#cc-root{position:relative;z-index:2;min-height:100vh;min-height:100dvh;background:#02070c;color:#cfeefc;font:14px/1.6 system-ui,sans-serif;padding:24px;isolation:isolate;overflow-wrap:anywhere}
+#cc-root .cc-switchbar{display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid #163e4e;padding-bottom:18px}
+#cc-root .cc-switchbar strong{display:block;color:#4fd8ff;font-size:17px}
+#cc-root .cc-switchbar small{display:block;color:#91b0bf;margin-top:5px}
+#cc-root button{font:inherit;color:#b4f3ff;background:#08202c;border:1px solid #31677b;border-radius:5px;padding:10px 15px;cursor:pointer;min-height:44px}
+#cc-root button:focus-visible{outline:2px solid #4fd8ff;outline-offset:4px}
+#cc-root button:disabled{opacity:.65;cursor:wait}
+#cc-root .cc-stage-note{color:#91b0bf;margin-top:22px;font-size:13px}
+#cc-content{min-height:50vh}
+#cc-view-status{color:#ff9a8f}
+@media(max-width:600px){#cc-root{padding:18px 16px}#cc-root .cc-switchbar{align-items:flex-start;flex-direction:column}#cc-root .cc-switchbar strong{font-size:16px}}

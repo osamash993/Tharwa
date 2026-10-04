@@ -6,6 +6,7 @@ import '@tabler/icons-webfont/dist/tabler-icons.min.css';
 import './original-layout.css';
 import 'jsvectormap/dist/jsvectormap.css';
 import {setupOriginalLayout} from './original-layout.js';
+import {createCommandView} from './command-view.js';
 import {createAPI} from './api.js';
 import {supabaseUrl, supabasePublishableKey} from './public-config.js';
 
@@ -24,11 +25,11 @@ const demo=new URLSearchParams(location.search).get('demo')==='1';
 const screen=document.getElementById('auth-screen');
 // Keep browser chrome in step with login and the app's own light/dark setting.
 function syncBrowserTheme(){
- const dark=document.body.classList.contains('ready')&&document.documentElement.classList.contains('ios-dark');
+ const dark=document.body.classList.contains('ready')&&(document.body.dataset.portfolioView==='cc'||document.documentElement.classList.contains('ios-dark'));
  document.querySelector('meta[name="theme-color"]').content=dark?'#000000':'#f2f2f7';
 }
 const browserThemeObserver=new MutationObserver(syncBrowserTheme);
-browserThemeObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
+browserThemeObserver.observe(document.body,{attributes:true,attributeFilter:['class','data-portfolio-view']});
 browserThemeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
 syncBrowserTheme();
 const indicator=document.getElementById('cloud-indicator');
@@ -39,6 +40,7 @@ window.cloudFailure=e=>{
 };
 const api=createAPI(client,{demo,onError:window.cloudFailure,onStatus:message=>{indicator.textContent=message;}});
 window.portfolioAPI=api.rpc;
+const commandView=createCommandView({api,onError:window.cloudFailure});
 window.downloadTransactions=async txns=>{try{const {exportTransactions,download}=await import('./workbook.js');download(await exportTransactions(txns),'Tharwa_Transactions_'+new Date().toISOString().slice(0,10)+'.xlsx');}catch(e){window.cloudFailure(e);}};
 window.refreshOverview=()=>{};
 window.reloadPortfolio=async()=>{const data=await api.call('loadAll');window.portfolioBridge.load(data);};
@@ -50,6 +52,7 @@ async function start(){
   await loadScript('legacy/app.js');
   screen.hidden=true;document.body.classList.add('ready');
   window.startPortfolio();indicator.textContent=demo?'تجربة — البيانات هنا لا تُحفظ':'جاري الاتصال…';
+  await commandView.initialize();
  }catch(e){started=false;window.cloudFailure(e);}
 }
 const menu=document.getElementById('topMenu');
@@ -89,7 +92,7 @@ screen.querySelector('form').onsubmit=async e=>{
  try{
   const {error}=await client.auth.signInWithPassword({email:form.get('email'),password:form.get('password')});
   if(error)errorBox.textContent='تعذّر تسجيل الدخول. تحقق من البريد وكلمة المرور.';
-  else {history.replaceState(null,'',location.pathname);await start();}
+  else {const next=new URL(location.href);next.searchParams.delete('login');history.replaceState(null,'',next.pathname+next.search+next.hash);await start();}
  }catch(e){errorBox.textContent='تعذّر الاتصال. تحقق من الإنترنت وحاول مرة ثانية.';}
  finally{btn.disabled=false;}
 };
