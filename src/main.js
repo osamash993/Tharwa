@@ -5,6 +5,7 @@ import DOMPurify from 'dompurify';
 import '@tabler/icons-webfont/dist/tabler-icons.min.css';
 import commandIconFont from '@tabler/icons-webfont/dist/fonts/tabler-icons.woff2?url';
 window.commandIconFont=commandIconFont;
+const commandFonts=document.createElement('link');commandFonts.rel='stylesheet';commandFonts.href=import.meta.env.BASE_URL+'command-center/fonts.css';document.head.append(commandFonts);
 import './original-layout.css';
 import './command-auth.css';
 import 'jsvectormap/dist/jsvectormap.css';
@@ -56,10 +57,11 @@ async function start(){
  try{
   await loadScript('legacy/app.js');
   await loadScript('legacy/command-bridge.js');
-  screen.hidden=true;document.body.classList.add('ready');
+  document.body.classList.add('starting');
   window.startPortfolio();indicator.textContent=demo?'تجربة — البيانات هنا لا تُحفظ':'جاري الاتصال…';
   await commandView.initialize();
- }catch(e){started=false;window.cloudFailure(e);}
+  screen.hidden=true;document.body.classList.add('ready');document.body.classList.remove('starting');
+ }catch(e){document.body.classList.remove('starting');started=false;window.cloudFailure(e);}
 }
 const menu=document.getElementById('topMenu');
 function menuAction(id,label,icon,handler){

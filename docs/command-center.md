@@ -42,3 +42,14 @@ Run `python scripts/build-command-center.py /path/to/the-supplied-reference.html
 - The header displays the oldest available quote timestamp (not a fabricated fresh time). Source timestamps, market status, and portfolio sync time are available under Data & Sources.
 - Economic events now include official FOMC dates, BLS CPI/PPI/employment/JOLTS, and BEA GDP/PCE. The server requests official calendars daily. A bundled public schedule, verified on 2026-10-04, provides explicitly dated fallback events if a source blocks automated requests. The fallback contains only announced dates, not recurrence guesses; it expires naturally as dates pass. FMP remains optional for corporate earnings and additional country events.
 - The calendar details show the source and why the event may matter; they do not predict market direction. Some official sites can block server fetches. Fallback provenance is visible on those events. Refreshing the screen does not imply each price is live or that a market is open.
+
+## News and visual polish (2026-10-04)
+
+- Company news uses symbol RSS first and validates ticker relations on search fallback. Shared stories retain all related holdings; the client ranks recency, exposure and direct relevance with a repeat-company penalty, and scrolls the feed without discarding the remaining stories.
+- UI fonts are self-hosted under their included OFL licenses. The startup sequence progresses for 2.6 seconds, remains skippable and waits for the new iframe before exposing the application.
+- Zakat follows the reference worksheet/hawl/composition layout while retaining engine calculations and all treatment options.
+- Chart price hints are compact. Gold buy and coral sell markers occupy separate lanes below prices; nearby same-type trades group into keyboard-accessible lists.
+- Data-source notes have their own spacing. Browser and home-screen icons use the cyan hexagonal startup emblem with versioned references.
+- Validation: 24 unit tests, production build, desktop/mobile/tablet modal checks, news diversity and coverage checks, marker navigation, compact tooltip dimensions, startup visibility and no legacy flash.
+- Regional euro exposure has an explicitly representative European marker; unmapped regions no longer fall back to zero coordinates. Horizontal bars and 52-week ranges use RTL consistently. Orbit winners move counterclockwise, losers clockwise, and unchanged/unavailable quotes remain stationary.
+- Transaction details now follow the supplied reference: prominent recorded total, four compact top metrics, FIFO and comparison content on the right, account/note/audit/actions on the left. Calculations use engine lot records, recorded FX/fees, and explicit unavailable quote states. Buy/sell, mobile overflow, and edit navigation were checked.

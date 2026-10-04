@@ -13,7 +13,7 @@ export function createCommandView({api,onError=()=>{}}){
  menu.insertBefore(entry,menu.querySelector('.top-menu-sync'));
  const status=root.querySelector('#cc-view-status'),back=root.querySelector('#cc-return');
  const savedNodes=new Map();
- let selected='legacy',ready=false,busy=false,legacyScroll=0;
+ let selected='legacy',ready=false,busy=false,legacyScroll=0,frameLoaded=Promise.resolve();
  const valid=value=>value==='cc'||value==='legacy';
  const requested=()=>new URL(location.href).searchParams.get('view');
  const excluded=node=>node===root||['SCRIPT','STYLE','LINK'].includes(node.tagName)||['auth-screen','cloud-error'].includes(node.id);
@@ -32,7 +32,7 @@ export function createCommandView({api,onError=()=>{}}){
   selected=view;document.body.dataset.portfolioView=view;
   if(view==='cc'){
    [...document.body.children].forEach(hideLegacy);root.hidden=false;
-   const frame=root.querySelector('iframe');if(!frame.getAttribute('src'))frame.src=import.meta.env.BASE_URL+'command-center/index.html?v='+encodeURIComponent(import.meta.url);
+   const frame=root.querySelector('iframe');if(!frame.getAttribute('src')){frameLoaded=new Promise(resolve=>{const timeout=setTimeout(resolve,8000);frame.addEventListener('load',()=>{clearTimeout(timeout);resolve();},{once:true});});frame.src=import.meta.env.BASE_URL+'command-center/index.html?v='+encodeURIComponent(import.meta.url);}
    if(changed){window.scrollTo(0,0);if(focus)back.focus({preventScroll:true});}
   }else{
    root.hidden=true;
@@ -67,5 +67,6 @@ export function createCommandView({api,onError=()=>{}}){
   try{saved=await api.call('getSetting','view');}catch(error){onError(error);}
   ready=true;
   apply(valid(requested())?requested():valid(saved)?saved:'cc',{updateURL:false,focus:false});
+  if(selected==='cc')await frameLoaded;
  }};
 }

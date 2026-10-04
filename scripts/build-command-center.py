@@ -45,13 +45,21 @@ replace("const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'];","co
 replace("document.querySelectorAll('#curSeg button').forEach(b=>b.onclick=()=>{baseCur=b.dataset.c;renderFx();document.querySelectorAll('#curSeg button').forEach(x=>x.classList.toggle('on',x===b));renderAll();});","document.querySelectorAll('#curSeg button').forEach(b=>b.onclick=()=>stCur(b.dataset.c));")
 replace("setFocus(ranked[0][0]);","if(ranked[0])setFocus(ranked[0][0]);")
 replace("const ll=LL[cc];const d=", "const ll=LL[cc];if(!ll)return;const d=")
+js=js.replace("${fmt(LL[cc][0],1)}°, ${fmt(LL[cc][1],1)}°", "${geoPositionLabel(cc)}")
+js=js.replace("${fmt(LL[cc][0],1)}°N ${fmt(LL[cc][1],1)}°E", "${geoPositionLabel(cc)}")
+js=js.replace("const ll=LL[cc];if(!ll)return;const d=((((-ll[1])", "const ll=LL[cc];if(!ll){setFocus(cc);return;}const d=((((-ll[1])")
+js=js.replace("if(!f0)return '<div class=\"mapfb\">الخريطة غير متاحة</div>';", "if(!f0)return '<div class=\"mapfb\">'+((cc==='EZ'||cc==='EU')?'تعرّض إقليمي مجمّع · موضع الخريطة تمثيلي، وليس توزيعاً بين الدول':'الخريطة غير متاحة')+'</div>';")
 replace("const B=baseCur,bv=", "const B=baseCur,bv=") if False else None
+# RTL bars preserve label/value ordering; canvas positive angles run clockwise.
+replace(old_functions['renderDiv'],old_functions['renderDiv'].replace('direction:ltr','direction:rtl').replace('left:','inset-inline-start:').replace('right:','inset-inline-end:').replace('translateX(-50%)','translateX(50%)'))
+replace('b.dir=b.chg<0?-1:1;', 'b.dir=b.chg>0?-1:b.chg<0?1:0;')
+replace('الرابح يدور بعكس عقارب الساعة، والخاسر باتجاهها.', 'الرابح يدور بعكس عقارب الساعة، والخاسر باتجاهها. الأصل بلا تغيّر أو بلا سعر متاح يبقى ثابتاً.')
 # Date/currency bugs in reference detail markup: use recorded movement totals.
 # Transaction detail is replaced by the engine-backed dialog.
 replace("const coChg=k=>{let h=0;for(const c of k)h=(h*31+c.charCodeAt(0))%997;return ((h%420)-180)/100;};", "const coChg=k=>companyQuotes[k]?.changePct??null;")
 replace("const coSrc=tk=>{let h=0;for(const ch of tk)h+=ch.charCodeAt(0);return h%4===0?'FMP':'Yahoo';};", "const coSrc=tk=>'غير متاح';")
 a=js.index('const newsRow=');b=js.index('\n',a)
-replace(js[a:b],"const newsRow=x=>`<div class=\"nw clk\" onclick=\"openNews(${NEWS.indexOf(x)})\"><span class=\"tg\">${esc(x.a)}</span><div class=\"tx\">${esc(x.t)}<div class=\"mt\">${esc(x.ago)} · ${esc(x.source||'Yahoo')}</div></div></div>`;")
+replace(js[a:b],"const newsRow=x=>`<div class=\"nw clk\" onclick=\"openNews(${NEWS.indexOf(x)})\"><span class=\"tg\">${esc(x.via||x.a)}</span><div class=\"tx\">${esc(x.t)}<div class=\"mt\">${esc(x.ago)} · ${esc(x.source||'Yahoo')}</div></div></div>`;")
 replace("const ll=LL[cc],d=d3.geoDistance([ll[1],ll[0]],center);", "const ll=LL[cc];if(!ll)return;const d=d3.geoDistance([ll[1],ll[0]],center);")
 replace("const ll=LL[cc],d=d3.geoDistance([ll[1],ll[0]],c);", "const ll=LL[cc];if(!ll)return;const d=d3.geoDistance([ll[1],ll[0]],c);")
 replace("const ll=LL[cc];ctx.strokeStyle", "const ll=LL[cc];if(!ll)return;ctx.strokeStyle")
@@ -86,6 +94,9 @@ out=root/'public/command-center';out.mkdir(exist_ok=True)
 # Extract the existing self-contained d3/topojson/map vendor blocks unchanged.
 vendor='\n'.join(scripts[1:-1]);(out/'geo-vendor.js').write_text(vendor)
 markup=re.sub(r'<script[^>]*>[\s\S]*?</script>','',html)
+markup=re.sub(r'<link[^>]+fonts.googleapis.com[^>]+>', '<link rel="stylesheet" href="./fonts.css">',markup)
+markup=markup.replace('<div id="nwList"></div>', '<div id="nwList" tabindex="0" aria-label="أخبار الاستثمارات — قائمة قابلة للتمرير"></div>')
+markup=markup.replace('<div class="p">\n      <div class="ph"><h3><i class="ti ti-news">', '<div class="p news-panel">\n      <div class="ph"><h3><i class="ti ti-news">')
 markup=markup.replace('</head>','<link rel="stylesheet" href="./integration.css">\n<script src="./safety.js"></script>\n</head>')
 markup=markup.replace('</body>','<script src="./geo-vendor.js"></script>\n<script src="./app.js"></script>\n</body>')
 markup=markup.replace('تصوّر — البنية والحسابات من O.db · القيم والأخبار تجريبية','O.db · بيانات محفظتك · <a href="#" onclick="ENGINE.legacy();return false">الواجهة السابقة</a>')
@@ -104,7 +115,7 @@ for name in sorted(names):
 (out/'icons.css').write_text(icons)
 (out/'tabler-icons.woff2').unlink(missing_ok=True)
 markup=re.sub(r'<link[^>]+cdn.jsdelivr.net[^>]+>','<link rel="stylesheet" href="./icons.css">',markup)
-for filename in ['app.js','geo-vendor.js','icons.css','integration.css','safety.js']:
+for filename in ['app.js','geo-vendor.js','icons.css','fonts.css','integration.css','safety.js']:
     digest=hashlib.sha256((out/filename).read_bytes()).hexdigest()[:12]
     markup=markup.replace('./'+filename+'"','./'+filename+'?v='+digest+'"')
 (out/'index.html').write_text(markup)

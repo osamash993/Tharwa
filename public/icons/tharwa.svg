@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <title>ثروة</title>
-  <rect width="512" height="512" fill="#17191f"/>
-  <path d="M256 112 400 256 256 400 112 256Z" fill="none" stroke="#c9a84c" stroke-width="24" stroke-linejoin="round"/>
-  <path d="M256 195 317 256 256 317 195 256Z" fill="#c9a84c"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><title>O.db — ثروة</title><rect width="512" height="512" fill="#020b12"/><g fill="none" stroke="#4fd8ff"><path d="M256 91 399 174v164L256 421 113 338V174Z" stroke-width="13"/><path d="M256 114 379 185v142l-123 71-123-71V185Z" stroke-width="3" opacity=".35"/><circle cx="256" cy="256" r="111" stroke-width="4" opacity=".4"/><circle cx="256" cy="256" r="80" stroke-width="11" stroke-dasharray="380 123" transform="rotate(-65 256 256)"/><path d="M256 131v28m0 194v28M131 256h28m194 0h28" stroke-width="7"/></g><circle cx="256" cy="256" r="22" fill="#c9f5ff"/><circle cx="256" cy="256" r="11" fill="#4fd8ff"/></svg>
