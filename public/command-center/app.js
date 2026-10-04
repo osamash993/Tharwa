@@ -465,7 +465,13 @@ const rcv=$('radarEv'),rctx=rcv.getContext('2d');let RW=0,RDPR=1;
 function radResize(){const r=rcv.getBoundingClientRect();if(!r.width)return;RDPR=Math.min(2,devicePixelRatio||1);RW=r.width;rcv.width=RW*RDPR;rcv.height=RW*RDPR;}
 window.addEventListener('resize',radResize);
 const evR=(d,R)=>R*Math.min(1,Math.sqrt(d/180));
-function evPos(e,i,R,cx,cy){const ci=EV_ORDER.indexOf(e.c),same=EV.filter(x=>x.c===e.c),k=same.indexOf(e);const a=-Math.PI/2+(ci+.5+(k-(same.length-1)/2)*.22)*2*Math.PI/EV_ORDER.length;const r=Math.max(12,evR(e.days,R));return [cx+r*Math.cos(a),cy+r*Math.sin(a),a];}
+function evPos(e,i,R,cx,cy){
+ const ci=EV_ORDER.indexOf(e.c),same=EV.filter(x=>x.c===e.c),k=Math.max(0,same.indexOf(e));
+ const fraction=same.length>1?.16+.68*k/(same.length-1):.5;
+ const a=-Math.PI/2+(ci+fraction)*2*Math.PI/EV_ORDER.length;
+ const r=Math.max(12,evR(e.days,R));
+ return [cx+r*Math.cos(a),cy+r*Math.sin(a),a];
+}
 function drawRadar(now){
   requestAnimationFrame(drawRadar);if(!RW)return;
   const c=rctx,W=RW,cx=W/2,cy=W/2,R=W/2-24;c.setTransform(RDPR,0,0,RDPR,0,0);c.clearRect(0,0,W,W);
@@ -1138,6 +1144,10 @@ function enhanceControls(){
  document.addEventListener('keydown',e=>{if(e.key!=='Tab'||!$('ov').classList.contains('open'))return;const list=[...$('holo').querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select,textarea,[tabindex="0"]')].filter(x=>x.getClientRects().length);if(!list.length)return;const first=list[0],last=list.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
 }
 function openZakatBreakdown(i){const r=S.zakat.rows[i];if(!r)return;openHolo(modalHead('ZAKAT BREAKDOWN',r.name,esc(r.src))+`<div class="kg2">${cell('قيمة الأصل',fmtC(r.val))}${cell('النسبة',fmt(r.ratio*100,2)+'%')}${cell('القيمة الزكوية',fmtC(r.zVal))}${cell('الحالة',r.warn?'بيانات ناقصة — احتياطي':'من المحرّك')}</div>`+(r.fund?`<div class="sect">مكوّنات الصندوق</div>`+r.fund.top.map(c=>`<div class="row"><div class="nm">${esc(c.name||c.ticker)}<small>${c.missing?'نسبة احتياطية':esc(c.src||'من البيانات المحفوظة')}</small></div><span class="n">وزن ${fmt(c.w,2)}% · نسبة ${fmt((c.ratio??c.fin)*100,2)}%</span></div>`).join('')+`<div class="sub">المكوّنات غير المغطاة: ${fmt(r.fund.rest,2)}%، حسب قاعدة المحرّك.</div>`:r.co?`<pre style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(JSON.stringify(r.co.calc||{ratio:r.ratio},null,2))}</pre>`:'')+`<button class="fbtn" onclick="openZakat()">رجوع</button>`);}
+
+// Keep every marker inside its labelled category wedge, regardless of event count.
+// Radial distance continues to encode the event date.
+
 
 async function saveCC(k,v){await safeAction(()=>ENGINE.setting('commandCenter',{...S.cc,[k]:v}));syncSnapshot();if($('stBody'))stRefresh();}
 
