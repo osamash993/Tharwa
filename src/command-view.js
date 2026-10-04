@@ -1,15 +1,15 @@
 import './command-view.css';
 
-// Phase 0: an isolated, deliberately empty root. No copied demo data/calculations.
+// The visual reference runs in an isolated same-origin document; the engine stays here.
 export function createCommandView({api,onError=()=>{}}){
  const root=document.createElement('section');
  root.id='cc-root';root.hidden=true;root.dir='rtl';
- root.setAttribute('aria-label','O.db Command Center — مرحلة التحضير');
- root.innerHTML=`<header class="cc-switchbar"><div><strong dir="ltr">O.db · COMMAND CENTER</strong><small>مرحلة 0 — تجهيز الواجهة الجديدة</small></div><button type="button" id="cc-return">العودة للواجهة الحالية</button></header><p class="cc-stage-note">هذه مساحة التجهيز فقط. التصميم والبيانات يُضافان بالمراحل التالية.</p><main id="cc-content" aria-label="مساحة الواجهة الجديدة"></main><p id="cc-view-status" role="status"></p>`;
+ root.setAttribute('aria-label','O.db Command Center');
+ root.innerHTML=`<button type="button" id="cc-return" hidden>الواجهة السابقة</button><iframe id="cc-frame" title="O.db Command Center" referrerpolicy="same-origin"></iframe><p id="cc-view-status" role="status" hidden></p>`;
  document.body.append(root);
  const menu=document.getElementById('topMenu');
  const entry=document.createElement('button');entry.id='th-command-view';entry.type='button';entry.className='tab-btn';
- entry.innerHTML='<i class="ti ti-layout-dashboard"></i><span>Command Center — تجربة الواجهة الجديدة</span>';
+ entry.innerHTML='<i class="ti ti-layout-dashboard"></i><span>O.db — الواجهة الجديدة</span>';
  menu.insertBefore(entry,menu.querySelector('.top-menu-sync'));
  const status=root.querySelector('#cc-view-status'),back=root.querySelector('#cc-return');
  const savedNodes=new Map();
@@ -32,6 +32,7 @@ export function createCommandView({api,onError=()=>{}}){
   selected=view;document.body.dataset.portfolioView=view;
   if(view==='cc'){
    [...document.body.children].forEach(hideLegacy);root.hidden=false;
+   const frame=root.querySelector('iframe');if(!frame.getAttribute('src'))frame.src=import.meta.env.BASE_URL+'command-center/index.html?v='+encodeURIComponent(import.meta.url);
    if(changed){window.scrollTo(0,0);if(focus)back.focus({preventScroll:true});}
   }else{
    root.hidden=true;
@@ -58,12 +59,13 @@ export function createCommandView({api,onError=()=>{}}){
  }
  entry.addEventListener('click',()=>choose('cc'));
  back.addEventListener('click',()=>choose('legacy'));
+ window.commandViewReturn=()=>choose('legacy');
  window.addEventListener('popstate',()=>{if(ready)apply(valid(requested())?requested():'legacy',{updateURL:false});});
  return {async initialize(){
   // startPortfolio queued loadAll first; read the saved preference after that same load.
   let saved='legacy';
   try{saved=await api.call('getSetting','view');}catch(error){onError(error);}
   ready=true;
-  apply(valid(requested())?requested():valid(saved)?saved:'legacy',{updateURL:false,focus:false});
+  apply(valid(requested())?requested():valid(saved)?saved:'cc',{updateURL:false,focus:false});
  }};
 }

@@ -1,0 +1,10 @@
+const ENGINE=parent!==window?parent.commandEngine:null;
+if(!ENGINE)throw Error('افتح Command Center من تطبيق ثروة بعد تسجيل الدخول');
+let S=ENGINE.snapshot();
+const FX={...S.FX,SAR:1};
+let baseCur=S.baseCur;
+const CUR_SYMS={SAR:'SAR',JOD:'JOD',USD:'USD'};
+const AS={...S.AS};
+const TXNS=[...S.TXNS],CASH=[...S.CASH],PROP=[...S.PROP],OTHER=[...S.OTHER];
+const catGoals={...S.catGoals},NEWS=[];
+const XRAY_DATA={...S.XRAY_DATA},XR_COUNT={...S.XR_COUNT};

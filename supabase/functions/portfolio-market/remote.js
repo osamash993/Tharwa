@@ -1,4 +1,4 @@
-const hosts=new Set(['query1.finance.yahoo.com','query2.finance.yahoo.com','fc.yahoo.com','financialmodelingprep.com','www.ishares.com','ishares.com','www.blackrock.com','blackrock.com']);
+const hosts=new Set(['www.msci.com','app2.msci.com','query1.finance.yahoo.com','query2.finance.yahoo.com','fc.yahoo.com','financialmodelingprep.com','www.ishares.com','ishares.com','www.blackrock.com','blackrock.com']);
 export const pause=ms=>new Promise(r=>setTimeout(r,ms));
 export async function fetchRemote(input,options={}){
  let url=new URL(input),response;
@@ -25,7 +25,7 @@ export async function getPrices(csv){
    if(r.getResponseCode()!==200)throw Error('المصدر غير متاح ('+r.getResponseCode()+')');
    const j=JSON.parse(r.getContentText()),m=j.chart?.result?.[0]?.meta;
    if(!m||!Number.isFinite(m.regularMarketPrice))throw Error('لا يوجد سعر');
-   const prev=m.chartPreviousClose||m.previousClose;out[symbol]={price:m.regularMarketPrice,currency:m.currency,change:prev?m.regularMarketPrice-prev:0,name:m.shortName||m.longName||symbol,high52:m.fiftyTwoWeekHigh??null,low52:m.fiftyTwoWeekLow??null,ma200:m.twoHundredDayAverage??null,changePct:prev?(m.regularMarketPrice/prev-1)*100:0,timestamp:m.regularMarketTime,source:'Yahoo Finance'};
+   const prev=m.chartPreviousClose||m.previousClose;out[symbol]={price:m.regularMarketPrice,currency:m.currency,change:prev?m.regularMarketPrice-prev:0,name:m.shortName||m.longName||symbol,high52:m.fiftyTwoWeekHigh??null,low52:m.fiftyTwoWeekLow??null,ma200:m.twoHundredDayAverage??null,changePct:prev?(m.regularMarketPrice/prev-1)*100:null,marketOpen:m.currentTradingPeriod?.regular?Date.now()/1000>=m.currentTradingPeriod.regular.start&&Date.now()/1000<=m.currentTradingPeriod.regular.end:null,timestamp:m.regularMarketTime,source:'Yahoo Finance'};
   }catch(e){out[symbol]={error:e.message};}
  }));return out;
 }

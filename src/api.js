@@ -12,6 +12,13 @@ export function createAPI(client,{demo=false,onError=()=>{},onStatus=()=>{}}={})
    if(!demo){const {data,error}=await client.rpc('load_portfolio');if(error)throw error;const row=Array.isArray(data)?data[0]:data;state={...emptyPortfolio(),...row.data};version=row.version;}
    blocked=false;return structuredClone(state);
   }
+  if(method==='checkRemote'){
+   if(demo||blocked)return false;
+   const {data,error}=await client.rpc('load_portfolio');if(error)throw error;
+   const row=Array.isArray(data)?data[0]:data;
+   if(row.version!==version){state={...emptyPortfolio(),...row.data};version=row.version;return true;}
+   return false;
+  }
   if(method==='getNotes')return structuredClone(state.notes).map(n=>({...n,body:n.body??n.content??''}));
   if(method==='getDeletedTxns')return structuredClone(state.deletedTxns);
   if(method==='getSetting')return state.settings[args[0]]??null;
@@ -28,6 +35,7 @@ export function createAPI(client,{demo=false,onError=()=>{},onStatus=()=>{}}={})
   }catch(e){blocked=true;throw e;}
  }
  function call(method,...args){
+  if(marketMethods.has(method))return run(method,structuredClone(args));
   // Serialize reads and writes so paired edits cannot overtake a load/save.
   const p=queue.then(()=>run(method,structuredClone(args)));queue=p.catch(()=>{});return p;
  }

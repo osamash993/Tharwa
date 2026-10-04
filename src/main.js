@@ -3,11 +3,14 @@ import Chart from 'chart.js/auto';
 import {marked} from 'marked';
 import DOMPurify from 'dompurify';
 import '@tabler/icons-webfont/dist/tabler-icons.min.css';
+import commandIconFont from '@tabler/icons-webfont/dist/fonts/tabler-icons.woff2?url';
+window.commandIconFont=commandIconFont;
 import './original-layout.css';
 import 'jsvectormap/dist/jsvectormap.css';
 import {setupOriginalLayout} from './original-layout.js';
 import {createCommandView} from './command-view.js';
 import {createAPI} from './api.js';
+import {setupCommandData} from './command-data.js';
 import {supabaseUrl, supabasePublishableKey} from './public-config.js';
 
 window.loadTharwaMap=async()=>{
@@ -40,6 +43,7 @@ window.cloudFailure=e=>{
 };
 const api=createAPI(client,{demo,onError:window.cloudFailure,onStatus:message=>{indicator.textContent=message;}});
 window.portfolioAPI=api.rpc;
+setupCommandData({api,client,demo,onError:window.cloudFailure});
 const commandView=createCommandView({api,onError:window.cloudFailure});
 window.downloadTransactions=async txns=>{try{const {exportTransactions,download}=await import('./workbook.js');download(await exportTransactions(txns),'Tharwa_Transactions_'+new Date().toISOString().slice(0,10)+'.xlsx');}catch(e){window.cloudFailure(e);}};
 window.refreshOverview=()=>{};
@@ -50,6 +54,7 @@ async function start(){
  if(started)return;started=true;
  try{
   await loadScript('legacy/app.js');
+  await loadScript('legacy/command-bridge.js');
   screen.hidden=true;document.body.classList.add('ready');
   window.startPortfolio();indicator.textContent=demo?'تجربة — البيانات هنا لا تُحفظ':'جاري الاتصال…';
   await commandView.initialize();
