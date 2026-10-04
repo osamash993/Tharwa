@@ -32,3 +32,13 @@ Advanced legacy workflows remain reachable for comparison, including the full or
 ## Rebuilding the reference
 
 Run `python scripts/build-command-center.py /path/to/the-supplied-reference.html`, followed by `npm run build`. The compiler performs fail-fast literal replacements and emits script syntax checks. Override sources live in `scripts/cc`. Generated browser assets are committed so normal deployment does not require the private uploaded reference. Changes to the original calculation file should be reviewed separately.
+
+## Interface refinement (2026-10-04)
+
+- Settings use a responsive navigation rail and grouped asset cards. All registered types have show/hide, edit, and delete controls. Display hiding uses the existing `marketHidden` setting for stocks, gold, property, and cash; it never changes balances, financial totals, or account indices. Deleting a registry entry with existing transactions is blocked with an explanation and hide alternative; unused entries can be deleted. Other sources retain their existing inclusion semantics.
+- Zakat has a summary, asset breakdown tab, and separate calculation settings. Missing metal prices are shown as an incomplete nisab calculation rather than a zero amount implying no liability. All amounts still come from the original engine, including debts entered in the selected base currency.
+- Transaction entry keeps the prototype picker and form, with a clearer impact preview. Login uses the same dark/cyan design without changing the authentication flow.
+- The price chart uses its actual SVG screen transform to locate the pointer. The floating tooltip shows the nearest trading day's closing price; transaction markers expose the recorded trade price/currency and quantity, and remain clickable and keyboard accessible.
+- The header displays the oldest available quote timestamp (not a fabricated fresh time). Source timestamps, market status, and portfolio sync time are available under Data & Sources.
+- Economic events now include official FOMC dates, BLS CPI/PPI/employment/JOLTS, and BEA GDP/PCE. The server requests official calendars daily. A bundled public schedule, verified on 2026-10-04, provides explicitly dated fallback events if a source blocks automated requests. The fallback contains only announced dates, not recurrence guesses; it expires naturally as dates pass. FMP remains optional for corporate earnings and additional country events.
+- The calendar details show the source and why the event may matter; they do not predict market direction. Some official sites can block server fetches. Fallback provenance is visible on those events. Refreshing the screen does not imply each price is live or that a market is open.

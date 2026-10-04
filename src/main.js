@@ -6,6 +6,7 @@ import '@tabler/icons-webfont/dist/tabler-icons.min.css';
 import commandIconFont from '@tabler/icons-webfont/dist/fonts/tabler-icons.woff2?url';
 window.commandIconFont=commandIconFont;
 import './original-layout.css';
+import './command-auth.css';
 import 'jsvectormap/dist/jsvectormap.css';
 import {setupOriginalLayout} from './original-layout.js';
 import {createCommandView} from './command-view.js';
@@ -28,8 +29,8 @@ const demo=new URLSearchParams(location.search).get('demo')==='1';
 const screen=document.getElementById('auth-screen');
 // Keep browser chrome in step with login and the app's own light/dark setting.
 function syncBrowserTheme(){
- const dark=document.body.classList.contains('ready')&&(document.body.dataset.portfolioView==='cc'||document.documentElement.classList.contains('ios-dark'));
- document.querySelector('meta[name="theme-color"]').content=dark?'#000000':'#f2f2f7';
+ const dark=!document.body.classList.contains('ready')||(document.body.dataset.portfolioView==='cc'||document.documentElement.classList.contains('ios-dark'));
+ document.querySelector('meta[name="theme-color"]').content=dark?'#02070c':'#f2f2f7';
 }
 const browserThemeObserver=new MutationObserver(syncBrowserTheme);
 browserThemeObserver.observe(document.body,{attributes:true,attributeFilter:['class','data-portfolio-view']});
@@ -90,7 +91,7 @@ file.onchange=async()=>{
   await api.call('importPortfolio',p);await window.reloadPortfolio();
  }catch(e){window.cloudFailure(e);}finally{file.value='';}
 };
-screen.innerHTML=`<form class="auth-card"><div class="auth-brand">◈ ثروة</div><p class="auth-kicker">مساحتك المالية الخاصة</p><h1>${configured?'أهلاً بعودتك':'المشروع جاهز للربط'}</h1><p>${configured?'سجّل دخولك للوصول إلى محفظتك من الكمبيوتر والموبايل.':'يحتاج التطبيق إعداد اتصال Supabase لبدء الحفظ والمزامنة.'}</p>${configured?'<label>البريد الإلكتروني<input type="email" name="email" autocomplete="username" required dir="ltr"></label><label>كلمة المرور<input type="password" name="password" autocomplete="current-password" required dir="ltr"></label><button class="auth-submit">دخول آمن ←</button>':''}<p id="auth-error" role="alert"></p><a class="demo-link" href="?demo=1">استكشاف الواجهة بدون حفظ</a><small>استخدم حساب التطبيق وكلمة مروره المستقلة. بياناتك المالية محفوظة بشكل خاص.</small></form>`;
+screen.innerHTML=`<div class="auth-shell"><aside class="auth-intro"><div class="auth-logo">O.db</div><div class="auth-code">PERSONAL WEALTH COMMAND CENTER</div><h2>كل ثروتك، بنظرة واحدة.</h2><p>مراكزك، حركاتك وأهدافك المالية<br>في مساحة واحدة خاصة فيك.</p><div class="auth-orbit"><i class="ti ti-world"></i></div><div class="auth-footer">PORTFOLIO · INSIGHTS · CONTROL</div></aside><form class="auth-card"><div class="auth-brand">ثروة <span dir="ltr">/ O.db</span></div><p class="auth-kicker">SECURE ACCESS</p><h1>${configured?'أهلاً بعودتك':'المشروع جاهز للربط'}</h1><p>${configured?'سجّل دخولك للوصول إلى محفظتك من الكمبيوتر والموبايل.':'يحتاج التطبيق إعداد اتصال Supabase لبدء الحفظ والمزامنة.'}</p>${configured?'<label>البريد الإلكتروني<input type="email" name="email" autocomplete="username" required dir="ltr"></label><label>كلمة المرور<input type="password" name="password" autocomplete="current-password" required dir="ltr"></label><button class="auth-submit">دخول آمن ←</button>':''}<p id="auth-error" role="alert"></p><a class="demo-link" href="?demo=1">استكشاف الواجهة بدون حفظ</a><small>استخدم حساب التطبيق وكلمة مروره المستقلة. بياناتك المالية محفوظة بشكل خاص.</small></form></div>`;
 screen.querySelector('form').onsubmit=async e=>{
  e.preventDefault();const form=new FormData(e.currentTarget);const btn=e.currentTarget.querySelector('button');btn.disabled=true;
  const errorBox=document.getElementById('auth-error');errorBox.textContent='';

@@ -1,0 +1,20 @@
+import {fetchRemote} from './remote.js';
+import {officialCalendarSnapshot} from './economic-snapshot.js';
+export const officialSources={
+ Fed:'https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm',
+ BLS:'https://www.bls.gov/schedule/news_release/bls.ics',
+ BEA:'https://www.bea.gov/news/schedule/ics/online-calendar-subscription.ics'
+};
+const descriptions={
+ fed:['قرار الفائدة — الفيدرالي','قرارات الفائدة وتوقعات البنك المركزي تؤثر على الدولار والذهب وتكلفة التمويل وتقييم الأسهم.'],
+ cpi:['التضخم الأمريكي — CPI','تضخم المستهلكين يؤثر على توقعات الفائدة والقوة الشرائية؛ تتم مقارنة النتيجة بتوقعات السوق.'],
+ ppi:['تضخم المنتجين — PPI','أسعار المنتجين تساعد على متابعة ضغوط التكلفة والتضخم قبل وصولها للمستهلك.'],
+ jobs:['الوظائف والبطالة الأمريكية','قوة سوق العمل ونمو الأجور يؤثران على توقعات النمو والفائدة.'],
+ jolts:['فرص العمل الأمريكية — JOLTS','الشواغر والاستقالات مؤشر على قوة الطلب على العمالة وضغوط الأجور.'],
+ gdp:['النمو الاقتصادي الأمريكي — GDP','النمو الاقتصادي يؤثر على توقعات أرباح الشركات والفائدة. توجد قراءات أولية ومراجعات.'],
+ pce:['الإنفاق الشخصي والتضخم — PCE','يتضمن تقرير الدخل والإنفاق مؤشر أسعار PCE الذي يراقبه الفيدرالي لتقييم التضخم.']
+};
+function classify(title){if(/Consumer Price Index/i.test(title))return 'cpi';if(/Producer Price Index/i.test(title))return 'ppi';if(/Employment Situation/i.test(title))return 'jobs';if(/Job Openings and Labor Turnover/i.test(title))return 'jolts';if(/Personal Income and Outlays/i.test(title))return 'pce';if(/^(Gross Domestic Product,|GDP[ (])/i.test(title)&&!/^(?:GDP|Gross Domestic Product) by (?:State|County)/i.test(title))return 'gdp';return null;}
+export function parseOfficialICS(text,source){const items=[];text=text.replace(/\r?\n[ \t]/g,'');for(const block of text.split('BEGIN:VEVENT').slice(1)){if(/STATUS:CANCELLED/.test(block))continue;const title=block.match(/^SUMMARY(?:;[^:]*)?:(.*)$/m)?.[1]?.trim().replace(/\\,/g,','),date=block.match(/^DTSTART(?:;[^:]*)?:(\d{4})(\d{2})(\d{2})/m),kind=classify(title||'');if(!date||!kind)continue;items.push({c:'macro',d:date[1]+'-'+date[2]+'-'+date[3],t:descriptions[kind][0],impact:descriptions[kind][1],s:title,src:source,url:officialSources[source],kind});}return items;}
+export function parseFedHTML(html){const text=html.replace(/<[^>]+>/g,' ').replace(/&nbsp;|&#160;/g,' ').replace(/\s+/g,' '),items=[],months=['January','February','March','April','May','June','July','August','September','October','November','December'];for(const group of text.matchAll(/(20\d{2}) FOMC Meetings([\s\S]*?)(?=20\d{2} FOMC Meetings|$)/g)){const year=group[1];for(const m of group[2].matchAll(/(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})\s*[-–]\s*(\d{1,2})(\*)?/g)){items.push({c:'macro',d:year+'-'+String(months.indexOf(m[1])+1).padStart(2,'0')+'-'+m[3].padStart(2,'0'),t:descriptions.fed[0]+(m[4]?' والتوقعات الاقتصادية':''),impact:descriptions.fed[1],s:'اليوم الأخير من اجتماع FOMC · موعد معلن قابل للتغيير',src:'Fed',url:officialSources.Fed,kind:'fed'});}}return items;}
+export async function getOfficialEconomics(from,to){const items=[],status=[];await Promise.all(Object.entries(officialSources).map(async([source,url])=>{let rows;try{const response=await fetchRemote(url);if(response.getResponseCode()!==200)throw Error('source unavailable');rows=source==='Fed'?parseFedHTML(response.getContentText()):parseOfficialICS(response.getContentText(),source);if(!rows.some(e=>e.d>=from&&e.d<=to))throw Error('no upcoming dates');status.push({source,live:true,checkedAt:new Date().toISOString()});}catch{rows=officialCalendarSnapshot.items.filter(e=>e.src===source);status.push({source,live:false,checkedAt:officialCalendarSnapshot.checkedAt});}for(const e of rows.filter(e=>e.d>=from&&e.d<=to)){const state=status.find(s=>s.source===source);items.push({...e,s:e.s+' · '+(state.live?'الجدول الرسمي':'نسخة من الجدول الرسمي · تحقّق '+state.checkedAt.slice(0,10)),verifiedAt:state.checkedAt,cached:!state.live});}}));return {items,status};}

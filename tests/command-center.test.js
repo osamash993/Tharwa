@@ -21,6 +21,6 @@ test('history and component quotes expose only real finite source values',async(
 
 test('calendar missing credentials stays honest and never inserts fixed demo events',async()=>{
  const previous=globalThis.fetch;globalThis.fetch=async()=>new Response(JSON.stringify({chart:{result:[{events:{}}]}}));
- try{const r=await getCalendar([{symbol:'NOEVENTS',name:'Example'}]);assert.equal(r.ok,true);assert.deepEqual(r.items,[]);assert(r.unavailable.some(s=>s.includes('FMP')));}
+ try{const r=await getCalendar([{symbol:'NOEVENTS',name:'Example'}]);assert.equal(r.ok,true);assert(r.items.every(e=>e.c==='macro'&&e.cached&&e.verifiedAt&&/^https:\/\/www\.(federalreserve|bls|bea)\.gov\//.test(e.url)));assert(!r.items.some(e=>e.c==='earn'||e.c==='div'));assert(r.unavailable.some(s=>s.includes('FMP')));}
  finally{globalThis.fetch=previous;}
 });

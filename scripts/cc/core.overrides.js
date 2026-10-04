@@ -7,7 +7,7 @@ function fifo(name){return ENGINE.fifo(name);}
 function fifoLots(name,excl=-1){const f=ENGINE.fifo(name,TXNS[excl]?.[8]?.id);return f.queue.map(l=>({qty:l.qty,p:l.priceSAR,d:'FIFO'}));}
 function fifoReplay(name){const raw=ENGINE.fifoReplay(name),out={};TXNS.forEach((t,i)=>{if(raw[t[8].id])out[i]=raw[t[8].id];});return out;}
 function build(){POS=S.POS.filter(p=>assetVisible(p.n));}
-function assetVisible(n){return !(S.marketHidden||[]).includes(String(AS[n]?.id));}
+function assetVisible(n){const id=S.registry.find(a=>a.n===n)?.id;return !(S.marketHidden||[]).includes(String(id));}
 function visibleOther(o){return o.inc!==false&&(o.type!=='unrealized'||S.includeUnrealized);}
 function totals(){return S.totals;}
 function computeXray(){return S.XR;}
@@ -17,7 +17,7 @@ function series(){return [];}
 function syncSnapshot(force=false){
  const next=ENGINE.snapshot();const fingerprint=JSON.stringify({...next,updatedAt:0,status:undefined});
  const statusChanged=JSON.stringify(S.status)!==JSON.stringify(next.status);
- if(!force&&fingerprint===lastSnapshot){S.status=next.status;if(statusChanged)updateConnection();return;}
+ if(!force&&fingerprint===lastSnapshot){S.status=next.status;updateConnection();return;}
  const old=S;S=next;lastSnapshot=fingerprint;
  replaceObject(AS,S.AS);replaceObject(FX,{...S.FX,SAR:1});replaceObject(catGoals,S.catGoals);replaceObject(XRAY_DATA,S.XRAY_DATA);replaceObject(XR_COUNT,S.XR_COUNT);
  for(const [arr,key] of [[TXNS,'TXNS'],[CASH,'CASH'],[PROP,'PROP'],[OTHER,'OTHER']])arr.splice(0,arr.length,...(key==='OTHER'?S.OTHER.filter(visibleOther):S[key]));
@@ -40,7 +40,9 @@ function syncSnapshot(force=false){
   const scroll=$('hb').scrollTop;refreshingDialog=true;try{window[activeDialog.fn](...activeDialog.args);}finally{refreshingDialog=false;$('hb').scrollTop=scroll;}
  }
 }
-function updateConnection(){const el=document.querySelector('.live');if(!el)return;const st=S.status;el.innerHTML='<i></i>'+(!st.online?'OFFLINE':st.busy?'SAVING':st.demo?'DEMO':'LIVE');el.title=st.demo?'وضع تجربة — لا حفظ':st.lastSync?'آخر مزامنة '+new Date(st.lastSync).toLocaleTimeString():'متصل بحسابك';el.classList.toggle('offline',!st.online);}
+function updateConnection(){const el=document.querySelector('.live');if(!el)return;const st=parent.commandStorage.status();el.innerHTML='<i></i>'+(!st.online?'غير متصل':st.busy?'جاري الحفظ':st.demo?'تجربة':'متصل');el.classList.toggle('offline',!st.online);let info=$('freshness');if(!info){info=document.createElement('button');info.id='freshness';info.className='freshness';info.onclick=()=>openSettings('data');el.after(info);}const quotes=S.registry.filter(a=>a.yh&&a.timestamp);const times=quotes.map(a=>a.timestamp*1000);const stamp=times.length?Math.min(...times):null;info.textContent=st.demo?'تجربة · بدون بيانات مباشرة':stamp?'آخر سعر '+formatStamp(stamp):'الأسعار لم تتحدث بعد';info.title='أقدم سعر متاح من المصادر؛ اضغط لتفاصيل المزامنة والتحديث';}
+function formatStamp(value){return value?new Date(value).toLocaleString('ar-SA-u-ca-gregory',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'لم يتحدث بعد';}
+
 function renderAll(){build();renderHero();renderPf();renderMkt();renderNews();renderXrHud();renderTx();renderGoals();renderLab();}
 function renderHero(){
  const T=totals(),pr=T.gC-T.gK,gp=Math.min(100,percent(T.total,T.goal));
@@ -109,9 +111,9 @@ async function loadExternal(){
  const holdings=Object.keys(AS).filter(k=>AS[k].yh&&AS[k].t!=='Property').map(k=>({name:k,symbol:AS[k].yh}));
  const [news,cal,quotes]=await Promise.all([ENGINE.market('getNews',[...holdings.slice(0,5),...companySymbols().slice(0,3).map(x=>({symbol:x.symbol,name:XR.companies[x.key].via[0]?.f,via:XR.companies[x.key].ar}))]),ENGINE.market('getCalendar',[...holdings,...companySymbols().filter(x=>percent(XR.companies[x.key].val,S.totals.total)>=(ST.evMin||.5)).map(x=>({symbol:x.symbol,name:XR.companies[x.key].ar,asset:XR.companies[x.key].via[0]?.f,component:true}))],{countries:Object.keys(XR.countries),msci:Object.values(XRAY_DATA).some(d=>/msci/i.test(d.label||d.desc||''))}),ENGINE.market('getCompanyQuotes',companySymbols())]);
  if(news.ok!==false){NEWS.splice(0,NEWS.length,...(news.items||[]).map(n=>({...n,a:ENGINE.clean(n.a),t:ENGINE.clean(n.t),ago:n.date?new Date(n.date).toLocaleDateString('ar-SA-u-ca-gregory'):n.source||'Yahoo',via:ENGINE.clean(n.via||'')})));sourceErrors.news=null;}else sourceErrors.news=news.error;
- if(cal.ok!==false){calendarData=(cal.items||[]).map(e=>({...e,t:ENGINE.clean(e.t),s:ENGINE.clean(e.s),on:e.asset?`openAsset('${ENGINE.clean(e.asset)}')`:"openSettings('events')"}));sourceErrors.calendar=cal.unavailable?.join('، ')||null;}else sourceErrors.calendar=cal.error;
+ if(cal.ok!==false){calendarData=(cal.items||[]).map(e=>({...e,t:ENGINE.clean(e.t),s:ENGINE.clean(e.s),on:e.asset?`openAsset('${ENGINE.clean(e.asset)}')`:`openCalendarEvent('${e.d}','${ENGINE.clean(e.t)}')`}));sourceErrors.calendar=cal.unavailable?.join('، ')||null;}else sourceErrors.calendar=cal.error;
  if(quotes.ok!==false)companyQuotes=quotes.quotes||{};else sourceErrors.quotes=quotes.error;
- renderNews();renderLab();if(ambOn)ambRender();
+ renderNews();renderLab();updateConnection();if(ambOn)ambRender();
 }
 function companySymbols(){return Object.values(XR.companies).sort((a,b)=>b.val-a.val).slice(0,35).map(c=>({key:c.k,symbol:companySymbol(c)})).filter(x=>x.symbol);}
 function companySymbol(c){
@@ -151,3 +153,5 @@ function installCommandCenter(){
  const exit=document.createElement('button');exit.className='ibtn';exit.title='العودة للواجهة السابقة';exit.textContent='↩';exit.onclick=()=>ENGINE.legacy();document.querySelector('.top').append(exit);
  syncSnapshot(true);setTimeout(loadExternal,1500);
 }
+
+function openCalendarEvent(d,t){const e=calendarData.find(e=>e.d===d&&e.t===t);if(!e)return;activeDialog=null;openHolo(modalHead('ECONOMIC RADAR',e.t,esc(e.d)+' · '+esc(e.src))+`<div class="news-context"><div class="sect">ليش هذا الحدث مهم؟</div><p>${esc(e.impact||'قد يؤثر التقرير على توقعات الفائدة والعملات وتقييم الاستثمارات. التأثير الفعلي يعتمد على النتائج مقارنة بتوقعات السوق.')}</p><p>${esc(e.s)}</p></div><div class="sub">موعد معلن قابل للتغيير. الحدث لا يتوقع اتجاه السوق.</div>${e.url&&/^https:\/\//.test(e.url)?`<a class="fbtn" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">الجدول الرسمي ↗</a>`:''}`);}
