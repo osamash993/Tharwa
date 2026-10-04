@@ -15,7 +15,7 @@ function tickerItemHTML(item){
 function renderMarketTicker(id){
  const el=$(id);if(!el)return;
  let state=marketTickerStates.get(id);
- if(!state){state={el,signature:'',width:0,animation:null};marketTickerStates.set(id,state);state.observer=new ResizeObserver(()=>layoutMarketTicker(state));state.observer.observe(el.parentElement);}
+ if(!state){state={el,signature:'',width:0,animation:null};marketTickerStates.set(id,state);state.observer=new ResizeObserver(()=>layoutMarketTicker(state));state.observer.observe(el.parentElement);document.fonts?.ready.then(()=>layoutMarketTicker(state));}
  const html=marketTickerItems().map(tickerItemHTML).join('')||'<span class="ticker-item">لا أسعار مرتبطة متاحة</span>';
  if(html!==state.signature){state.signature=html;const group=document.createElement('div');group.className='ticker-group';group.innerHTML=html;el.replaceChildren(group);state.width=0;}
  requestAnimationFrame(()=>layoutMarketTicker(state));
