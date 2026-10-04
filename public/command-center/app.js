@@ -736,7 +736,7 @@ const ACT_IC={Buy:'ti-arrow-down-left',Sell:'ti-arrow-up-right',Deposit:'ti-down
 let CTX=[];                       // حركات الحسابات النقدية (إيداع، سحب، تحويل، والخصم التلقائي)
 let RECENT=[];
 const metaOf=id=>id.startsWith('a:')?AS[id.slice(2)]:id.startsWith('x:')?REG_X[id.slice(2)]:null;
-function regAll(){const L=[];Object.entries(AS).filter(([,a])=>['Stock','Gold'].includes(a.t)).forEach(([n,a])=>{const p=POS.find(x=>x.n===n);L.push({id:'a:'+n,n,full:a.full,k:a.t,cur:a.cur,q:p?.qty||0,v:p?.val||0});});PROP.forEach((p,i)=>L.push({id:'p:'+i,n:p.n,full:'أملاك',k:'Property',cur:p.c||'SAR',v:p.val}));CASH.forEach((c,i)=>L.push({id:'c:'+i,n:c.n,full:'حساب نقدي',k:'Cash',cur:c.c,v:c.bal}));return L;}
+function regAll(){const L=[];Object.entries(AS).filter(([,a])=>['Stock','Gold'].includes(a.t)).forEach(([n,a])=>{const p=S.POS.find(x=>x.n===n);L.push({id:'a:'+n,n,full:a.full,k:a.t,cur:a.cur,q:p?.qty||0,v:p?.val||0});});PROP.forEach((p,i)=>L.push({id:'p:'+i,n:p.n,full:'أملاك',k:'Property',cur:p.c||'SAR',v:p.val}));CASH.forEach((c,i)=>L.push({id:'c:'+i,n:c.n,full:'حساب نقدي',k:'Cash',cur:c.c,v:c.bal}));return L;}
 const regGet=id=>regAll().find(r=>r.id===id);
 const accBal=i=>CASH[i].bal/liveRate(CASH[i].c);                     // رصيد الحساب بعملته
 const holdTxt=r=>r.x?'—':r.k==='Stock'?fmt(r.q,0):r.k==='Gold'?fmt(r.q,1)+' g':r.k==='Cash'?natTot(r.v/liveRate(r.cur),r.cur):fmtC(r.v);
