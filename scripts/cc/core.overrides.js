@@ -6,7 +6,9 @@ function replaceObject(target,value){Object.keys(target).forEach(k=>delete targe
 function fifo(name){return ENGINE.fifo(name);}
 function fifoLots(name,excl=-1){const f=ENGINE.fifo(name,TXNS[excl]?.[8]?.id);return f.queue.map(l=>({qty:l.qty,p:l.priceSAR,d:'FIFO'}));}
 function fifoReplay(name){const raw=ENGINE.fifoReplay(name),out={};TXNS.forEach((t,i)=>{if(raw[t[8].id])out[i]=raw[t[8].id];});return out;}
-function build(){POS=S.POS;}
+function build(){POS=S.POS.filter(p=>assetVisible(p.n));}
+function assetVisible(n){return !(S.marketHidden||[]).includes(String(AS[n]?.id));}
+function visibleOther(o){return o.inc!==false&&(o.type!=='unrealized'||S.includeUnrealized);}
 function totals(){return S.totals;}
 function computeXray(){return S.XR;}
 function xrMetrics(){return S.metrics;}
@@ -18,15 +20,15 @@ function syncSnapshot(force=false){
  if(!force&&fingerprint===lastSnapshot){S.status=next.status;if(statusChanged)updateConnection();return;}
  const old=S;S=next;lastSnapshot=fingerprint;
  replaceObject(AS,S.AS);replaceObject(FX,{...S.FX,SAR:1});replaceObject(catGoals,S.catGoals);replaceObject(XRAY_DATA,S.XRAY_DATA);replaceObject(XR_COUNT,S.XR_COUNT);
- for(const [arr,key] of [[TXNS,'TXNS'],[CASH,'CASH'],[PROP,'PROP'],[OTHER,'OTHER']])arr.splice(0,arr.length,...S[key]);
- CTX=S.CTX;DELETED=S.deleted;POS=S.POS;baseCur=S.baseCur;
+ for(const [arr,key] of [[TXNS,'TXNS'],[CASH,'CASH'],[PROP,'PROP'],[OTHER,'OTHER']])arr.splice(0,arr.length,...(key==='OTHER'?S.OTHER.filter(visibleOther):S[key]));
+ CTX=S.CTX;DELETED=S.deleted;build();baseCur=S.baseCur;
  Object.assign(ST,S.cc,{alerts:S.alerts});if(!ST.home)ST.home={n:'الخبر',cc:'SA',lon:50.1,lat:26.43};HOME=[Number(ST.home.lon),Number(ST.home.lat)];
  ZK.hawl=S.zakat.hawl?.dueStr||'';SPEED={s:3,n:6,f:11}[ST.spin]||6;AMB_IDLE=+ST.idle?+ST.idle*60000:Infinity;
  document.body.classList.toggle('reduce',!!ST.reduce);
  document.querySelectorAll('#curSeg button').forEach(b=>b.classList.toggle('on',b.dataset.c===baseCur));
- const changed=key=>force||baseCur!==old.baseCur||JSON.stringify(old[key])!==JSON.stringify(S[key]);
+ const changed=key=>force||baseCur!==old.baseCur||S.includeUnrealized!==old.includeUnrealized||JSON.stringify(S.marketHidden)!==JSON.stringify(old.marketHidden)||JSON.stringify(old[key])!==JSON.stringify(S[key]);
  if(changed('totals'))renderHero();if(changed('POS')||changed('CASH')||changed('PROP')||changed('OTHER')||changed('catGoals'))renderPf();
- if(changed('AS')||changed('POS')){renderMkt();renderFx();}
+ if(changed('AS')||changed('POS')){renderMkt();renderFx();renderNews();}
  if(changed('XR'))renderXrHud();if(changed('TXNS')||changed('CTX'))renderTx();
  if(changed('totals')||changed('catGoals')||changed('monthly'))renderGoals();
  if(changed('XR')||changed('POS')||changed('cc')||changed('zakat'))renderLab();
@@ -54,12 +56,12 @@ function renderHero(){
 function renderMkt(){
  const priced=POS.filter(p=>p.chg!=null),big=[...priced].sort((a,b)=>Math.abs(b.chg)-Math.abs(a.chg))[0];
  $('mkChips').innerHTML=cell('رابح اليوم',priced.filter(p=>p.chg>0).length,'up')+cell('خاسر اليوم',priced.filter(p=>p.chg<0).length,'dn')+(big?`<div class="cell clk" onclick="openAsset('${big.n}')"><div class="l">أكبر حركة · ${big.n}</div><div class="v n ${big.chg<0?'dn':'up'}">${fmt(big.chg,2)}%</div></div>`:cell('أكبر حركة','غير متاح'))+cell('أصل مشتري',POS.length);
- $('mkList').innerHTML=Object.entries(AS).filter(([,p])=>['Stock','Gold'].includes(p.t)).map(([n,p])=>{const pos=p.hi>p.lo&&p.p!=null?Math.max(0,Math.min(100,(p.p-p.lo)/(p.hi-p.lo)*100)):null;
+ $('mkList').innerHTML=Object.entries(AS).filter(([n,p])=>assetVisible(n)&&['Stock','Gold'].includes(p.t)).map(([n,p])=>{const pos=p.hi>p.lo&&p.p!=null?Math.max(0,Math.min(100,(p.p-p.lo)/(p.hi-p.lo)*100)):null;
   return `<div class="row clk" onclick="openAsset('${n}')"><div class="nm"><div class="t">${n}</div><div class="s">${p.full}</div></div><div class="w52" title="${pos==null?'نطاق 52 أسبوع غير متاح':'نطاق 52 أسبوع'}">${pos==null?'—':`<i style="right:${pos}%"></i>`}</div><div class="vl"><span class="n">${natFmt(p.p,p.cur)}</span>${p.t==='Gold'?`<small class="n mu">${natFmt(S.goldOunce,'USD')} / oz</small>`:''}<span class="pill ${p.chg<0?'dn':'up'}">${p.chg==null?'غير متاح':fmt(p.chg,2)+'%'}</span></div></div>`;}).join('')||'<div class="empty">لا أصول مسجّلة</div>';
 }
 function renderNews(){
- $('nwFl').innerHTML=[['all','الكل'],...Object.keys(AS).filter(k=>AS[k].yh).map(k=>[k,k])].map(([k,l])=>`<button class="${nwF===k?'on':''}" onclick="nwF='${k}';renderNews()">${l}</button>`).join('');
- const list=NEWS.filter(n=>nwF==='all'||n.a===nwF);$('nwList').innerHTML=list.length?list.map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار حالياً')+'</div>';
+ $('nwFl').innerHTML=[['all','الكل'],...Object.keys(AS).filter(k=>AS[k].yh&&assetVisible(k)).map(k=>[k,k])].map(([k,l])=>`<button class="${nwF===k?'on':''}" onclick="nwF='${k}';renderNews()">${l}</button>`).join('');
+ const list=NEWS.filter(n=>assetVisible(n.a)&&(nwF==='all'||n.a===nwF));$('nwList').innerHTML=list.length?list.map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار حالياً')+'</div>';
 }
 function renderFx(){const list=Object.entries(FX).filter(([c,v])=>['SAR','USD','JOD','GBP','HKD'].includes(c)&&c!==baseCur&&v>0).map(([c,v])=>`<span>${c}/${baseCur}<b>${fmt(v/(FX[baseCur]||1),4)}</b></span>`);if(S.goldOunce)list.push(`<span>XAU/USD<b>${fmt(S.goldOunce,2)}</b></span>`);$('fx').innerHTML=list.join('')+list.join('');}
 function renderTx(){
@@ -121,7 +123,17 @@ function companySymbol(c){
  if(suffix&&((['KR','TW','HK','SA','JP'].includes(c.cc)&&/^\d+$/.test(key))||['IN','GB','DE','NL','CH'].includes(c.cc)))return key.includes('.')?key:key+suffix;
  return null;
 }
-function openNews(index){const n=NEWS[index];if(!n?.url)return;try{const url=new URL(n.url);if(url.protocol==='https:')window.open(url.href,'_blank','noopener,noreferrer');}catch{}}
+function openNews(value){
+ const n=typeof value==='number'?NEWS[value]:NEWS.find(x=>x.url===value);if(!n)return;
+ activeDialog={fn:'openNews',args:[n.url]};
+ const company=n.via?Object.values(XR.companies).find(c=>c.ar===n.via||c.k===n.via):null,position=S.POS.find(p=>p.n===n.a),exposure=company?.val??position?.val??0;
+ const via=company?company.via.map(v=>{const p=S.POS.find(p=>p.n===v.f);return {name:v.f,weight:v.w,value:p?p.val*v.w/100:0};}):position?[{name:position.n,weight:100,value:position.val}]:[];
+ openHolo(`<div class="news-dialog">${modalHead('INVESTMENT NEWS',n.a,esc(n.source||'Yahoo')+' · '+esc(n.ago||''))}<h2 class="news-headline">${esc(n.t)}</h2><div class="news-context"><div class="sect">علاقة الخبر بمحفظتك</div><p>${company?'وصل الخبر ضمن أخبار '+esc(company.ar)+'، وهي شركة تملك حصة فيها عبر المراكز التالية.':position?'وصل الخبر ضمن نتائج الأخبار الخاصة بالرمز '+esc(AS[n.a]?.yh||n.a)+' المرتبط بمركزك في '+esc(n.a)+'.':'هذا الأصل مسجّل للمتابعة، ولا يوجد لك مركز مفتوح فيه حاليًا.'}</p></div><div class="kg2">${cell('قيمة حصتك المرتبطة',fmtC(exposure))}${cell('نسبتها من إجمالي ثروتك',fmt(percent(exposure,S.totals.total),2)+'%')}</div>${via.length?'<div class="sect">المراكز المرتبطة</div>'+via.map(v=>`<div class="row clk" onclick="openAsset('${v.name}')"><div class="nm"><b>${v.name}</b><small>${company?'وزن الشركة داخل المركز '+fmt(v.weight,2)+'%':'مركز مباشر'}</small></div><span class="n">${fmtC(v.value)}</span><i class="ti ti-chevron-left"></i></div>`).join(''):''}<p class="sub">النسبة توضح حجم ارتباط استثمارك بالخبر؛ اتجاه التأثير يحتاج قراءة تفاصيله.</p><div class="factions"><button class="fbtn" id="news-read-source" onclick="openNewsSource()"><i class="ti ti-external-link"></i> قراءة الخبر في موقع المصدر</button><button class="fbtn" onclick="openAsset('${n.a}')">تفاصيل الأصل</button></div></div>`);
+ window._newsSource=n.url;
+}
+function openNewsSource(){try{const url=new URL(window._newsSource);if(url.protocol==='https:')window.open(url.href,'_blank','noopener,noreferrer');}catch{toast('رابط الخبر غير صالح','ti-alert-triangle');}}
+function movementQuotePrice(t,quoteCurrency){const c=t[8]?.currency||quoteCurrency;if(c===quoteCurrency)return t[4];if(c==='GBP'&&quoteCurrency==='GBp')return t[4]*100;if(c==='GBp'&&quoteCurrency==='GBP')return t[4]/100;return s2n(t[4]*(t[5]||1),quoteCurrency,liveRate(quoteCurrency));}
+
 function installCommandCenter(){
  if(parent.commandIconFont){const font=new FontFace('tabler-icons',`url(${new URL(parent.commandIconFont,parent.location.href).href})`);document.fonts.add(font);font.load().catch(()=>{});}
  Object.assign(ST,{alerts:S.alerts});CTX=S.CTX;POS=S.POS;Object.assign(NUM2A,{400:'JO',344:'HK',702:'SG',578:'NO',246:'FI',380:'IT',724:'ES',620:'PT',56:'BE',40:'AT',616:'PL',792:'TR',818:'EG',504:'MA',586:'PK',604:'PE',152:'CL',170:'CO',554:'NZ',643:'RU',608:'PH',704:'VN',300:'GR',203:'CZ',348:'HU',376:'IL'});Object.assign(LL,{JO:[31,36],HK:[22.3,114.2],SG:[1.3,103.8],EU:[50.8,4.3]});
@@ -130,7 +142,7 @@ function installCommandCenter(){
  LAB_SIDE.heat=()=>`<div class="sect">حصتك داخل الشركات</div><div class="sub">المساحة تمثل حصتك الفعلية. اللون من حركة السعر المتاحة؛ الرمادي يعني أن السعر غير متاح.</div><div class="cell">${Object.keys(XR.companies).length} شركة</div>`;
  const originalSetLab=setLab;window.setLab=function(t){if(!Object.keys(XR.companies).length&&t==='net'){$('netSvg').innerHTML='<div class="empty">لا بيانات مكوّنات متاحة</div>';labTab=t;document.querySelectorAll('.labv').forEach(v=>v.style.display=v.dataset.t===t?'block':'none');return;}return originalSetLab(t);};
  enhanceControls();const originalOpen=openHolo;window.openHolo=function(html){if(refreshingDialog)return reHolo(html);originalOpen(html);$('ov').setAttribute('role','dialog');$('ov').setAttribute('aria-modal','true');$('holo').querySelector('.x')?.focus({preventScroll:true});};
- for(const fn of ['openAsset','openCountry','openCat','openGoals','openMonth','openCompany','openTx','openCtx','openZakat','openSettings']){const original=window[fn];window[fn]=function(...args){activeDialog={fn,args};return original(...args);};}
+ for(const fn of ['openNews','openAsset','openCountry','openCat','openGoals','openMonth','openCompany','openTx','openCtx','openZakat','openSettings']){const original=window[fn];window[fn]=function(...args){activeDialog={fn,args};return original(...args);};}
  parent.addEventListener('portfolio:changed',()=>{clearTimeout(pullTimer);pullTimer=setTimeout(()=>syncSnapshot(),80);});
  setInterval(()=>{if(!document.hidden&&parent.document.body.dataset.portfolioView==='cc')syncSnapshot();},2000);
  setInterval(()=>{if(document.hidden||parent.document.body.dataset.portfolioView!=='cc')return;if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();else if(Date.now()-externalAt>900000)loadExternal();},15000);

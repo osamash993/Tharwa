@@ -33,7 +33,7 @@
   return {loaded:!!window.portfolioLoaded,AS,POS,CASH,PROP,TXNS,CTX,FX:clone(fx),baseCur,catGoals:clone(catGoals),registry,
    marketOpen:registry.some(a=>a.marketOpen===true)?true:registry.some(a=>a.marketOpen===false)?false:null,goldOunce:Object.values(marketData).find(p=>p.currency==='USD'&&/gold/i.test(p.name||''))?.price??marketData['GC=F']?.price??null,
    totals:{by:clone(T.byType),other:T.totalCur-Object.values(T.byType).reduce((s,v)=>s+v.cur,0),investCost:T.investCost,gC:T.growthCur,gK:T.growthCost,total:T.totalCur,all:T.investCost+T.byType.Cash.cur+T.totalCur-Object.values(T.byType).reduce((s,v)=>s+v.cur,0),goal:retireGoal},
-   OTHER:otherSrc.map(s=>({id:s.id,n:alias(s.name),v:num(s.value),c:s.currency||'SAR',inc:s.included!==false,type:s.type})),includeUnrealized,
+   OTHER:otherSrc.map(s=>({id:s.id,n:alias(s.name),v:num(s.value),c:s.currency||'SAR',inc:s.included!==false,type:s.type})),includeUnrealized,marketHidden:[...marketHidden].map(String),marketOrder:marketOrder.map(String),
    XR:{...clone(X),sectors:Object.fromEntries(Object.entries(X.sectors).map(([k,v])=>[clean(k),v])),companies,co:X.coCount,src},metrics:{...clone(M),s:clone(M.scores)},XRAY_DATA:xd,XR_COUNT:counts,
    monthly:calcMonthlyInvest(),projections:[0,.04,.07,.1].map(r=>({r,months:projectGoalMonths(T.totalCur,retireGoal,calcMonthlyInvest(),r)})),
    alerts:priceAlerts.map(a=>({id:a.id,a:alias(a.assetName),op:a.dir==='>='?'ge':'le',v:a.price,triggered:a.triggered})),
