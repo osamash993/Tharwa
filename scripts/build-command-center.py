@@ -59,6 +59,7 @@ replace('الرابح يدور بعكس عقارب الساعة، والخاسر
 # Dividend deposits stay cash entries while the UI exposes their income source.
 js=js.replace("${ACT_AR[c.act]}","${c.act==='Dividend'?'إيداع توزيعات · '+esc(c.sourceName):ACT_AR[c.act]}")
 js=js.replace("c.act==='Deposit'?'var(--cb)'", "['Deposit','Dividend'].includes(c.act)?'var(--cb)'")
+js=js.replace("natTot(c.s/liveRate(CASH[c.acc].c),CASH[c.acc].c)","natTot(c.s/(c.act==='Dividend'?c.rate:liveRate(CASH[c.acc].c)),CASH[c.acc].c)")
 # Date/currency bugs in reference detail markup: use recorded movement totals.
 # Transaction detail is replaced by the engine-backed dialog.
 replace("const coChg=k=>{let h=0;for(const c of k)h=(h*31+c.charCodeAt(0))%997;return ((h%420)-180)/100;};", "const coChg=k=>companyQuotes[k]?.changePct??null;")

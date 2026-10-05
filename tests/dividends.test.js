@@ -41,3 +41,12 @@ test('year and source summaries include exited assets, use recorded FX, and surv
  const filtered=dividendSummary(ledger,{year:'2026',sourceAssetId:'fund'});assert.equal(filtered.total,37.5);assert.equal(filtered.byAsset[0].name,'Renamed fund');
  const back=await readWorkbook(await exportTransactions([a,b,c]));assert.equal(dividendSummary(dividendLedger(back.txns)).allTime,587.5);assert.equal(back.txns[0].sourceAssetId,'fund');assert.equal(back.txns[0].incomeType,'Dividend');
 });
+
+test('recent distribution rows retain received currency amounts when current FX changes',()=>{
+ const text=fs.readFileSync(new URL('../public/command-center/app.js',import.meta.url),'utf8'),tree=parse(text);
+ const node=tree.program.body.find(n=>n.type==='VariableDeclaration'&&n.declarations.some(d=>d.id.name==='ctxRow'));
+ const context=vm.createContext({CASH:[{n:'USD broker',c:'USD'}],ACT_AR:{},esc:x=>x,liveRate:()=>4,natTot:(n,c)=>n+' '+c});
+ vm.runInContext(text.slice(node.start,node.end)+';globalThis.row=ctxRow',context);
+ const html=context.row({act:'Dividend',acc:0,s:150,rate:3.75,sourceName:'Fund',d:'2026-01-01'},0);
+ assert.match(html,/>40 USD</);assert.doesNotMatch(html,/>37.5 USD</);
+});
