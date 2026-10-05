@@ -33,6 +33,7 @@ function syncSnapshot(force=false){
  if(changed('totals')||changed('catGoals')||changed('monthly'))renderGoals();
  if(changed('XR')||changed('POS')||changed('cc')||changed('zakat'))renderLab();
  stBell();updateConnection();if(ambOn)ambRender();
+ if($('dvDate'))dividendPreview();
  if($('tfD')){
   if(TF.edit!=null){const t=TXNS[TF.edit];const now=t&&ENGINE.rawTxn(t[8].id);if(!now||JSON.stringify(now)!==TF.expected){TF.stale=true;$('tfMsg').innerHTML='<div class="fmsg wr">تغيّرت هذه الحركة من جهاز آخر. أغلق النموذج وافتح الحركة مجددًا قبل الحفظ.</div>';$('tfSave').disabled=true;}}
   if(!TF.stale)tfCalc();
@@ -78,7 +79,7 @@ function renderTx(){
  $('txNet').textContent=fmtC(inv-liq);$('txNet').classList.toggle('dn',inv<liq);$('txInv').textContent=fmtC(inv);$('txLiq').textContent=fmtC(liq);
  $('bars').innerHTML=months.map((m,i)=>`<button class="bar ${selM===i?'sel':''}" onclick="selM=${i};renderTx();openMonth(${i})" title="${m.k}"><div class="u">${['Stock','Gold','Property'].map(k=>{const v=m.buy.filter(t=>AS[t[1]]?.t===k).reduce((s,t)=>s+txSAR(t),0);return v?`<i style="height:${v/max*74}px;background:${kc(k)}"></i>`:'';}).join('')}</div><div class="d">${m.liq?`<i style="height:${m.liq/sellMax*16}px"></i>`:''}</div><b>${m.m}</b></button>`).join('');
  const selected=months[selM];const recent=[...TXNS.map(t=>({d:t[0],html:txRow(t)})),...CTX.map((c,i)=>({d:c.d,html:ctxRow(c,i)}))].sort((a,b)=>b.d.localeCompare(a.d));
- $('txList').innerHTML=`<div class="sect clk" onclick="openMonth(${selM})">حركات ${selected.k} ←</div>`+(selected.L.slice(0,4).map(txRow).join('')||'<div class="mu">لا حركات استثمارية</div>')+`<div class="kg2">${cell('استثمرت',fmtC(selected.inv))}${cell('سيّلت',fmtC(selected.liq))}</div><div class="sect">أحدث الحركات</div>`+recent.slice(0,5).map(x=>x.html).join('');
+ $('txList').innerHTML=dividendDashboardHTML()+`<div class="sect clk" onclick="openMonth(${selM})">حركات ${selected.k} ←</div>`+(selected.L.slice(0,4).map(txRow).join('')||'<div class="mu">لا حركات استثمارية</div>')+`<div class="kg2">${cell('استثمرت',fmtC(selected.inv))}${cell('سيّلت',fmtC(selected.liq))}</div><div class="sect">أحدث الحركات</div>`+recent.slice(0,5).map(x=>x.html).join('');
 }
 function monthStats(i){const k=selectedYear+'-'+String(i+1).padStart(2,'0'),L=TXNS.filter(t=>t[0].startsWith(k)),buy=L.filter(t=>t[2]==='Buy'),sell=L.filter(t=>t[2]==='Sell');return {k,m:MON[i],L,buy,sell,inv:buy.reduce((s,t)=>s+txSAR(t),0),liq:sell.reduce((s,t)=>s+txSAR(t),0)};}
 function goalCategories(){return ['Property','Gold','Stock','Cash'];}
@@ -150,7 +151,7 @@ function installCommandCenter(){
  LAB_SIDE.heat=()=>`<div class="sect">حصتك داخل الشركات</div><div class="sub">المساحة تمثل حصتك الفعلية. اللون من حركة السعر المتاحة؛ الرمادي يعني أن السعر غير متاح.</div><div class="cell">${Object.keys(XR.companies).length} شركة</div>`;
  const originalSetLab=setLab;window.setLab=function(t){if(!Object.keys(XR.companies).length&&t==='net'){$('netSvg').innerHTML='<div class="empty">لا بيانات مكوّنات متاحة</div>';labTab=t;document.querySelectorAll('.labv').forEach(v=>v.style.display=v.dataset.t===t?'block':'none');return;}return originalSetLab(t);};
  enhanceControls();const originalOpen=openHolo;window.openHolo=function(html){if(refreshingDialog)return reHolo(html);originalOpen(html);$('ov').setAttribute('role','dialog');$('ov').setAttribute('aria-modal','true');$('holo').querySelector('.x')?.focus({preventScroll:true});};
- for(const fn of ['openNews','openAsset','openCountry','openCat','openGoals','openMonth','openCompany','openTx','openCtx','openZakat','openSettings']){const original=window[fn];window[fn]=function(...args){activeDialog={fn,args};return original(...args);};}
+ for(const fn of ['openNews','openAsset','openCountry','openCat','openGoals','openMonth','openCompany','openTx','openCtx','openZakat','openSettings','openDividends','openDividendDetail']){const original=window[fn];window[fn]=function(...args){activeDialog={fn,args};return original(...args);};}
  parent.addEventListener('portfolio:changed',()=>{clearTimeout(pullTimer);pullTimer=setTimeout(()=>syncSnapshot(),80);});
  setInterval(()=>{if(!document.hidden&&parent.document.body.dataset.portfolioView==='cc')syncSnapshot();},2000);
  setInterval(()=>{if(document.hidden||parent.document.body.dataset.portfolioView!=='cc')return;if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();else if(Date.now()-externalAt>900000)loadExternal();},15000);

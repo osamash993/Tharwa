@@ -1918,7 +1918,7 @@ function renderTxnByAsset() {
         <div class="mkt-rhead" style="padding:11px 0;gap:10px" onclick="toggleTxnRow(this.parentNode)">
           <div style="width:28px;height:28px;border-radius:9px;background:${icoBg};color:${c};display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0"><i class="ti ${ACTI[t.action] || 'ti-circle'}"></i></div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:12px;font-weight:500">${ACTL[t.action] || t.action}</div>
+            <div style="font-size:12px;font-weight:500">${t.incomeType==='Dividend'?'إيداع توزيعات · '+escapePortfolioText(t.sourceAssetName):ACTL[t.action] || t.action}</div>
             <div style="font-size:9.5px;color:var(--muted);margin-top:1px">${t.date || ''}${t.qty ? ' · ' + fmt(pN(t.qty), r.g.assetType === 'Gold' ? 1 : 2) + (r.g.assetType === 'Gold' ? ' غ' : ' وحدة') : ''}</div>
           </div>
           <div style="flex-shrink:0;text-align:left;direction:ltr;font-size:12.5px;font-weight:600;font-family:inherit;color:${c}">${sign}${fmtC(v)}</div>
@@ -2273,7 +2273,7 @@ function renderTxnTable() {
     const posC = netToMkt >= 0 ? 'var(--gold)' : 'var(--red)';
     const posArrow = netToMkt >= 0 ? '▲' : '▼';
     renderTxnSummaryMobile(invested, liquidated, netToMkt, activeYear, byCat);
-    const mobF = _txnMobileFilter === 'all' ? fy : fy.filter(t => t.action === _txnMobileFilter);
+    const mobF = _txnMobileFilter === 'all' ? fy : fy.filter(t => _txnMobileFilter==='Dividend'?t.incomeType==='Dividend':t.action === _txnMobileFilter);
     const mGroups = {};
     mobF.forEach(t => {
       const mm = (t.date || '????-??').slice(0, 7);
@@ -2281,7 +2281,7 @@ function renderTxnTable() {
     });
     const mMonths = Object.keys(mGroups).sort().reverse();
     let html = `<div class="card" id="txnMonthSummary" style="display:none;margin-bottom:14px"></div>`;
-    const FILT = [['all', 'الكل'], ['Buy', 'شراء'], ['Sell', 'بيع'], ['Deposit', 'إيداع'], ['Withdrawal', 'سحب']];
+    const FILT = [['all', 'الكل'], ['Buy', 'شراء'], ['Sell', 'بيع'], ['Deposit', 'إيداع'], ['Dividend', 'توزيعات'], ['Withdrawal', 'سحب']];
     html += `<div class="mkt-filters" style="margin-bottom:12px">` + FILT.map(([k, l]) => `<button class="mkt-fchip${_txnMobileFilter === k ? ' on' : ''}" onclick="setTxnMobileFilter('${k}')">${l}</button>`).join('') + `</div>`;
     const selValid = _txnSelectedMonth && mGroups[_txnSelectedMonth];
     const listMonths = selValid ? [_txnSelectedMonth] : mMonths;
@@ -2339,7 +2339,7 @@ function renderTxnTable() {
             <div class="mkt-rhead" onclick="toggleTxnRow(this.parentNode)">
               <div style="width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:${ico[3]};color:${ico[2]}"><i class="ti ${ico[1]}"></i></div>
               <div style="flex:1;min-width:0">
-                <div style="font-size:13px;font-weight:600">${ACTL[t.action] || t.action} · ${t.assetName}</div>
+                <div style="font-size:13px;font-weight:600">${t.incomeType==='Dividend'?'إيداع توزيعات · '+escapePortfolioText(t.sourceAssetName):ACTL[t.action] || t.action} · ${t.assetName}</div>
                 <div style="font-size:10px;color:var(--muted);margin-top:1px">${subTxt}</div>
               </div>
               <div style="flex-shrink:0;text-align:left;direction:ltr">
@@ -2470,6 +2470,7 @@ function updateSelectionBar() {
 function startEdit(id) {
   const t = txns.find(x => x.id === id);
   if (!t) return;
+  if(t.incomeType==='Dividend'){window.openDividendEditor(t.id);return;}
   populateAssetDropdown();
   setTimeout(() => {
     $('aDate').value = t.date || '';
@@ -7118,7 +7119,8 @@ function initApp(data) {
       rate: parseFloat(t.rate) || 1,
       totalCostSAR: parseFloat(t.totalCostSAR) || 0,
       remarks: String(t.remarks || ''),
-      linkedTxnId: t.linkedTxnId || null
+      linkedTxnId: t.linkedTxnId || null,
+      ...(t.incomeType==='Dividend'?{incomeType:'Dividend',sourceAssetId:String(t.sourceAssetId),sourceAssetName:String(t.sourceAssetName||'')}: {})
     }));
     if (data.assets && data.assets.length > 0) {
       assets = data.assets.map(a => ({

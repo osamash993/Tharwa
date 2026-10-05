@@ -56,6 +56,9 @@ js=js.replace('order.forEach((el,k)=>', 'order.filter(Boolean).forEach((el,k)=>'
 replace(old_functions['renderDiv'],old_functions['renderDiv'].replace('direction:ltr','direction:rtl').replace('left:','inset-inline-start:').replace('right:','inset-inline-end:').replace('translateX(-50%)','translateX(50%)'))
 replace('b.dir=b.chg<0?-1:1;', 'b.dir=b.chg>0?-1:b.chg<0?1:0;')
 replace('الرابح يدور بعكس عقارب الساعة، والخاسر باتجاهها.', 'الرابح يدور بعكس عقارب الساعة، والخاسر باتجاهها. الأصل بلا تغيّر أو بلا سعر متاح يبقى ثابتاً.')
+# Dividend deposits stay cash entries while the UI exposes their income source.
+js=js.replace("${ACT_AR[c.act]}","${c.act==='Dividend'?'إيداع توزيعات · '+esc(c.sourceName):ACT_AR[c.act]}")
+js=js.replace("c.act==='Deposit'?'var(--cb)'", "['Deposit','Dividend'].includes(c.act)?'var(--cb)'")
 # Date/currency bugs in reference detail markup: use recorded movement totals.
 # Transaction detail is replaced by the engine-backed dialog.
 replace("const coChg=k=>{let h=0;for(const c of k)h=(h*31+c.charCodeAt(0))%997;return ((h%420)-180)/100;};", "const coChg=k=>companyQuotes[k]?.changePct??null;")

@@ -1,10 +1,11 @@
+import {validateDividend} from './dividends.js';
 export const emptyPortfolio=()=>({txns:[],assets:[],otherSources:[],notes:[],deletedTxns:[],settings:{},backupTxns:[],sourceSheets:{}});
 const same=(a,b)=>String(a)===String(b);
 const unique=arr=>{const ids=new Set();for(const x of arr){if(x.id===undefined||x.id===null||x.id==='')throw Error('سجل بلا معرّف');if(ids.has(String(x.id)))throw Error('معرّفات مكررة');ids.add(String(x.id));}return arr;};
 export function validatePortfolio(p){
  for(const k of ['txns','assets','otherSources','notes','deletedTxns']){if(!Array.isArray(p[k]))throw Error('حقل مفقود: '+k);unique(p[k]);}
  if(!p.settings||typeof p.settings!=='object'||Array.isArray(p.settings))throw Error('إعدادات غير صالحة');
- for(const t of p.txns){if(!['Buy','Sell','Deposit','Withdrawal'].includes(t.action))throw Error('نوع حركة غير صالح');if(!/^\d{4}-\d{2}-\d{2}$/.test(t.date))throw Error('تاريخ غير صالح');for(const k of ['qty','price','fees','rate','totalCostSAR'])if(!Number.isFinite(Number(t[k]??0)))throw Error('قيمة غير رقمية: '+k);}
+ for(const t of p.txns){validateDividend(t);if(!['Buy','Sell','Deposit','Withdrawal'].includes(t.action))throw Error('نوع حركة غير صالح');if(!/^\d{4}-\d{2}-\d{2}$/.test(t.date))throw Error('تاريخ غير صالح');for(const k of ['qty','price','fees','rate','totalCostSAR'])if(!Number.isFinite(Number(t[k]??0)))throw Error('قيمة غير رقمية: '+k);}
  return p;
 }
 export function mutatePortfolio(state,method,args){

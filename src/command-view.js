@@ -61,7 +61,7 @@ export function createCommandView({api,onError=()=>{}}){
  back.addEventListener('click',()=>choose('legacy'));
  window.commandViewReturn=()=>choose('legacy');
  window.addEventListener('popstate',()=>{if(ready)apply(valid(requested())?requested():'legacy',{updateURL:false});});
- return {async initialize(){
+ return {async editDividend(id){await choose('cc');await frameLoaded;root.querySelector('iframe').contentWindow.openDividendForm(null,id);},async initialize(){
   // startPortfolio queued loadAll first; read the saved preference after that same load.
   let saved='legacy';
   try{saved=await api.call('getSetting','view');}catch(error){onError(error);}

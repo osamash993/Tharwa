@@ -11,6 +11,8 @@ import './command-auth.css';
 import 'jsvectormap/dist/jsvectormap.css';
 import {setupOriginalLayout} from './original-layout.js';
 import {createCommandView} from './command-view.js';
+import * as dividendLedger from './dividends.js';
+window.dividendLedger=dividendLedger;
 import {createAPI} from './api.js';
 import {setupCommandData} from './command-data.js';
 import {supabaseUrl, supabasePublishableKey} from './public-config.js';
@@ -47,6 +49,7 @@ const api=createAPI(client,{demo,onError:window.cloudFailure,onStatus:message=>{
 window.portfolioAPI=api.rpc;
 setupCommandData({api,client,demo,onError:window.cloudFailure});
 const commandView=createCommandView({api,onError:window.cloudFailure});
+window.openDividendEditor=id=>commandView.editDividend(id);
 window.downloadTransactions=async txns=>{try{const {exportTransactions,download}=await import('./workbook.js');download(await exportTransactions(txns),'Tharwa_Transactions_'+new Date().toISOString().slice(0,10)+'.xlsx');}catch(e){window.cloudFailure(e);}};
 window.refreshOverview=()=>{};
 window.reloadPortfolio=async()=>{const data=await api.call('loadAll');window.portfolioBridge.load(data);};

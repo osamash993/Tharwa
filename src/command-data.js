@@ -41,7 +41,7 @@ export function setupCommandData({api,client,demo,onError}){
    if(kind==='json'){const state=raw();for(const k of Object.keys(state.settings))if(/key|secret|token/i.test(k))delete state.settings[k];
     if(state.settings.zakatOpt){try{const o=JSON.parse(state.settings.zakatOpt);for(const k of Object.keys(o))if(/key|secret|token/i.test(k))delete o[k];state.settings.zakatOpt=JSON.stringify(o);}catch{}}
     return download(JSON.stringify(state,null,2),'Odb-backup-'+new Date().toISOString().slice(0,10)+'.json','application/json');}
-   const fields=['id','date','assetType','assetName','action','qty','price','fees','currency','rate','totalCostSAR','remarks'];
+   const fields=['id','date','assetType','assetName','action','qty','price','fees','currency','rate','totalCostSAR','remarks','linkedTxnId','incomeType','sourceAssetId','sourceAssetName'];
    const csv=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';
    download('\ufeff'+[fields.join(','),...raw().txns.map(t=>fields.map(k=>csv(t[k])).join(','))].join('\r\n'),'Odb-transactions.csv','text/csv;charset=utf-8');
   }};

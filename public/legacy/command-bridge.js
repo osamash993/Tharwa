@@ -24,13 +24,13 @@
   const PROP=registry.filter(a=>a.t==='Property').map(a=>{const g=converted.find(g=>g.n===a.n);return {n:a.n,c:a.cur,cost:g?.cost||0,val:g?.val||0,id:a.id,qty:g?.qty||0};});
   const investments=txns.filter(t=>t.assetType!=='Cash');
   const TXNS=investments.map(t=>{const linked=txns.find(x=>String(x.id)===String(t.linkedTxnId));const a=registry.find(a=>a.n===alias(t.assetName));const row=[t.date,alias(t.assetName),t.action,num(t.qty),num(t.price),num(t.rate)||1,clean(t.remarks),linked?CASH.findIndex(c=>c.n===alias(linked.assetName)):null];row.push({id:t.id,totalCostSAR:num(t.totalCostSAR),fees:num(t.fees),currency:t.currency,linkedTxnId:t.linkedTxnId});return row;});
-  const CTX=txns.filter(t=>t.assetType==='Cash').map(t=>{const link=txns.find(x=>String(x.id)===String(t.linkedTxnId));return {id:t.id,d:t.date,acc:CASH.findIndex(c=>c.n===alias(t.assetName)),act:t.action==='Withdrawal'?'Withdraw':t.action,s:Math.abs(num(t.totalCostSAR)),note:clean(t.remarks),linkedId:link?.id,link:link&&link.assetType!=='Cash'?'a:'+alias(link.assetName):null,linkedCash:link?.assetType==='Cash',rate:t.rate};}).filter(t=>t.acc>=0);
+  const CTX=txns.filter(t=>t.assetType==='Cash').map(t=>{const link=txns.find(x=>String(x.id)===String(t.linkedTxnId));return {id:t.id,d:t.date,acc:CASH.findIndex(c=>c.n===alias(t.assetName)),act:window.dividendLedger.isDividend(t)?'Dividend':t.action==='Withdrawal'?'Withdraw':t.action,s:Math.abs(num(t.totalCostSAR)),note:clean(t.remarks),linkedId:link?.id,link:link&&link.assetType!=='Cash'?'a:'+alias(link.assetName):null,linkedCash:link?.assetType==='Cash',rate:t.rate,sourceName:t.incomeType==='Dividend'?alias(t.sourceAssetName):null,sourceAssetId:t.sourceAssetId};}).filter(t=>t.acc>=0);
   const xd={},counts={},src={};X.funds.forEach(f=>{xd[alias(f.id)]=clone(f.data);counts[alias(f.id)]=f.data._count||f.data.top?.length||0;Object.entries(f.data.countries||{}).forEach(([cc,w])=>(src[cc]??=[]).push({f:alias(f.id),w,v:f.val*w/100}));});
   const companies=Object.fromEntries(Object.entries(X.companies).map(([key,c])=>[clean(key),{...c,k:clean(key),key:clean(key),ar:clean(c.ar),via:c.via.map(f=>({f:alias(f==='سهم مباشر'&&key.startsWith('DIRECT_')?key.slice(7):f),w:xd[alias(f)]?.top?.find(t=>t[0]===key)?.[3]??100}))}]));
   for(const d of Object.values(xd))d.top=(d.top||[]).map(t=>[clean(t[0]),clean(t[1]),t[2],t[3]]);
   Object.keys(X.countries).forEach(cc=>src[cc]??=[]);const Z=zkCalc(),H=zkHawl();
   const cc=setting('commandCenter',{});
-  return {loaded:!!window.portfolioLoaded,AS,POS,CASH,PROP,TXNS,CTX,FX:clone(fx),baseCur,catGoals:clone(catGoals),registry,
+  return {dividends:window.dividendLedger.dividendLedger(txns,assets).map(t=>({...t,sourceAssetName:alias(t.sourceAssetName),assetName:alias(t.assetName),remarks:clean(t.remarks)})),loaded:!!window.portfolioLoaded,AS,POS,CASH,PROP,TXNS,CTX,FX:clone(fx),baseCur,catGoals:clone(catGoals),registry,
    marketOpen:registry.some(a=>a.marketOpen===true)?true:registry.some(a=>a.marketOpen===false)?false:null,goldOunce:Object.values(marketData).find(p=>p.currency==='USD'&&/gold/i.test(p.name||''))?.price??marketData['GC=F']?.price??null,
    totals:{by:clone(T.byType),other:T.totalCur-Object.values(T.byType).reduce((s,v)=>s+v.cur,0),investCost:T.investCost,gC:T.growthCur,gK:T.growthCost,total:T.totalCur,all:T.investCost+T.byType.Cash.cur+T.totalCur-Object.values(T.byType).reduce((s,v)=>s+v.cur,0),goal:retireGoal},
    OTHER:otherSrc.map(s=>({id:s.id,n:alias(s.name),v:num(s.value),c:s.currency||'SAR',inc:s.included!==false,type:s.type})),includeUnrealized,marketHidden:[...marketHidden].map(String),marketOrder:marketOrder.map(String),
@@ -44,6 +44,7 @@
   const a=assets.find(a=>a.name===original(input.name)||String(a.id)===String(input.assetId));if(!a)throw Error('الأصل غير موجود');
   const old=input.id!=null?txns.find(t=>String(t.id)===String(input.id)):null;
   if(input.id!=null&&!old)throw Error('هذه الحركة حُذفت من جهاز آخر');
+  if(window.dividendLedger.isDividend(old))throw Error('عدّل هذه الحركة من نافذة التوزيعات');
   if(old&&input.expected&&JSON.stringify(old)!==input.expected)throw Error('تغيّرت هذه الحركة من جهاز آخر. أعد فتحها قبل الحفظ.');
   const rate=a.type==='Gold'||a.currency==='SAR'?1:a.currency==='GBp'?num(input.rate)/100:num(input.rate),qty=num(input.qty),price=num(input.price),fees=num(input.fees);
   if(!/^\d{4}-\d{2}-\d{2}$/.test(input.date)||!Number.isFinite(Date.parse(input.date))||rate<=0||fees<0)throw Error('تحقق من التاريخ وسعر الصرف');
@@ -98,7 +99,13 @@
    else if(t.action==='Sell'){const s=after.sellHistory.at(-1);const rem=new Map();let left=before.netQty;const buys=ordered.slice(0,i).filter(x=>x.action==='Buy');[...buys].reverse().forEach(x=>{const q=Math.min(left,Math.abs(num(x.qty)));rem.set(x.id,q);left-=q;});let consume=Math.abs(num(t.qty));const used=[];buys.forEach(x=>{const q=Math.min(consume,rem.get(x.id)||0);if(q>0){used.push({id:x.id,d:x.date,qty:q,priceSAR:Math.abs(num(x.totalCostSAR))/Math.abs(num(x.qty))});consume-=q;}});Object.assign(out[t.id],{pnl:s.pnl,basis:s.costBasis,used});}
   });return out;
  }
- window.commandEngine={snapshot,preview,save,fifo:fifoView,fifoReplay,original,clean,
+ function previewDividend(input){
+  const row=window.dividendLedger.createDividendRow(input,{assets,txns});
+  const before=txns.filter(t=>t.assetType==='Cash'&&t.assetName===row.assetName&&String(t.id)!==String(input.id)).reduce((n,t)=>n+(t.action==='Deposit'?1:-1)*Math.abs(num(t.totalCostSAR)),0);
+  return {row,before,after:before+row.totalCostSAR};
+ }
+ async function saveDividend(input){const {row}=previewDividend(input);await window.commandStorage.write(input.id!=null?'updateTxn':'addTxn',row);return row.id;}
+ window.commandEngine={snapshot,preview,save,previewDividend,saveDividend,fifo:fifoView,fifoReplay,original,clean,
   rawTxn:id=>clone(txns.find(t=>String(t.id)===String(id))),
   delete:async id=>{const t=txns.find(t=>String(t.id)===String(id));if(!t)throw Error('الحركة غير موجودة');await window.commandStorage.write('archiveDeletedTxns',[t]);return t.id;},
   restore:id=>window.commandStorage.write('restoreTxns',[id]),
