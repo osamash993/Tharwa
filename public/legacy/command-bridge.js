@@ -111,7 +111,7 @@
   refresh:async()=>{await refreshPrices();await refreshMarket();window.dispatchEvent(new Event('portfolio:changed'));},
   market:(method,...args)=>window.commandStorage.market(method,...args),
   printZakat:()=>zkReport(),
-  updateZakat:async()=>{await zkUpdate(true);window.dispatchEvent(new Event('portfolio:changed'));},
+  updateZakat:async onProgress=>{const result=await zkUpdate(true,onProgress);window.dispatchEvent(new Event('portfolio:changed'));return result;},
   holdings:async name=>{const n=original(name),h=zkFundTop(n);if(!h?.csvUrl)throw Error('لا يوجد رابط مكوّنات محفوظ');const r=await window.commandStorage.market('fetchFundCsv',h.csvUrl,Math.max(1,Math.min(50,num(zkOpt.topN)||20)));if(!r?.ok)throw Error(r?.err||'تعذّر تحميل المكوّنات');await window.commandStorage.write('saveSetting','customXray',JSON.stringify({...customXray,[n]:{...(customXray[n]||{}),kind:'etf',label:n,countries:r.countries,sectors:r.sectors,top:r.top,_count:r.count,_csvUrl:h.csvUrl,_at:new Date().toISOString()}}));},
   legacy:page=>{window.commandViewReturn?.();if(page)showPage(page);},
   export:kind=>window.commandStorage.export(kind),

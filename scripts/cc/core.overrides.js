@@ -37,10 +37,10 @@ function syncSnapshot(force=false){
   if(TF.edit!=null){const t=TXNS[TF.edit];const now=t&&ENGINE.rawTxn(t[8].id);if(!now||JSON.stringify(now)!==TF.expected){TF.stale=true;$('tfMsg').innerHTML='<div class="fmsg wr">تغيّرت هذه الحركة من جهاز آخر. أغلق النموذج وافتح الحركة مجددًا قبل الحفظ.</div>';$('tfSave').disabled=true;}}
   if(!TF.stale)tfCalc();
  }else if(activeDialog&&$('ov').classList.contains('open')&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){
-  const scroll=$('hb').scrollTop;refreshingDialog=true;try{window[activeDialog.fn](...activeDialog.args);}finally{refreshingDialog=false;$('hb').scrollTop=scroll;}
+  const scroll=$('hb').scrollTop,assetScroll=document.querySelector('.asset-scroll')?.scrollTop||0;refreshingDialog=true;try{window[activeDialog.fn](...activeDialog.args);}finally{refreshingDialog=false;$('hb').scrollTop=scroll;const asset=document.querySelector('.asset-scroll');if(asset)asset.scrollTop=assetScroll;}
  }
 }
-function updateConnection(){const el=document.querySelector('.live');if(!el)return;const st=parent.commandStorage.status();el.innerHTML='<i></i>'+(!st.online?'غير متصل':st.busy?'جاري الحفظ':st.demo?'تجربة':'متصل');el.classList.toggle('offline',!st.online);let info=$('freshness');if(!info){info=document.createElement('button');info.id='freshness';info.className='freshness';info.onclick=()=>openSettings('data');el.after(info);}const quotes=S.registry.filter(a=>a.yh&&a.timestamp);const times=quotes.map(a=>a.timestamp*1000);const stamp=times.length?Math.min(...times):null;info.textContent=st.demo?'تجربة · بدون بيانات مباشرة':stamp?'آخر سعر '+formatStamp(stamp):'الأسعار لم تتحدث بعد';info.title='أقدم سعر متاح من المصادر؛ اضغط لتفاصيل المزامنة والتحديث';}
+function updateConnection(){const el=document.querySelector('.live');if(!el)return;const st=parent.commandStorage.status();el.innerHTML='<i></i>'+(!st.online?'غير متصل':st.busy?'جاري الحفظ':st.demo?'تجربة':'متصل');el.classList.toggle('offline',!st.online);}
 function formatStamp(value){return value?new Date(value).toLocaleString('ar-SA-u-ca-gregory',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'لم يتحدث بعد';}
 
 function renderAll(){build();renderHero();renderPf();renderMkt();renderNews();renderXrHud();renderTx();renderGoals();renderLab();}
@@ -156,7 +156,6 @@ function installCommandCenter(){
  setInterval(()=>{if(document.hidden||parent.document.body.dataset.portfolioView!=='cc')return;if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();else if(Date.now()-externalAt>900000)loadExternal();},15000);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncSnapshot();if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();}});
  document.querySelectorAll('button.ibtn').forEach(b=>{b.title=b.querySelector('.tip')?.textContent||'';b.setAttribute('aria-label',b.title);});
- const exit=document.createElement('button');exit.className='ibtn';exit.title='العودة للواجهة السابقة';exit.textContent='↩';exit.onclick=()=>ENGINE.legacy();document.querySelector('.top').append(exit);
  syncSnapshot(true);setTimeout(loadExternal,1500);
 }
 

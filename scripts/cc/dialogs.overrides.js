@@ -10,7 +10,7 @@ function openAsset(n){
      +`<div class="sect"><i class="ti ti-map-pin"></i> أكبر الدول</div>`+Object.entries(d.countries||{}).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([cc,wt])=>`<div class="row clk" onclick="openCountry('${cc}')"><div class="nm"><div class="t" style="font-weight:500">${flag(cc)} ${GEO_AR[cc]}</div></div><span class="n mu">${fmt(wt,1)}%</span><span class="n" style="color:var(--cb);width:90px;text-align:left">${fmtC(p.val*wt/100)}</span></div>`).join('');
   }
   const news=rankNews(NEWS.filter(x=>newsAssets(x).includes(n)));
-  openHolo(`<div class="asset-dialog">
+  openHolo(`<div class="asset-dialog"><div class="asset-scroll" tabindex="0" aria-label="تفاصيل الأصل — تمرير عمودي">
   <div class="mh"><div><div class="code">${p.tv||''} · ${p.yh||''} · ${KL[p.t].toUpperCase?KL[p.t]:''}</div><h2>${n}</h2><div class="full">${p.full}</div></div>
     <div class="px"><div class="mu" style="font-size:10px">السعر الحالي</div><b class="n">${natFmt(p.p,p.cur)}</b><div><span class="pill ${p.chg>=0?'up':'dn'}">${p.chg==null?'حركة اليوم غير متاحة':(p.chg>=0?'▲ +':'▼ ')+fmt(Math.abs(p.chg),2)+'% اليوم'}</span> <span class="n mu" style="font-size:11px">${p.p==null?'':'≈ '+fmtC(toSAR(p.p,p.cur))}</span></div></div></div>
   <div class="kg">
@@ -30,9 +30,8 @@ function openAsset(n){
       ${inside}
       <div class="sect"><i class="ti ti-news"></i> أخبار ${n}</div>
       <div class="asset-news-scroll">${news.length?news.map(newsRow).join(''):'<div class="mu" style="font-size:11px">لا أخبار مرتبطة حالياً</div>'}</div>
-      <div style="display:flex;gap:8px;margin-top:14px"><button class="tourbtn" style="flex:1;padding:8px" onclick="openTxForm('${n}')"><i class="ti ti-plus"></i> حركة جديدة</button><button class="tourbtn" style="flex:1;padding:8px" onclick="openSettings('alerts','${n}')"><i class="ti ti-bell-plus"></i> نبّهني عند سعر</button></div>
     </div>
-  </div></div>`);if(p.yh&&!historyData[p.yh])loadHistory(n);
+  </div></div><div class="asset-actions" role="group" aria-label="إجراءات الأصل"><button class="tourbtn" style="flex:1;padding:8px" onclick="openTxForm('${n}')"><i class="ti ti-plus"></i> حركة جديدة</button><button class="tourbtn" style="flex:1;padding:8px" onclick="openSettings('alerts','${n}')"><i class="ti ti-bell-plus"></i> نبّهني عند سعر</button></div></div>`);if(p.yh&&!historyData[p.yh])loadHistory(n);
 }
 async function loadHistory(n){const a=AS[n];historyData[a.yh]={loading:true};const r=await ENGINE.market('getHistory',a.yh);historyData[a.yh]=r;const el=$('assetHistory');if(el&&activeDialog?.fn==='openAsset'&&activeDialog.args[0]===n)el.innerHTML=chart52(S.POS.find(p=>p.n===n)||{...a,n});}
 function chart52(p){
@@ -93,7 +92,7 @@ function zakatHTML(){
  <div class="sect"><i class="ti ti-adjustments"></i> إعدادات الحساب</div><div class="z-calendar-note">الحول القمري · ${H?.days||354} يوم</div>
  ${[['Gold','الذهب',[['full','للاستثمار'],['exempt','حُلي للاستعمال']]],['Property','الأملاك',[['exempt','للاقتناء'],['full','للتجارة']]]].map(([type,label,opts])=>`<div class="ff z-treatment"><span>${label}${treatment(type)==='mixed'?' · معالجة فردية':''}</span><div class="fseg sm">${opts.map(([v,l])=>`<button class="${treatment(type)===v?'on':''}" onclick="setZakatGroup('${type}','${v}')">${l}</button>`).join('')}</div></div>`).join('')}
  <div class="fgrid"><label class="ff">هامش الاحتياط (%)<input class="fi num" type="number" min="0" max="100" value="${Z.opt.margin||0}" onchange="saveZakatOption('margin',+this.value)"></label><label class="ff">بداية الحول<input class="fi num" type="date" value="${Z.opt.hawlStart||''}" onchange="saveZakatOption('hawlStart',this.value)"></label></div>
- <details class="z-advanced"><summary>المعالجة الفردية والإعدادات التفصيلية</summary>${zakatOptionsHTML()}</details><div class="fmsg"><i class="ti ti-info-circle"></i><span>البيانات الناقصة تُحتسب بالنسبة الاحتياطية حسب إعداداتك. الحول والمعالجة محفوظان في محفظتك.</span></div><div class="factions"><button class="fbtn" onclick="ENGINE.printZakat()"><i class="ti ti-printer"></i>تقرير للطباعة</button><button class="fbtn ghost" onclick="safeAction(()=>ENGINE.updateZakat())"><i class="ti ti-refresh"></i>تحديث النسب</button></div></aside></div></div>`;
+ <details class="z-advanced"><summary>المعالجة الفردية والإعدادات التفصيلية</summary>${zakatOptionsHTML()}</details><div class="fmsg"><i class="ti ti-info-circle"></i><span>البيانات الناقصة تُحتسب بالنسبة الاحتياطية حسب إعداداتك. الحول والمعالجة محفوظان في محفظتك.</span></div><div class="factions"><button class="fbtn" onclick="ENGINE.printZakat()"><i class="ti ti-printer"></i>تقرير للطباعة</button>${zakatRefreshControl()}</div></aside></div></div>`;
 }
 async function setZakatGroup(type,value){const current=JSON.parse(parent.commandStorage.raw().settings.zakatAsst||'{}');for(const r of S.zakat.rows.filter(r=>r.type===type))current[r.key]=value;await safeAction(()=>ENGINE.setting('zakatAsst',current));syncSnapshot();}
 
@@ -147,4 +146,19 @@ function tfCurrentPreview(){
  const first=cash?cell('الرصيد الحالي',fmtC(value)):cell('الرصيد الحالي',fmt(qty,Number.isInteger(qty)?0:4)+(r.k==='Gold'?' غ':''));
  const second=cash?cell('عملة الحساب',esc(r.cur)):cell('متوسط تكلفتك',qty>0&&avg!=null?natFmt(s2n(avg,r.cur,liveRate(r.cur)),r.cur):'—');
  return '<div class="pt">IMPACT PREVIEW</div><p class="preview-hint">'+(cash?'أدخل المبلغ لعرض أثر الحركة على حساباتك':'أدخل الكمية والسعر لعرض أثر الحركة على المحفظة')+'</p><div class="kg2">'+first+second+cell('القيمة الحالية',fmtC(value))+cell('وزنه من الثروة',fmt(percent(value,S.totals.total),1)+'%')+'</div>';
+}
+
+const zakatRefreshState={busy:false,message:'',kind:'idle'};
+function zakatRefreshControl(){const z=zakatRefreshState;return `<div class="z-refresh"><button class="fbtn ghost" id="zRefreshButton" onclick="refreshZakatRatios()" ${z.busy?'disabled':''} aria-busy="${z.busy}"><i class="ti ti-refresh ${z.busy?'is-spinning':''}"></i>${z.busy?'جاري تحديث النسب…':'تحديث النسب'}</button><p id="zRefreshStatus" class="z-refresh-status ${z.kind}" role="status" aria-live="polite" ${z.message?'':'hidden'}>${esc(z.message)}</p></div>`;}
+function renderZakatRefresh(){const box=$('zRefreshButton')?.closest('.z-refresh');if(box)box.outerHTML=zakatRefreshControl();}
+async function refreshZakatRatios(){
+ if(zakatRefreshState.busy)return;
+ Object.assign(zakatRefreshState,{busy:true,message:'جاري قراءة المحفظة وطلب القوائم المالية…',kind:'pending'});renderZakatRefresh();
+ try{
+  const result=await ENGINE.updateZakat(message=>{zakatRefreshState.message=message;renderZakatRefresh();});
+  if(!result||result.ok===false)throw Error(result?.message||'تعذّر تحديث النسب. حاول مرة ثانية.');
+  Object.assign(zakatRefreshState,{message:result.message,kind:result.failed?'partial':'success'});
+  syncSnapshot();toast(esc(result.message),result.failed?'ti-alert-triangle':'ti-check');
+ }catch(e){Object.assign(zakatRefreshState,{message:e.message||'تعذّر تحديث النسب',kind:'error'});toast(esc(zakatRefreshState.message),'ti-alert-triangle');}
+ finally{zakatRefreshState.busy=false;renderZakatRefresh();}
 }

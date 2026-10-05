@@ -260,7 +260,6 @@ function renderTx(){
  $('txList').innerHTML=`<div class="sect clk" onclick="openMonth(${selM})">حركات ${selected.k} ←</div>`+(selected.L.slice(0,4).map(txRow).join('')||'<div class="mu">لا حركات استثمارية</div>')+`<div class="kg2">${cell('استثمرت',fmtC(selected.inv))}${cell('سيّلت',fmtC(selected.liq))}</div><div class="sect">أحدث الحركات</div>`+recent.slice(0,5).map(x=>x.html).join('');
 }
 const txRow=t=>`<div class="row clk" onclick="openTx(${TXNS.indexOf(t)})"><div class="nm"><div class="t">${t[2]==='Buy'?'شراء':'بيع'} · ${t[1]}</div><div class="s"><span class="n">${t[0]}</span> · ${fmt(t[3],AS[t[1]].t==='Gold'?1:0)} ${AS[t[1]].t==='Gold'?'غ':'وحدة'} @ ${natFmt(t[4],AS[t[1]].cur)}</div></div><span class="n" style="color:${t[2]==='Buy'?'var(--cb)':'var(--muted)'}">${t[2]==='Buy'?'':'+'}${fmtC(txSAR(t))}</span></div>`;
-function goalCategories(){return ['Property','Gold','Stock','Cash'];}
 function renderGoals(){
  const T=totals();$('goals').innerHTML=goalCategories().map(k=>{const current=T.by[k]?.cur||0,goal=Number(catGoals[k])||0,pct=percent(current,goal);return `<div class="go clk" onclick="openCat('${k}')"><div class="h"><span>${KLF[k]}</span><b class="n">${goal?fmt(pct,1)+'%':'غير محدد'}</b></div><div class="tr"><i style="width:${Math.min(100,pct)}%"></i></div><div class="f"><span>الحالي ${fmtC(current)}</span><span>متبقي ${fmtC(Math.max(0,goal-current))}</span></div></div>`;}).join('');
  $('pj').innerHTML=`<div class="projection-note"><span>متوسط الاستثمار الشهري</span><b class="n">${fmtC(S.monthly)}</b></div>`+S.projections.map(p=>`<div class="pj"><span>${p.r?fmt(p.r*100)+'%':'ادخار فقط'}</span><b class="n">${p.months==null?'أكثر من 50 سنة':p.months===0?'تحقق الهدف':Math.floor(p.months/12)+'y '+p.months%12+'m'}</b></div>`).join('');
@@ -601,7 +600,7 @@ function openAsset(n){
      +`<div class="sect"><i class="ti ti-map-pin"></i> أكبر الدول</div>`+Object.entries(d.countries||{}).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([cc,wt])=>`<div class="row clk" onclick="openCountry('${cc}')"><div class="nm"><div class="t" style="font-weight:500">${flag(cc)} ${GEO_AR[cc]}</div></div><span class="n mu">${fmt(wt,1)}%</span><span class="n" style="color:var(--cb);width:90px;text-align:left">${fmtC(p.val*wt/100)}</span></div>`).join('');
   }
   const news=rankNews(NEWS.filter(x=>newsAssets(x).includes(n)));
-  openHolo(`<div class="asset-dialog">
+  openHolo(`<div class="asset-dialog"><div class="asset-scroll" tabindex="0" aria-label="تفاصيل الأصل — تمرير عمودي">
   <div class="mh"><div><div class="code">${p.tv||''} · ${p.yh||''} · ${KL[p.t].toUpperCase?KL[p.t]:''}</div><h2>${n}</h2><div class="full">${p.full}</div></div>
     <div class="px"><div class="mu" style="font-size:10px">السعر الحالي</div><b class="n">${natFmt(p.p,p.cur)}</b><div><span class="pill ${p.chg>=0?'up':'dn'}">${p.chg==null?'حركة اليوم غير متاحة':(p.chg>=0?'▲ +':'▼ ')+fmt(Math.abs(p.chg),2)+'% اليوم'}</span> <span class="n mu" style="font-size:11px">${p.p==null?'':'≈ '+fmtC(toSAR(p.p,p.cur))}</span></div></div></div>
   <div class="kg">
@@ -621,9 +620,8 @@ function openAsset(n){
       ${inside}
       <div class="sect"><i class="ti ti-news"></i> أخبار ${n}</div>
       <div class="asset-news-scroll">${news.length?news.map(newsRow).join(''):'<div class="mu" style="font-size:11px">لا أخبار مرتبطة حالياً</div>'}</div>
-      <div style="display:flex;gap:8px;margin-top:14px"><button class="tourbtn" style="flex:1;padding:8px" onclick="openTxForm('${n}')"><i class="ti ti-plus"></i> حركة جديدة</button><button class="tourbtn" style="flex:1;padding:8px" onclick="openSettings('alerts','${n}')"><i class="ti ti-bell-plus"></i> نبّهني عند سعر</button></div>
     </div>
-  </div></div>`);if(p.yh&&!historyData[p.yh])loadHistory(n);
+  </div></div><div class="asset-actions" role="group" aria-label="إجراءات الأصل"><button class="tourbtn" style="flex:1;padding:8px" onclick="openTxForm('${n}')"><i class="ti ti-plus"></i> حركة جديدة</button><button class="tourbtn" style="flex:1;padding:8px" onclick="openSettings('alerts','${n}')"><i class="ti ti-bell-plus"></i> نبّهني عند سعر</button></div></div>`);if(p.yh&&!historyData[p.yh])loadHistory(n);
 }
 
 function mainland(f,cc){const ll=LL[cc];if(f.geometry.type!=='MultiPolygon')return f;
@@ -877,7 +875,7 @@ function zakatHTML(){
  <div class="sect"><i class="ti ti-adjustments"></i> إعدادات الحساب</div><div class="z-calendar-note">الحول القمري · ${H?.days||354} يوم</div>
  ${[['Gold','الذهب',[['full','للاستثمار'],['exempt','حُلي للاستعمال']]],['Property','الأملاك',[['exempt','للاقتناء'],['full','للتجارة']]]].map(([type,label,opts])=>`<div class="ff z-treatment"><span>${label}${treatment(type)==='mixed'?' · معالجة فردية':''}</span><div class="fseg sm">${opts.map(([v,l])=>`<button class="${treatment(type)===v?'on':''}" onclick="setZakatGroup('${type}','${v}')">${l}</button>`).join('')}</div></div>`).join('')}
  <div class="fgrid"><label class="ff">هامش الاحتياط (%)<input class="fi num" type="number" min="0" max="100" value="${Z.opt.margin||0}" onchange="saveZakatOption('margin',+this.value)"></label><label class="ff">بداية الحول<input class="fi num" type="date" value="${Z.opt.hawlStart||''}" onchange="saveZakatOption('hawlStart',this.value)"></label></div>
- <details class="z-advanced"><summary>المعالجة الفردية والإعدادات التفصيلية</summary>${zakatOptionsHTML()}</details><div class="fmsg"><i class="ti ti-info-circle"></i><span>البيانات الناقصة تُحتسب بالنسبة الاحتياطية حسب إعداداتك. الحول والمعالجة محفوظان في محفظتك.</span></div><div class="factions"><button class="fbtn" onclick="ENGINE.printZakat()"><i class="ti ti-printer"></i>تقرير للطباعة</button><button class="fbtn ghost" onclick="safeAction(()=>ENGINE.updateZakat())"><i class="ti ti-refresh"></i>تحديث النسب</button></div></aside></div></div>`;
+ <details class="z-advanced"><summary>المعالجة الفردية والإعدادات التفصيلية</summary>${zakatOptionsHTML()}</details><div class="fmsg"><i class="ti ti-info-circle"></i><span>البيانات الناقصة تُحتسب بالنسبة الاحتياطية حسب إعداداتك. الحول والمعالجة محفوظان في محفظتك.</span></div><div class="factions"><button class="fbtn" onclick="ENGINE.printZakat()"><i class="ti ti-printer"></i>تقرير للطباعة</button>${zakatRefreshControl()}</div></aside></div></div>`;
 }
 
 
@@ -1024,10 +1022,10 @@ function syncSnapshot(force=false){
   if(TF.edit!=null){const t=TXNS[TF.edit];const now=t&&ENGINE.rawTxn(t[8].id);if(!now||JSON.stringify(now)!==TF.expected){TF.stale=true;$('tfMsg').innerHTML='<div class="fmsg wr">تغيّرت هذه الحركة من جهاز آخر. أغلق النموذج وافتح الحركة مجددًا قبل الحفظ.</div>';$('tfSave').disabled=true;}}
   if(!TF.stale)tfCalc();
  }else if(activeDialog&&$('ov').classList.contains('open')&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){
-  const scroll=$('hb').scrollTop;refreshingDialog=true;try{window[activeDialog.fn](...activeDialog.args);}finally{refreshingDialog=false;$('hb').scrollTop=scroll;}
+  const scroll=$('hb').scrollTop,assetScroll=document.querySelector('.asset-scroll')?.scrollTop||0;refreshingDialog=true;try{window[activeDialog.fn](...activeDialog.args);}finally{refreshingDialog=false;$('hb').scrollTop=scroll;const asset=document.querySelector('.asset-scroll');if(asset)asset.scrollTop=assetScroll;}
  }
 }
-function updateConnection(){const el=document.querySelector('.live');if(!el)return;const st=parent.commandStorage.status();el.innerHTML='<i></i>'+(!st.online?'غير متصل':st.busy?'جاري الحفظ':st.demo?'تجربة':'متصل');el.classList.toggle('offline',!st.online);let info=$('freshness');if(!info){info=document.createElement('button');info.id='freshness';info.className='freshness';info.onclick=()=>openSettings('data');el.after(info);}const quotes=S.registry.filter(a=>a.yh&&a.timestamp);const times=quotes.map(a=>a.timestamp*1000);const stamp=times.length?Math.min(...times):null;info.textContent=st.demo?'تجربة · بدون بيانات مباشرة':stamp?'آخر سعر '+formatStamp(stamp):'الأسعار لم تتحدث بعد';info.title='أقدم سعر متاح من المصادر؛ اضغط لتفاصيل المزامنة والتحديث';}
+function updateConnection(){const el=document.querySelector('.live');if(!el)return;const st=parent.commandStorage.status();el.innerHTML='<i></i>'+(!st.online?'غير متصل':st.busy?'جاري الحفظ':st.demo?'تجربة':'متصل');el.classList.toggle('offline',!st.online);}
 function formatStamp(value){return value?new Date(value).toLocaleString('ar-SA-u-ca-gregory',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'لم يتحدث بعد';}
 
 
@@ -1041,7 +1039,7 @@ function newsRequests(){const direct=S.POS.filter(p=>p.yh&&assetVisible(p.n)).so
 
 
 
-
+function goalCategories(){return ['Property','Gold','Stock','Cash'];}
 
 
 
@@ -1092,7 +1090,6 @@ function installCommandCenter(){
  setInterval(()=>{if(document.hidden||parent.document.body.dataset.portfolioView!=='cc')return;if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();else if(Date.now()-externalAt>900000)loadExternal();},15000);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncSnapshot();if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();}});
  document.querySelectorAll('button.ibtn').forEach(b=>{b.title=b.querySelector('.tip')?.textContent||'';b.setAttribute('aria-label',b.title);});
- const exit=document.createElement('button');exit.className='ibtn';exit.title='العودة للواجهة السابقة';exit.textContent='↩';exit.onclick=()=>ENGINE.legacy();document.querySelector('.top').append(exit);
  syncSnapshot(true);setTimeout(loadExternal,1500);
 }
 
@@ -1101,111 +1098,6 @@ function openCalendarEvent(d,t){const e=calendarData.find(e=>e.d===d&&e.t===t);i
 function newsPositions(n){const values=new Map();for(const r of (n.related?.length?n.related:[{a:n.a,via:n.via}])){const co=r.key?XR.companies[r.key]:Object.values(XR.companies).find(c=>c.ar===r.via);for(const v of co?co.via:[{f:r.a,w:100}]){const p=S.POS.find(p=>p.n===v.f);if(!p)continue;let entry=values.get(p.n);if(!entry){entry={p,parts:new Map(),direct:false};values.set(p.n,entry);}if(!co)entry.direct=true;else entry.parts.set(co.k||r.via,p.val*v.w/100);}}return [...values.values()].map(({p,parts,direct})=>{const value=direct?p.val:Math.min(p.val,[...parts.values()].reduce((a,b)=>a+b,0));return {name:p.n,value,weight:percent(value,p.val)};});}
 
 function geoPositionLabel(cc){if(cc==='EZ'||cc==='EU')return 'موضع تمثيلي للمنطقة · ليست دولة';const ll=LL[cc];return ll?fmt(ll[0],1)+'°, '+fmt(ll[1],1)+'°':'الموقع غير محدد';}
-
-function modalHead(code,title,sub=''){return `<div class="mh"><div><div class="code">${code}</div><h2>${esc(title)}</h2><div class="full">${sub}</div></div></div>`;}
-
-
-async function loadHistory(n){const a=AS[n];historyData[a.yh]={loading:true};const r=await ENGINE.market('getHistory',a.yh);historyData[a.yh]=r;const el=$('assetHistory');if(el&&activeDialog?.fn==='openAsset'&&activeDialog.args[0]===n)el.innerHTML=chart52(S.POS.find(p=>p.n===n)||{...a,n});}
-
-function hideChartHover(){if($('chartHover'))$('chartHover').hidden=true;if($('realCross'))$('realCross').setAttribute('opacity','0');}
-function realChartHover(e){const c=window._realChart,svg=$('c52');if(!c||!svg)return;const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(svg.getScreenCTM().inverse()),f=Math.max(0,Math.min(1,(pt.x-8)/572)),time=c.start+f*(c.end-c.start),p=c.pts.reduce((best,v)=>Math.abs(Date.parse(v.d)-time)<Math.abs(Date.parse(best.d)-time)?v:best,c.pts[0]),x=8+(Date.parse(p.d)-c.start)/(c.end-c.start||1)*572;const cross=$('realCross');cross.setAttribute('x1',x);cross.setAttribute('x2',x);cross.setAttribute('opacity','.6');const group=e.target.closest('[data-group]');if(group){showChartGroupTip(e.clientX,e.clientY,+group.dataset.group);}else showChartTip(e.clientX,e.clientY,p,null);$('realChartTip').textContent=p.d+' · '+natFmt(p.p,c.cur);}
-function showChartTip(x,y,p,t){const tip=$('chartHover'),box=$('assetHistory').getBoundingClientRect();if(!tip)return;tip.hidden=false;tip.classList.toggle('trade-tip',!!t);tip.innerHTML=t?`<b>${t[2]==='Buy'?'▲ شراء':'▼ بيع'} · ${esc(t[0])}</b><strong class="n">${natFmt(t[4],t[8]?.currency||window._realChart.cur)}</strong><span>الكمية ${fmt(t[3],4)} · الإجمالي ${fmtC(txSAR(t))}</span><small>اضغط لفتح تفاصيل الحركة</small>`:`<b>${p.d}</b><strong class="n">${natFmt(p.p,window._realChart.cur)}</strong>`;tip.style.left=Math.max(4,Math.min(box.width-tip.offsetWidth-4,x-box.left+14))+'px';tip.style.top=Math.max(4,y-box.top-tip.offsetHeight-14)+'px';}
-function chartTradeFocus(e,i){const t=TXNS[i],r=e.target.getBoundingClientRect();showChartTip(r.x,r.y,null,t);}
-
-
-
-
-
-function editCash(i){const t=CTX[i];if(t.linkedId){const j=TXNS.findIndex(x=>String(x[8].id)===String(t.linkedId));if(j>=0)return openTxForm(null,j);return toast('افتح إدارة الحركات لتعديل التحويل المرتبط','ti-info-circle');}openTxForm('c:'+t.acc,null,t.act);const r=ENGINE.rawTxn(t.id);TF.cashEdit=r;TF.expected=JSON.stringify(r);$('tfD').value=r.date;$('tfAmt').value=r.qty;$('tfR').value=r.rate;$('tfN').value=r.remarks||'';tfCalc();}
-
-
-function txInput(){const r=regGet(TF.id),old=TF.cashEdit||TXNS[TF.edit]?.[8];return {id:old?.id,expected:TF.expected,name:r.n,date:$('tfD').value,action:TF.act,qty:+$('tfQ').value,price:+$('tfP').value,amount:+$('tfAmt').value,fees:+$('tfFees')?.value||0,rate:r.cur==='SAR'||r.cur==='SARg'?1:+$('tfR').value,note:$('tfN').value,fund:TF.fund,accountName:CASH[TF.acc]?.n,toName:CASH[TF.to]?.n};}
-
-
-
-
-
-async function setZakatGroup(type,value){const current=JSON.parse(parent.commandStorage.raw().settings.zakatAsst||'{}');for(const r of S.zakat.rows.filter(r=>r.type===type))current[r.key]=value;await safeAction(()=>ENGINE.setting('zakatAsst',current));syncSnapshot();}
-
-let zakatTab='assets';
-function zakatGo(tab){zakatTab=tab;openZakat();}
-function zakatOptionsHTML(){const z=S.zakat;return `<div class="fgrid"><label class="ff">بداية الحول<input type="date" class="fi" value="${z.opt.hawlStart||''}" onchange="saveZakatOption('hawlStart',this.value)"></label><label class="ff">الديون (${baseCur})<input type="number" min="0" class="fi" value="${z.opt.debts||0}" onchange="saveZakatOption('debts',+this.value)"></label>${[['margin','هامش الاحتياط (%)'],['rate','نسبة الزكاة (%)'],['topN','عدد مكوّنات الصندوق (1–50)'],['pctVal','النسبة اليدوية (%)'],['goldGram','سعر غرام الذهب (SAR)'],['silverGram','سعر غرام الفضة (SAR)']].map(([k,l])=>`<label class="ff">${l}<input class="fi" type="number" min="0" value="${z.opt[k]||0}" onchange="saveZakatOption('${k}',+this.value)"></label>`).join('')}<label class="ff">أساس النصاب<select class="fi" onchange="saveZakatOption('nisabBase',this.value)"><option value="gold" ${z.opt.nisabBase==='gold'?'selected':''}>الذهب</option><option value="silver" ${z.opt.nisabBase==='silver'?'selected':''}>الفضة</option></select></label></div><div class="sect">معالجة الأصول</div>`+z.rows.map((r,i)=>srow(esc(r.name),'',`<select class="fi" onchange="saveZakatTreat(${i},this.value)">${[['auto','تلقائي'],['full','كامل'],['exempt','معفى'],['pct','النسبة اليدوية']].map(([v,l])=>`<option value="${v}" ${r.treat===v?'selected':''}>${l}</option>`).join('')}</select>`)).join('');}
-
-async function saveZakatOption(k,v){await safeAction(()=>ENGINE.setting('zakatOpt',{...S.zakat.opt,[k]:v}));syncSnapshot();}
-
-
-
-function historyPlotDecor(pts,min,max,X,Y,line){const grids=Array.from({length:5},(_,i)=>{const v=min+(max-min)*i/4;return `<line x1="8" x2="580" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(79,216,255,.08)"/><text x="590" y="${Y(v)+3}" fill="#7394a3" font-size="9" font-family="sans-serif">${fmt(v,v>100?0:1)}</text>`;}).join('');const months=[];let last='';for(const p of pts){const m=p.d.slice(0,7);if(m!==last){months.push(`<text x="${X(p.d)}" y="207" fill="#7394a3" font-size="8" font-family="sans-serif">${p.d.slice(5,7)}</text>`);last=m;}}return `<defs><linearGradient id="priceArea" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#4fd8ff" stop-opacity=".26"/><stop offset="1" stop-color="#4fd8ff" stop-opacity="0"/></linearGradient></defs>${grids}${months.join('')}<path d="${line}L${X(pts.at(-1).d)},190L${X(pts[0].d)},190Z" fill="url(#priceArea)"/>`;}
-
-function chartTradeTrack(p,start,end,X){const groups=[];for(const act of ['Buy','Sell']){const rows=TXNS.map((t,i)=>({t,i})).filter(({t})=>t[1]===p.n&&t[2]===act&&Date.parse(t[0])>=start&&Date.parse(t[0])<=end).sort((a,b)=>a.t[0].localeCompare(b.t[0]));let last=null;for(const row of rows){const x=Math.max(14,Math.min(574,X(row.t[0])));if(last&&x-last.x<14){last.ids.push(row.i);}else {last={act,x,ids:[row.i],asset:p.n};groups.push(last);}}}window._chartTradeGroups=groups;
- return `<g class="trade-track"><rect x="4" y="215" width="632" height="45" fill="rgba(2,8,14,.75)"/><line x1="8" x2="580" y1="227" y2="227" stroke="rgba(245,199,106,.17)"/><line x1="8" x2="580" y1="249" y2="249" stroke="rgba(255,107,90,.17)"/><text x="628" y="230" text-anchor="end" fill="#f5c76a" font-size="9">شراء</text><text x="628" y="252" text-anchor="end" fill="#ff8b78" font-size="9">بيع</text>${groups.map((g,i)=>{const y=g.act==='Buy'?227:249,up=g.act==='Buy',color=up?'#f5c76a':'#ff8b78';return `<g class="trade-marker ${up?'trade-buy':'trade-sell'}" data-group="${i}" tabindex="0" role="button" aria-label="${g.ids.length} ${up?'شراء':'بيع'} ${TXNS[g.ids[0]][0]}" onclick="openChartTradeGroup(${i})" onfocus="focusChartGroup(event,${i})" onkeydown="if(event.key==='Enter')openChartTradeGroup(${i})"><rect x="${g.x-9}" y="${y-10}" width="18" height="20" fill="transparent"/><path d="M${g.x},${y+(up?-6:6)} l-6,${up?10:-10} h12 Z" fill="${color}" stroke="#06111b" stroke-width="1.3"/>${g.ids.length>1?`<circle cx="${g.x+7}" cy="${y-7}" r="6" fill="#091725" stroke="${color}"/><text x="${g.x+7}" y="${y-4}" text-anchor="middle" fill="${color}" font-size="7">${g.ids.length}</text>`:''}</g>`;}).join('')}</g>`;
-}
-function showChartGroupTip(x,y,i){const group=window._chartTradeGroups?.[i];if(!group)return;const t=TXNS[group.ids[0]];showChartTip(x,y,null,t);if(group.ids.length>1){const tip=$('chartHover');tip.innerHTML=`<b>${group.ids.length} عمليات ${group.act==='Buy'?'شراء':'بيع'}</b><strong class="n">${fmtC(group.ids.reduce((s,i)=>s+txSAR(TXNS[i]),0))}</strong><small>${t[0]}${t[0]!==TXNS[group.ids.at(-1)][0]?' → '+TXNS[group.ids.at(-1)][0]:''}</small><small>اضغط لعرض جميع الحركات</small>`;}}
-function focusChartGroup(e,i){const box=e.currentTarget.getBoundingClientRect();showChartGroupTip(box.x,box.y,i);}
-function openChartTradeGroup(i){const group=window._chartTradeGroups?.[i];if(!group)return;if(group.ids.length===1)return openTx(group.ids[0]);activeDialog=null;openHolo(modalHead('TRANSACTIONS',group.asset,'حركات متقاربة على الخط الزمني')+group.ids.map(i=>txRow(TXNS[i])).join('')+`<button class="fbtn ghost" onclick="openAsset('${group.asset}')">العودة للتشارت</button>`);}
-
-function tfCurrentPreview(){
- const r=regGet(TF.id);if(!r)return '';
- const p=S.POS.find(p=>p.n===r.n),cash=r.k==='Cash',f=cash?null:ENGINE.fifo(r.n),value=p?.val??r.v??0,avg=f?.avg,qty=f?.qty??r.q??0;
- const first=cash?cell('الرصيد الحالي',fmtC(value)):cell('الرصيد الحالي',fmt(qty,Number.isInteger(qty)?0:4)+(r.k==='Gold'?' غ':''));
- const second=cash?cell('عملة الحساب',esc(r.cur)):cell('متوسط تكلفتك',qty>0&&avg!=null?natFmt(s2n(avg,r.cur,liveRate(r.cur)),r.cur):'—');
- return '<div class="pt">IMPACT PREVIEW</div><p class="preview-hint">'+(cash?'أدخل المبلغ لعرض أثر الحركة على حساباتك':'أدخل الكمية والسعر لعرض أثر الحركة على المحفظة')+'</p><div class="kg2">'+first+second+cell('القيمة الحالية',fmtC(value))+cell('وزنه من الثروة',fmt(percent(value,S.totals.total),1)+'%')+'</div>';
-}
-
-function enhanceControls(){
- const baseSettings=stBody;window.stBody=function(){let html=baseSettings();
- if(stTab==='events')html+=`<div class="sect">مصادر التقويم</div>`+EV_SRC.map(([k,label,,source])=>srow(label,source,tgl(ST.evOn[k]!==false,`saveEventSource('${k}',${ST.evOn[k]===false})`))).join('')+srow('حد تأثير الشركات داخل الصناديق','من إجمالي ثروتك',`<select class="fi" onchange="stEvMin(this.value)">${[.25,.5,1].map(v=>`<option value="${v}" ${ST.evMin===v?'selected':''}>${v}%</option>`).join('')}</select>`);
- if(stTab==='display')html+=srow('حماية الشاشة','إزاحة خفيفة أثناء العرض الهادئ',tgl(ST.burn,"saveCC('burn',!ST.burn)"))+`<button class="fbtn" onclick="closeHolo();enterAmb(true)">تشغيل الشاشة الحية</button>`;
- if(stTab==='data')html=freshnessSettings()+html+'<div class="sect">حالة الاتصال</div>'+Object.entries(S.status.market||{}).map(([k,v])=>srow(k,(v.ok?'وصل رد من المصدر':'غير متاح')+' · '+new Date(v.at).toLocaleTimeString(),v.ok?'●':'○')).join('')+`<button class="fbtn" onclick="refreshLive(this)">اختبار وتحديث المصادر</button>`;
- if(stTab==='general')html+=srow('إدراج المصادر غير المحققة','يؤثر على إجمالي الثروة',tgl(S.includeUnrealized,"safeAction(()=>ENGINE.setting('includeUnrealized',String(!S.includeUnrealized)))"));return html;};
-
- document.addEventListener('keydown',e=>{if(e.key!=='Tab'||!$('ov').classList.contains('open'))return;const list=[...$('holo').querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select,textarea,[tabindex="0"]')].filter(x=>x.getClientRects().length);if(!list.length)return;const first=list[0],last=list.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
-}
-function openZakatBreakdown(i){const r=S.zakat.rows[i];if(!r)return;openHolo(modalHead('ZAKAT BREAKDOWN',r.name,esc(r.src))+`<div class="kg2">${cell('قيمة الأصل',fmtC(r.val))}${cell('النسبة',fmt(r.ratio*100,2)+'%')}${cell('القيمة الزكوية',fmtC(r.zVal))}${cell('الحالة',r.warn?'بيانات ناقصة — احتياطي':'من المحرّك')}</div>`+(r.fund?`<div class="sect">مكوّنات الصندوق</div>`+r.fund.top.map(c=>`<div class="row"><div class="nm">${esc(c.name||c.ticker)}<small>${c.missing?'نسبة احتياطية':esc(c.src||'من البيانات المحفوظة')}</small></div><span class="n">وزن ${fmt(c.w,2)}% · نسبة ${fmt((c.ratio??c.fin)*100,2)}%</span></div>`).join('')+`<div class="sub">المكوّنات غير المغطاة: ${fmt(r.fund.rest,2)}%، حسب قاعدة المحرّك.</div>`:r.co?`<pre style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(JSON.stringify(r.co.calc||{ratio:r.ratio},null,2))}</pre>`:'')+`<button class="fbtn" onclick="openZakat()">رجوع</button>`);}
-
-// Keep every marker inside its labelled category wedge, regardless of event count.
-// Radial distance continues to encode the event date.
-
-
-async function saveCC(k,v){await safeAction(()=>ENGINE.setting('commandCenter',{...S.cc,[k]:v}));syncSnapshot();if($('stBody'))stRefresh();}
-
-
-async function saveRetire(v){const n=+v;if(!(n>0))return;await safeAction(()=>ENGINE.setting('retireGoal',n*(FX[baseCur]||1)));syncSnapshot();}
-
-
-
-
-
-
-async function addRegistry(){const name=$('ccName').value.trim(),type=$('ccType').value,currency=$('ccCurrency').value.trim(),yahooSym=$('ccSymbol').value.trim();if(!name||!currency)return toast('أدخل الاسم والعملة','ti-alert-triangle');const list=ENGINE.assets();if(list.some(a=>a.name===name))return toast('الاسم موجود','ti-alert-triangle');list.push({id:Date.now(),name,type,currency,yahooSym});await safeAction(()=>ENGINE.saveAssets(list));syncSnapshot();stRefresh();}
-
-
-
-
-
-async function removeAlert(i){const list=JSON.parse(parent.commandStorage.raw().settings.priceAlerts||'[]');list.splice(i,1);await safeAction(()=>ENGINE.setting('priceAlerts',list));syncSnapshot();stRefresh();}
-
-function removeEvent(i){return saveCC('events',(ST.events||[]).filter((_,j)=>j!==i));}
-
-
-
-async function toggleOther(i){const list=ENGINE.others();list[i].included=list[i].included===false;await safeAction(()=>ENGINE.saveOthers(list));syncSnapshot();stRefresh();}
-async function removeOther(i){if(!confirm('حذف المصدر؟'))return;const list=ENGINE.others();list.splice(i,1);await safeAction(()=>ENGINE.saveOthers(list));syncSnapshot();stRefresh();}
-function openRegistryEditor(i){const a=ENGINE.assets()[i],n=ENGINE.clean(a.name),d=S.customXray[a.name]||XRAY_DATA[n]||{};activeDialog=null;openHolo(modalHead('ASSET CONFIGURATION',a.name)+`<div class="fgrid"><label class="ff">رمز Yahoo<input class="fi" id="edYahoo" value="${esc(a.yahooSym||'')}"></label><label class="ff">رمز TradingView<input class="fi" id="edTv" value="${esc(a.tvSym||'')}"></label><label class="ff">الدولة (ISO)<input class="fi" id="edCountry" value="${esc(a.country||'')}"></label><label class="ff">القطاع<input class="fi" id="edSector" value="${esc(a.sector||'')}"></label><label class="ff full">رابط ملف المكوّنات<input class="fi" id="edLink" dir="ltr" value="${esc(d._csvUrl||'')}"></label></div><div class="factions"><button class="fbtn" onclick="saveRegistryEditor(${i})">حفظ</button><button class="fbtn" onclick="refreshRegistryHoldings(${i},this)">تحديث المكوّنات</button></div><div class="sect">محرر المكوّنات اليدوي</div><p class="sub">JSON: countries وsectors نسب مئوية، وtop قوائم [الرمز، الاسم، الدولة، الوزن].</p><textarea class="fi" id="edComposition" dir="ltr" rows="9">${esc(JSON.stringify({countries:d.countries||{},sectors:d.sectors||{},top:d.top||[],kind:d.kind||'etf'},null,2))}</textarea><button class="fbtn" onclick="saveComposition(${i})">حفظ التركيبة</button>`);}
-function editRegistry(i){openRegistryEditor(i);}
-async function saveRegistryEditor(i){const list=ENGINE.assets(),a=list[i];a.yahooSym=$('edYahoo').value.trim();a.tvSym=$('edTv').value.trim();a.country=$('edCountry').value.trim().toUpperCase();a.sector=$('edSector').value.trim();const url=$('edLink').value.trim();if(url&&!/^https:\/\//i.test(url))return toast('الرابط يجب أن يبدأ بـ https','ti-alert-triangle');await safeAction(()=>ENGINE.saveAssets(list));const cx={...S.customXray};cx[a.name]={...(cx[a.name]||XRAY_DATA[ENGINE.clean(a.name)]||{}),_csvUrl:url};await safeAction(()=>ENGINE.setting('customXray',cx));syncSnapshot();toast('تم الحفظ','ti-check');}
-async function saveComposition(i){try{const a=ENGINE.assets()[i],d=JSON.parse($('edComposition').value);if(!d.countries||!d.sectors||!Array.isArray(d.top)||d.top.length>200)throw Error('تركيبة غير صالحة');for(const values of [Object.values(d.countries),Object.values(d.sectors),d.top.map(t=>t[3])])if(values.some(x=>!Number.isFinite(x)||x<0||x>100)||values.reduce((s,v)=>s+v,0)>100.1)throw Error('الأوزان بين 0 و100 ومجموعها لا يتجاوز 100');if(d.top.some(t=>t.length<4||typeof t[0]!=='string'||typeof t[1]!=='string'||!/^[A-Z]{2}$/.test(t[2])))throw Error('راجع رموز الشركات والدول');await safeAction(()=>ENGINE.setting('customXray',{...S.customXray,[a.name]:{...S.customXray[a.name],...d,_at:new Date().toISOString()}}));syncSnapshot();toast('حُفظت التركيبة','ti-check');}catch(e){toast(esc(e.message),'ti-alert-triangle');}}
-async function refreshRegistryHoldings(i,b){await saveRegistryEditor(i);b.disabled=true;try{await safeAction(()=>ENGINE.holdings(ENGINE.clean(ENGINE.assets()[i].name)));syncSnapshot();toast('تم تحديث المكوّنات','ti-check');}finally{b.disabled=false;}}
-async function saveEventSource(k,on){return saveCC('evOn',{...ST.evOn,[k]:on});}
-async function saveZakatTreat(i,value){const r=S.zakat.rows[i],raw=JSON.parse(parent.commandStorage.raw().settings.zakatAsst||'{}');raw[r.key]=value;await safeAction(()=>ENGINE.setting('zakatAsst',raw));syncSnapshot();}
-
-async function toggleAssetVisibility(id){const hidden=new Set((S.marketHidden||[]).map(String));if(hidden.has(String(id)))hidden.delete(String(id));else hidden.add(String(id));await safeAction(()=>ENGINE.setting('marketHidden',[...hidden]));syncSnapshot();if($('stBody'))stRefresh();}
-
-
-function registrySettings(){const list=ENGINE.assets();return `<div class="section-heading"><div><h3>الأصول والحسابات</h3><p>الإخفاء يغيّر العرض فقط، ويبقى الأصل ضمن حسابات الثروة.</p></div><span class="n">${list.length} أصل</span></div><div class="registry-grid">`+list.map((a,i)=>{const visible=assetVisible(ENGINE.clean(a.name));return `<article class="registry-card ${visible?'':'is-hidden'}"><div class="registry-title"><i class="ti ${KI[a.type]||'ti-briefcase'}"></i><div><b>${esc(a.name)}</b><small>${esc(KLF[a.type]||a.type)} · <span dir="ltr">${esc(a.currency)} ${esc(a.yahooSym||'')}</span></small></div><span class="registry-state">${visible?'ظاهر':'مخفي'}</span></div><div class="registry-actions"><button class="fbtn sm ghost" onclick="toggleAssetVisibility('${a.id}')"><i class="ti ${visible?'ti-eye-off':'ti-eye'}"></i>${visible?'إخفاء':'إظهار'}</button><button class="fbtn sm ghost" onclick="editRegistry(${i})"><i class="ti ti-adjustments"></i>تعديل</button><button class="fbtn sm wr" onclick="deleteRegistry(${i})"><i class="ti ti-trash"></i>حذف</button></div></article>`;}).join('')+`</div><details class="config-panel" id="registryAdd"><summary><i class="ti ti-plus"></i> إضافة أصل أو حساب</summary><div class="fgrid"><label class="ff">الاسم<input id="ccName" class="fi" placeholder="اسم الأصل"></label><label class="ff">النوع<select id="ccType" class="fi"><option value="Stock">أسهم / صندوق</option><option value="Gold">ذهب</option><option value="Property">أملاك</option><option value="Cash">نقدي</option></select></label><label class="ff">العملة<input id="ccCurrency" class="fi" value="SAR" dir="ltr"></label><label class="ff">رمز السوق (اختياري)<input id="ccSymbol" class="fi" dir="ltr" placeholder="AAPL"></label></div><button class="fbtn" onclick="addRegistry()">إضافة الأصل</button></details><details class="config-panel"><summary>تقييم الأملاك</summary>`+PROP.map((p,i)=>srow(p.n,'القيمة السوقية بعملة الأصل',`<input aria-label="قيمة ${esc(p.n)}" class="fi" type="number" min="0" value="${p.val/liveRate(p.c)}" onchange="stPropVal(${i},this.value)">`)).join('')+`</details><details class="config-panel" id="stOther" open><summary>المصادر الأخرى</summary>`+S.OTHER.map((o,i)=>`<div class="other-setting"><div><b>${esc(o.n)}</b><small>${o.inc===false?'مستبعد من الإجمالي':'مدرج في الإجمالي'}</small></div><label class="ff">القيمة (SAR)<input class="fi" type="number" value="${o.v}" onchange="stOtherAmt(${i},this.value)"></label><div class="registry-actions"><button class="fbtn sm ghost" onclick="toggleOther(${i})">${o.inc===false?'إدراج':'استبعاد'}</button><button class="fbtn sm wr" onclick="removeOther(${i})">حذف</button></div></div>`).join('')+`<div class="fgrid"><label class="ff">اسم المصدر<input id="noN" class="fi"></label><label class="ff">القيمة<input id="noV" class="fi" type="number"></label><label class="ff">العملة<select id="noC" class="fi"><option>SAR</option><option>JOD</option><option>USD</option></select></label><button class="fbtn" onclick="stAddOther()">إضافة مصدر</button></div></details>`;}
-async function deleteRegistry(i){const a=ENGINE.assets()[i];if(!a)return;const raw=parent.commandStorage.raw();if(raw.txns.some(t=>t.assetName===a.name)){openHolo(modalHead('ASSET MANAGEMENT',a.name)+`<div class="news-context"><p>هذا الأصل مرتبط بحركات مالية. حذفه من السجل وحده يترك حركات بدون أصل.</p><p>تقدر تخفيه من العرض مع الحفاظ على رصيده وسجله، أو ترجع للحركات وتراجعها أولاً.</p></div><div class="factions"><button class="fbtn" onclick="hideRegistry('${a.id}')">إخفاء الأصل</button><button class="fbtn ghost" onclick="openSettings('assets')">رجوع</button></div>`);return;}if(!confirm('حذف '+a.name+' من سجل الأصول؟'))return;const list=ENGINE.assets();list.splice(i,1);await safeAction(()=>ENGINE.saveAssets(list));syncSnapshot();openSettings('assets');}
-async function hideRegistry(id){if(!(S.marketHidden||[]).includes(String(id)))await toggleAssetVisibility(id);openSettings('assets');}
-function freshnessSettings(){const st=parent.commandStorage.status();return `<div class="section-heading"><h3>حالة التحديث</h3><button class="fbtn sm" onclick="refreshLive(this)">تحديث الآن</button></div><div class="kg2">${cell('مزامنة المحفظة',st.demo?'وضع التجربة':formatStamp(st.lastSync))}${cell('الاتصال',st.online?'متصل':'غير متصل')}</div><p class="freshness-note">وقت السعر هو وقت آخر تداول أرسله المصدر. قد يبقى قديماً عندما يكون السوق مغلقاً.</p>`+S.registry.filter(a=>a.yh).map(a=>srow(a.n,(a.marketOpen===true?'السوق مفتوح':a.marketOpen===false?'السوق مغلق':'حالة السوق غير متاحة'),`<span class="n">${formatStamp(a.timestamp*1000)}</span>`)).join('');}
 
 // Market strips use measured, identical groups: distance / speed stays readable.
 const marketTickerStates=new Map();
@@ -1267,7 +1159,127 @@ function changeReportMonth(delta){let next=selM+delta;if(next<0){selectedYear--;
 
 
 
+
 const labSizeObserver=new ResizeObserver(()=>{if(labTab==='orbit')orbResize();if(labTab==='heat')renderHeat();});
 labSizeObserver.observe(document.querySelector('.labstage'));
+
+function modalHead(code,title,sub=''){return `<div class="mh"><div><div class="code">${code}</div><h2>${esc(title)}</h2><div class="full">${sub}</div></div></div>`;}
+
+async function loadHistory(n){const a=AS[n];historyData[a.yh]={loading:true};const r=await ENGINE.market('getHistory',a.yh);historyData[a.yh]=r;const el=$('assetHistory');if(el&&activeDialog?.fn==='openAsset'&&activeDialog.args[0]===n)el.innerHTML=chart52(S.POS.find(p=>p.n===n)||{...a,n});}
+
+function hideChartHover(){if($('chartHover'))$('chartHover').hidden=true;if($('realCross'))$('realCross').setAttribute('opacity','0');}
+function realChartHover(e){const c=window._realChart,svg=$('c52');if(!c||!svg)return;const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(svg.getScreenCTM().inverse()),f=Math.max(0,Math.min(1,(pt.x-8)/572)),time=c.start+f*(c.end-c.start),p=c.pts.reduce((best,v)=>Math.abs(Date.parse(v.d)-time)<Math.abs(Date.parse(best.d)-time)?v:best,c.pts[0]),x=8+(Date.parse(p.d)-c.start)/(c.end-c.start||1)*572;const cross=$('realCross');cross.setAttribute('x1',x);cross.setAttribute('x2',x);cross.setAttribute('opacity','.6');const group=e.target.closest('[data-group]');if(group){showChartGroupTip(e.clientX,e.clientY,+group.dataset.group);}else showChartTip(e.clientX,e.clientY,p,null);$('realChartTip').textContent=p.d+' · '+natFmt(p.p,c.cur);}
+function showChartTip(x,y,p,t){const tip=$('chartHover'),box=$('assetHistory').getBoundingClientRect();if(!tip)return;tip.hidden=false;tip.classList.toggle('trade-tip',!!t);tip.innerHTML=t?`<b>${t[2]==='Buy'?'▲ شراء':'▼ بيع'} · ${esc(t[0])}</b><strong class="n">${natFmt(t[4],t[8]?.currency||window._realChart.cur)}</strong><span>الكمية ${fmt(t[3],4)} · الإجمالي ${fmtC(txSAR(t))}</span><small>اضغط لفتح تفاصيل الحركة</small>`:`<b>${p.d}</b><strong class="n">${natFmt(p.p,window._realChart.cur)}</strong>`;tip.style.left=Math.max(4,Math.min(box.width-tip.offsetWidth-4,x-box.left+14))+'px';tip.style.top=Math.max(4,y-box.top-tip.offsetHeight-14)+'px';}
+function chartTradeFocus(e,i){const t=TXNS[i],r=e.target.getBoundingClientRect();showChartTip(r.x,r.y,null,t);}
+
+
+
+
+
+function editCash(i){const t=CTX[i];if(t.linkedId){const j=TXNS.findIndex(x=>String(x[8].id)===String(t.linkedId));if(j>=0)return openTxForm(null,j);return toast('افتح إدارة الحركات لتعديل التحويل المرتبط','ti-info-circle');}openTxForm('c:'+t.acc,null,t.act);const r=ENGINE.rawTxn(t.id);TF.cashEdit=r;TF.expected=JSON.stringify(r);$('tfD').value=r.date;$('tfAmt').value=r.qty;$('tfR').value=r.rate;$('tfN').value=r.remarks||'';tfCalc();}
+
+
+function txInput(){const r=regGet(TF.id),old=TF.cashEdit||TXNS[TF.edit]?.[8];return {id:old?.id,expected:TF.expected,name:r.n,date:$('tfD').value,action:TF.act,qty:+$('tfQ').value,price:+$('tfP').value,amount:+$('tfAmt').value,fees:+$('tfFees')?.value||0,rate:r.cur==='SAR'||r.cur==='SARg'?1:+$('tfR').value,note:$('tfN').value,fund:TF.fund,accountName:CASH[TF.acc]?.n,toName:CASH[TF.to]?.n};}
+
+
+
+
+
+async function setZakatGroup(type,value){const current=JSON.parse(parent.commandStorage.raw().settings.zakatAsst||'{}');for(const r of S.zakat.rows.filter(r=>r.type===type))current[r.key]=value;await safeAction(()=>ENGINE.setting('zakatAsst',current));syncSnapshot();}
+
+let zakatTab='assets';
+function zakatGo(tab){zakatTab=tab;openZakat();}
+function zakatOptionsHTML(){const z=S.zakat;return `<div class="fgrid"><label class="ff">بداية الحول<input type="date" class="fi" value="${z.opt.hawlStart||''}" onchange="saveZakatOption('hawlStart',this.value)"></label><label class="ff">الديون (${baseCur})<input type="number" min="0" class="fi" value="${z.opt.debts||0}" onchange="saveZakatOption('debts',+this.value)"></label>${[['margin','هامش الاحتياط (%)'],['rate','نسبة الزكاة (%)'],['topN','عدد مكوّنات الصندوق (1–50)'],['pctVal','النسبة اليدوية (%)'],['goldGram','سعر غرام الذهب (SAR)'],['silverGram','سعر غرام الفضة (SAR)']].map(([k,l])=>`<label class="ff">${l}<input class="fi" type="number" min="0" value="${z.opt[k]||0}" onchange="saveZakatOption('${k}',+this.value)"></label>`).join('')}<label class="ff">أساس النصاب<select class="fi" onchange="saveZakatOption('nisabBase',this.value)"><option value="gold" ${z.opt.nisabBase==='gold'?'selected':''}>الذهب</option><option value="silver" ${z.opt.nisabBase==='silver'?'selected':''}>الفضة</option></select></label></div><div class="sect">معالجة الأصول</div>`+z.rows.map((r,i)=>srow(esc(r.name),'',`<select class="fi" onchange="saveZakatTreat(${i},this.value)">${[['auto','تلقائي'],['full','كامل'],['exempt','معفى'],['pct','النسبة اليدوية']].map(([v,l])=>`<option value="${v}" ${r.treat===v?'selected':''}>${l}</option>`).join('')}</select>`)).join('');}
+
+async function saveZakatOption(k,v){await safeAction(()=>ENGINE.setting('zakatOpt',{...S.zakat.opt,[k]:v}));syncSnapshot();}
+
+
+
+function historyPlotDecor(pts,min,max,X,Y,line){const grids=Array.from({length:5},(_,i)=>{const v=min+(max-min)*i/4;return `<line x1="8" x2="580" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(79,216,255,.08)"/><text x="590" y="${Y(v)+3}" fill="#7394a3" font-size="9" font-family="sans-serif">${fmt(v,v>100?0:1)}</text>`;}).join('');const months=[];let last='';for(const p of pts){const m=p.d.slice(0,7);if(m!==last){months.push(`<text x="${X(p.d)}" y="207" fill="#7394a3" font-size="8" font-family="sans-serif">${p.d.slice(5,7)}</text>`);last=m;}}return `<defs><linearGradient id="priceArea" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#4fd8ff" stop-opacity=".26"/><stop offset="1" stop-color="#4fd8ff" stop-opacity="0"/></linearGradient></defs>${grids}${months.join('')}<path d="${line}L${X(pts.at(-1).d)},190L${X(pts[0].d)},190Z" fill="url(#priceArea)"/>`;}
+
+function chartTradeTrack(p,start,end,X){const groups=[];for(const act of ['Buy','Sell']){const rows=TXNS.map((t,i)=>({t,i})).filter(({t})=>t[1]===p.n&&t[2]===act&&Date.parse(t[0])>=start&&Date.parse(t[0])<=end).sort((a,b)=>a.t[0].localeCompare(b.t[0]));let last=null;for(const row of rows){const x=Math.max(14,Math.min(574,X(row.t[0])));if(last&&x-last.x<14){last.ids.push(row.i);}else {last={act,x,ids:[row.i],asset:p.n};groups.push(last);}}}window._chartTradeGroups=groups;
+ return `<g class="trade-track"><rect x="4" y="215" width="632" height="45" fill="rgba(2,8,14,.75)"/><line x1="8" x2="580" y1="227" y2="227" stroke="rgba(245,199,106,.17)"/><line x1="8" x2="580" y1="249" y2="249" stroke="rgba(255,107,90,.17)"/><text x="628" y="230" text-anchor="end" fill="#f5c76a" font-size="9">شراء</text><text x="628" y="252" text-anchor="end" fill="#ff8b78" font-size="9">بيع</text>${groups.map((g,i)=>{const y=g.act==='Buy'?227:249,up=g.act==='Buy',color=up?'#f5c76a':'#ff8b78';return `<g class="trade-marker ${up?'trade-buy':'trade-sell'}" data-group="${i}" tabindex="0" role="button" aria-label="${g.ids.length} ${up?'شراء':'بيع'} ${TXNS[g.ids[0]][0]}" onclick="openChartTradeGroup(${i})" onfocus="focusChartGroup(event,${i})" onkeydown="if(event.key==='Enter')openChartTradeGroup(${i})"><rect x="${g.x-9}" y="${y-10}" width="18" height="20" fill="transparent"/><path d="M${g.x},${y+(up?-6:6)} l-6,${up?10:-10} h12 Z" fill="${color}" stroke="#06111b" stroke-width="1.3"/>${g.ids.length>1?`<circle cx="${g.x+7}" cy="${y-7}" r="6" fill="#091725" stroke="${color}"/><text x="${g.x+7}" y="${y-4}" text-anchor="middle" fill="${color}" font-size="7">${g.ids.length}</text>`:''}</g>`;}).join('')}</g>`;
+}
+function showChartGroupTip(x,y,i){const group=window._chartTradeGroups?.[i];if(!group)return;const t=TXNS[group.ids[0]];showChartTip(x,y,null,t);if(group.ids.length>1){const tip=$('chartHover');tip.innerHTML=`<b>${group.ids.length} عمليات ${group.act==='Buy'?'شراء':'بيع'}</b><strong class="n">${fmtC(group.ids.reduce((s,i)=>s+txSAR(TXNS[i]),0))}</strong><small>${t[0]}${t[0]!==TXNS[group.ids.at(-1)][0]?' → '+TXNS[group.ids.at(-1)][0]:''}</small><small>اضغط لعرض جميع الحركات</small>`;}}
+function focusChartGroup(e,i){const box=e.currentTarget.getBoundingClientRect();showChartGroupTip(box.x,box.y,i);}
+function openChartTradeGroup(i){const group=window._chartTradeGroups?.[i];if(!group)return;if(group.ids.length===1)return openTx(group.ids[0]);activeDialog=null;openHolo(modalHead('TRANSACTIONS',group.asset,'حركات متقاربة على الخط الزمني')+group.ids.map(i=>txRow(TXNS[i])).join('')+`<button class="fbtn ghost" onclick="openAsset('${group.asset}')">العودة للتشارت</button>`);}
+
+function tfCurrentPreview(){
+ const r=regGet(TF.id);if(!r)return '';
+ const p=S.POS.find(p=>p.n===r.n),cash=r.k==='Cash',f=cash?null:ENGINE.fifo(r.n),value=p?.val??r.v??0,avg=f?.avg,qty=f?.qty??r.q??0;
+ const first=cash?cell('الرصيد الحالي',fmtC(value)):cell('الرصيد الحالي',fmt(qty,Number.isInteger(qty)?0:4)+(r.k==='Gold'?' غ':''));
+ const second=cash?cell('عملة الحساب',esc(r.cur)):cell('متوسط تكلفتك',qty>0&&avg!=null?natFmt(s2n(avg,r.cur,liveRate(r.cur)),r.cur):'—');
+ return '<div class="pt">IMPACT PREVIEW</div><p class="preview-hint">'+(cash?'أدخل المبلغ لعرض أثر الحركة على حساباتك':'أدخل الكمية والسعر لعرض أثر الحركة على المحفظة')+'</p><div class="kg2">'+first+second+cell('القيمة الحالية',fmtC(value))+cell('وزنه من الثروة',fmt(percent(value,S.totals.total),1)+'%')+'</div>';
+}
+
+const zakatRefreshState={busy:false,message:'',kind:'idle'};
+function zakatRefreshControl(){const z=zakatRefreshState;return `<div class="z-refresh"><button class="fbtn ghost" id="zRefreshButton" onclick="refreshZakatRatios()" ${z.busy?'disabled':''} aria-busy="${z.busy}"><i class="ti ti-refresh ${z.busy?'is-spinning':''}"></i>${z.busy?'جاري تحديث النسب…':'تحديث النسب'}</button><p id="zRefreshStatus" class="z-refresh-status ${z.kind}" role="status" aria-live="polite" ${z.message?'':'hidden'}>${esc(z.message)}</p></div>`;}
+function renderZakatRefresh(){const box=$('zRefreshButton')?.closest('.z-refresh');if(box)box.outerHTML=zakatRefreshControl();}
+async function refreshZakatRatios(){
+ if(zakatRefreshState.busy)return;
+ Object.assign(zakatRefreshState,{busy:true,message:'جاري قراءة المحفظة وطلب القوائم المالية…',kind:'pending'});renderZakatRefresh();
+ try{
+  const result=await ENGINE.updateZakat(message=>{zakatRefreshState.message=message;renderZakatRefresh();});
+  if(!result||result.ok===false)throw Error(result?.message||'تعذّر تحديث النسب. حاول مرة ثانية.');
+  Object.assign(zakatRefreshState,{message:result.message,kind:result.failed?'partial':'success'});
+  syncSnapshot();toast(esc(result.message),result.failed?'ti-alert-triangle':'ti-check');
+ }catch(e){Object.assign(zakatRefreshState,{message:e.message||'تعذّر تحديث النسب',kind:'error'});toast(esc(zakatRefreshState.message),'ti-alert-triangle');}
+ finally{zakatRefreshState.busy=false;renderZakatRefresh();}
+}
+
+function enhanceControls(){
+ const baseSettings=stBody;window.stBody=function(){let html=baseSettings();
+ if(stTab==='events')html+=`<div class="sect">مصادر التقويم</div>`+EV_SRC.map(([k,label,,source])=>srow(label,source,tgl(ST.evOn[k]!==false,`saveEventSource('${k}',${ST.evOn[k]===false})`))).join('')+srow('حد تأثير الشركات داخل الصناديق','من إجمالي ثروتك',`<select class="fi" onchange="stEvMin(this.value)">${[.25,.5,1].map(v=>`<option value="${v}" ${ST.evMin===v?'selected':''}>${v}%</option>`).join('')}</select>`);
+ if(stTab==='display')html+=srow('حماية الشاشة','إزاحة خفيفة أثناء العرض الهادئ',tgl(ST.burn,"saveCC('burn',!ST.burn)"))+`<button class="fbtn" onclick="closeHolo();enterAmb(true)">تشغيل الشاشة الحية</button>`;
+ if(stTab==='data')html=freshnessSettings()+html+'<div class="sect">حالة الاتصال</div>'+Object.entries(S.status.market||{}).map(([k,v])=>srow(k,(v.ok?'وصل رد من المصدر':'غير متاح')+' · '+new Date(v.at).toLocaleTimeString(),v.ok?'●':'○')).join('')+`<button class="fbtn" onclick="refreshLive(this)">اختبار وتحديث المصادر</button>`;
+ if(stTab==='general')html+=srow('إدراج المصادر غير المحققة','يؤثر على إجمالي الثروة',tgl(S.includeUnrealized,"safeAction(()=>ENGINE.setting('includeUnrealized',String(!S.includeUnrealized)))"));return html;};
+
+ document.addEventListener('keydown',e=>{if(e.key!=='Tab'||!$('ov').classList.contains('open'))return;const list=[...$('holo').querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select,textarea,[tabindex="0"]')].filter(x=>x.getClientRects().length);if(!list.length)return;const first=list[0],last=list.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
+}
+function openZakatBreakdown(i){const r=S.zakat.rows[i];if(!r)return;openHolo(modalHead('ZAKAT BREAKDOWN',r.name,esc(r.src))+`<div class="kg2">${cell('قيمة الأصل',fmtC(r.val))}${cell('النسبة',fmt(r.ratio*100,2)+'%')}${cell('القيمة الزكوية',fmtC(r.zVal))}${cell('الحالة',r.warn?'بيانات ناقصة — احتياطي':'من المحرّك')}</div>`+(r.fund?`<div class="sect">مكوّنات الصندوق</div>`+r.fund.top.map(c=>`<div class="row"><div class="nm">${esc(c.name||c.ticker)}<small>${c.missing?'نسبة احتياطية':esc(c.src||'من البيانات المحفوظة')}</small></div><span class="n">وزن ${fmt(c.w,2)}% · نسبة ${fmt((c.ratio??c.fin)*100,2)}%</span></div>`).join('')+`<div class="sub">المكوّنات غير المغطاة: ${fmt(r.fund.rest,2)}%، حسب قاعدة المحرّك.</div>`:r.co?`<pre style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(JSON.stringify(r.co.calc||{ratio:r.ratio},null,2))}</pre>`:'')+`<button class="fbtn" onclick="openZakat()">رجوع</button>`);}
+
+// Keep every marker inside its labelled category wedge, regardless of event count.
+// Radial distance continues to encode the event date.
+
+
+async function saveCC(k,v){await safeAction(()=>ENGINE.setting('commandCenter',{...S.cc,[k]:v}));syncSnapshot();if($('stBody'))stRefresh();}
+
+
+async function saveRetire(v){const n=+v;if(!(n>0))return;await safeAction(()=>ENGINE.setting('retireGoal',n*(FX[baseCur]||1)));syncSnapshot();}
+
+
+
+
+
+
+async function addRegistry(){const name=$('ccName').value.trim(),type=$('ccType').value,currency=$('ccCurrency').value.trim(),yahooSym=$('ccSymbol').value.trim();if(!name||!currency)return toast('أدخل الاسم والعملة','ti-alert-triangle');const list=ENGINE.assets();if(list.some(a=>a.name===name))return toast('الاسم موجود','ti-alert-triangle');list.push({id:Date.now(),name,type,currency,yahooSym});await safeAction(()=>ENGINE.saveAssets(list));syncSnapshot();stRefresh();}
+
+
+
+
+
+async function removeAlert(i){const list=JSON.parse(parent.commandStorage.raw().settings.priceAlerts||'[]');list.splice(i,1);await safeAction(()=>ENGINE.setting('priceAlerts',list));syncSnapshot();stRefresh();}
+
+function removeEvent(i){return saveCC('events',(ST.events||[]).filter((_,j)=>j!==i));}
+
+
+
+async function toggleOther(i){const list=ENGINE.others();list[i].included=list[i].included===false;await safeAction(()=>ENGINE.saveOthers(list));syncSnapshot();stRefresh();}
+async function removeOther(i){if(!confirm('حذف المصدر؟'))return;const list=ENGINE.others();list.splice(i,1);await safeAction(()=>ENGINE.saveOthers(list));syncSnapshot();stRefresh();}
+function openRegistryEditor(i){const a=ENGINE.assets()[i],n=ENGINE.clean(a.name),d=S.customXray[a.name]||XRAY_DATA[n]||{};activeDialog=null;openHolo(modalHead('ASSET CONFIGURATION',a.name)+`<div class="fgrid"><label class="ff">رمز Yahoo<input class="fi" id="edYahoo" value="${esc(a.yahooSym||'')}"></label><label class="ff">رمز TradingView<input class="fi" id="edTv" value="${esc(a.tvSym||'')}"></label><label class="ff">الدولة (ISO)<input class="fi" id="edCountry" value="${esc(a.country||'')}"></label><label class="ff">القطاع<input class="fi" id="edSector" value="${esc(a.sector||'')}"></label><label class="ff full">رابط ملف المكوّنات<input class="fi" id="edLink" dir="ltr" value="${esc(d._csvUrl||'')}"></label></div><div class="factions"><button class="fbtn" onclick="saveRegistryEditor(${i})">حفظ</button><button class="fbtn" onclick="refreshRegistryHoldings(${i},this)">تحديث المكوّنات</button></div><div class="sect">محرر المكوّنات اليدوي</div><p class="sub">JSON: countries وsectors نسب مئوية، وtop قوائم [الرمز، الاسم، الدولة، الوزن].</p><textarea class="fi" id="edComposition" dir="ltr" rows="9">${esc(JSON.stringify({countries:d.countries||{},sectors:d.sectors||{},top:d.top||[],kind:d.kind||'etf'},null,2))}</textarea><button class="fbtn" onclick="saveComposition(${i})">حفظ التركيبة</button>`);}
+function editRegistry(i){openRegistryEditor(i);}
+async function saveRegistryEditor(i){const list=ENGINE.assets(),a=list[i];a.yahooSym=$('edYahoo').value.trim();a.tvSym=$('edTv').value.trim();a.country=$('edCountry').value.trim().toUpperCase();a.sector=$('edSector').value.trim();const url=$('edLink').value.trim();if(url&&!/^https:\/\//i.test(url))return toast('الرابط يجب أن يبدأ بـ https','ti-alert-triangle');await safeAction(()=>ENGINE.saveAssets(list));const cx={...S.customXray};cx[a.name]={...(cx[a.name]||XRAY_DATA[ENGINE.clean(a.name)]||{}),_csvUrl:url};await safeAction(()=>ENGINE.setting('customXray',cx));syncSnapshot();toast('تم الحفظ','ti-check');}
+async function saveComposition(i){try{const a=ENGINE.assets()[i],d=JSON.parse($('edComposition').value);if(!d.countries||!d.sectors||!Array.isArray(d.top)||d.top.length>200)throw Error('تركيبة غير صالحة');for(const values of [Object.values(d.countries),Object.values(d.sectors),d.top.map(t=>t[3])])if(values.some(x=>!Number.isFinite(x)||x<0||x>100)||values.reduce((s,v)=>s+v,0)>100.1)throw Error('الأوزان بين 0 و100 ومجموعها لا يتجاوز 100');if(d.top.some(t=>t.length<4||typeof t[0]!=='string'||typeof t[1]!=='string'||!/^[A-Z]{2}$/.test(t[2])))throw Error('راجع رموز الشركات والدول');await safeAction(()=>ENGINE.setting('customXray',{...S.customXray,[a.name]:{...S.customXray[a.name],...d,_at:new Date().toISOString()}}));syncSnapshot();toast('حُفظت التركيبة','ti-check');}catch(e){toast(esc(e.message),'ti-alert-triangle');}}
+async function refreshRegistryHoldings(i,b){await saveRegistryEditor(i);b.disabled=true;try{await safeAction(()=>ENGINE.holdings(ENGINE.clean(ENGINE.assets()[i].name)));syncSnapshot();toast('تم تحديث المكوّنات','ti-check');}finally{b.disabled=false;}}
+async function saveEventSource(k,on){return saveCC('evOn',{...ST.evOn,[k]:on});}
+async function saveZakatTreat(i,value){const r=S.zakat.rows[i],raw=JSON.parse(parent.commandStorage.raw().settings.zakatAsst||'{}');raw[r.key]=value;await safeAction(()=>ENGINE.setting('zakatAsst',raw));syncSnapshot();}
+
+async function toggleAssetVisibility(id){const hidden=new Set((S.marketHidden||[]).map(String));if(hidden.has(String(id)))hidden.delete(String(id));else hidden.add(String(id));await safeAction(()=>ENGINE.setting('marketHidden',[...hidden]));syncSnapshot();if($('stBody'))stRefresh();}
+
+
+function registrySettings(){const list=ENGINE.assets();return `<div class="section-heading"><div><h3>الأصول والحسابات</h3><p>الإخفاء يغيّر العرض فقط، ويبقى الأصل ضمن حسابات الثروة.</p></div><span class="n">${list.length} أصل</span></div><div class="registry-grid">`+list.map((a,i)=>{const visible=assetVisible(ENGINE.clean(a.name));return `<article class="registry-card ${visible?'':'is-hidden'}"><div class="registry-title"><i class="ti ${KI[a.type]||'ti-briefcase'}"></i><div><b>${esc(a.name)}</b><small>${esc(KLF[a.type]||a.type)} · <span dir="ltr">${esc(a.currency)} ${esc(a.yahooSym||'')}</span></small></div><span class="registry-state">${visible?'ظاهر':'مخفي'}</span></div><div class="registry-actions"><button class="fbtn sm ghost" onclick="toggleAssetVisibility('${a.id}')"><i class="ti ${visible?'ti-eye-off':'ti-eye'}"></i>${visible?'إخفاء':'إظهار'}</button><button class="fbtn sm ghost" onclick="editRegistry(${i})"><i class="ti ti-adjustments"></i>تعديل</button><button class="fbtn sm wr" onclick="deleteRegistry(${i})"><i class="ti ti-trash"></i>حذف</button></div></article>`;}).join('')+`</div><details class="config-panel" id="registryAdd"><summary><i class="ti ti-plus"></i> إضافة أصل أو حساب</summary><div class="fgrid"><label class="ff">الاسم<input id="ccName" class="fi" placeholder="اسم الأصل"></label><label class="ff">النوع<select id="ccType" class="fi"><option value="Stock">أسهم / صندوق</option><option value="Gold">ذهب</option><option value="Property">أملاك</option><option value="Cash">نقدي</option></select></label><label class="ff">العملة<input id="ccCurrency" class="fi" value="SAR" dir="ltr"></label><label class="ff">رمز السوق (اختياري)<input id="ccSymbol" class="fi" dir="ltr" placeholder="AAPL"></label></div><button class="fbtn" onclick="addRegistry()">إضافة الأصل</button></details><details class="config-panel"><summary>تقييم الأملاك</summary>`+PROP.map((p,i)=>srow(p.n,'القيمة السوقية بعملة الأصل',`<input aria-label="قيمة ${esc(p.n)}" class="fi" type="number" min="0" value="${p.val/liveRate(p.c)}" onchange="stPropVal(${i},this.value)">`)).join('')+`</details><details class="config-panel" id="stOther" open><summary>المصادر الأخرى</summary>`+S.OTHER.map((o,i)=>`<div class="other-setting"><div><b>${esc(o.n)}</b><small>${o.inc===false?'مستبعد من الإجمالي':'مدرج في الإجمالي'}</small></div><label class="ff">القيمة (SAR)<input class="fi" type="number" value="${o.v}" onchange="stOtherAmt(${i},this.value)"></label><div class="registry-actions"><button class="fbtn sm ghost" onclick="toggleOther(${i})">${o.inc===false?'إدراج':'استبعاد'}</button><button class="fbtn sm wr" onclick="removeOther(${i})">حذف</button></div></div>`).join('')+`<div class="fgrid"><label class="ff">اسم المصدر<input id="noN" class="fi"></label><label class="ff">القيمة<input id="noV" class="fi" type="number"></label><label class="ff">العملة<select id="noC" class="fi"><option>SAR</option><option>JOD</option><option>USD</option></select></label><button class="fbtn" onclick="stAddOther()">إضافة مصدر</button></div></details>`;}
+async function deleteRegistry(i){const a=ENGINE.assets()[i];if(!a)return;const raw=parent.commandStorage.raw();if(raw.txns.some(t=>t.assetName===a.name)){openHolo(modalHead('ASSET MANAGEMENT',a.name)+`<div class="news-context"><p>هذا الأصل مرتبط بحركات مالية. حذفه من السجل وحده يترك حركات بدون أصل.</p><p>تقدر تخفيه من العرض مع الحفاظ على رصيده وسجله، أو ترجع للحركات وتراجعها أولاً.</p></div><div class="factions"><button class="fbtn" onclick="hideRegistry('${a.id}')">إخفاء الأصل</button><button class="fbtn ghost" onclick="openSettings('assets')">رجوع</button></div>`);return;}if(!confirm('حذف '+a.name+' من سجل الأصول؟'))return;const list=ENGINE.assets();list.splice(i,1);await safeAction(()=>ENGINE.saveAssets(list));syncSnapshot();openSettings('assets');}
+async function hideRegistry(id){if(!(S.marketHidden||[]).includes(String(id)))await toggleAssetVisibility(id);openSettings('assets');}
+function freshnessSettings(){const st=parent.commandStorage.status();return `<div class="section-heading"><h3>حالة التحديث</h3><button class="fbtn sm" onclick="refreshLive(this)">تحديث الآن</button></div><div class="kg2">${cell('مزامنة المحفظة',st.demo?'وضع التجربة':formatStamp(st.lastSync))}${cell('الاتصال',st.online?'متصل':'غير متصل')}</div><p class="freshness-note">وقت السعر هو وقت آخر تداول أرسله المصدر. قد يبقى قديماً عندما يكون السوق مغلقاً.</p>`+S.registry.filter(a=>a.yh).map(a=>srow(a.n,(a.marketOpen===true?'السوق مفتوح':a.marketOpen===false?'السوق مغلق':'حالة السوق غير متاحة'),`<span class="n">${formatStamp(a.timestamp*1000)}</span>`)).join('');}
 
 installCommandCenter();boot();

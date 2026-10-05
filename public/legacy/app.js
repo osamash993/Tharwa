@@ -3401,11 +3401,12 @@ function zkSetProg(msg, pct) {
   const l = $('zkLogBox');
   if (l) l.innerHTML = zkLog.slice(-40).map(x => `<div style="font-size:10px;color:var(--muted);padding:1px 0"><span style="opacity:.6">${x.t}</span> — ${x.m}</div>`).join('');
 }
-async function zkUpdate(force) {
-  if (zkBusy) return;
+async function zkUpdate(force, onProgress) {
+  if (zkBusy) return {ok:false,message:'يوجد تحديث قيد التنفيذ، انتظر اكتماله'};
+  const progress=(message,pct)=>{zkSetProg(message,pct);if(onProgress)onProgress(message,pct);};
   if (!_cloudMode) {
     showToast('الجلب يتطلب اتصالاً بخدمة السوق', 'error');
-    return;
+    return {ok:false,message:'التحديث يتطلب اتصالاً بخدمة السوق؛ غير متاح في وضع التجربة'};
   }
   zkBusy = true;
   zkLog = [];
@@ -3417,19 +3418,19 @@ async function zkUpdate(force) {
     b.style.opacity = '.6';
   }
   try {
-    zkSetProg('قراءة المحفظة...', 5);
+    progress('قراءة المحفظة...', 5);
     const all = zkNeeded();
     if (!all.length) {
-      zkSetProg('لا توجد أسهم أو صناديق', 100);
-      return;
+      progress('لا توجد أسهم أو صناديق', 100);
+      return {ok:true,updated:0,failed:0,message:'لا توجد أسهم أو صناديق تحتاج تحديث النسب'};
     }
     const need = force ? all : all.filter(x => zkStale(x.ticker));
     if (!need.length) {
-      zkSetProg('كل البيانات حديثة', 100);
+      progress('كل البيانات حديثة', 100);
       zkRender();
-      return;
+      return {ok:true,updated:0,failed:0,message:'كل البيانات حديثة'};
     }
-    zkSetProg(`${need.length} شركة تحتاج تحديثاً${zkOpt.apiKey ? ' — عبر FMP' : ' — عبر ياهو'}...`, 15);
+    progress(`${need.length} شركة تحتاج تحديثاً${zkOpt.apiKey ? ' — عبر FMP' : ' — عبر ياهو'}...`, 15);
     const res = await new Promise((ok, bad) => {
       const t = setTimeout(() => bad(new Error('انتهت المهلة')), 300000);
       portfolioAPI.withSuccessHandler(r => {
@@ -3441,13 +3442,13 @@ async function zkUpdate(force) {
       }).zkFetchBatch(JSON.stringify(need), zkOpt.apiKey || '');
     });
     if (res && res.ok === false && res.phase === 'provider') {
-      zkSetProg('توقف: ' + res.err, 100);
+      progress('توقف: ' + res.err, 100);
       showToast(res.err, 'error');
-      return;
+      return {ok:false,message:res.err||'تعذّر الاتصال بمصدر القوائم المالية'};
     }
     if (!res || !res.ok) {
-      zkSetProg('فشل: ' + (res && res.err || 'غير معروف'), 100);
-      return;
+      progress('فشل: ' + (res && res.err || 'غير معروف'), 100);
+      return {ok:false,message:res && res.err || 'لم يرجع المصدر بيانات صالحة'};
     }
     let okN = 0,
       failN = 0;
@@ -3482,16 +3483,18 @@ async function zkUpdate(force) {
         });
         failN++;
       }
-      zkSetProg(`${tk}: ${r.ok ? 'تم عبر ' + r.via : 'فشل — ' + (r.err || '')}`, 15 + (i + 1) / res.results.length * 80);
+      progress(`${tk}: ${r.ok ? 'تم عبر ' + r.via : 'فشل — ' + (r.err || '')}`, 15 + (i + 1) / res.results.length * 80);
     });
     zkSave();
     const via = res.via ? Object.keys(res.via).map(k => k + ' ' + res.via[k]).join(' · ') : '';
-    zkSetProg(`اكتمل — نجح ${okN}، فشل ${failN}${via ? ' · ' + via : ''}`, 100);
+    progress(`اكتمل — نجح ${okN}، فشل ${failN}${via ? ' · ' + via : ''}`, 100);
     if (okN === 0) showToast('لم تنجح أي شركة — افتح الإعدادات وشغّل التشخيص', 'error');
     zkRender();
+    return {ok:okN>0,updated:okN,failed:failN,message:okN>0?`تم تحديث ${okN} شركة${failN?`، وتعذّر تحديث ${failN} شركة؛ بقيت نسبها السابقة أو الاحتياطية`:''}`:'لم تنجح أي شركة؛ بقيت النسب السابقة أو الاحتياطية'};
   } catch (e) {
-    zkSetProg('خطأ: ' + (e && e.message || e), 100);
+    progress('خطأ: ' + (e && e.message || e), 100);
     showToast(String(e && e.message || e), 'error');
+    return {ok:false,message:String(e && e.message || e)};
   } finally {
     zkBusy = false;
     const b2 = $('zkBtnUpd');

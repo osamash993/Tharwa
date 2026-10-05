@@ -108,6 +108,8 @@ markup=markup.replace('</body>','<script src="./geo-vendor.js"></script>\n<scrip
 markup=markup.replace('تصوّر — البنية والحسابات من O.db · القيم والأخبار تجريبية','O.db · بيانات محفظتك · <a href="#" onclick="ENGINE.legacy();return false">الواجهة السابقة</a>')
 markup=markup.replace('المواعيد تجريبية — بالتنفيذ من تقويم Yahoo وإعدادات الزكاة وتوقع الأهداف','الأحداث من المصادر المتاحة وإعداداتك؛ التوقعات موسومة بوضوح')
 markup=markup.replace('<button class="ibtn"><i class="ti ti-refresh">','<button class="ibtn" onclick="refreshLive(this)"><i class="ti ti-refresh">')
+# Keep synchronization and refresh controls in Settings only.
+markup=re.sub(r'^[ \t]*<button class="ibtn"[^>]*><i class="ti ti-(?:refresh|cloud-check)"></i>[^\n]*?</button>\n', '', markup, flags=re.M)
 markup=markup.replace('للسوق · 2026','للسوق · <span id="txnYearLabel"></span>')
 # Repair an unclosed section in the supplied reference.
 markup=markup.replace('  <section class="lab">','  </section>\n  <section class="lab">')

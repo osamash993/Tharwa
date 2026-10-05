@@ -83,3 +83,23 @@ body.reduce .holo,body.reduce .hb>*{animation:none!important;clip-path:none!impo
 .goals-dialog .go{margin-inline:0;padding-inline:0}
 .go .h,.go .f{gap:8px;flex-wrap:wrap;overflow-wrap:anywhere}
 @media(max-width:820px){.goals-dialog-layout{grid-template-columns:minmax(0,1fr)}}
+
+/* Reserve toolbar widths: clock digits and connection changes cannot move the ticker. */
+.top .clock{flex:0 0 82px;width:82px;text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.top .live{flex:0 0 82px;width:82px;white-space:nowrap;letter-spacing:0;justify-content:center}
+.top .live i{flex:0 0 7px}
+/* Asset content scrolls independently of its always-visible action footer. */
+.holo:has(.asset-dialog) .hb{display:flex;flex-direction:column;overflow:hidden;padding:0}
+.asset-dialog{display:flex;flex-direction:column;min-height:0;max-height:inherit}
+.asset-scroll{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#4fd8ff55 transparent;padding:20px 22px}
+.asset-actions{display:flex;gap:8px;flex-shrink:0;padding:12px 22px;border-top:1px solid var(--c35);background:#03111d;z-index:1}
+.asset-actions button{min-width:0;min-height:40px}
+.holo:has(.asset-dialog) .more{display:none}
+.z-refresh{flex:1;min-width:0}
+.z-refresh>.fbtn{width:100%}
+.z-refresh-status{font-size:11px;line-height:1.8;margin:8px 0 0;overflow-wrap:anywhere;color:var(--cb)}
+.z-refresh-status.error,.z-refresh-status.partial{color:var(--warn)}
+.z-refresh .fbtn:disabled{cursor:wait;opacity:.7}
+.is-spinning{display:inline-block;animation:refreshSpin 1s linear infinite}
+@keyframes refreshSpin{to{transform:rotate(360deg)}}
+@media(max-width:700px){.asset-scroll{padding:18px 14px}.asset-actions{padding:10px 14px}.asset-actions button{font-size:11px}}
