@@ -7120,7 +7120,7 @@ function initApp(data) {
       totalCostSAR: parseFloat(t.totalCostSAR) || 0,
       remarks: String(t.remarks || ''),
       linkedTxnId: t.linkedTxnId || null,
-      ...(t.incomeType==='Dividend'?{incomeType:'Dividend',sourceAssetId:String(t.sourceAssetId),sourceAssetName:String(t.sourceAssetName||'')}: {})
+      ...(t.incomeType==='Dividend'?{incomeType:'Dividend',sourceAssetId:String(t.sourceAssetId),sourceAssetName:String(t.sourceAssetName||''),...Object.fromEntries(['dividendShares','dividendPerShare','dividendWithholding','dividendCostSAR'].filter(k=>t[k]!=null&&t[k]!=='').map(k=>[k,Number(t[k])]))}: {})
     }));
     if (data.assets && data.assets.length > 0) {
       assets = data.assets.map(a => ({

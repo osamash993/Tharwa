@@ -50,3 +50,11 @@ test('recent distribution rows retain received currency amounts when current FX 
  const html=context.row({act:'Dividend',acc:0,s:150,rate:3.75,sourceName:'Fund',d:'2026-01-01'},0);
  assert.match(html,/>40 USD</);assert.doesNotMatch(html,/>37.5 USD</);
 });
+
+test('optional dividend details reconcile with net cash and retain historical basis through Excel',async()=>{
+ const p=base(),row=createDividendRow({...input,dividendShares:10,dividendPerShare:5,dividendWithholding:10},p,10);
+ assert.equal(row.qty,40);assert.equal(row.dividendCostSAR,1000);assert.equal(row.totalCostSAR,150);
+ for(const extra of [{dividendShares:10},{dividendPerShare:5},{dividendShares:10,dividendPerShare:5,dividendWithholding:0},{dividendWithholding:-1},{dividendShares:Infinity,dividendPerShare:1}])assert.throws(()=>createDividendRow({...input,...extra},p,10));
+ const back=await readWorkbook(await exportTransactions([row]));for(const k of ['dividendShares','dividendPerShare','dividendWithholding','dividendCostSAR'])assert.equal(back.txns[0][k],row[k]);
+ const old=createDividendRow(input,p,11);assert.equal(old.dividendWithholding,undefined);assert.equal(old.dividendShares,undefined);
+});

@@ -1,3 +1,4 @@
+import {parseIssuerDividends,normalizeYahooDividends,projectDistributions,issuerPageURL} from './dividend-sources.js';
 import {parseNewsRSS,searchNewsRows,mergeNewsBatches} from './news-policy.js';
 import {fetchRemote,getPrices} from './remote.js';
 import {getOfficialEconomics} from './economic-calendar.js';
@@ -27,3 +28,21 @@ export async function getCalendar(value,options={}){
  });
 }
 export async function getMarketStatus(s){s=symbol(s);const d=await json('https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(s)+'?interval=1d&range=1d');const m=d.chart?.result?.[0]?.meta,p=m?.currentTradingPeriod?.regular,now=Date.now()/1000;return {ok:!!p,open:p?now>=p.start&&now<=p.end:null,timestamp:m?.regularMarketTime};}
+
+export async function getDividends(value,options={}){
+ const l=list(value,60).map(a=>({symbol:a.symbol,issuerUrl:issuerPageURL(a.issuerUrl,a.symbol)}));
+ const cacheKey='dividends:'+JSON.stringify(l);if(options?.refresh===true)cache.delete(cacheKey);
+ return cached(cacheKey,43200000,async()=>{
+  const results=[];
+  for(let i=0;i<l.length;i+=4)await Promise.all(l.slice(i,i+4).map(async a=>{
+   let history=[],source='Yahoo Finance',url='https://finance.yahoo.com/quote/'+encodeURIComponent(a.symbol)+'/history/?filter=div';
+   try{
+    if(a.issuerUrl){try{const r=await fetchRemote(a.issuerUrl);if(r.getResponseCode()===200){history=parseIssuerDividends(r.getContentText());if(history.length){source='iShares / BlackRock';url=a.issuerUrl;}}}catch{}}
+    if(!history.length){const r=await json('https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(a.symbol)+'?interval=1mo&range=5y&events=div');const d=r.chart?.result?.[0];if(!d)throw Error();history=normalizeYahooDividends(d);}
+    const projection=projectDistributions(history);
+    results.push({symbol:a.symbol,ok:true,history:history.slice(-60),...projection,source,url,at:Date.now()});
+   }catch{results.push({symbol:a.symbol,ok:false,history:[],upcoming:[],error:'تعذّر قراءة مصدر التوزيعات'});}
+  }));
+  return {ok:true,results,at:Date.now()};
+ });
+}

@@ -5,6 +5,18 @@ export function validateDividend(t){
  if(t.incomeType!=='Dividend')return;
  if(!isDividend(t)||!String(t.sourceAssetId??'')||!String(t.sourceAssetName||'').trim()||t.linkedTxnId)throw Error('بيانات إيداع التوزيعات غير صالحة');
  if(!Number.isFinite(+t.qty)||+t.qty<=0||!Number.isFinite(+t.rate)||+t.rate<=0||+t.price!==1||+t.fees!==0||+t.totalCostSAR<=0||Math.abs(+t.qty*+t.rate-(+t.totalCostSAR))>Math.max(1e-7,Math.abs(+t.totalCostSAR)*1e-10))throw Error('مبلغ التوزيعات أو سعر الصرف غير صالح');
+ for(const k of ['dividendShares','dividendPerShare','dividendWithholding','dividendCostSAR'])if(t[k]!==undefined&&t[k]!==''&&(!Number.isFinite(+t[k])||+t[k]<0||(['dividendShares','dividendPerShare'].includes(k)&&+t[k]===0)))throw Error('تحقق من تفاصيل التوزيعة');
+ const has=k=>t[k]!=null&&t[k]!=='';
+ if(has('dividendShares')!==has('dividendPerShare'))throw Error('أدخل الكمية ومبلغ التوزيع للوحدة معًا، أو اتركهما فارغين');
+ if(has('dividendShares')&&Math.abs(+t.dividendShares*+t.dividendPerShare-(+t.qty+(+t.dividendWithholding||0)))>Math.max(.02,Math.abs(+t.qty)*1e-8))throw Error('الكمية × توزيع الوحدة يجب أن تساوي الصافي + الاستقطاع بعملة الحساب');
+}
+export function costAtDate(txns,name,date){
+ const lots=[];
+ for(const t of txns.filter(t=>t.assetType==='Stock'&&t.assetName===name&&t.date<=date).sort((a,b)=>a.date.localeCompare(b.date)||Number(a.id)-Number(b.id))){
+  if(t.action==='Buy'&&+t.qty>0)lots.push({q:+t.qty,p:+t.totalCostSAR/+t.qty});
+  if(t.action==='Sell'){let left=+t.qty;for(const l of lots){const used=Math.min(l.q,left);l.q-=used;left-=used;if(left<=0)break;}}
+ }
+ return lots.reduce((s,l)=>s+l.q*l.p,0);
 }
 export function createDividendRow(input,{assets,txns},now=Date.now()){
  const old=input.id!=null?txns.find(t=>same(t.id,input.id)):null;
@@ -20,6 +32,10 @@ export function createDividendRow(input,{assets,txns},now=Date.now()){
  if(!Number.isFinite(amount)||amount<=0||!Number.isFinite(rate)||rate<=0||!Number.isFinite(amount*rate))throw Error('أدخل مبلغًا وسعر صرف أكبر من صفر');
  let id=old?.id??now;while(!old&&txns.some(t=>same(t.id,id)))id++;
  const row={...(old||{}),id,date,assetType:'Cash',assetName:account.name,action:'Deposit',qty:amount,price:1,fees:0,currency:account.currency||'SAR',rate,totalCostSAR:amount*rate,remarks:String(input.note||'').slice(0,4000),linkedTxnId:null,incomeType:'Dividend',sourceAssetId:String(source.id),sourceAssetName:source.name};
+ for(const k of ['dividendShares','dividendPerShare','dividendWithholding']){
+  if(Object.hasOwn(input,k)){if(input[k]===''||input[k]==null)delete row[k];else row[k]=Number(input[k]);}
+ }
+ row.dividendCostSAR=costAtDate(txns,source.name,date);
  validateDividend(row);return row;
 }
 export function dividendLedger(txns,assets=[]){
