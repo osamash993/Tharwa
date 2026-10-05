@@ -127,7 +127,10 @@ function renderNet(){
     <text x="${x}" y="${y+44}" text-anchor="middle" font-size="10" fill="#4fd8ff" font-family="Rajdhani,sans-serif" direction="ltr">${fmtC(f.val)}</text></g>`;});
   $('netSvg').innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">${links}${nodes}</svg>`;
 }
-function openGoals(){const T=totals(),done=Object.keys(catGoals).filter(k=>catGoals[k]>0&&T.by[k]?.cur>=catGoals[k]).length;openHolo(modalHead('RETIREMENT TARGET','هدف التقاعد')+`<div class="kg2">${cell('الثروة',fmtC(T.total))}${cell('الهدف',fmtC(T.goal))}${cell('المتبقي',fmtC(Math.max(0,T.goal-T.total)))}${cell('فئات مكتملة',done+' / '+Object.keys(catGoals).length)}</div><div class="mg"><div>${$('goals').innerHTML}</div><div>${$('pj').innerHTML}</div></div>`);}
+function openGoals(){
+ const T=totals(),categories=goalCategories().filter(k=>catGoals[k]>0),done=categories.filter(k=>T.by[k]?.cur>=catGoals[k]).length;
+ openHolo(`<div class="goals-dialog">${modalHead('RETIREMENT TARGET','هدف التقاعد')}<div class="kg2">${cell('الثروة',fmtC(T.total))}${cell('الهدف',fmtC(T.goal))}${cell('المتبقي',fmtC(Math.max(0,T.goal-T.total)))}${cell('فئات مكتملة',categories.length?done+' / '+categories.length:'—')}</div><div class="goals-dialog-layout"><section><div class="sect">التقدم حسب الفئة</div>${$('goals').innerHTML}</section><section><div class="sect">متى تصل هدفك؟</div>${$('pj').innerHTML}</section></div></div>`);
+}
 
 function historyPlotDecor(pts,min,max,X,Y,line){const grids=Array.from({length:5},(_,i)=>{const v=min+(max-min)*i/4;return `<line x1="8" x2="580" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(79,216,255,.08)"/><text x="590" y="${Y(v)+3}" fill="#7394a3" font-size="9" font-family="sans-serif">${fmt(v,v>100?0:1)}</text>`;}).join('');const months=[];let last='';for(const p of pts){const m=p.d.slice(0,7);if(m!==last){months.push(`<text x="${X(p.d)}" y="207" fill="#7394a3" font-size="8" font-family="sans-serif">${p.d.slice(5,7)}</text>`);last=m;}}return `<defs><linearGradient id="priceArea" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#4fd8ff" stop-opacity=".26"/><stop offset="1" stop-color="#4fd8ff" stop-opacity="0"/></linearGradient></defs>${grids}${months.join('')}<path d="${line}L${X(pts.at(-1).d)},190L${X(pts[0].d)},190Z" fill="url(#priceArea)"/>`;}
 

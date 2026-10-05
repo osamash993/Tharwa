@@ -525,7 +525,7 @@ details.zf .in{padding:0 10px 8px}
 body.reduce *{animation-duration:.01s!important;transition-duration:.01s!important}
 @media (max-width:820px){.tscroll .tbl{min-width:620px}.fgrid{grid-template-columns:1fr}.achips button{min-width:0;flex:1 1 40%}.zstep{grid-template-columns:22px 1fr}.zstep .vv{grid-column:2;align-items:flex-start}}
 </style>
-<link rel="stylesheet" href="./integration.css?v=c1875aef2589">
+<link rel="stylesheet" href="./integration.css?v=63d11c8c8fb8">
 <script src="./safety.js?v=ea4c0564aed2"></script>
 </head>
 <body class="booting">
@@ -577,6 +577,18 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
       <div class="ph"><h3><i class="ti ti-scale"></i> إعادة التوازن</h3><span class="tag">REBALANCE</span></div>
       <div id="rbBody"></div>
     </div>
+    <div class="p transactions-panel">
+      <div class="ph"><h3><i class="ti ti-list"></i> الحركات — إيقاع استثمارك</h3><span class="tag">TXN STREAM</span></div>
+      <div class="txg">
+        <div>
+          <div style="font-size:10.5px;color:var(--c)">صافي ما وجّهته للسوق · <span id="txnYearLabel"></span></div>
+          <div class="n" style="font-size:24px;color:var(--cb)" id="txNet"></div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">استثمرت <b class="n" style="color:var(--text)" id="txInv"></b> · سيّلت <b class="n" id="txLiq"></b></div>
+          <div class="bars" id="bars"></div>
+        </div>
+        <div id="txList"></div>
+      </div>
+    </div>
   </section>
 
   <section class="col center">
@@ -623,35 +635,7 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="col">
-    <div class="p">
-      <div class="ph"><h3><i class="ti ti-chart-line"></i> قراءات السوق</h3><span class="tag">MARKETS</span></div>
-      <div class="kg2" id="mkChips" style="margin-bottom:10px"></div>
-      <div id="mkList"></div>
-    </div>
-    <div class="p news-panel">
-      <div class="ph"><h3><i class="ti ti-news"></i> أخبار استثماراتك</h3><span class="tag">INTEL FEED</span></div>
-      <div class="sub">فقط ما يخص أصولك وأكبر الشركات داخل صناديقك</div>
-      <div class="fl" id="nwFl"></div>
-      <div id="nwList" tabindex="0" aria-label="أخبار الاستثمارات — قائمة قابلة للتمرير"></div>
-    </div>
-  </section>
-
-  <section class="bottom">
-    <div class="p">
-      <div class="ph"><h3><i class="ti ti-list"></i> الحركات — إيقاع استثمارك</h3><span class="tag">TXN STREAM</span></div>
-      <div class="txg">
-        <div>
-          <div style="font-size:10.5px;color:var(--c)">صافي ما وجّهته للسوق · <span id="txnYearLabel"></span></div>
-          <div class="n" style="font-size:24px;color:var(--cb)" id="txNet"></div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px">استثمرت <b class="n" style="color:var(--text)" id="txInv"></b> · سيّلت <b class="n" id="txLiq"></b></div>
-          <div class="bars" id="bars"></div>
-        </div>
-        <div id="txList"></div>
-      </div>
-    </div>
+    <div class="center-insights">
     <div class="p">
       <div class="ph"><h3><i class="ti ti-target"></i> الأهداف</h3><span class="tag">GOALS</span></div>
       <div id="goals"></div>
@@ -680,7 +664,22 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
       <div class="sect"><i class="ti ti-arrow-big-up-lines"></i> كيف ترفع الدرجة</div>
       <div id="hTips"></div>
     </div>
+    </div>
+  </section>
+
+  <section class="col">
     <div class="p">
+      <div class="ph"><h3><i class="ti ti-chart-line"></i> قراءات السوق</h3><span class="tag">MARKETS</span></div>
+      <div class="kg2" id="mkChips" style="margin-bottom:10px"></div>
+      <div id="mkList"></div>
+    </div>
+    <div class="p news-panel">
+      <div class="ph"><h3><i class="ti ti-news"></i> أخبار استثماراتك</h3><span class="tag">INTEL FEED</span></div>
+      <div class="sub">فقط ما يخص أصولك وأكبر الشركات داخل صناديقك</div>
+      <div class="fl" id="nwFl"></div>
+      <div id="nwList" tabindex="0" aria-label="أخبار الاستثمارات — قائمة قابلة للتمرير"></div>
+    </div>
+    <div class="p diversity-panel">
       <div class="ph"><h3><i class="ti ti-radar-2"></i> التنويع</h3><span class="tag">DIVERSITY</span></div>
       <div id="radar"></div>
       <div class="sect"><i class="ti ti-scale"></i> أسواق متقدمة مقابل ناشئة</div>
@@ -691,6 +690,7 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
       <div id="secTop"></div>
     </div>
   </section>
+
   <section class="lab">
     <div class="p analysis-panel">
       <div class="ph"><h3><i class="ti ti-atom-2"></i> مختبر التحليل</h3>
@@ -736,6 +736,6 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
 
 
 <script src="./geo-vendor.js?v=a2a10de3c276"></script>
-<script src="./app.js?v=2175b3c9dc9e"></script>
+<script src="./app.js?v=e48edc8df1d9"></script>
 </body>
 </html>

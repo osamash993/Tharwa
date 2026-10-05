@@ -111,6 +111,27 @@ markup=markup.replace('<button class="ibtn"><i class="ti ti-refresh">','<button 
 markup=markup.replace('للسوق · 2026','للسوق · <span id="txnYearLabel"></span>')
 # Repair an unclosed section in the supplied reference.
 markup=markup.replace('  <section class="lab">','  </section>\n  <section class="lab">')
+# Fill the space below the globe with existing goals and health panels.
+insights_start=markup.index('    <div class="p">\n      <div class="ph"><h3><i class="ti ti-target">')
+insights_end=markup.index('    <div class="p">\n      <div class="ph"><h3><i class="ti ti-radar-2">',insights_start)
+insights=markup[insights_start:insights_end]
+markup=markup[:insights_start]+markup[insights_end:]
+center_end='  </section>\n\n  <section class="col">'
+if markup.count(center_end)!=1:raise SystemExit('FAIL center insights insertion')
+markup=markup.replace(center_end,'    <div class="center-insights">\n'+insights+'    </div>\n'+center_end)
+# Keep side columns flowing independently instead of waiting for a full-width row.
+side_start=markup.index('  <section class="bottom">')
+side_end=markup.index('  <section class="lab">',side_start)
+tx_start=markup.index('    <div class="p">',side_start)
+div_start=markup.index('    <div class="p">\n      <div class="ph"><h3><i class="ti ti-radar-2">',tx_start)
+side_close=markup.rfind('  </section>',side_start,side_end)
+tx_panel=markup[tx_start:div_start].replace('class="p"','class="p transactions-panel"',1)
+div_panel=markup[div_start:side_close].replace('class="p"','class="p diversity-panel"',1)
+markup=markup[:side_start]+markup[side_end:]
+right_end='  </section>\n\n  <section class="col center">'
+left_end='  </section>\n\n  <section class="lab">'
+if markup.count(right_end)!=1 or markup.count(left_end)!=1:raise SystemExit('FAIL side panel insertion')
+markup=markup.replace(right_end,tx_panel+right_end).replace(left_end,div_panel+left_end)
 import shutil
 iconcss=(root/'node_modules/@tabler/icons-webfont/dist/tabler-icons.min.css').read_text()
 names=set(re.findall(r'ti-[a-z0-9-]+',markup+js))
