@@ -78,23 +78,3 @@ function ambRender(){
 
 const labSizeObserver=new ResizeObserver(()=>{if(labTab==='orbit')orbResize();if(labTab==='heat')renderHeat();});
 labSizeObserver.observe(document.querySelector('.labstage'));
-
-function geomFor(W,H){return {r:Math.max(1,Math.min(W*(W<600?.36:.30),H*.34)),cy:H/2};}
-// Resize from the actual panel as well as the viewport (zoom, fonts, data, layout).
-let globeLayoutFrame=0;
-function fitDashboardGlobe(){
- globeLayoutFrame=0;
- const panel=$('globeWrap');if(!panel)return;
- let top=0;for(let el=panel;el;el=el.offsetParent)top+=el.offsetTop;
- const available=innerWidth>1300?innerHeight-top-16:innerHeight-document.querySelector('.top').offsetHeight-32;
- const height=Math.round(Math.max(280,Math.min(720,available)));
- panel.classList.toggle('compact-globe',height<480);
- const value=height+'px';if(panel.style.getPropertyValue('--globe-panel-height')!==value)panel.style.setProperty('--globe-panel-height',value);
- resize();
-}
-function queueGlobeLayout(){if(!globeLayoutFrame)globeLayoutFrame=requestAnimationFrame(fitDashboardGlobe);}
-const globeSizeObserver=new ResizeObserver(queueGlobeLayout);
-for(const el of [$('globeWrap'),document.querySelector('.center>.p'),document.querySelector('.top')])globeSizeObserver.observe(el);
-window.addEventListener('resize',queueGlobeLayout);
-document.fonts?.ready.then(queueGlobeLayout);
-queueGlobeLayout();
