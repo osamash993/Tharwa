@@ -146,7 +146,7 @@ const path=d3.geoPath(proj,ctx);
 const grat=d3.geoGraticule10();
 const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 let gAnim=null;
-function geomFor(W,H){const mob=W<600;return {r:mob?Math.min(W*.40,H*.30):Math.min(W*.30,H*.35),cy:mob?H*.36:H/2+10};}
+function geomFor(W,H){return {r:Math.max(1,Math.min(W*(W<600?.36:.30),H*.34)),cy:H/2};}
 function panelGeom(){const R=$('globeWrap').getBoundingClientRect(),g=geomFor(R.width,R.height);return {cx:R.left+R.width/2,cy:R.top+g.cy,r:g.r};}
 function resize(){const r=cv.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR;}
 window.addEventListener('resize',resize);
@@ -1265,5 +1265,25 @@ function changeReportMonth(delta){let next=selM+delta;if(next<0){selectedYear--;
 
 const labSizeObserver=new ResizeObserver(()=>{if(labTab==='orbit')orbResize();if(labTab==='heat')renderHeat();});
 labSizeObserver.observe(document.querySelector('.labstage'));
+
+// Resize from the actual panel as well as the viewport (zoom, fonts, data, layout).
+let globeLayoutFrame=0;
+function fitDashboardGlobe(){
+ globeLayoutFrame=0;
+ const panel=$('globeWrap');if(!panel)return;
+ let top=0;for(let el=panel;el;el=el.offsetParent)top+=el.offsetTop;
+ const available=innerWidth>1300?innerHeight-top-16:innerHeight-document.querySelector('.top').offsetHeight-32;
+ const height=Math.round(Math.max(280,Math.min(720,available)));
+ panel.classList.toggle('compact-globe',height<480);
+ const value=height+'px';if(panel.style.getPropertyValue('--globe-panel-height')!==value)panel.style.setProperty('--globe-panel-height',value);
+ resize();
+}
+function queueGlobeLayout(){if(!globeLayoutFrame)globeLayoutFrame=requestAnimationFrame(fitDashboardGlobe);}
+const globeSizeObserver=new ResizeObserver(queueGlobeLayout);
+for(const el of [$('globeWrap'),document.querySelector('.center>.p'),document.querySelector('.top')])globeSizeObserver.observe(el);
+window.addEventListener('resize',queueGlobeLayout);
+document.fonts?.ready.then(queueGlobeLayout);
+queueGlobeLayout();
+
 
 installCommandCenter();boot();
