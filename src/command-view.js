@@ -32,7 +32,7 @@ export function createCommandView({api,onError=()=>{}}){
   selected=view;document.body.dataset.portfolioView=view;
   if(view==='cc'){
    [...document.body.children].forEach(hideLegacy);root.hidden=false;
-   const frame=root.querySelector('iframe');if(!frame.getAttribute('src')){frameLoaded=new Promise(resolve=>{const timeout=setTimeout(resolve,8000);frame.addEventListener('load',()=>{clearTimeout(timeout);resolve();},{once:true});});frame.src=import.meta.env.BASE_URL+'command-center/index.html?v='+encodeURIComponent(import.meta.url);}
+   const frame=root.querySelector('iframe');if(!frame.getAttribute('src')){frameLoaded=new Promise(resolve=>{const timeout=setTimeout(resolve,8000);frame.addEventListener('load',()=>{clearTimeout(timeout);resolve();},{once:true});});frame.src=import.meta.env.BASE_URL+'command-center/index.html?v='+__COMMAND_CENTER_VERSION__;}
    if(changed){window.scrollTo(0,0);if(focus)back.focus({preventScroll:true});}
   }else{
    root.hidden=true;
