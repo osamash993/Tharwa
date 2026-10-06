@@ -52,6 +52,8 @@ js=js.replace("if(!f0)return '<div class=\"mapfb\">الخريطة غير متا�
 replace("const B=baseCur,bv=", "const B=baseCur,bv=") if False else None
 js=js.replace('inset:0 auto 0 0;right:auto;', 'inset-block:0;inset-inline-start:0;')
 js=js.replace('order.forEach((el,k)=>', 'order.filter(Boolean).forEach((el,k)=>')
+# Keep each market share next to its label in RTL instead of an ambiguous slash pair.
+replace('<div class="cell"><div class="l">متقدمة / ناشئة</div><div class="v n">${fmt(XR.dev/T*100,0)}% / ${fmt(XR.em/T*100,0)}%</div></div>', '<div class="cell"><div class="l">توزيع الأسواق</div><div class="v market-split"><span>متقدمة <bdi class="n">${fmt(XR.dev/T*100,0)}%</bdi></span><span>ناشئة <bdi class="n">${fmt(XR.em/T*100,0)}%</bdi></span></div></div>')
 # RTL bars preserve label/value ordering; canvas positive angles run clockwise.
 replace(old_functions['renderDiv'],old_functions['renderDiv'].replace('direction:ltr','direction:rtl').replace('left:','inset-inline-start:').replace('right:','inset-inline-end:').replace('translateX(-50%)','translateX(50%)'))
 replace('b.dir=b.chg<0?-1:1;', 'b.dir=b.chg>0?-1:b.chg<0?1:0;')

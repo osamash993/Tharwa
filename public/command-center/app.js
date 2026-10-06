@@ -106,7 +106,7 @@ function renderXrHud(){
   XR=computeXray();const T=XR.total;ranked=Object.entries(XR.countries).sort((a,b)=>b[1]-a[1]);
   $('gChips').innerHTML=`<div class="cell"><div class="l">دولة تستثمر فيها</div><div class="v n" style="color:var(--cb)">${ranked.length}</div></div>
     <div class="cell"><div class="l">شركة عبر الصناديق</div><div class="v n">${fmt(XR.co)}</div></div>
-    <div class="cell"><div class="l">متقدمة / ناشئة</div><div class="v n">${fmt(XR.dev/T*100,0)}% / ${fmt(XR.em/T*100,0)}%</div></div>
+    <div class="cell"><div class="l">توزيع الأسواق</div><div class="v market-split"><span>متقدمة <bdi class="n">${fmt(XR.dev/T*100,0)}%</bdi></span><span>ناشئة <bdi class="n">${fmt(XR.em/T*100,0)}%</bdi></span></div></div>
     <div class="cell"><div class="l">قيمة الأسهم والصناديق</div><div class="v n" style="color:var(--cb)">${fmtC(T)}</div></div>`;
   $('gList').innerHTML=`<div class="tt">TOP EXPOSURE</div>`+ranked.slice(0,10).map(([cc,v])=>`<div class="gr clk ${focusCC===cc?'on':''}" data-cc="${cc}" onclick="flyTo('${cc}')" ondblclick="openCountry('${cc}')"><span class="k">${flag(cc)} ${GEO_AR[cc]}</span><span class="b"><i style="width:${v/ranked[0][1]*100}%"></i></span><span class="v n">${fmt(v/T*100,1)}%</span></div>`).join('');
   const M=xrMetrics(XR),g=M.total>=80?'ممتاز':M.total>=65?'جيد جداً':M.total>=50?'جيد':'يحتاج تنويع';
