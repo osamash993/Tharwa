@@ -14,6 +14,7 @@ import {createCommandView} from './command-view.js';
 import * as dividendLedger from './dividends.js';
 window.dividendLedger=dividendLedger;
 import {createAPI} from './api.js';
+import {needsLogin} from './auth-requests.js';
 import {setupCommandData} from './command-data.js';
 import {supabaseUrl, supabasePublishableKey} from './public-config.js';
 
@@ -40,12 +41,16 @@ browserThemeObserver.observe(document.body,{attributes:true,attributeFilter:['cl
 browserThemeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
 syncBrowserTheme();
 const indicator=document.getElementById('cloud-indicator');
+function clearCloudError(){const box=document.getElementById('cloud-error');box.hidden=true;box.replaceChildren();delete indicator.dataset.error;}
 window.cloudFailure=e=>{
- const box=document.getElementById('cloud-error');box.hidden=false;
- box.textContent=(String(e.message).includes('CONFLICT')?'في تعديل أحدث من جهاز ثاني. ':'تعذّر الحفظ أو تحميل البيانات. ')+(e.message||'')+' — صدّر تعديلاتك ثم أعد تحميل الصفحة.';
- indicator.textContent='غير محفوظ';indicator.dataset.error='true';
+ const box=document.getElementById('cloud-error');box.hidden=false;box.replaceChildren();
+ const login=needsLogin(e),market=e.scope==='market',conflict=String(e.message).includes('CONFLICT');
+ box.textContent=login?'انتهت جلسة الدخول. تعذّر تجديدها تلقائيًا؛ سجّل دخولك للمتابعة.':market?'تعذّر تحديث أسعار السوق حاليًا. بيانات المحفظة منفصلة عن أسعار السوق.':conflict?'يوجد تعديل أحدث من جهاز آخر. صدّر تعديلاتك ثم أعد تحميل الصفحة.':!window.portfolioLoaded?'تعذّر تحميل المحفظة. تحقق من الاتصال وحاول مجددًا.':'تعذّر حفظ التعديل أو مزامنة البيانات. صدّر تعديلاتك قبل إعادة تحميل الصفحة.';
+ indicator.textContent=login?'يلزم تسجيل الدخول':market?'الأسعار غير متاحة':'تعذّر الاتصال';indicator.dataset.error='true';
+ if(login||!window.portfolioLoaded){const button=document.createElement('button');button.type='button';button.textContent=login?'تسجيل الدخول':'إعادة المحاولة';button.onclick=()=>login?returnToLogin():start();box.append(' ',button);}
+ const errorBox=document.getElementById('auth-error');if(errorBox&&!window.portfolioLoaded)errorBox.textContent=box.firstChild.textContent;
 };
-const api=createAPI(client,{demo,onError:window.cloudFailure,onStatus:message=>{indicator.textContent=message;}});
+const api=createAPI(client,{demo,onError:window.cloudFailure,onAuthRequired:window.cloudFailure,onStatus:message=>{indicator.textContent=message;if(!api.isBlocked())clearCloudError();}});
 window.portfolioAPI=api.rpc;
 setupCommandData({api,client,demo,onError:window.cloudFailure});
 const commandView=createCommandView({api,onError:window.cloudFailure});
@@ -54,14 +59,15 @@ window.downloadTransactions=async txns=>{try{const {exportTransactions,download}
 window.refreshOverview=()=>{};
 window.reloadPortfolio=async()=>{const data=await api.call('loadAll');window.portfolioBridge.load(data);};
 async function loadScript(path){await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=import.meta.env.BASE_URL+path+'?v='+encodeURIComponent(import.meta.url);s.onload=resolve;s.onerror=reject;document.body.append(s);});}
-let started=false;
+let started=false,scriptsReady=false;
 async function start(){
  if(started)return;started=true;
  try{
-  await loadScript('legacy/app.js');
-  await loadScript('legacy/command-bridge.js');
+  if(!scriptsReady){await loadScript('legacy/app.js');await loadScript('legacy/command-bridge.js');scriptsReady=true;}
   document.body.classList.add('starting');
-  window.startPortfolio();indicator.textContent=demo?'تجربة — البيانات هنا لا تُحفظ':'جاري الاتصال…';
+  indicator.textContent=demo?'تجربة — البيانات هنا لا تُحفظ':'جاري الاتصال…';
+  const data=await api.call('loadAll');
+  window.portfolioBridge.load(data);clearCloudError();
   await commandView.initialize();
   screen.hidden=true;document.body.classList.add('ready');document.body.classList.remove('starting');
  }catch(e){document.body.classList.remove('starting');started=false;window.cloudFailure(e);}
@@ -116,7 +122,7 @@ screen.querySelector('form').onsubmit=async e=>{
 };
 if(demo)await start();
 else if(client){
- client.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'&&started)returnToLogin();});
+ client.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'&&started&&!leaving)window.cloudFailure(Object.assign(new Error('انتهت الجلسة'),{code:'SESSION_EXPIRED'}));});
  try{const {data,error}=await client.auth.getSession();if(!error&&data.session&&!new URLSearchParams(location.search).has('login'))await start();}
  catch(e){document.getElementById('auth-error').textContent='تعذّر التحقق من الجلسة. سجّل دخولك مرة ثانية.';}
 }

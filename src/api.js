@@ -1,20 +1,22 @@
+import {createAuthenticatedRequests} from './auth-requests.js';
 import { emptyPortfolio, mutatePortfolio } from './state.js';
-export function createAPI(client,{demo=false,onError=()=>{},onStatus=()=>{}}={}){
+export function createAPI(client,{demo=false,onError=()=>{},onStatus=()=>{},onAuthRequired=()=>{}}={}){
+ const requests=createAuthenticatedRequests(client,{onAuthRequired});
  let state=emptyPortfolio(),version=null,queue=Promise.resolve(),blocked=false;
  const marketMethods=new Set(['getPrices','fetchFundCsv','getSectors','getFundComposition','zkFetchOne','zkFetchBatch','zkTestKey','zkDiag','zkCheckCsv']);
  async function run(method,args){
   if(marketMethods.has(method)){
    if(demo){if(method==='getPrices')return {};return {ok:false,err:'الجلب المباشر يتطلب ربط قاعدة البيانات'};}
    if(method==='zkFetchBatch'){const all=typeof args[0]==='string'?JSON.parse(args[0]):args[0];if(all.length>8){const results=[];for(let i=0;i<all.length;i+=8){const r=await run(method,[all.slice(i,i+8),args[1]]);results.push(...(r.results||[]));if(!r.ok)return {...r,results};}return {ok:true,results};}}
-   const {data,error}=await client.functions.invoke('portfolio-market',{body:{method,args}});if(error)throw error;return data;
+   const {data,error}=await requests.invoke(method,args);if(error){error.scope='market';throw error;}return data;
   }
   if(method==='loadAll'){
-   if(!demo){const {data,error}=await client.rpc('load_portfolio');if(error)throw error;const row=Array.isArray(data)?data[0]:data;state={...emptyPortfolio(),...row.data};version=row.version;}
+   if(!demo){const {data,error}=await requests.rpc('load_portfolio');if(error)throw error;const row=Array.isArray(data)?data[0]:data;state={...emptyPortfolio(),...row.data};version=row.version;}
    blocked=false;return structuredClone(state);
   }
   if(method==='checkRemote'){
    if(demo||blocked)return false;
-   const {data,error}=await client.rpc('load_portfolio');if(error)throw error;
+   const {data,error}=await requests.rpc('load_portfolio');if(error)throw error;
    const row=Array.isArray(data)?data[0]:data;
    if(row.version!==version){state={...emptyPortfolio(),...row.data};version=row.version;return true;}
    return false;
@@ -29,7 +31,7 @@ export function createAPI(client,{demo=false,onError=()=>{},onStatus=()=>{}}={})
   if(result.ok===false)return result;
   onStatus('جاري الحفظ…');
   try{
-   if(!demo){const {data,error}=await client.rpc('save_portfolio',{expected_version:version,next_data:next});if(error)throw error;const row=Array.isArray(data)?data[0]:data;version=row.version;state=row.data;}
+   if(!demo){const {data,error}=await requests.rpc('save_portfolio',{expected_version:version,next_data:next});if(error)throw error;const row=Array.isArray(data)?data[0]:data;version=row.version;state=row.data;}
    else state=next;
    onStatus(demo?'وضع تجربة — غير محفوظ':`محفوظ · الإصدار ${version}`);return result;
   }catch(e){blocked=true;throw e;}
@@ -44,5 +46,5 @@ export function createAPI(client,{demo=false,onError=()=>{},onStatus=()=>{}}={})
   if(method==='withFailureHandler')return cb=>chain(success,cb);
   return (...args)=>{call(method,...args).then(r=>success?.(r)).catch(e=>{onError(e);failure?.(e);});};
  }});}
- return {rpc:chain(),call,snapshot:()=>structuredClone(state),isBlocked:()=>blocked};
+ return {rpc:chain(),call,market:(method,args)=>requests.invoke(method,args),requiresLogin:requests.requiresLogin,snapshot:()=>structuredClone(state),isBlocked:()=>blocked};
 }

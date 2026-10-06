@@ -11,7 +11,7 @@ export function setupCommandData({api,client,demo,onError}){
   if(demo)return {ok:false,error:'المصادر الخارجية غير متاحة في وضع التجربة'};
   const key=JSON.stringify([method,args]),ttl=['getHistory','getDividends'].includes(method)?43200000:method==='getCalendar'?86400000:900000,hit=cached.get(key);
   if(!(method==='getDividends'&&args[1]?.refresh===true)&&hit&&Date.now()-hit.at<ttl)return structuredClone(hit.data);
-  try{const {data,error}=await client.functions.invoke('portfolio-market',{body:{method,args}});if(error)throw error;if(data?.ok===false)throw Error(data.error||data.err||'المصدر غير متاح');cached.set(key,{at:Date.now(),data});marketStatus[method]={ok:true,at:Date.now()};return data;}
+  try{const {data,error}=await api.market(method,args);if(error)throw error;if(data?.ok===false)throw Error(data.error||data.err||'المصدر غير متاح');cached.set(key,{at:Date.now(),data});marketStatus[method]={ok:true,at:Date.now()};return data;}
   catch(e){marketStatus[method]={ok:false,at:Date.now()};return {ok:false,error:e.message};}
  }
  function write(method,...args){
@@ -31,11 +31,11 @@ export function setupCommandData({api,client,demo,onError}){
   if(demo||busy||polling||document.hidden||!window.portfolioLoaded)return;
   polling=true;
   try{const changed=await api.call('checkRemote');online=true;lastSync=Date.now();if(changed){apply(api.snapshot());emit();}}
-  catch{online=false;}finally{polling=false;}
+  catch{online=false;}finally{polling=false;emit();}
  }
  function download(data,name,type){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);}
  const raw=()=>api.snapshot();
- window.commandStorage={raw,write,market,status:()=>({demo,busy,online,lastSync,market:marketStatus}),
+ window.commandStorage={raw,write,market,status:()=>({demo,busy,online,lastSync,market:marketStatus,authRequired:api.requiresLogin(),loaded:!!window.portfolioLoaded}),
   export:async kind=>{
    if(kind==='xlsx')return window.downloadTransactions(raw().txns);
    if(kind==='json'){const state=raw();for(const k of Object.keys(state.settings))if(/key|secret|token/i.test(k))delete state.settings[k];
