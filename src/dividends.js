@@ -1,3 +1,4 @@
+export {dividendEvents,dividendEventKey,dividendReminders} from './dividend-events.js';
 // One cash deposit is the accounting entry; its source metadata is the income ledger.
 export const isDividend=t=>t?.incomeType==='Dividend'&&t.assetType==='Cash'&&t.action==='Deposit';
 const same=(a,b)=>String(a)===String(b);
@@ -6,6 +7,7 @@ export function validateDividend(t){
  if(!isDividend(t)||!String(t.sourceAssetId??'')||!String(t.sourceAssetName||'').trim()||t.linkedTxnId)throw Error('بيانات إيداع التوزيعات غير صالحة');
  if(!Number.isFinite(+t.qty)||+t.qty<=0||!Number.isFinite(+t.rate)||+t.rate<=0||+t.price!==1||+t.fees!==0||+t.totalCostSAR<=0||Math.abs(+t.qty*+t.rate-(+t.totalCostSAR))>Math.max(1e-7,Math.abs(+t.totalCostSAR)*1e-10))throw Error('مبلغ التوزيعات أو سعر الصرف غير صالح');
  for(const k of ['dividendShares','dividendPerShare','dividendWithholding','dividendCostSAR'])if(t[k]!==undefined&&t[k]!==''&&(!Number.isFinite(+t[k])||+t[k]<0||(['dividendShares','dividendPerShare'].includes(k)&&+t[k]===0)))throw Error('تحقق من تفاصيل التوزيعة');
+ if(t.dividendEventKey&&(typeof t.dividendEventKey!=='string'||t.dividendEventKey.split('|').length!==2||!t.dividendEventKey.startsWith(encodeURIComponent(String(t.sourceAssetId))+'|')||!/^\d{4}-\d{2}-\d{2}$/.test(t.dividendEventKey.split('|')[1]||'')))throw Error('رابط التوزيعة لا يطابق الأصل');
  const has=k=>t[k]!=null&&t[k]!=='';
  if(has('dividendShares')!==has('dividendPerShare'))throw Error('أدخل الكمية ومبلغ التوزيع للوحدة معًا، أو اتركهما فارغين');
  if(has('dividendShares')&&Math.abs(+t.dividendShares*+t.dividendPerShare-(+t.qty+(+t.dividendWithholding||0)))>Math.max(.02,Math.abs(+t.qty)*1e-8))throw Error('الكمية × توزيع الوحدة يجب أن تساوي الصافي + الاستقطاع بعملة الحساب');
@@ -35,6 +37,8 @@ export function createDividendRow(input,{assets,txns},now=Date.now()){
  for(const k of ['dividendShares','dividendPerShare','dividendWithholding']){
   if(Object.hasOwn(input,k)){if(input[k]===''||input[k]==null)delete row[k];else row[k]=Number(input[k]);}
  }
+ if(Object.hasOwn(input,'dividendEventKey')){if(input.dividendEventKey)row.dividendEventKey=String(input.dividendEventKey);else delete row.dividendEventKey;}
+ if(row.dividendEventKey&&txns.some(t=>isDividend(t)&&!same(t.id,row.id)&&t.dividendEventKey===row.dividendEventKey))throw Error('هذه التوزيعة مرتبطة بإيداع مسجّل بالفعل');
  row.dividendCostSAR=costAtDate(txns,source.name,date);
  validateDividend(row);return row;
 }

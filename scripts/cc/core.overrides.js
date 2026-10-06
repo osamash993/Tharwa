@@ -97,7 +97,7 @@ function renderHeat(){
  $('heatBox').innerHTML=tiles.map(t=>`<div class="tile clk" onclick="${t.rest?'openAsset':'openCompany'}('${t.k}')" style="left:${t.x/10}%;top:${t.y/4.4}%;width:${t.w/10}%;height:${t.h/4.4}%;background:${t.ch==null?'rgba(86,118,138,.2)':t.ch<0?'rgba(255,107,90,.4)':'rgba(79,216,255,.35)'}" title="${t.n} · ${fmtC(t.v)}">${t.w>70&&t.h>34?`<div class="tn">${t.n}</div><div class="tv n">${fmtC(t.v)}</div><div class="tc n">${t.rest?'باقي المكوّنات':t.ch==null?'غير متاح':fmt(t.ch,2)+'%'}</div>`:''}</div>`).join('');
 }
 function buildEvents(){
- const result=[...calendarData,...(ST.events||[]).map(e=>({...e,s:'موعد خاص',src:'يدوي',on:"openSettings('events')"}))];
+ const result=[...calendarData.filter(e=>e.c!=='div'),...dividendCalendarEvents(),...(ST.events||[]).map(e=>({...e,s:'موعد خاص',src:'يدوي',on:"openSettings('events')"}))];
  if(S.zakat.hawl)result.push({c:'zakat',d:S.zakat.hawl.dueStr,t:'حول الزكاة',s:'من إعداداتك',src:'محسوب',on:'openZakat()'});
  const forecast=S.projections.find(x=>x.r===.07);if(forecast?.months>0&&forecast.months<600){const d=new Date();d.setMonth(d.getMonth()+forecast.months);result.push({c:'goal',d:d.toISOString().slice(0,10),t:'هدف التقاعد — تقديري',s:'سيناريو عائد 7% مع متوسط استثمارك الحالي',src:'تقدير',on:'openGoals()'});}
  return result.map(e=>({...e,days:Math.ceil((new Date(e.d+'T09:00:00')-new Date())/864e5)})).filter(e=>Number.isFinite(e.days)&&e.days>=0&&ST.evOn[e.c]!==false).sort((a,b)=>a.days-b.days);
@@ -117,11 +117,11 @@ async function refreshLive(button){if(button)button.disabled=true;try{await ENGI
 async function loadExternal(){
  if(document.hidden||S.status.demo)return;externalAt=Date.now();
  const holdings=Object.keys(AS).filter(k=>AS[k].yh&&AS[k].t!=='Property').map(k=>({name:k,symbol:AS[k].yh}));
- const [news,cal,quotes]=await Promise.all([ENGINE.market('getNews',newsRequests()),ENGINE.market('getCalendar',[...holdings,...companySymbols().filter(x=>percent(XR.companies[x.key].val,S.totals.total)>=(ST.evMin||.5)).map(x=>({symbol:x.symbol,name:XR.companies[x.key].ar,asset:XR.companies[x.key].via[0]?.f,component:true}))],{countries:Object.keys(XR.countries),msci:Object.values(XRAY_DATA).some(d=>/msci/i.test(d.label||d.desc||''))}),ENGINE.market('getCompanyQuotes',companySymbols())]);
+ const [news,cal,quotes]=await Promise.all([ENGINE.market('getNews',newsRequests()),ENGINE.market('getCalendar',[...holdings,...companySymbols().filter(x=>percent(XR.companies[x.key].val,S.totals.total)>=(ST.evMin||.5)).map(x=>({symbol:x.symbol,name:XR.companies[x.key].ar,asset:XR.companies[x.key].via[0]?.f,component:true}))],{countries:Object.keys(XR.countries),msci:Object.values(XRAY_DATA).some(d=>/msci/i.test(d.label||d.desc||''))}),ENGINE.market('getCompanyQuotes',companySymbols()),loadDividendSources()]);
  if(news.ok!==false){NEWS.splice(0,NEWS.length,...(news.items||[]).map(n=>({...n,a:ENGINE.clean(n.a),t:ENGINE.clean(n.t),ago:n.date?new Date(n.date).toLocaleDateString('ar-SA-u-ca-gregory'):n.source||'Yahoo',via:ENGINE.clean(n.via||''),related:(n.related||[]).map(r=>({...r,a:ENGINE.clean(r.a),via:ENGINE.clean(r.via),assets:(r.assets||[r.a]).map(ENGINE.clean)}))})));sourceErrors.news=null;}else sourceErrors.news=news.error;
  if(cal.ok!==false){calendarData=(cal.items||[]).map(e=>({...e,t:ENGINE.clean(e.t),s:ENGINE.clean(e.s),on:e.asset?`openAsset('${ENGINE.clean(e.asset)}')`:`openCalendarEvent('${e.d}','${ENGINE.clean(e.t)}')`}));sourceErrors.calendar=cal.unavailable?.join('، ')||null;}else sourceErrors.calendar=cal.error;
  if(quotes.ok!==false)companyQuotes=quotes.quotes||{};else sourceErrors.quotes=quotes.error;
- renderNews();renderLab();updateConnection();if(ambOn)ambRender();await loadTickerQuotes();
+ renderNews();renderLab();notifyDividendUpdates();updateConnection();if(ambOn)ambRender();await loadTickerQuotes();
 }
 function companySymbols(){return Object.values(XR.companies).sort((a,b)=>b.val-a.val).slice(0,35).map(c=>({key:c.k,symbol:companySymbol(c)})).filter(x=>x.symbol);}
 function companySymbol(c){
@@ -151,7 +151,8 @@ function installCommandCenter(){
  LAB_SIDE.heat=()=>`<div class="sect">حصتك داخل الشركات</div><div class="sub">المساحة تمثل حصتك الفعلية. اللون من حركة السعر المتاحة؛ الرمادي يعني أن السعر غير متاح.</div><div class="cell">${Object.keys(XR.companies).length} شركة</div>`;
  const originalSetLab=setLab;window.setLab=function(t){if(!Object.keys(XR.companies).length&&t==='net'){$('netSvg').innerHTML='<div class="empty">لا بيانات مكوّنات متاحة</div>';labTab=t;document.querySelectorAll('.labv').forEach(v=>v.style.display=v.dataset.t===t?'block':'none');return;}return originalSetLab(t);};
  enhanceControls();const originalOpen=openHolo;window.openHolo=function(html){if(refreshingDialog)return reHolo(html);originalOpen(html);$('ov').setAttribute('role','dialog');$('ov').setAttribute('aria-modal','true');$('holo').querySelector('.x')?.focus({preventScroll:true});};
- for(const fn of ['openNews','openAsset','openCountry','openCat','openGoals','openMonth','openCompany','openTx','openCtx','openZakat','openSettings','openDividends','openDividendDetail']){const original=window[fn];window[fn]=function(...args){activeDialog={fn,args};return original(...args);};}
+ for(const fn of ['openNews','openAsset','openCountry','openCat','openGoals','openMonth','openCompany','openTx','openCtx','openZakat','openSettings','openDividends','openDividendDetail','openSourceDividend','openDividendReminders']){const original=window[fn];window[fn]=function(...args){activeDialog={fn,args};return original(...args);};}
+ setInterval(()=>{if(!document.hidden){notifyDividendUpdates();renderLab();}},60000);
  parent.addEventListener('portfolio:changed',()=>{clearTimeout(pullTimer);pullTimer=setTimeout(()=>syncSnapshot(),80);});
  setInterval(()=>{if(!document.hidden&&parent.document.body.dataset.portfolioView==='cc')syncSnapshot();},2000);
  setInterval(()=>{if(document.hidden||parent.document.body.dataset.portfolioView!=='cc')return;if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();else if(Date.now()-externalAt>900000)loadExternal();},15000);

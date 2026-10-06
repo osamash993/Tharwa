@@ -1,4 +1,4 @@
-const hosts=new Set(['feeds.finance.yahoo.com','www.federalreserve.gov','www.bls.gov','www.bea.gov','www.msci.com','app2.msci.com','query1.finance.yahoo.com','query2.finance.yahoo.com','fc.yahoo.com','financialmodelingprep.com','www.ishares.com','ishares.com','www.blackrock.com','blackrock.com']);
+const hosts=new Set(['www.chinamobileltd.com','chinamobileltd.com','feeds.finance.yahoo.com','www.federalreserve.gov','www.bls.gov','www.bea.gov','www.msci.com','app2.msci.com','query1.finance.yahoo.com','query2.finance.yahoo.com','fc.yahoo.com','financialmodelingprep.com','www.ishares.com','ishares.com','www.blackrock.com','blackrock.com']);
 export const pause=ms=>new Promise(r=>setTimeout(r,ms));
 export async function fetchRemote(input,options={}){
  let url=new URL(input),response;

@@ -25,14 +25,14 @@ export async function readWorkbook(buffer){
 }
 export async function exportTransactions(txns){
  const wb=new ExcelJS.Workbook();wb.creator='ثروة';const ws=wb.addWorksheet('Transactions',{views:[{rightToLeft:false,state:'frozen',ySplit:1}]});
- const keys=['id','date','assetType','assetName','action','qty','price','fees','currency','rate','totalCostSAR','remarks','linkedTxnId','incomeType','sourceAssetId','sourceAssetName','dividendShares','dividendPerShare','dividendWithholding','dividendCostSAR'];
+ const keys=['id','date','assetType','assetName','action','qty','price','fees','currency','rate','totalCostSAR','remarks','linkedTxnId','incomeType','sourceAssetId','sourceAssetName','dividendShares','dividendPerShare','dividendWithholding','dividendCostSAR','dividendEventKey'];
  ws.columns=keys.map(key=>({header:key,key,width:key==='remarks'?38:key==='assetName'?25:18}));
  for(const t of [...txns].sort((a,b)=>a.date.localeCompare(b.date))){
   // Text values are always literal strings, never Excel formulas. IDs exported as text for exact round trips.
   ws.addRow({...t,id:String(t.id),linkedTxnId:t.linkedTxnId==null?'':String(t.linkedTxnId),sourceAssetId:t.sourceAssetId==null?'':String(t.sourceAssetId)});
  }
  ws.getRow(1).font={bold:true,color:{argb:'FFF5F3EB'}};ws.getRow(1).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF07372E'}};
- ws.autoFilter={from:'A1',to:'T1'};for(const k of ['qty','price','fees','rate','totalCostSAR'])ws.getColumn(k).numFmt='#,##0.00########';
+ ws.autoFilter={from:'A1',to:'U1'};for(const k of ['qty','price','fees','rate','totalCostSAR'])ws.getColumn(k).numFmt='#,##0.00########';
  return wb.xlsx.writeBuffer();
 }
 export function download(buffer,name,type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
