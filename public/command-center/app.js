@@ -92,10 +92,10 @@ function renderMkt(){
 let nwF='all';
 function renderNews(){
  $('nwFl').innerHTML=[['all','الكل'],...Object.keys(AS).filter(k=>AS[k].yh&&assetVisible(k)).map(k=>[k,k])].map(([k,l])=>`<button class="${nwF===k?'on':''}" onclick="nwF='${k}';renderNews()">${l}</button>`).join('');
- const list=rankNews(NEWS.filter(n=>newsAssets(n).some(assetVisible)&&(nwF==='all'||newsAssets(n).includes(nwF))));$('nwList').innerHTML=list.length?list.map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار مرتبطة متاحة حاليًا')+'</div>';
- let note=$('newsOrder');if(!note){note=document.createElement('div');note.id='newsOrder';note.className='news-order';$('nwList').before(note);}note.textContent=`${list.length} خبر · حسب الصلة والحداثة ووزن الاستثمار، مع تنويع الشركات`;
+ const list=rankNews(NEWS.filter(n=>(n.scope==='macro'||newsAssets(n).some(assetVisible))&&(nwF==='all'||newsAssets(n).includes(nwF))));$('nwList').innerHTML=list.length?list.map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار مرتبطة متاحة حاليًا')+'</div>';
+ let note=$('newsOrder');if(!note){note=document.createElement('div');note.id='newsOrder';note.className='news-order';$('nwList').before(note);}note.textContent=`${list.length} خبر · الأهمية تقديرية؛ النسبة حصتك المرتبطة وليست تغيرًا متوقعًا بالسعر${sourceErrors.news?' · '+sourceErrors.news:''}`;
 }
-const newsRow=x=>`<div class="nw clk" onclick="openNews(${NEWS.indexOf(x)})"><span class="tg">${esc(x.via||x.a)}</span><div class="tx">${esc(x.t)}<div class="mt">${esc(x.ago)} · ${esc(x.source||'Yahoo')}</div></div></div>`;
+const newsRow=x=>ratedNewsRow(x);
 
 
 let XR=null;
@@ -466,7 +466,7 @@ function buildEvents(){
  const result=[...calendarData.filter(e=>e.c!=='div'),...dividendCalendarEvents(),...(ST.events||[]).map(e=>({...e,s:'موعد خاص',src:'يدوي',on:"openSettings('events')"}))];
  if(S.zakat.hawl)result.push({c:'zakat',d:S.zakat.hawl.dueStr,t:'حول الزكاة',s:'من إعداداتك',src:'محسوب',on:'openZakat()'});
  const forecast=S.projections.find(x=>x.r===.07);if(forecast?.months>0&&forecast.months<600){const d=new Date();d.setMonth(d.getMonth()+forecast.months);result.push({c:'goal',d:d.toISOString().slice(0,10),t:'هدف التقاعد — تقديري',s:'سيناريو عائد 7% مع متوسط استثمارك الحالي',src:'تقدير',on:'openGoals()'});}
- return result.map(e=>({...e,days:Math.ceil((new Date(e.d+'T09:00:00')-new Date())/864e5)})).filter(e=>Number.isFinite(e.days)&&e.days>=0&&ST.evOn[e.c]!==false).sort((a,b)=>a.days-b.days);
+ return result.map(e=>({...e,days:Math.max(0,Math.ceil((new Date(e.d+'T00:00:00+03:00')-new Date(new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Riyadh'})+'T00:00:00+03:00'))/864e5))})).filter(e=>/^\d{4}-\d{2}-\d{2}$/.test(e.d)&&e.d>=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Riyadh'})&&ST.evOn[e.c]!==false).map(e=>({...e,importance:impactOf(e)})).sort((a,b)=>(a.atUTC||a.d+'T23:59:59Z').localeCompare(b.atUTC||b.d+'T23:59:59Z'));
 }
 let EV=[],evSel=null;
 const rcv=$('radarEv'),rctx=rcv.getContext('2d');let RW=0,RDPR=1;
@@ -491,20 +491,20 @@ function drawRadar(now){
   const sw=(now/1000*1.1)%(Math.PI*2)-Math.PI/2;
   for(let k=0;k<26;k++){const a=sw-k*.03;c.strokeStyle=`rgba(79,216,255,${.4*(1-k/26)})`;c.lineWidth=2;c.beginPath();c.moveTo(cx,cy);c.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));c.stroke();}c.lineWidth=1;
   EV.forEach((e,i)=>{const [x,y,a]=evPos(e,i,R,cx,cy);let d=((sw-a)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);const glow=Math.max(.25,1-d/(Math.PI*1.4)),sel=evSel===i;
-    c.fillStyle=`rgba(${e.days<=30?'255,255,255':'180,243,255'},${glow})`;c.shadowColor='#4fd8ff';c.shadowBlur=sel?18:8*glow;c.beginPath();c.arc(x,y,sel?5.5:3.5+(e.days<=30?1:0),0,7);c.fill();c.shadowBlur=0;
+    c.fillStyle=e.importance?.color||'#8aa6b5';c.shadowColor=c.fillStyle;c.shadowBlur=sel?18:8*glow;c.beginPath();c.arc(x,y,sel?5.5:3.5+(e.days<=30?1:0),0,7);c.fill();c.shadowBlur=0;
     if(d<.25||sel){c.strokeStyle=`rgba(79,216,255,${sel?.9:(1-d/.25)})`;c.beginPath();c.arc(x,y,9+(sel?0:d*30),0,7);c.stroke();}
     if(sel){c.direction='rtl';c.textAlign='center';c.font="600 11px 'IBM Plex Sans Arabic',sans-serif";c.fillStyle='#fff';c.fillText(e.t,x,y-12);}});
   c.fillStyle='#fff';c.beginPath();c.arc(cx,cy,3,0,7);c.fill();
 }
 rcv.addEventListener('click',e=>{const r=rcv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,R=RW/2-24;
   let best=-1,bd=14;EV.forEach((ev,i)=>{const [x,y]=evPos(ev,i,R,RW/2,RW/2);const d=Math.hypot(x-mx,y-my);if(d<bd){bd=d;best=i;}});if(best>=0){evSel=best;renderEvList();}});
-function cd(e){const ms=new Date(e.d+'T09:00:00')-new Date();if(ms<0)return 'الآن';const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3);
-  return d>0?`${d}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+function cd(e){if(!e.atUTC)return e.days===0?'اليوم · الساعة غير معلنة':e.days+' يوم · الساعة غير معلنة';const ms=Date.parse(e.atUTC)-Date.now();if(ms<=0)return 'مرّ الموعد · راجع المصدر للنتيجة';const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);return d>0?`${d} يوم · ${h} ساعة`:`${h} ساعة · ${m} دقيقة`;}
 function renderEvList(){
-  const n=EV[0];$('evNext').innerHTML=n?`<div class="l">الحدث القادم · ${EV_CAT[n.c][0]}</div><div style="font-size:13px;font-weight:600;margin-top:2px">${n.t}</div><div class="n" id="evCd" style="font-size:22px;color:#fff;text-shadow:0 0 12px var(--c60)">${cd(n)}</div>`:'';
-  $('evList').innerHTML=EV.map((e,i)=>`<div class="row clk ${evSel===i?'evon':''}" onmouseenter="evSel=${i}" onclick="${e.on}"><i class="ti ${EV_CAT[e.c][1]}" style="color:var(--c);font-size:16px"></i><div class="nm"><div class="t">${e.t}</div><div class="s">${e.s} · <span class="n">${e.d}</span></div></div><div class="vl"><span class="n" style="color:${e.days<=30?'#fff':'var(--cb)'}">${e.days}</span><span class="mu" style="font-size:9px">يوم</span></div></div>`).join('');
+ const n=EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now());$('evNext').innerHTML=n?`<div class="l">الحدث القادم · ${esc(EV_CAT[n.c]?.[0]||'حدث')}</div><div class="next-event-title">${esc(n.t)}</div><div class="n" id="evCd">${cd(n)}</div>`:'<div class="mu">لا مواعيد قادمة متاحة</div>';
+ let controls=$('radarControls');if(!controls){controls=document.createElement('div');controls.id='radarControls';controls.className='radar-controls';controls.innerHTML='<span>الأهمية: <b class="impact-high">مرتفعة</b> · <b class="impact-medium">متوسطة</b> · <b class="impact-low">منخفضة</b></span><button class="fbtn sm" onclick="openRadarFull()">عرض موسّع ↗</button>';$('evList').before(controls);}
+ $('evList').innerHTML=(sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:'')+(EV.map(radarRow).join('')||'<div class="empty">لا أحداث متاحة من المصادر الحالية</div>');
 }
-setInterval(()=>{const el=$('evCd');if(el&&EV[0])el.textContent=cd(EV[0]);},1000);
+setInterval(()=>{const el=$('evCd');if(el&&EV[0])el.textContent=cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0]);},1000);
 
 function renderLab(){ORB=orbBodies();EV=buildEvents();renderEvList();setLab(labTab);}
 
@@ -512,7 +512,7 @@ function renderLab(){ORB=orbBodies();EV=buildEvents();renderEvList();setLab(labT
 let AMB_IDLE=60000;let ambOn=false,ambSince=0,ambIdleT=null,ambCardI=0,ambCardT=null,ambDriftT=null,ambClockT=null,ambPrevTour=true;
 function ambCards(){
  const T=totals(),list=POS.filter(p=>p.chg!=null),best=list.filter(p=>p.chg>0).sort((a,b)=>b.chg-a.chg)[0],worst=list.filter(p=>p.chg<0).sort((a,b)=>a.chg-b.chg)[0],top=ranked[0],pr=T.gC-T.gK,year=String(new Date().getFullYear()),net=TXNS.filter(t=>t[0].startsWith(year)).reduce((s,t)=>s+(t[2]==='Buy'?1:-1)*txSAR(t),0);
- return [['ti-trending-up','أكبر رابح اليوم',best?best.n+' '+fmt(best.chg,2)+'%':'غير متاح',''],['ti-trending-down','أكبر خاسر اليوم',worst?worst.n+' '+fmt(worst.chg,2)+'%':'غير متاح',''],['ti-target','هدف التقاعد',fmt(percent(T.total,T.goal),1)+'%',fmtC(Math.max(0,T.goal-T.total))+' متبقي'],['ti-chart-line','ربح النمو',fmtC(pr),fmt(percent(pr,T.gK),1)+'%'],['ti-radar','الحدث القادم',EV[0]?cd(EV[0]):'لا أحداث',EV[0]?.t||''],['ti-heart','صحة المحفظة',S.metrics.total+' / 100',''],['ti-world','أكبر تمركز',top?GEO_AR[top[0]]||top[0]:'غير متاح',top?fmt(percent(top[1],XR.total),1)+'%':''],['ti-arrows-exchange','صافي الاستثمار · '+year,fmtC(net),'']];
+ return [['ti-trending-up','أكبر رابح اليوم',best?best.n+' '+fmt(best.chg,2)+'%':'غير متاح',''],['ti-trending-down','أكبر خاسر اليوم',worst?worst.n+' '+fmt(worst.chg,2)+'%':'غير متاح',''],['ti-target','هدف التقاعد',fmt(percent(T.total,T.goal),1)+'%',fmtC(Math.max(0,T.goal-T.total))+' متبقي'],['ti-chart-line','ربح النمو',fmtC(pr),fmt(percent(pr,T.gK),1)+'%'],['ti-radar','الحدث القادم',EV[0]?cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0]):'لا أحداث',EV[0]?.t||''],['ti-heart','صحة المحفظة',S.metrics.total+' / 100',''],['ti-world','أكبر تمركز',top?GEO_AR[top[0]]||top[0]:'غير متاح',top?fmt(percent(top[1],XR.total),1)+'%':''],['ti-arrows-exchange','صافي الاستثمار · '+year,fmtC(net),'']];
 }
 function ambShowCard(){
   const L=ambCards(),k=ambCardI%L.length,[ic,l,v,sub]=L[k],el=$('ambCard');
@@ -533,7 +533,7 @@ function ambRender(){
   renderMarketTicker('ambTick');
 }
 function ambTickClock(){const d=new Date();$('ambClock').textContent=d.toTimeString().slice(0,5);$('ambDate').textContent=d.toLocaleDateString('ar-SA-u-ca-gregory-nu-latn',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const c=$('ambCd');if(c&&EV[0])c.textContent=cd(EV[0]);}
+  const c=$('ambCd');if(c&&EV[0])c.textContent=cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0]);}
 function enterAmb(manual){
   if(ambOn||document.body.classList.contains('booting')||$('ov').classList.contains('open'))return;
   if(gAnim)return;
@@ -1034,9 +1034,9 @@ function formatStamp(value){return value?new Date(value).toLocaleString('ar-SA-u
 
 
 
-function newsAssets(n){return [...new Set((n.related||[{a:n.a}]).flatMap(r=>r.assets||[r.a]))].filter(Boolean);}
+function newsAssets(n){return impactOf(n).positions.map(p=>p.name);}
 function newsExposure(n){return Math.max(0,...(n.related||[{a:n.a,via:n.via}]).map(r=>{const co=r.key?XR.companies[r.key]:Object.values(XR.companies).find(c=>c.ar===r.via);return co?.val??S.POS.find(p=>p.n===r.a)?.val??0;}));}
-function rankNews(list){const pool=list.map(n=>{const hours=n.date?Math.max(0,(Date.now()-Date.parse(n.date))/36e5):168,weight=percent(newsExposure(n),S.totals.total);return {n,score:Math.max(0,40-hours*.45)+Math.min(35,weight*2)+(n.headline?15:0)+(!n.via?10:0),topic:n.related?.find(r=>r.headline)?.symbol||n.related?.[0]?.symbol||n.via||n.a};});const out=[],used={};while(pool.length){pool.sort((a,b)=>(b.score-(used[b.topic]||0)*45)-(a.score-(used[a.topic]||0)*45));const pick=pool.shift();out.push(pick.n);used[pick.topic]=(used[pick.topic]||0)+1;}return out;}
+function rankNews(list){return [...list].sort((a,b)=>(impactOf(b).score??-1)-(impactOf(a).score??-1)||(b.date||'').localeCompare(a.date||''));}
 function newsRequests(){const direct=S.POS.filter(p=>p.yh&&assetVisible(p.n)).sort((a,b)=>b.val-a.val).map(p=>({name:p.n,symbol:p.yh,company:p.full,assets:[p.n]}));const components=companySymbols().map(x=>{const c=XR.companies[x.key],assets=c.via.map(v=>v.f).filter(assetVisible);return {...x,name:assets[0],company:c.ar,via:c.ar,assets};}).filter(x=>x.name);const selected=[],perFund={};for(const x of components){if((perFund[x.name]||0)>=2)continue;selected.push(x);perFund[x.name]=(perFund[x.name]||0)+1;}for(const x of components)if(selected.length<12&&!selected.some(y=>y.symbol===x.symbol))selected.push(x);return [...new Map([...direct,...selected].map(x=>[x.symbol,x])).values()].slice(0,24);}
 
 
@@ -1053,7 +1053,7 @@ async function loadExternal(){
  if(document.hidden||S.status.demo)return;externalAt=Date.now();
  const holdings=Object.keys(AS).filter(k=>AS[k].yh&&AS[k].t!=='Property').map(k=>({name:k,symbol:AS[k].yh}));
  const [news,cal,quotes]=await Promise.all([ENGINE.market('getNews',newsRequests()),ENGINE.market('getCalendar',[...holdings,...companySymbols().filter(x=>percent(XR.companies[x.key].val,S.totals.total)>=(ST.evMin||.5)).map(x=>({symbol:x.symbol,name:XR.companies[x.key].ar,asset:XR.companies[x.key].via[0]?.f,component:true}))],{countries:Object.keys(XR.countries),msci:Object.values(XRAY_DATA).some(d=>/msci/i.test(d.label||d.desc||''))}),ENGINE.market('getCompanyQuotes',companySymbols()),loadDividendSources()]);
- if(news.ok!==false){NEWS.splice(0,NEWS.length,...(news.items||[]).map(n=>({...n,a:ENGINE.clean(n.a),t:ENGINE.clean(n.t),ago:n.date?new Date(n.date).toLocaleDateString('ar-SA-u-ca-gregory'):n.source||'Yahoo',via:ENGINE.clean(n.via||''),related:(n.related||[]).map(r=>({...r,a:ENGINE.clean(r.a),via:ENGINE.clean(r.via),assets:(r.assets||[r.a]).map(ENGINE.clean)}))})));sourceErrors.news=null;}else sourceErrors.news=news.error;
+ if(news.ok!==false){NEWS.splice(0,NEWS.length,...(news.items||[]).map(n=>({...n,a:ENGINE.clean(n.a),t:ENGINE.clean(n.t),ago:n.date?new Date(n.date).toLocaleDateString('ar-SA-u-ca-gregory'):n.source||'Yahoo',via:ENGINE.clean(n.via||''),related:(n.related||[]).map(r=>({...r,a:ENGINE.clean(r.a),via:ENGINE.clean(r.via),assets:(r.assets||[r.a]).map(ENGINE.clean)}))})));sourceErrors.news=news.unavailable?.join('، ')||null;}else sourceErrors.news=news.error;
  if(cal.ok!==false){calendarData=(cal.items||[]).map(e=>({...e,t:ENGINE.clean(e.t),s:ENGINE.clean(e.s),on:e.asset?`openAsset('${ENGINE.clean(e.asset)}')`:`openCalendarEvent('${e.d}','${ENGINE.clean(e.t)}')`}));sourceErrors.calendar=cal.unavailable?.join('، ')||null;}else sourceErrors.calendar=cal.error;
  if(quotes.ok!==false)companyQuotes=quotes.quotes||{};else sourceErrors.quotes=quotes.error;
  renderNews();renderLab();notifyDividendUpdates();updateConnection();if(ambOn)ambRender();await loadTickerQuotes();
@@ -1072,7 +1072,7 @@ function openNews(value){
  const n=typeof value==='number'?NEWS[value]:NEWS.find(x=>x.url===value);if(!n)return;
  activeDialog={fn:'openNews',args:[n.url]};
  const company=n.via?Object.values(XR.companies).find(c=>c.ar===n.via||c.k===n.via):null,position=S.POS.find(p=>p.n===n.a),via=newsPositions(n),exposure=via.reduce((s,v)=>s+v.value,0);
- openHolo(`<div class="news-dialog">${modalHead('INVESTMENT NEWS',n.a,esc(n.source||'Yahoo')+' · '+esc(n.ago||''))}<h2 class="news-headline">${esc(n.t)}</h2><div class="news-context"><div class="sect">علاقة الخبر بمحفظتك</div><p>${'وصل الخبر من موجز '+esc([...new Set((n.related?.length?n.related:[{a:n.a,via:n.via}]).map(r=>r.via||r.a))].join('، '))+'. المراكز التالية توضّح ارتباطه بمحفظتك.'}</p></div><div class="kg2">${cell('قيمة حصتك المرتبطة',fmtC(exposure))}${cell('نسبتها من إجمالي ثروتك',fmt(percent(exposure,S.totals.total),2)+'%')}</div>${via.length?'<div class="sect">المراكز المرتبطة</div>'+via.map(v=>`<div class="row clk" onclick="openAsset('${v.name}')"><div class="nm"><b>${v.name}</b><small>${v.weight<100?'الحصة المرتبطة داخل المركز '+fmt(v.weight,2)+'%':'مركز مباشر'}</small></div><span class="n">${fmtC(v.value)}</span><i class="ti ti-chevron-left"></i></div>`).join(''):''}<p class="sub">النسبة توضح حجم ارتباط استثمارك بالخبر؛ اتجاه التأثير يحتاج قراءة تفاصيله.</p><div class="factions"><button class="fbtn" id="news-read-source" onclick="openNewsSource()"><i class="ti ti-external-link"></i> قراءة الخبر في موقع المصدر</button><button class="fbtn" onclick="openAsset('${n.a}')">تفاصيل الأصل</button></div></div>`);
+ openHolo(`<div class="news-dialog">${modalHead('INVESTMENT NEWS',n.scope==='macro'?'اقتصاد وأسواق':n.a,esc(n.source||'Yahoo')+' · '+esc(n.ago||''))}<h2 class="news-headline">${esc(n.t)}</h2>${impactDetail(n)}<div class="news-context"><div class="sect">علاقة الخبر بمحفظتك</div><p>${n.scope==='macro'?'ارتباط اقتصادي محتمل بالأسهم أو الذهب حسب موضوع الخبر.':'وصل الخبر من موجز '+esc([...new Set((n.related?.length?n.related:[{a:n.a,via:n.via}]).map(r=>r.via||r.a))].join('، '))+'. المراكز التالية توضّح ارتباطه بمحفظتك.'}</p></div><div class="kg2">${cell('قيمة حصتك المرتبطة',fmtC(exposure))}${cell('نسبتها من إجمالي ثروتك',via.length&&S.totals.total>0?fmt(percent(exposure,S.totals.total),2)+'%':'غير متاح')}</div>${via.length?'<div class="sect">المراكز المرتبطة</div>'+via.map(v=>`<div class="row clk" onclick="openAsset('${v.name}')"><div class="nm"><b>${v.name}</b><small>${v.weight<100?'الحصة المرتبطة داخل المركز '+fmt(v.weight,2)+'%':'مركز مباشر'}</small></div><span class="n">${fmtC(v.value)}</span><i class="ti ti-chevron-left"></i></div>`).join(''):''}<p class="sub">النسبة توضح حجم ارتباط استثمارك بالخبر؛ اتجاه التأثير يحتاج قراءة تفاصيله.</p><div class="factions"><button class="fbtn" id="news-read-source" onclick="openNewsSource()"><i class="ti ti-external-link"></i> قراءة الخبر في موقع المصدر</button>${AS[n.a]?`<button class="fbtn" onclick="openAsset('${n.a}')">تفاصيل الأصل</button>`:''}</div></div>`);
  window._newsSource=n.url;
 }
 function openNewsSource(){try{const url=new URL(window._newsSource);if(url.protocol==='https:')window.open(url.href,'_blank','noopener,noreferrer');}catch{toast('رابط الخبر غير صالح','ti-alert-triangle');}}
@@ -1096,9 +1096,9 @@ function installCommandCenter(){
  syncSnapshot(true);setTimeout(loadExternal,1500);
 }
 
-function openCalendarEvent(d,t){const e=calendarData.find(e=>e.d===d&&e.t===t);if(!e)return;activeDialog=null;openHolo(modalHead('ECONOMIC RADAR',e.t,esc(e.d)+' · '+esc(e.src))+`<div class="news-context"><div class="sect">ليش هذا الحدث مهم؟</div><p>${esc(e.impact||'قد يؤثر التقرير على توقعات الفائدة والعملات وتقييم الاستثمارات. التأثير الفعلي يعتمد على النتائج مقارنة بتوقعات السوق.')}</p><p>${esc(e.s)}</p></div><div class="sub">موعد معلن قابل للتغيير. الحدث لا يتوقع اتجاه السوق.</div>${e.url&&/^https:\/\//.test(e.url)?`<a class="fbtn" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">الجدول الرسمي ↗</a>`:''}`);}
+function openCalendarEvent(d,t){const e=calendarData.find(e=>e.d===d&&e.t===t);if(!e)return;activeDialog=null;openHolo(modalHead('ECONOMIC RADAR',e.t,esc(eventTimeLabel(e))+' · '+esc(e.src))+`${impactDetail(e)}<div class="news-context"><div class="sect">ليش هذا الحدث مهم؟</div><p>${esc(e.impact||'قد يؤثر التقرير على توقعات الفائدة والعملات وتقييم الاستثمارات. التأثير الفعلي يعتمد على النتائج مقارنة بتوقعات السوق.')}</p><p>${esc(e.s)}</p></div><div class="sub">موعد معلن قابل للتغيير. الحدث لا يتوقع اتجاه السوق.</div>${e.url&&/^https:\/\//.test(e.url)?`<a class="fbtn" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">الجدول الرسمي ↗</a>`:''}`);}
 
-function newsPositions(n){const values=new Map();for(const r of (n.related?.length?n.related:[{a:n.a,via:n.via}])){const co=r.key?XR.companies[r.key]:Object.values(XR.companies).find(c=>c.ar===r.via);for(const v of co?co.via:[{f:r.a,w:100}]){const p=S.POS.find(p=>p.n===v.f);if(!p)continue;let entry=values.get(p.n);if(!entry){entry={p,parts:new Map(),direct:false};values.set(p.n,entry);}if(!co)entry.direct=true;else entry.parts.set(co.k||r.via,p.val*v.w/100);}}return [...values.values()].map(({p,parts,direct})=>{const value=direct?p.val:Math.min(p.val,[...parts.values()].reduce((a,b)=>a+b,0));return {name:p.n,value,weight:percent(value,p.val)};});}
+function newsPositions(n){return impactOf(n).positions;}
 
 function geoPositionLabel(cc){if(cc==='EZ'||cc==='EU')return 'موضع تمثيلي للمنطقة · ليست دولة';const ll=LL[cc];return ll?fmt(ll[0],1)+'°, '+fmt(ll[1],1)+'°':'الموقع غير محدد';}
 
@@ -1404,4 +1404,12 @@ async function deleteRegistry(i){const a=ENGINE.assets()[i];if(!a)return;const r
 async function hideRegistry(id){if(!(S.marketHidden||[]).includes(String(id)))await toggleAssetVisibility(id);openSettings('assets');}
 function freshnessSettings(){const st=parent.commandStorage.status();return `<div class="section-heading"><h3>حالة التحديث</h3><button class="fbtn sm" onclick="refreshLive(this)">تحديث الآن</button></div><div class="kg2">${cell('مزامنة المحفظة',st.demo?'وضع التجربة':formatStamp(st.lastSync))}${cell('الاتصال',st.online?'متصل':'غير متصل')}</div><p class="freshness-note">وقت السعر هو وقت آخر تداول أرسله المصدر. قد يبقى قديماً عندما يكون السوق مغلقاً.</p>`+S.registry.filter(a=>a.yh).map(a=>srow(a.n,(a.marketOpen===true?'السوق مفتوح':a.marketOpen===false?'السوق مغلق':'حالة السوق غير متاحة'),`<span class="n">${formatStamp(a.timestamp*1000)}</span>`)).join('');}
 
+function impactOf(item){return TharwaImpact.assess(item,{positions:S.POS,funds:XRAY_DATA,companies:S.XR.companies,total:S.totals.total});}
+function impactBadge(item){const a=item.importance||impactOf(item);return `<div class="impact-badges"><span class="impact-badge impact-${a.tier}">${a.label}${a.score==null?'':` · <bdi>${a.score}/100</bdi>`}</span><span>${a.personal?'خطة شخصية':a.pct==null||!a.positions.length?'نسبة الارتباط غير متاحة':`مرتبط بـ <bdi>${fmt(a.pct,1)}%</bdi> من إجمالي المحفظة`}</span>${a.incomplete?'<span>بيانات غير مكتملة</span>':''}</div>`;}
+function impactDetail(item){const a=impactOf(item);return `<div class="impact-explanation">${impactBadge(item)}<p>${esc(a.reason)}</p><small>${esc(a.confidence)} · درجة إرشادية، وليست احتمالًا أو نسبة ربح أو خسارة. الدرجة: أهمية الموضوع حتى 50، وحجم الارتباط حتى 35، وقرب الموعد أو حداثة الخبر حتى 15. مرتفعة من 70، ومتوسطة من 40. الخبر غير المؤكد الصلة لا يصنّف مرتفعًا.</small>${a.positions.length?`<p>الأصول المرتبطة: ${a.positions.map(p=>esc(p.name)).join('، ')}</p>`:''}</div>`;}
+function ratedNewsRow(x){const a=impactOf(x);return `<div class="nw clk importance-${a.tier}" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNews(${NEWS.indexOf(x)})}" onclick="openNews(${NEWS.indexOf(x)})"><span class="tg">${esc(x.scope==='macro'?'اقتصاد وأسواق':x.via||x.a)}</span><div class="tx">${esc(x.t)}${impactBadge(x)}<div class="mt">${esc(x.ago)} · ${esc(x.source||'Yahoo')}</div></div></div>`;}
+function eventTimeLabel(e){if(!e.atUTC||!Number.isFinite(Date.parse(e.atUTC)))return e.d+' · الساعة غير معلنة';return new Date(e.atUTC).toLocaleString('ar-SA-u-ca-gregory',{timeZone:'Asia/Riyadh',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})+' · السعودية';}
+function radarRow(e,i){const a=e.importance||impactOf(e);return `<div class="row clk radar-event importance-${a.tier} ${evSel===i?'evon':''}" role="button" tabindex="0" onmouseenter="evSel=${i}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" onclick="${e.on}"><i class="ti ${EV_CAT[e.c]?.[1]||'ti-calendar'}" style="color:${a.color}"></i><div class="nm"><div class="t">${esc(e.t)}</div>${impactBadge(e)}<div class="s">${esc(eventTimeLabel(e))} · ${esc(e.src||e.s||'')}</div><div class="radar-reason">${esc(a.reason)}</div></div></div>`;}
+function openRadarFull(){openHolo(modalHead('EVENT RADAR','رادار الأحداث','التوقيت المعروض بتوقيت السعودية')+`<div class="radar-expanded"><p class="sub">الألوان للأهمية، وليست لاتجاه السعر. النسبة تمثل حجم المراكز المرتبطة من إجمالي محفظتك.</p><div class="radar-controls"><button class="fbtn sm" onclick="radarViewMode('all')">كل الأحداث</button><button class="fbtn sm" onclick="radarViewMode('high')">الأهمية المرتفعة</button><button class="fbtn sm" onclick="radarViewMode('priority')">الأعلى أولوية</button></div><div id="expandedEvents">${EV.map(radarRow).join('')}</div>${sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:''}</div>`);}
+function radarViewMode(mode){const entries=EV.map((e,i)=>({e,i})).filter(({e})=>mode!=='high'||e.importance?.tier==='high');if(mode==='priority')entries.sort((a,b)=>(b.e.importance?.score??-1)-(a.e.importance?.score??-1)||a.e.days-b.e.days);$('expandedEvents').innerHTML=entries.map(({e,i})=>radarRow(e,i)).join('')||'<div class="empty">لا أحداث ضمن هذا التقييم</div>';}
 installCommandCenter();boot();

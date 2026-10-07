@@ -135,3 +135,19 @@ body.reduce .holo,body.reduce .hb>*{animation:none!important;clip-path:none!impo
 .dividend-month-column>span,.dividend-month-column>em,.dividend-bars>small{white-space:nowrap}.dividend-month-column>em{display:block}@media(max-width:700px){.dividend-month-column>span{font-size:0}.dividend-month-column>span:after{content:attr(data-short-month);font-size:7px}.dividend-month-column>em{font-size:7px}}
 
 .cell .v.market-split{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;line-height:1.6;direction:rtl}.market-split>span{display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap}.market-split bdi{font-size:13px;font-weight:600}
+
+/* Event importance remains distinct from gain/loss colors. */
+.lab{grid-template-columns:minmax(0,1.55fr) minmax(0,1.15fr)}
+.events-panel{min-width:0}.events-panel #evList{max-height:430px;min-height:280px;padding-inline-end:8px}
+.events-panel #radarEv{max-width:300px}.radar-controls{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin:10px 0;font-size:11px;line-height:1.7}
+.impact-badges{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:7px 0;font-size:11px;line-height:1.8;color:#adc1ce}
+.impact-badge{border:1px solid currentColor;border-radius:5px;padding:1px 7px;font-weight:600}.impact-high{color:#f4b860}.impact-medium{color:#75c9ff}.impact-low,.impact-unknown{color:#8aa6b5}.impact-personal{color:#b7a3ef}
+#evList .radar-event,.radar-expanded .radar-event{padding:13px 10px;margin:8px 0;border:1px solid #8aa6b51f;border-inline-start:3px solid #8aa6b5;border-radius:6px;gap:9px;align-items:flex-start;min-width:0}
+#evList .radar-event.importance-high,.radar-expanded .radar-event.importance-high,.nw.importance-high{border-inline-start:3px solid #f4b860;background:#f4b8600c}
+#evList .radar-event.importance-medium,.radar-expanded .radar-event.importance-medium{border-inline-start-color:#75c9ff}
+#evList .radar-event .t,.radar-expanded .radar-event .t{font-size:13px;line-height:1.8;white-space:normal;overflow-wrap:anywhere}
+.radar-event .nm{min-width:0;flex:1}.radar-event .s,.radar-reason{font-size:11px;line-height:1.8;white-space:normal;overflow-wrap:anywhere}.radar-reason{color:#adc1ce;margin-top:5px}
+.nw[class*="importance-"]{padding-inline:9px}.impact-explanation{padding:12px;background:#75c9ff09;border:1px solid #75c9ff33;border-radius:7px;line-height:1.9;margin:10px 0}.impact-explanation small{color:#adc1ce;white-space:normal}
+.radar-expanded{max-width:100%;overflow-x:hidden}.radar-expanded .radar-event{width:auto}.coverage-warning{color:#f4b860;font-size:11px;line-height:1.9;overflow-wrap:anywhere}.next-event-title{font-size:13px;line-height:1.8;font-weight:600}#evCd{font-size:16px;color:#fff;line-height:1.8}
+@media(max-width:1300px){.lab{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.events-panel #evList{min-height:240px;max-height:420px}.events-panel #radarEv{max-width:260px}.impact-badges{font-size:10px}}

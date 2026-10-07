@@ -67,7 +67,7 @@ js=js.replace("natTot(c.s/liveRate(CASH[c.acc].c),CASH[c.acc].c)","natTot(c.s/(c
 replace("const coChg=k=>{let h=0;for(const c of k)h=(h*31+c.charCodeAt(0))%997;return ((h%420)-180)/100;};", "const coChg=k=>companyQuotes[k]?.changePct??null;")
 replace("const coSrc=tk=>{let h=0;for(const ch of tk)h+=ch.charCodeAt(0);return h%4===0?'FMP':'Yahoo';};", "const coSrc=tk=>'غير متاح';")
 a=js.index('const newsRow=');b=js.index('\n',a)
-replace(js[a:b],"const newsRow=x=>`<div class=\"nw clk\" onclick=\"openNews(${NEWS.indexOf(x)})\"><span class=\"tg\">${esc(x.via||x.a)}</span><div class=\"tx\">${esc(x.t)}<div class=\"mt\">${esc(x.ago)} · ${esc(x.source||'Yahoo')}</div></div></div>`;")
+replace(js[a:b],"const newsRow=x=>ratedNewsRow(x);");
 replace("const ll=LL[cc],d=d3.geoDistance([ll[1],ll[0]],center);", "const ll=LL[cc];if(!ll)return;const d=d3.geoDistance([ll[1],ll[0]],center);")
 replace("const ll=LL[cc],d=d3.geoDistance([ll[1],ll[0]],c);", "const ll=LL[cc];if(!ll)return;const d=d3.geoDistance([ll[1],ll[0]],c);")
 replace("const ll=LL[cc];ctx.strokeStyle", "const ll=LL[cc];if(!ll)return;ctx.strokeStyle")
@@ -89,6 +89,7 @@ js=js.replace('PROP.forEach(p=>L.push({id:p.n', 'PROP.filter(p=>assetVisible(p.n
 js=js.replace('CASH.forEach(c=>L.push({id:c.n', 'CASH.filter(c=>assetVisible(c.n)).forEach(c=>L.push({id:c.n')
 js=js.replace("['macro','اقتصاد','قرارات الفائدة والتضخم للدول اللي إلك فيها تعرض','FMP']", "['macro','اقتصاد','الفيدرالي والتضخم والتوظيف والنمو','Fed · BLS · BEA']")
 replace("renderFx();boot();","installCommandCenter();boot();")
+js=js.replace('cd(EV[0])',"cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0])")
 # Remove abandoned prototype-only actions after replacing their visible controls.
 current_functions=functions(js)
 for name in ['stVerify','stNewAssetHTML','stAddProp','stAddCash','fundBlock','zkSet','zkRefresh','ctxDel']:
@@ -110,7 +111,7 @@ markup=markup.replace('<div id="evList" style="max-height:236px;overflow-y:auto;
 markup=markup.replace('<div class="p">\n      <div class="ph"><h3><i class="ti ti-atom-2">', '<div class="p analysis-panel">\n      <div class="ph"><h3><i class="ti ti-atom-2">')
 markup=markup.replace('<div class="p">\n      <div class="ph"><h3><i class="ti ti-radar">', '<div class="p events-panel">\n      <div class="ph"><h3><i class="ti ti-radar">')
 markup=markup.replace('</head>','<link rel="stylesheet" href="./integration.css">\n<script src="./safety.js"></script>\n</head>')
-markup=markup.replace('</body>','<script src="./geo-vendor.js"></script>\n<script src="./app.js"></script>\n</body>')
+markup=markup.replace('</body>','<script src="./impact-policy.js"></script>\n<script src="./geo-vendor.js"></script>\n<script src="./app.js"></script>\n</body>')
 markup=markup.replace('تصوّر — البنية والحسابات من O.db · القيم والأخبار تجريبية','O.db · بيانات محفظتك · <a href="#" onclick="ENGINE.legacy();return false">الواجهة السابقة</a>')
 markup=markup.replace('المواعيد تجريبية — بالتنفيذ من تقويم Yahoo وإعدادات الزكاة وتوقع الأهداف','الأحداث من المصادر المتاحة وإعداداتك؛ التوقعات موسومة بوضوح')
 markup=markup.replace('<button class="ibtn"><i class="ti ti-refresh">','<button class="ibtn" onclick="refreshLive(this)"><i class="ti ti-refresh">')
@@ -129,7 +130,7 @@ for name in sorted(names):
 (out/'icons.css').write_text(icons)
 (out/'tabler-icons.woff2').unlink(missing_ok=True)
 markup=re.sub(r'<link[^>]+cdn.jsdelivr.net[^>]+>','<link rel="stylesheet" href="./icons.css">',markup)
-for filename in ['app.js','geo-vendor.js','icons.css','fonts.css','integration.css','safety.js']:
+for filename in ['impact-policy.js','app.js','geo-vendor.js','icons.css','fonts.css','integration.css','safety.js']:
     digest=hashlib.sha256((out/filename).read_bytes()).hexdigest()[:12]
     markup=markup.replace('./'+filename+'"','./'+filename+'?v='+digest+'"')
 (out/'index.html').write_text(markup)
