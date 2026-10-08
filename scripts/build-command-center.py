@@ -50,6 +50,7 @@ js=js.replace("${fmt(LL[cc][0],1)}°N ${fmt(LL[cc][1],1)}°E", "${geoPositionLab
 js=js.replace("const ll=LL[cc];if(!ll)return;const d=((((-ll[1])", "const ll=LL[cc];if(!ll){setFocus(cc);return;}const d=((((-ll[1])")
 js=js.replace("if(!f0)return '<div class=\"mapfb\">الخريطة غير متاحة</div>';", "if(!f0)return '<div class=\"mapfb\">'+((cc==='EZ'||cc==='EU')?'تعرّض إقليمي مجمّع · موضع الخريطة تمثيلي، وليس توزيعاً بين الدول':'الخريطة غير متاحة')+'</div>';")
 replace("const B=baseCur,bv=", "const B=baseCur,bv=") if False else None
+js=js.replace('flyTo(best.cc);openCountry(best.cc);', "flyTo(best.cc);if(pulseState().mode==='exposure')openCountry(best.cc);else openPulseCountry(best.cc);")
 js=js.replace('inset:0 auto 0 0;right:auto;', 'inset-block:0;inset-inline-start:0;')
 js=js.replace('order.forEach((el,k)=>', 'order.filter(Boolean).forEach((el,k)=>')
 # Keep each market share next to its label in RTL instead of an ambiguous slash pair.
@@ -111,7 +112,7 @@ markup=markup.replace('<div id="evList" style="max-height:236px;overflow-y:auto;
 markup=markup.replace('<div class="p">\n      <div class="ph"><h3><i class="ti ti-atom-2">', '<div class="p analysis-panel">\n      <div class="ph"><h3><i class="ti ti-atom-2">')
 markup=markup.replace('<div class="p">\n      <div class="ph"><h3><i class="ti ti-radar">', '<div class="p events-panel">\n      <div class="ph"><h3><i class="ti ti-radar">')
 markup=markup.replace('</head>','<link rel="stylesheet" href="./integration.css">\n<script src="./safety.js"></script>\n</head>')
-markup=markup.replace('</body>','<script src="./impact-policy.js"></script>\n<script src="./geo-vendor.js"></script>\n<script src="./app.js"></script>\n</body>')
+markup=markup.replace('</body>','<script src="./impact-policy.js"></script>\n<script src="./market-pulse.js"></script>\n<script src="./geo-vendor.js"></script>\n<script src="./app.js"></script>\n</body>')
 markup=markup.replace('تصوّر — البنية والحسابات من O.db · القيم والأخبار تجريبية','O.db · بيانات محفظتك · <a href="#" onclick="ENGINE.legacy();return false">الواجهة السابقة</a>')
 markup=markup.replace('المواعيد تجريبية — بالتنفيذ من تقويم Yahoo وإعدادات الزكاة وتوقع الأهداف','الأحداث من المصادر المتاحة وإعداداتك؛ التوقعات موسومة بوضوح')
 markup=markup.replace('<button class="ibtn"><i class="ti ti-refresh">','<button class="ibtn" onclick="refreshLive(this)"><i class="ti ti-refresh">')
@@ -130,7 +131,7 @@ for name in sorted(names):
 (out/'icons.css').write_text(icons)
 (out/'tabler-icons.woff2').unlink(missing_ok=True)
 markup=re.sub(r'<link[^>]+cdn.jsdelivr.net[^>]+>','<link rel="stylesheet" href="./icons.css">',markup)
-for filename in ['impact-policy.js','app.js','geo-vendor.js','icons.css','fonts.css','integration.css','safety.js']:
+for filename in ['impact-policy.js','market-pulse.js','app.js','geo-vendor.js','icons.css','fonts.css','integration.css','safety.js']:
     digest=hashlib.sha256((out/filename).read_bytes()).hexdigest()[:12]
     markup=markup.replace('./'+filename+'"','./'+filename+'?v='+digest+'"')
 (out/'index.html').write_text(markup)

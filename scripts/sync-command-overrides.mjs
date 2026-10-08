@@ -14,11 +14,13 @@ for(const file of process.argv.slice(2))for(const fn of declarations(read(file))
  else app=app.replace('installCommandCenter();boot();',fn.text+'\ninstallCommandCenter();boot();');
 }
 app=app.replace(/^const newsRow=.*$/m,'const newsRow=x=>ratedNewsRow(x);');
-app=app.replaceAll('cd(EV[0])','cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0])');
+app=app.replaceAll('cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0])','cd(EV[0])');
+app=app.replace("flyTo(best.cc);openCountry(best.cc);","flyTo(best.cc);if(pulseState().mode==='exposure')openCountry(best.cc);else openPulseCountry(best.cc);");
 parse(app,{sourceType:'script'});write('public/command-center/app.js',app);
 let html=read('public/command-center/index.html');
 if(!html.includes('./impact-policy.js'))html=html.replace(/<script src="\.\/app.js/, '<script src="./impact-policy.js"></script>\n<script src="./app.js');
-for(const file of ['app.js','integration.css','impact-policy.js']){
+if(!html.includes('./market-pulse.js'))html=html.replace(/<script src="\.\/app.js/, '<script src="./market-pulse.js"></script>\n<script src="./app.js');
+for(const file of ['app.js','integration.css','impact-policy.js','market-pulse.js']){
  const hash=createHash('sha256').update(read('public/command-center/'+file)).digest('hex').slice(0,12);
  html=html.replace(new RegExp('\\./'+file.replace('.','\\.')+'(?:\\?v=[^"\\s]+)?','g'),'./'+file+'?v='+hash);
 }

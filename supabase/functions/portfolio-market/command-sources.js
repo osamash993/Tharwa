@@ -49,3 +49,9 @@ export async function getDividends(value,options={}){
   return {ok:true,results,at:Date.now()};
  });
 }
+
+// The same authenticated quotation path, with a five-minute cache for the globe.
+export async function getGlobeQuotes(value){const l=list(value,40);return cached('globe:'+JSON.stringify(l),300000,async()=>{const quotes=await getPrices(l.map(x=>x.symbol).join(','));return {ok:true,quotes:Object.fromEntries(l.filter(x=>!quotes[x.symbol]?.error).map(x=>[x.key,{...quotes[x.symbol],symbol:x.symbol}])),unavailable:l.filter(x=>quotes[x.symbol]?.error).map(x=>x.key),at:Date.now()};});}
+export async function getMarketBriefing(){return cached('briefing-v1',900000,async()=>{
+ const feeds=[{url:'https://www.federalreserve.gov/feeds/press_monetary.xml',source:'Federal Reserve',countryCodes:['US']},{url:'https://feeds.finance.yahoo.com/rss/2.0/headline?s=%5EGSPC&region=US&lang=en-US',source:'Yahoo Finance'},{url:'https://feeds.finance.yahoo.com/rss/2.0/headline?s=%5EHSI&region=US&lang=en-US',source:'Yahoo Finance',countryCodes:['CN','HK']},{url:'https://feeds.finance.yahoo.com/rss/2.0/headline?s=GC%3DF&region=US&lang=en-US',source:'Yahoo Finance'}];
+ const items=[],unavailable=[];await Promise.all(feeds.map(async f=>{try{const r=await fetchRemote(f.url);if(r.getResponseCode()!==200)throw Error();const rows=parseNewsRSS(r.getContentText(),{name:'',symbol:''}).filter(n=>n.date&&Date.now()-Date.parse(n.date)<7*86400000&&/federal|fomc|fed\b|rates?|treasury|yields?|inflation|cpi|pce|payroll|employment|gdp|china|chinese|beijing|hong kong|oil|brent|opec|crude|tariff|sanction|war|gold|bullion|retail|pmi|ism\b/i.test(n.t));for(const n of rows)items.push({...n,source:f.source,scope:'macro',a:'اقتصاد وأسواق',related:[],countryCodes:f.countryCodes});}catch{unavailable.push(f.source);}}));return {ok:unavailable.length<feeds.length,items:[...new Map(items.map(n=>[n.url,n])).values()].sort((a,b)=>b.date.localeCompare(a.date)),unavailable};});}

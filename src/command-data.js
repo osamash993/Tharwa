@@ -5,11 +5,11 @@ export function setupCommandData({api,client,demo,onError}){
  const emit=()=>window.dispatchEvent(new Event('portfolio:changed'));
  const cached=new Map();
  const apply=data=>window.commandEngine?.applyState(data);
- const allowed=new Set(['getDividends','getHistory','getNews','getCalendar','getCompanyQuotes','getMarketStatus']);
+ const allowed=new Set(['getDividends','getHistory','getNews','getCalendar','getCompanyQuotes','getMarketStatus','getGlobeQuotes','getMarketBriefing']);
  async function market(method,...args){
   if(!allowed.has(method))return api.call(method,...args);
   if(demo)return {ok:false,error:'المصادر الخارجية غير متاحة في وضع التجربة'};
-  const key=JSON.stringify([method,args]),ttl=['getHistory','getDividends'].includes(method)?43200000:method==='getCalendar'?86400000:900000,hit=cached.get(key);
+  const key=JSON.stringify([method,args]),ttl=['getHistory','getDividends'].includes(method)?43200000:method==='getCalendar'?86400000:method==='getGlobeQuotes'?300000:900000,hit=cached.get(key);
   if(!(method==='getDividends'&&args[1]?.refresh===true)&&hit&&Date.now()-hit.at<ttl)return structuredClone(hit.data);
   try{const {data,error}=await api.market(method,args);if(error)throw error;if(data?.ok===false)throw Error(data.error||data.err||'المصدر غير متاح');cached.set(key,{at:Date.now(),data});marketStatus[method]={ok:true,at:Date.now()};return data;}
   catch(e){marketStatus[method]={ok:false,at:Date.now()};return {ok:false,error:e.message};}

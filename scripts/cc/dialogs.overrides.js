@@ -7,7 +7,7 @@ function openAsset(n){
   let inside='';
   if(d&&p.t==='Stock'&&d.kind==='etf'){
     inside=`<div class="sect"><i class="ti ti-microscope"></i> داخل الصندوق — حصتك الفعلية</div>`+(d.top||[]).slice(0,6).map(([k,ar,cc,wt])=>`<div class="row clk" onclick="openCompany('${k}')"><div class="nm"><div class="t" style="font-weight:500">${flag(cc)} ${ar}</div></div><span class="n mu">${fmt(wt,1)}%</span><span class="n" style="color:var(--cb);width:90px;text-align:left">${fmtC(p.val*wt/100)}</span></div>`).join('')
-     +`<div class="sect"><i class="ti ti-map-pin"></i> أكبر الدول</div>`+Object.entries(d.countries||{}).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([cc,wt])=>`<div class="row clk" onclick="openCountry('${cc}')"><div class="nm"><div class="t" style="font-weight:500">${flag(cc)} ${GEO_AR[cc]}</div></div><span class="n mu">${fmt(wt,1)}%</span><span class="n" style="color:var(--cb);width:90px;text-align:left">${fmtC(p.val*wt/100)}</span></div>`).join('');
+     +`<div class="sect"><i class="ti ti-map-pin"></i> كل الدول المتاحة</div>`+Object.entries(d.countries||{}).sort((a,b)=>b[1]-a[1]).map(([cc,wt])=>`<div class="row clk" onclick="openCountry('${cc}')"><div class="nm"><div class="t" style="font-weight:500">${flag(cc)} ${GEO_AR[cc]}</div></div><span class="n mu">${fmt(wt,1)}%</span><span class="n" style="color:var(--cb);width:90px;text-align:left">${fmtC(p.val*wt/100)}</span></div>`).join('');
   }
   const news=rankNews(NEWS.filter(x=>newsAssets(x).includes(n)));
   openHolo(`<div class="asset-dialog"><div class="asset-scroll" tabindex="0" aria-label="تفاصيل الأصل — تمرير عمودي">

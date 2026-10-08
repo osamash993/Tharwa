@@ -104,11 +104,7 @@ function xrMetrics(){return S.metrics;}
 let ranked=[];
 function renderXrHud(){
   XR=computeXray();const T=XR.total;ranked=Object.entries(XR.countries).sort((a,b)=>b[1]-a[1]);
-  $('gChips').innerHTML=`<div class="cell"><div class="l">دولة تستثمر فيها</div><div class="v n" style="color:var(--cb)">${ranked.length}</div></div>
-    <div class="cell"><div class="l">شركة عبر الصناديق</div><div class="v n">${fmt(XR.co)}</div></div>
-    <div class="cell"><div class="l">توزيع الأسواق</div><div class="v market-split"><span>متقدمة <bdi class="n">${fmt(XR.dev/T*100,0)}%</bdi></span><span>ناشئة <bdi class="n">${fmt(XR.em/T*100,0)}%</bdi></span></div></div>
-    <div class="cell"><div class="l">قيمة الأسهم والصناديق</div><div class="v n" style="color:var(--cb)">${fmtC(T)}</div></div>`;
-  $('gList').innerHTML=`<div class="tt">TOP EXPOSURE</div>`+ranked.slice(0,10).map(([cc,v])=>`<div class="gr clk ${focusCC===cc?'on':''}" data-cc="${cc}" onclick="flyTo('${cc}')" ondblclick="openCountry('${cc}')"><span class="k">${flag(cc)} ${GEO_AR[cc]}</span><span class="b"><i style="width:${v/ranked[0][1]*100}%"></i></span><span class="v n">${fmt(v/T*100,1)}%</span></div>`).join('');
+  renderGlobeHud();
   const M=xrMetrics(XR),g=M.total>=80?'ممتاز':M.total>=65?'جيد جداً':M.total>=50?'جيد':'يحتاج تنويع';
   $('hScore').textContent=M.total;$('hGrade').textContent=g;setTimeout(()=>$('hArc').setAttribute('stroke-dasharray',(M.total/100*251).toFixed(1)+' 252'),100);
   $('hRows').innerHTML=[['تنويع جغرافي',M.s.geo],['تنويع قطاعي',M.s.sec],['تنويع عملات',M.s.cur],['قلة التداخل',M.s.ovl],['توازن متقدمة/ناشئة',M.s.bal]]
@@ -162,15 +158,7 @@ function flyTo(cc){
   mode='fly';vel=0;setFocus(cc);
 }
 function toggleTour(){tour=!tour;$('tourBtn').innerHTML=tour?'<i class="ti ti-player-pause"></i> دوران تلقائي':'<i class="ti ti-player-play"></i> دوران تلقائي';}
-function renderFocus(){
-  const cc=focusCC;if(!cc||!XR)return;const v=XR.countries[cc],T=XR.total;
-  const cos=Object.values(XR.companies).filter(c=>c.cc===cc).sort((a,b)=>b.val-a.val).slice(0,3);
-  const f=$('focus');f.style.animation='none';f.offsetHeight;f.style.animation='focusIn .5s ease both';
-  f.innerHTML=`<div class="fh"><span class="fn">${flag(cc)} ${GEO_AR[cc]}</span><span class="tag">${cc} · ${geoPositionLabel(cc)}</span></div>
-    <div style="display:flex;align-items:baseline;gap:10px;margin-top:4px"><span class="fv n">${fmtC(v)}</span><span class="n mu">${fmt(v/T*100,1)}% من الأسهم والصناديق</span></div>
-    <div class="fc">عبر: ${XR.src[cc].map(s=>`${s.f} <span class="n">${fmt(s.w,1)}%</span>`).join(' · ')}${cos.length?'<br>أبرز الشركات: '+cos.map(c=>c.ar).join('، '):''}</div>
-    <div class="go" onclick="openCountry('${cc}')">فتح التفاصيل الكاملة ←</div>`;
-}
+function renderFocus(){if(!focusCC||!XR)return;if(pulseState().mode==='exposure')return renderExposureFocus();const cc=focusCC,f=$('focus');f.innerHTML=`<div class="fh"><span class="fn">${flag(cc)} ${esc(GEO_AR[cc]||cc)}</span><button class="pulse-more" onclick="openPulseCountry('${cc}')">التفاصيل ↗</button></div><div class="pulse-focus-body">${pulseCountryBody(cc)}${pulseState().mode==='events'?pulseItems(cc).slice(0,2).map(pulseItemButton).join(''):''}</div>`;}
 function draw(now){
   if(!W)resize();
   const dt=lastT?Math.min(.05,(now-lastT)/1000):0;lastT=now;
@@ -200,10 +188,10 @@ function draw(now){
   if(land){ctx.fillStyle='rgba(79,216,255,.07)';ctx.beginPath();path(land);ctx.fill();}
   const fa=Math.min(1,(now-focusT)/600); // تلاشي ناعم عند تغيير الدولة
   if(XR&&ranked.length){const mx=ranked[0][1];invFeat.forEach(f=>{const cc=NUM2A[+f.id],v=XR.countries[cc];if(!v)return;
-    const a=.12+.5*Math.sqrt(v/mx);ctx.fillStyle=`rgba(79,216,255,${cc===focusCC?Math.min(.9,a+.3*fa):a})`;ctx.beginPath();path(f);ctx.fill();});}
+    const a=.12+.5*Math.sqrt(v/mx);ctx.fillStyle=pulseMapColor(cc,cc===focusCC?Math.min(.9,a+.3*fa):a);ctx.beginPath();path(f);ctx.fill();});}
   if(borders){ctx.strokeStyle='rgba(79,216,255,.18)';ctx.lineWidth=.5;ctx.beginPath();path(borders);ctx.stroke();}
   if(land){ctx.strokeStyle='rgba(79,216,255,.5)';ctx.lineWidth=.7;ctx.beginPath();path(land);ctx.stroke();}
-  if(XR){ctx.lineWidth=1;ranked.slice(0,10).forEach(([cc])=>{const ll=LL[cc];if(!ll)return;ctx.strokeStyle=cc===focusCC?`rgba(180,243,255,${.35+.55*fa})`:'rgba(79,216,255,.3)';
+  if(XR){ctx.lineWidth=1;ranked.forEach(([cc])=>{const ll=LL[cc];if(!ll)return;ctx.strokeStyle=cc===focusCC?`rgba(180,243,255,${.35+.55*fa})`:'rgba(79,216,255,.3)';
     ctx.setLineDash([4,6]);ctx.lineDashOffset=-now/40;ctx.beginPath();path({type:'LineString',coordinates:[HOME,[ll[1],ll[0]]]});ctx.stroke();});ctx.setLineDash([]);}
   ctx.strokeStyle='rgba(79,216,255,.55)';ctx.lineWidth=1.2;ctx.beginPath();path({type:'Sphere'});ctx.stroke();
   markers=[];const placed=[];
@@ -224,12 +212,12 @@ function draw(now){
       const dx=big?(x>W-280?-1:1):(x<cx?-1:1),grow=big?(.6+.4*fa):1,lx=x+dx*(big?60:36)*grow,ly=y-(big?44:24)*grow;
       ctx.strokeStyle=big?'rgba(220,250,255,.9)':'rgba(79,216,255,.6)';ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(lx,ly);ctx.lineTo(lx+dx*(big?14:8),ly);ctx.stroke();
       ctx.font=`${big?600:500} ${big?13:11}px 'IBM Plex Sans Arabic',sans-serif`;ctx.direction='rtl';
-      const t1=`${GEO_AR[cc]}  ${fmt(v/T*100,1)}%`,w1=ctx.measureText(t1).width,bw=w1+16,bh=big?40:20;
+      const t1=pulseMapLabel(cc,v,T),w1=ctx.measureText(t1).width,bw=w1+16,bh=big?40:20;
       const bx=dx>0?lx+dx*(big?16:10):lx+dx*(big?16:10)-bw,by=ly-bh/2;
       ctx.fillStyle=big?'rgba(3,18,30,.92)':'rgba(3,18,30,.75)';ctx.fillRect(bx,by,bw,bh);
       ctx.strokeStyle=big?'rgba(180,243,255,.8)':'rgba(79,216,255,.4)';ctx.strokeRect(bx,by,bw,bh);
       ctx.fillStyle=big?'#ffffff':'#cfeefc';ctx.textAlign='right';ctx.fillText(t1,bx+bw-8,by+(big?16:14));
-      if(big){ctx.font="600 12px Rajdhani,sans-serif";ctx.direction='ltr';ctx.fillStyle='#4fd8ff';ctx.fillText(fmtC(v),bx+bw-8,by+32);}
+      if(big){ctx.font="600 12px Rajdhani,sans-serif";ctx.direction='ltr';ctx.fillStyle='#4fd8ff';ctx.fillText(pulseState().mode==='exposure'?fmtC(v):(TharwaPulse.config(cc).label||''),bx+bw-8,by+32);}
       ctx.globalAlpha=1;
     });}
   requestAnimationFrame(draw);
@@ -245,7 +233,7 @@ cv.addEventListener('pointerup',e=>{dragging=false;cv.classList.remove('drag');m
   if(moved<5){vel=0;const rc=cv.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top;
     let best=null,bd=20;markers.forEach(m=>{const d=Math.hypot(m.x-mx,m.y-my);if(d<bd){bd=d;best=m;}});
     if(!best){const ll=proj.invert([mx,my]);if(ll){const f=invFeat.find(f=>d3.geoContains(f,ll));if(f)best={cc:NUM2A[+f.id]};}}
-    if(best&&XR.countries[best.cc]){flyTo(best.cc);openCountry(best.cc);}}});
+    if(best&&XR.countries[best.cc]){flyTo(best.cc);if(pulseState().mode==='exposure')openCountry(best.cc);else openPulseCountry(best.cc);}}});
 
 
 let selM=new Date().getMonth();let selectedYear=new Date().getFullYear();
@@ -466,7 +454,7 @@ function buildEvents(){
  const result=[...calendarData.filter(e=>e.c!=='div'),...dividendCalendarEvents(),...(ST.events||[]).map(e=>({...e,s:'موعد خاص',src:'يدوي',on:"openSettings('events')"}))];
  if(S.zakat.hawl)result.push({c:'zakat',d:S.zakat.hawl.dueStr,t:'حول الزكاة',s:'من إعداداتك',src:'محسوب',on:'openZakat()'});
  const forecast=S.projections.find(x=>x.r===.07);if(forecast?.months>0&&forecast.months<600){const d=new Date();d.setMonth(d.getMonth()+forecast.months);result.push({c:'goal',d:d.toISOString().slice(0,10),t:'هدف التقاعد — تقديري',s:'سيناريو عائد 7% مع متوسط استثمارك الحالي',src:'تقدير',on:'openGoals()'});}
- return result.map(e=>({...e,days:Math.max(0,Math.ceil((new Date(e.d+'T00:00:00+03:00')-new Date(new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Riyadh'})+'T00:00:00+03:00'))/864e5))})).filter(e=>/^\d{4}-\d{2}-\d{2}$/.test(e.d)&&e.d>=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Riyadh'})&&ST.evOn[e.c]!==false).map(e=>({...e,importance:impactOf(e)})).sort((a,b)=>(a.atUTC||a.d+'T23:59:59Z').localeCompare(b.atUTC||b.d+'T23:59:59Z'));
+ return result.map(e=>({...e,days:Math.max(0,Math.ceil((new Date(e.d+'T00:00:00+03:00')-new Date(new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Riyadh'})+'T00:00:00+03:00'))/864e5))})).filter(e=>/^\d{4}-\d{2}-\d{2}$/.test(e.d)&&e.d>=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Riyadh'})&&ST.evOn[e.c]!==false).map(e=>({...e,importance:impactOf(e)})).sort((a,b)=>a.d.localeCompare(b.d));
 }
 let EV=[],evSel=null;
 const rcv=$('radarEv'),rctx=rcv.getContext('2d');let RW=0,RDPR=1;
@@ -498,13 +486,13 @@ function drawRadar(now){
 }
 rcv.addEventListener('click',e=>{const r=rcv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,R=RW/2-24;
   let best=-1,bd=14;EV.forEach((ev,i)=>{const [x,y]=evPos(ev,i,R,RW/2,RW/2);const d=Math.hypot(x-mx,y-my);if(d<bd){bd=d;best=i;}});if(best>=0){evSel=best;renderEvList();}});
-function cd(e){if(!e.atUTC)return e.days===0?'اليوم · الساعة غير معلنة':e.days+' يوم · الساعة غير معلنة';const ms=Date.parse(e.atUTC)-Date.now();if(ms<=0)return 'مرّ الموعد · راجع المصدر للنتيجة';const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);return d>0?`${d} يوم · ${h} ساعة`:`${h} ساعة · ${m} دقيقة`;}
+function cd(e){return TharwaPulse.dayLabel(e.d);}
 function renderEvList(){
- const n=EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now());$('evNext').innerHTML=n?`<div class="l">الحدث القادم · ${esc(EV_CAT[n.c]?.[0]||'حدث')}</div><div class="next-event-title">${esc(n.t)}</div><div class="n" id="evCd">${cd(n)}</div>`:'<div class="mu">لا مواعيد قادمة متاحة</div>';
+ const n=EV[0];$('evNext').innerHTML=n?`<div class="l">الحدث القادم · ${esc(EV_CAT[n.c]?.[0]||'حدث')}</div><div class="next-event-title">${esc(n.t)}</div><div class="n" id="evCd">${cd(n)}</div>`:'<div class="mu">لا مواعيد قادمة متاحة</div>';
  let controls=$('radarControls');if(!controls){controls=document.createElement('div');controls.id='radarControls';controls.className='radar-controls';controls.innerHTML='<span>الأهمية: <b class="impact-high">مرتفعة</b> · <b class="impact-medium">متوسطة</b> · <b class="impact-low">منخفضة</b></span><button class="fbtn sm" onclick="openRadarFull()">عرض موسّع ↗</button>';$('evList').before(controls);}
  $('evList').innerHTML=(sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:'')+(EV.map(radarRow).join('')||'<div class="empty">لا أحداث متاحة من المصادر الحالية</div>');
 }
-setInterval(()=>{const el=$('evCd');if(el&&EV[0])el.textContent=cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0]);},1000);
+setInterval(()=>{const el=$('evCd');if(el&&EV[0])el.textContent=cd(EV[0]);},1000);
 
 function renderLab(){ORB=orbBodies();EV=buildEvents();renderEvList();setLab(labTab);}
 
@@ -512,7 +500,9 @@ function renderLab(){ORB=orbBodies();EV=buildEvents();renderEvList();setLab(labT
 let AMB_IDLE=60000;let ambOn=false,ambSince=0,ambIdleT=null,ambCardI=0,ambCardT=null,ambDriftT=null,ambClockT=null,ambPrevTour=true;
 function ambCards(){
  const T=totals(),list=POS.filter(p=>p.chg!=null),best=list.filter(p=>p.chg>0).sort((a,b)=>b.chg-a.chg)[0],worst=list.filter(p=>p.chg<0).sort((a,b)=>a.chg-b.chg)[0],top=ranked[0],pr=T.gC-T.gK,year=String(new Date().getFullYear()),net=TXNS.filter(t=>t[0].startsWith(year)).reduce((s,t)=>s+(t[2]==='Buy'?1:-1)*txSAR(t),0);
- return [['ti-trending-up','أكبر رابح اليوم',best?best.n+' '+fmt(best.chg,2)+'%':'غير متاح',''],['ti-trending-down','أكبر خاسر اليوم',worst?worst.n+' '+fmt(worst.chg,2)+'%':'غير متاح',''],['ti-target','هدف التقاعد',fmt(percent(T.total,T.goal),1)+'%',fmtC(Math.max(0,T.goal-T.total))+' متبقي'],['ti-chart-line','ربح النمو',fmtC(pr),fmt(percent(pr,T.gK),1)+'%'],['ti-radar','الحدث القادم',EV[0]?cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0]):'لا أحداث',EV[0]?.t||''],['ti-heart','صحة المحفظة',S.metrics.total+' / 100',''],['ti-world','أكبر تمركز',top?GEO_AR[top[0]]||top[0]:'غير متاح',top?fmt(percent(top[1],XR.total),1)+'%':''],['ti-arrows-exchange','صافي الاستثمار · '+year,fmtC(net),'']];
+ const pulse=pulseItems().slice(0,3).map(r=>[r.kind==='news'?'ti-news':'ti-world',r.kind==='news'?'مستجد مرتبط بمحفظتك':'موعد قريب',esc(r.item.t),r.kind==='event'?cd(r.item):esc((r.item.date||'').slice(0,10))]);
+ const markets=ranked.filter(([cc])=>Number.isFinite(pulseQuote(cc)?.changePct)).sort((a,b)=>Math.abs(pulseQuote(b[0]).changePct)*b[1]-Math.abs(pulseQuote(a[0]).changePct)*a[1]).slice(0,2).map(([cc,v])=>['ti-world','حركة سوق مرتبط بمحفظتك',esc(GEO_AR[cc]||cc)+' '+fmt(pulseQuote(cc).changePct,2)+'%',esc(TharwaPulse.config(cc).label)+' · حصتك '+fmt(percent(v,XR.total),1)+'% · '+pulseStamp(pulseQuote(cc).timestamp)]);
+ return [...pulse,...markets,['ti-trending-up','أكبر رابح اليوم',best?best.n+' '+fmt(best.chg,2)+'%':'غير متاح',''],['ti-trending-down','أكبر خاسر اليوم',worst?worst.n+' '+fmt(worst.chg,2)+'%':'غير متاح',''],['ti-target','هدف التقاعد',fmt(percent(T.total,T.goal),1)+'%',fmtC(Math.max(0,T.goal-T.total))+' متبقي'],['ti-chart-line','ربح النمو',fmtC(pr),fmt(percent(pr,T.gK),1)+'%'],['ti-radar','الحدث القادم',EV[0]?cd(EV[0]):'لا أحداث',EV[0]?.t||''],['ti-heart','صحة المحفظة',S.metrics.total+' / 100',''],['ti-world','أكبر تمركز',top?GEO_AR[top[0]]||top[0]:'غير متاح',top?fmt(percent(top[1],XR.total),1)+'%':''],['ti-arrows-exchange','صافي الاستثمار · '+year,fmtC(net),'']];
 }
 function ambShowCard(){
   const L=ambCards(),k=ambCardI%L.length,[ic,l,v,sub]=L[k],el=$('ambCard');
@@ -533,7 +523,7 @@ function ambRender(){
   renderMarketTicker('ambTick');
 }
 function ambTickClock(){const d=new Date();$('ambClock').textContent=d.toTimeString().slice(0,5);$('ambDate').textContent=d.toLocaleDateString('ar-SA-u-ca-gregory-nu-latn',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const c=$('ambCd');if(c&&EV[0])c.textContent=cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0]);}
+  const c=$('ambCd');if(c&&EV[0])c.textContent=cd(EV[0]);}
 function enterAmb(manual){
   if(ambOn||document.body.classList.contains('booting')||$('ov').classList.contains('open'))return;
   if(gAnim)return;
@@ -597,7 +587,7 @@ function openAsset(n){
   let inside='';
   if(d&&p.t==='Stock'&&d.kind==='etf'){
     inside=`<div class="sect"><i class="ti ti-microscope"></i> داخل الصندوق — حصتك الفعلية</div>`+(d.top||[]).slice(0,6).map(([k,ar,cc,wt])=>`<div class="row clk" onclick="openCompany('${k}')"><div class="nm"><div class="t" style="font-weight:500">${flag(cc)} ${ar}</div></div><span class="n mu">${fmt(wt,1)}%</span><span class="n" style="color:var(--cb);width:90px;text-align:left">${fmtC(p.val*wt/100)}</span></div>`).join('')
-     +`<div class="sect"><i class="ti ti-map-pin"></i> أكبر الدول</div>`+Object.entries(d.countries||{}).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([cc,wt])=>`<div class="row clk" onclick="openCountry('${cc}')"><div class="nm"><div class="t" style="font-weight:500">${flag(cc)} ${GEO_AR[cc]}</div></div><span class="n mu">${fmt(wt,1)}%</span><span class="n" style="color:var(--cb);width:90px;text-align:left">${fmtC(p.val*wt/100)}</span></div>`).join('');
+     +`<div class="sect"><i class="ti ti-map-pin"></i> كل الدول المتاحة</div>`+Object.entries(d.countries||{}).sort((a,b)=>b[1]-a[1]).map(([cc,wt])=>`<div class="row clk" onclick="openCountry('${cc}')"><div class="nm"><div class="t" style="font-weight:500">${flag(cc)} ${GEO_AR[cc]}</div></div><span class="n mu">${fmt(wt,1)}%</span><span class="n" style="color:var(--cb);width:90px;text-align:left">${fmtC(p.val*wt/100)}</span></div>`).join('');
   }
   const news=rankNews(NEWS.filter(x=>newsAssets(x).includes(n)));
   openHolo(`<div class="asset-dialog"><div class="asset-scroll" tabindex="0" aria-label="تفاصيل الأصل — تمرير عمودي">
@@ -1052,11 +1042,11 @@ async function refreshLive(button){if(button)button.disabled=true;try{await ENGI
 async function loadExternal(){
  if(document.hidden||S.status.demo)return;externalAt=Date.now();
  const holdings=Object.keys(AS).filter(k=>AS[k].yh&&AS[k].t!=='Property').map(k=>({name:k,symbol:AS[k].yh}));
- const [news,cal,quotes]=await Promise.all([ENGINE.market('getNews',newsRequests()),ENGINE.market('getCalendar',[...holdings,...companySymbols().filter(x=>percent(XR.companies[x.key].val,S.totals.total)>=(ST.evMin||.5)).map(x=>({symbol:x.symbol,name:XR.companies[x.key].ar,asset:XR.companies[x.key].via[0]?.f,component:true}))],{countries:Object.keys(XR.countries),msci:Object.values(XRAY_DATA).some(d=>/msci/i.test(d.label||d.desc||''))}),ENGINE.market('getCompanyQuotes',companySymbols()),loadDividendSources()]);
+ const [news,cal,quotes]=await Promise.all([ENGINE.market('getNews',newsRequests()),ENGINE.market('getCalendar',[...holdings,...companySymbols().filter(x=>percent(XR.companies[x.key].val,S.totals.total)>=(ST.evMin||.5)).map(x=>({symbol:x.symbol,name:XR.companies[x.key].ar,asset:XR.companies[x.key].via[0]?.f,component:true}))],{countries:Object.keys(XR.countries),msci:Object.values(XRAY_DATA).some(d=>/msci/i.test(d.label||d.desc||''))}),ENGINE.market('getCompanyQuotes',companySymbols()),loadDividendSources(),loadPulse(),loadPulseBrief()]);
  if(news.ok!==false){NEWS.splice(0,NEWS.length,...(news.items||[]).map(n=>({...n,a:ENGINE.clean(n.a),t:ENGINE.clean(n.t),ago:n.date?new Date(n.date).toLocaleDateString('ar-SA-u-ca-gregory'):n.source||'Yahoo',via:ENGINE.clean(n.via||''),related:(n.related||[]).map(r=>({...r,a:ENGINE.clean(r.a),via:ENGINE.clean(r.via),assets:(r.assets||[r.a]).map(ENGINE.clean)}))})));sourceErrors.news=news.unavailable?.join('، ')||null;}else sourceErrors.news=news.error;
  if(cal.ok!==false){calendarData=(cal.items||[]).map(e=>({...e,t:ENGINE.clean(e.t),s:ENGINE.clean(e.s),on:e.asset?`openAsset('${ENGINE.clean(e.asset)}')`:`openCalendarEvent('${e.d}','${ENGINE.clean(e.t)}')`}));sourceErrors.calendar=cal.unavailable?.join('، ')||null;}else sourceErrors.calendar=cal.error;
  if(quotes.ok!==false)companyQuotes=quotes.quotes||{};else sourceErrors.quotes=quotes.error;
- renderNews();renderLab();notifyDividendUpdates();updateConnection();if(ambOn)ambRender();await loadTickerQuotes();
+ renderNews();renderLab();renderGlobeHud();renderFocus();notifyDividendUpdates();updateConnection();if(ambOn)ambRender();await loadTickerQuotes();
 }
 function companySymbols(){return Object.values(XR.companies).sort((a,b)=>b.val-a.val).slice(0,35).map(c=>({key:c.k,symbol:companySymbol(c)})).filter(x=>x.symbol);}
 function companySymbol(c){
@@ -1090,8 +1080,8 @@ function installCommandCenter(){
  setInterval(()=>{if(!document.hidden){notifyDividendUpdates();renderLab();}},60000);
  parent.addEventListener('portfolio:changed',()=>{clearTimeout(pullTimer);pullTimer=setTimeout(()=>syncSnapshot(),80);});
  setInterval(()=>{if(!document.hidden&&parent.document.body.dataset.portfolioView==='cc')syncSnapshot();},2000);
- setInterval(()=>{if(document.hidden||parent.document.body.dataset.portfolioView!=='cc')return;if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();else if(Date.now()-externalAt>900000)loadExternal();},15000);
- document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncSnapshot();if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();}});
+ setInterval(()=>{if(document.hidden||parent.document.body.dataset.portfolioView!=='cc')return;loadPulse();if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();else if(Date.now()-externalAt>900000)loadExternal();},15000);
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncSnapshot();loadPulse();if(Date.now()-pricesAt>(S.marketOpen===false?900000:60000))refreshLive();}});
  document.querySelectorAll('button.ibtn').forEach(b=>{b.title=b.querySelector('.tip')?.textContent||'';b.setAttribute('aria-label',b.title);});
  syncSnapshot(true);setTimeout(loadExternal,1500);
 }
@@ -1408,8 +1398,44 @@ function impactOf(item){return TharwaImpact.assess(item,{positions:S.POS,funds:X
 function impactBadge(item){const a=item.importance||impactOf(item);return `<div class="impact-badges"><span class="impact-badge impact-${a.tier}">${a.label}${a.score==null?'':` · <bdi>${a.score}/100</bdi>`}</span><span>${a.personal?'خطة شخصية':a.pct==null||!a.positions.length?'نسبة الارتباط غير متاحة':`مرتبط بـ <bdi>${fmt(a.pct,1)}%</bdi> من إجمالي المحفظة`}</span>${a.incomplete?'<span>بيانات غير مكتملة</span>':''}</div>`;}
 function impactDetail(item){const a=impactOf(item);return `<div class="impact-explanation">${impactBadge(item)}<p>${esc(a.reason)}</p><small>${esc(a.confidence)} · درجة إرشادية، وليست احتمالًا أو نسبة ربح أو خسارة. الدرجة: أهمية الموضوع حتى 50، وحجم الارتباط حتى 35، وقرب الموعد أو حداثة الخبر حتى 15. مرتفعة من 70، ومتوسطة من 40. الخبر غير المؤكد الصلة لا يصنّف مرتفعًا.</small>${a.positions.length?`<p>الأصول المرتبطة: ${a.positions.map(p=>esc(p.name)).join('، ')}</p>`:''}</div>`;}
 function ratedNewsRow(x){const a=impactOf(x);return `<div class="nw clk importance-${a.tier}" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNews(${NEWS.indexOf(x)})}" onclick="openNews(${NEWS.indexOf(x)})"><span class="tg">${esc(x.scope==='macro'?'اقتصاد وأسواق':x.via||x.a)}</span><div class="tx">${esc(x.t)}${impactBadge(x)}<div class="mt">${esc(x.ago)} · ${esc(x.source||'Yahoo')}</div></div></div>`;}
-function eventTimeLabel(e){if(!e.atUTC||!Number.isFinite(Date.parse(e.atUTC)))return e.d+' · الساعة غير معلنة';return new Date(e.atUTC).toLocaleString('ar-SA-u-ca-gregory',{timeZone:'Asia/Riyadh',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})+' · السعودية';}
+function eventTimeLabel(e){return e.d;}
 function radarRow(e,i){const a=e.importance||impactOf(e);return `<div class="row clk radar-event importance-${a.tier} ${evSel===i?'evon':''}" role="button" tabindex="0" onmouseenter="evSel=${i}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" onclick="${e.on}"><i class="ti ${EV_CAT[e.c]?.[1]||'ti-calendar'}" style="color:${a.color}"></i><div class="nm"><div class="t">${esc(e.t)}</div>${impactBadge(e)}<div class="s">${esc(eventTimeLabel(e))} · ${esc(e.src||e.s||'')}</div><div class="radar-reason">${esc(a.reason)}</div></div></div>`;}
-function openRadarFull(){openHolo(modalHead('EVENT RADAR','رادار الأحداث','التوقيت المعروض بتوقيت السعودية')+`<div class="radar-expanded"><p class="sub">الألوان للأهمية، وليست لاتجاه السعر. النسبة تمثل حجم المراكز المرتبطة من إجمالي محفظتك.</p><div class="radar-controls"><button class="fbtn sm" onclick="radarViewMode('all')">كل الأحداث</button><button class="fbtn sm" onclick="radarViewMode('high')">الأهمية المرتفعة</button><button class="fbtn sm" onclick="radarViewMode('priority')">الأعلى أولوية</button></div><div id="expandedEvents">${EV.map(radarRow).join('')}</div>${sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:''}</div>`);}
+function openRadarFull(){openHolo(modalHead('EVENT RADAR','رادار الأحداث','المواعيد حسب اليوم')+`<div class="radar-expanded"><p class="sub">الألوان للأهمية، وليست لاتجاه السعر. النسبة تمثل حجم المراكز المرتبطة من إجمالي محفظتك.</p><div class="radar-controls"><button class="fbtn sm" onclick="radarViewMode('all')">كل الأحداث</button><button class="fbtn sm" onclick="radarViewMode('high')">الأهمية المرتفعة</button><button class="fbtn sm" onclick="radarViewMode('priority')">الأعلى أولوية</button></div><div id="expandedEvents">${EV.map(radarRow).join('')}</div>${sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:''}</div>`);}
 function radarViewMode(mode){const entries=EV.map((e,i)=>({e,i})).filter(({e})=>mode!=='high'||e.importance?.tier==='high');if(mode==='priority')entries.sort((a,b)=>(b.e.importance?.score??-1)-(a.e.importance?.score??-1)||a.e.days-b.e.days);$('expandedEvents').innerHTML=entries.map(({e,i})=>radarRow(e,i)).join('')||'<div class="empty">لا أحداث ضمن هذا التقييم</div>';}
+function pulseState(){return window._marketPulse||(window._marketPulse={mode:'today',quotes:{},at:0,error:null,busy:false,brief:[],briefError:null});}
+function pulseMode(value){if(!['today','fx','events','exposure'].includes(value))return;pulseState().mode=value;renderGlobeHud();renderFocus();}
+function pulseChange(value){return Number.isFinite(value)?`<bdi class="${value<0?'dn':'up'}">${value>0?'+':''}${fmt(value,2)}%</bdi>`:'<span class="mu">غير متاح</span>';}
+function pulseQuote(cc){return pulseState().quotes['market:'+cc];}
+function pulseFX(cc){return TharwaPulse.fx(TharwaPulse.config(cc).currency,pulseState().quotes,baseCur);}
+function pulseStamp(timestamp){return Number.isFinite(timestamp)&&timestamp>0?new Date(timestamp*1000).toLocaleString('ar-SA-u-ca-gregory',{timeZone:'Asia/Riyadh',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'لا يوجد سعر مؤرّخ';}
+function pulseRelated(item,cc){if(item.countryCodes?.length)return item.countryCodes.includes(cc);const names=impactOf(item).positions.map(p=>p.name);return (XR.src[cc]||[]).some(s=>names.includes(s.f));}
+function pulseItems(cc){const news=rankNews([...NEWS,...pulseState().brief]).filter((n,i,a)=>a.findIndex(x=>x.url===n.url)===i).filter(n=>n.date&&Date.now()-Date.parse(n.date)<=7*864e5&&impactOf(n).positions.length&&(!cc||pulseRelated(n,cc))).map(n=>({kind:'news',item:n,score:impactOf(n).score||0}));const events=EV.filter(e=>e.days<=7&&!impactOf(e).personal&&impactOf(e).positions.length&&(!cc||pulseRelated(e,cc))).map(e=>({kind:'event',item:e,score:impactOf(e).score||0}));return [...news,...events].sort((a,b)=>b.score-a.score||(a.item.d||a.item.date||'').localeCompare(b.item.d||b.item.date||''));}
+function pulseItemButton(row){const x=row.item;return `<button class="pulse-story importance-${impactOf(x).tier}" onclick='openPulseItem(${JSON.stringify(x.url||x.d+'|'+x.t).replaceAll("'",'&#39;')})'><span>${row.kind==='event'?'◷ '+cd(x):'◈ '+esc((x.date||'').slice(0,10))} · ${esc(impactOf(x).label)}</span><b>${esc(x.t)}</b></button>`;}
+function openPulseItem(key){const n=[...NEWS,...pulseState().brief].find(n=>n.url===key);if(n){if(!NEWS.some(x=>x.url===key))NEWS.push(n);return openNews(key);}const e=EV.find(e=>e.d+'|'+e.t===key);if(e){if(e.c==='div'&&e.asset)return openAsset(e.asset);return openCalendarEvent(e.d,e.t);}}
+function pulseHighlights(){const rows=pulseItems().slice(0,3);return rows.map(pulseItemButton).join('')||'<p class="mu">لا مستجدات مرتبطة متاحة من المصادر الحالية.</p>';}
+function renderGlobeHud(){
+ const state=pulseState(),m=state.mode,T=XR.total;let tabs=$('pulseTabs');if(!tabs){tabs=document.createElement('div');tabs.id='pulseTabs';tabs.className='pulse-tabs pe';$('globeWrap').append(tabs);}
+ tabs.innerHTML=[['today','اليوم'],['fx','العملات'],['events','أخبار وأحداث'],['exposure','توزيع استثماري']].map(([key,label])=>`<button class="${m===key?'on':''}" aria-pressed="${m===key}" onclick="pulseMode('${key}')">${label}</button>`).join('');
+ $('globeWrap').dataset.pulseMode=m;window._pulseScores=Object.fromEntries(ranked.map(([cc])=>[cc,pulseItems(cc)[0]?.score||0]));
+ const covered=ranked.filter(([cc])=>Number.isFinite(pulseQuote(cc)?.changePct)).length;
+ $('gChips').innerHTML=m==='exposure'?`<div class="cell"><div class="l">كل الدول المتاحة</div><div class="v n">${ranked.length}</div></div><div class="cell"><div class="l">الأسهم والصناديق</div><div class="v n">${fmtC(T)}</div></div><div class="cell"><div class="l">توزيع الأسواق</div><div class="market-split"><span>متقدمة <bdi>${fmt(percent(XR.dev,T))}%</bdi></span><span>ناشئة <bdi>${fmt(percent(XR.em,T))}%</bdi></span></div></div>`:`<div class="pulse-heading">الأهم لمحفظتك الآن</div>${pulseHighlights()}<button class="pulse-more" onclick="openPulseOverview()">فتح المتابعة كاملة ↗</button>`;
+ const ordered=m==='events'?[...ranked].sort((a,b)=>(pulseItems(b[0])[0]?.score||0)-(pulseItems(a[0])[0]?.score||0)):ranked;
+ $('gList').innerHTML=`<div class="pulse-heading">${{today:'حركة الأسواق',fx:'العملات مقابل '+baseCur,events:'مستجدات مرتبطة',exposure:'كل الدول · حسب الحصة'}[m]}</div><div class="pulse-country-list">`+ordered.map(([cc,v])=>{const q=pulseQuote(cc),fx=pulseFX(cc),items=m==='events'?pulseItems(cc):[];const value=m==='exposure'?`<bdi>${fmt(percent(v,T),1)}%</bdi>`:m==='events'?`<bdi>${items.length}</bdi>`:pulseChange(m==='fx'?fx?.changePct:q?.changePct);return `<button class="gr ${focusCC===cc?'on':''}" data-cc="${cc}" onclick="flyTo('${cc}')"><span class="k">${flag(cc)} ${esc(GEO_AR[cc]||cc)}</span><span class="v">${value}</span></button>`;}).join('')+`</div><div class="pulse-foot">${m==='exposure'?'حسب آخر تركيبة متاحة للصناديق':m==='fx'?'تغيّر العملة المحلية مقابل '+baseCur+'؛ ليس تعرّض الصندوق الصافي':m==='events'?'الذهبي للأهمية، وليس لاتجاه السعر':`مؤشرات متاحة: ${covered}/${ranked.length} · السياق لا يساوي عائد محفظتك`}</div>`;
+}
+function pulseCountryBody(cc){const q=pulseQuote(cc),cfg=TharwaPulse.config(cc),fx=pulseFX(cc),st=pulseState(),v=XR.countries[cc]||0;return `<div class="pulse-market"><span>${esc(cfg.label||'مؤشر غير مغطى')}</span><strong>${pulseChange(q?.changePct)}</strong></div><div class="pulse-session">${esc(TharwaPulse.session(q))}</div><div class="pulse-foot">آخر سعر: ${pulseStamp(q?.timestamp)} · <a href="https://finance.yahoo.com/quote/${encodeURIComponent(cfg.symbol||'')}" target="_blank" rel="noopener noreferrer">Yahoo Finance ↗</a> · قد تتأخر البيانات</div><div class="pulse-fx"><span>${esc(cfg.currency||'العملة غير متاحة')} / ${esc(baseCur)}</span><bdi>${fx?fmt(fx.rate,4):'—'}</bdi>${pulseChange(fx?.changePct)}</div><div class="pulse-foot">العملة المحلية مقابل ${esc(baseCur)} · ${pulseStamp(fx?.timestamp)}<br>سياق للعملة؛ التحوّط وانكشاف إيرادات الشركات غير محسوبين.</div><div class="pulse-exposure">حصتك: <bdi>${fmtC(v)}</bdi> · <bdi>${fmt(percent(v,XR.total),1)}%</bdi> من الأسهم والصناديق</div><div class="pulse-foot">عبر: ${(XR.src[cc]||[]).map(s=>esc(s.f)).join('، ')||'غير متاح'}</div>${st.error?'<p class="coverage-warning">تعذّر تحديث بعض الأسعار؛ راجع وقت آخر سعر.</p>':''}`;}
+function openPulseCountry(cc){openHolo(modalHead('MARKET PULSE',flag(cc)+' '+(GEO_AR[cc]||cc),'السوق والعملات والمستجدات المرتبطة باستثماراتك')+`<div class="pulse-dialog">${pulseCountryBody(cc)}<div class="sect">أخبار وأحداث مرتبطة</div>${pulseItems(cc).map(pulseItemButton).join('')||'<p class="mu">لا مستجدات مرتبطة متاحة حاليًا</p>'}<button class="fbtn sm" onclick="openCountry('${cc}')">تفاصيل توزيع استثماراتي</button></div>`);}
+function openPulseOverview(){const st=pulseState();openHolo(modalHead('PORTFOLIO PULSE','ماذا تغيّر حول محفظتي؟','متابعة الأسعار كل 5 دقائق أثناء فتح الأداة؛ الأخبار كل 15 دقيقة')+`<div class="pulse-dialog"><p class="sub">مؤشر السوق سياق عام؛ قد تختلف حركة أصولك عنه. الألوان الزرقاء للصعود والحمراء للهبوط والذهبية لأهمية المستجدات.</p>${st.briefError?'<p class="coverage-warning">بعض مصادر الأخبار الاقتصادية غير متاحة حاليًا.</p>':''}<div class="sect">حركة الأسواق · كل الدول المتاحة</div><div class="pulse-overview-grid">${ranked.map(([cc])=>`<button class="pulse-summary" onclick="openPulseCountry('${cc}')"><b>${flag(cc)} ${esc(GEO_AR[cc]||cc)}</b>${pulseChange(pulseQuote(cc)?.changePct)}<small>${esc(TharwaPulse.session(pulseQuote(cc)))}</small><small>${pulseStamp(pulseQuote(cc)?.timestamp)}</small></button>`).join('')}</div><div class="sect">الأخبار والأحداث حسب الأهمية</div>${pulseItems().map(pulseItemButton).join('')||'<p class="mu">لا مستجدات مرتبطة متاحة حاليًا</p>'}</div>`);}
+async function loadPulse(){const state=pulseState(),req=TharwaPulse.requests(Object.keys(XR.countries),baseCur),signature=JSON.stringify(req);if(state.busy||document.hidden||S.status.demo||(state.signature===signature&&Date.now()-state.at<300000))return;state.busy=true;try{let failed=false;for(let i=0;i<req.length;i+=40){const r=await ENGINE.market('getGlobeQuotes',req.slice(i,i+40));if(r.ok===false){failed=true;continue;}Object.assign(state.quotes,r.quotes||{});if(r.unavailable?.length)failed=true;}state.error=failed?'تغطية جزئية للأسعار':null;state.at=Date.now();state.signature=signature;}catch{state.error='تعذر التحديث';}finally{state.busy=false;renderGlobeHud();renderFocus();}}
+async function loadPulseBrief(){const s=pulseState();try{const r=await ENGINE.market('getMarketBriefing');if(r.ok!==false){s.brief=r.items||[];s.briefError=r.unavailable?.length?r.unavailable.join('، '):null;}else s.briefError=r.error;}catch{s.briefError='الأخبار الاقتصادية غير متاحة';}renderGlobeHud();renderFocus();}
+function pulseMapColor(cc,alpha){const m=pulseState().mode;if(m==='exposure')return `rgba(79,216,255,${alpha})`;if(m==='events'){const important=(window._pulseScores||{})[cc];return important>=70?`rgba(244,184,96,${alpha})`:important>0?`rgba(117,201,255,${alpha})`:`rgba(100,123,140,${alpha*.5})`;}const n=m==='fx'?pulseFX(cc)?.changePct:pulseQuote(cc)?.changePct;return !Number.isFinite(n)?`rgba(100,123,140,${alpha*.5})`:n<0?`rgba(255,107,90,${alpha})`:`rgba(79,216,255,${alpha})`;}
+function pulseMapLabel(cc,v,total){const m=pulseState().mode;if(m==='exposure')return (GEO_AR[cc]||cc)+' '+fmt(percent(v,total),1)+'%';if(m==='events')return (GEO_AR[cc]||cc)+((window._pulseScores||{})[cc]>=70?' · حدث مهم':'');const n=m==='fx'?pulseFX(cc)?.changePct:pulseQuote(cc)?.changePct;return (GEO_AR[cc]||cc)+' '+(Number.isFinite(n)?(n>0?'+':'')+fmt(n,2)+'%':'—');}
+function renderExposureFocus(){
+  const cc=focusCC;if(!cc||!XR)return;const v=XR.countries[cc],T=XR.total;
+  const cos=Object.values(XR.companies).filter(c=>c.cc===cc).sort((a,b)=>b.val-a.val).slice(0,3);
+  const f=$('focus');f.style.animation='none';f.offsetHeight;f.style.animation='focusIn .5s ease both';
+  f.innerHTML=`<div class="fh"><span class="fn">${flag(cc)} ${GEO_AR[cc]}</span><span class="tag">${cc} · ${geoPositionLabel(cc)}</span></div>
+    <div style="display:flex;align-items:baseline;gap:10px;margin-top:4px"><span class="fv n">${fmtC(v)}</span><span class="n mu">${fmt(v/T*100,1)}% من الأسهم والصناديق</span></div>
+    <div class="fc">عبر: ${XR.src[cc].map(s=>`${s.f} <span class="n">${fmt(s.w,1)}%</span>`).join(' · ')}${cos.length?'<br>أبرز الشركات: '+cos.map(c=>c.ar).join('، '):''}</div>
+    <div class="go" onclick="openCountry('${cc}')">فتح التفاصيل الكاملة ←</div>`;
+}
 installCommandCenter();boot();
