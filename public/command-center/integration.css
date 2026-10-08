@@ -151,3 +151,6 @@ body.reduce .holo,body.reduce .hb>*{animation:none!important;clip-path:none!impo
 .radar-expanded{max-width:100%;overflow-x:hidden}.radar-expanded .radar-event{width:auto}.coverage-warning{color:#f4b860;font-size:11px;line-height:1.9;overflow-wrap:anywhere}.next-event-title{font-size:13px;line-height:1.8;font-weight:600}#evCd{direction:rtl;unicode-bidi:isolate;text-align:right;font-family:var(--ui);font-size:16px;font-weight:600;letter-spacing:0;font-variant-numeric:tabular-nums;color:#fff;line-height:1.8}
 @media(max-width:1300px){.lab{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){.events-panel #evList{min-height:240px;max-height:420px}.events-panel #radarEv{max-width:260px}.impact-badges{font-size:10px}}
+
+/* The live event card contains Arabic prose, not a numeric-only value. */
+#ambCard:has(.ti-radar) .v{direction:rtl;unicode-bidi:isolate;text-align:right;font-family:var(--ui);letter-spacing:0;line-height:1.6;font-size:clamp(20px,1.5vw,28px);overflow-wrap:break-word}
