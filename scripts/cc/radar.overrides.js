@@ -15,13 +15,26 @@ function ratedNewsRow(x){const a=impactOf(x);return `<div class="nw clk importan
 function eventTimeLabel(e){return e.d;}
 function cd(e){return TharwaPulse.dayLabel(e.d);}
 function radarRow(e,i){const a=e.importance||impactOf(e);return `<div class="row clk radar-event importance-${a.tier} ${evSel===i?'evon':''}" role="button" tabindex="0" onmouseenter="evSel=${i}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" onclick="${e.on}"><i class="ti ${EV_CAT[e.c]?.[1]||'ti-calendar'}" style="color:${a.color}"></i><div class="nm"><div class="t">${esc(e.t)}</div>${impactBadge(e)}<div class="s">${esc(eventTimeLabel(e))} · ${esc(e.src||e.s||'')}</div><div class="radar-reason">${esc(a.reason)}</div></div></div>`;}
+function radarCard(e,i){
+ const a=e.importance||impactOf(e);
+ return `<button class="radar-card importance-${a.tier}" style="--event-color:${a.color}" onmouseenter="evSel=${i}" onfocus="evSel=${i}" onclick="${e.on}"><span class="radar-card-category"><i class="ti ${EV_CAT[e.c]?.[1]||'ti-calendar'}"></i> ${esc(EV_CAT[e.c]?.[0]||'حدث')}</span><strong>${esc(e.t)}</strong><span class="radar-card-date"><bdi>${esc(eventTimeLabel(e))}</bdi> · ${esc(cd(e))}</span><span class="impact-badge impact-${a.tier}">${esc(a.label)}</span></button>`;
+}
 function renderEvList(){
  const n=EV[0];$('evNext').innerHTML=n?`<div class="l">الحدث القادم · ${esc(EV_CAT[n.c]?.[0]||'حدث')}</div><div class="next-event-title">${esc(n.t)}</div><div class="n" id="evCd">${cd(n)}</div>`:'<div class="mu">لا مواعيد قادمة متاحة</div>';
- let controls=$('radarControls');if(!controls){controls=document.createElement('div');controls.id='radarControls';controls.className='radar-controls';controls.innerHTML='<span>الأهمية: <b class="impact-high">مرتفعة</b> · <b class="impact-medium">متوسطة</b> · <b class="impact-low">منخفضة</b></span><button class="fbtn sm" onclick="openRadarFull()">عرض موسّع ↗</button>';$('evList').before(controls);}
- $('evList').innerHTML=(sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:'')+(EV.map(radarRow).join('')||'<div class="empty">لا أحداث متاحة من المصادر الحالية</div>');
+ let controls=$('radarControls');if(!controls){controls=document.createElement('div');controls.id='radarControls';controls.className='radar-controls';$('evList').before(controls);}
+ controls.innerHTML=`<span>أقرب ${Math.min(9,EV.length)} أحداث · <b class="impact-high">مرتفعة</b> · <b class="impact-medium">متوسطة</b> · <b class="impact-low">منخفضة</b></span>`;
+ $('evList').innerHTML=(sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:'')+`<div class="radar-card-grid">${EV.slice(0,9).map(radarCard).join('')||'<div class="empty">لا أحداث متاحة من المصادر الحالية</div>'}</div><button class="fbtn panel-more" onclick="openRadarFull()">كل الأحداث (${EV.length}) <i class="ti ti-arrow-up-left"></i></button>`;
 }
-function openRadarFull(){openHolo(modalHead('EVENT RADAR','رادار الأحداث','المواعيد حسب اليوم')+`<div class="radar-expanded"><p class="sub">الألوان للأهمية، وليست لاتجاه السعر. النسبة تمثل حجم المراكز المرتبطة من إجمالي محفظتك.</p><div class="radar-controls"><button class="fbtn sm" onclick="radarViewMode('all')">كل الأحداث</button><button class="fbtn sm" onclick="radarViewMode('high')">الأهمية المرتفعة</button><button class="fbtn sm" onclick="radarViewMode('priority')">الأعلى أولوية</button></div><div id="expandedEvents">${EV.map(radarRow).join('')}</div>${sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:''}</div>`);}
-function radarViewMode(mode){const entries=EV.map((e,i)=>({e,i})).filter(({e})=>mode!=='high'||e.importance?.tier==='high');if(mode==='priority')entries.sort((a,b)=>(b.e.importance?.score??-1)-(a.e.importance?.score??-1)||a.e.days-b.e.days);$('expandedEvents').innerHTML=entries.map(({e,i})=>radarRow(e,i)).join('')||'<div class="empty">لا أحداث ضمن هذا التقييم</div>';}
+function openRadarFull(mode='all'){
+ activeDialog={fn:'openRadarFull',args:[mode]};
+ openHolo(modalHead('EVENT RADAR','كل الأحداث',`${EV.length} موعد · حسب اليوم`)+`<div class="radar-expanded"><p class="sub">الألوان للأهمية، وليست لاتجاه السعر. النسبة تمثل حجم المراكز المرتبطة من إجمالي محفظتك.</p><div class="radar-controls"><button class="fbtn sm" onclick="radarViewMode('all')">كل الأحداث</button><button class="fbtn sm" onclick="radarViewMode('high')">الأهمية المرتفعة</button><button class="fbtn sm" onclick="radarViewMode('priority')">الأعلى أولوية</button></div><div id="expandedEvents"></div>${sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:''}</div>`);
+ radarViewMode(mode);
+}
+function radarViewMode(mode){
+ activeDialog={fn:'openRadarFull',args:[mode]};
+ const entries=EV.map((e,i)=>({e,i})).filter(({e})=>mode!=='high'||e.importance?.tier==='high');if(mode==='priority')entries.sort((a,b)=>(b.e.importance?.score??-1)-(a.e.importance?.score??-1)||a.e.days-b.e.days);
+ $('expandedEvents').innerHTML=entries.map(({e,i})=>radarRow(e,i)).join('')||'<div class="empty">لا أحداث ضمن هذا التقييم</div>';
+}
 
 function drawRadar(now){
   requestAnimationFrame(drawRadar);if(!RW)return;

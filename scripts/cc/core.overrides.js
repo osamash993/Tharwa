@@ -62,10 +62,20 @@ function renderMkt(){
  $('mkList').innerHTML=Object.entries(AS).filter(([n,p])=>assetVisible(n)&&['Stock','Gold'].includes(p.t)).map(([n,p])=>{const pos=p.hi>p.lo&&p.p!=null?Math.max(0,Math.min(100,(p.p-p.lo)/(p.hi-p.lo)*100)):null;
   return `<div class="row clk" onclick="openAsset('${n}')"><div class="nm"><div class="t">${n}</div><div class="s">${p.full}</div></div><div class="w52" title="${pos==null?'نطاق 52 أسبوع غير متاح':'نطاق 52 أسبوع'}">${pos==null?'—':`<i style="right:${pos}%"></i>`}</div><div class="vl"><span class="n">${natFmt(p.p,p.cur)}</span>${p.t==='Gold'?`<small class="n mu">${natFmt(S.goldOunce,'USD')} / oz</small>`:''}<span class="pill ${p.chg<0?'dn':'up'}">${p.chg==null?'غير متاح':fmt(p.chg,2)+'%'}</span></div></div>`;}).join('')||'<div class="empty">لا أصول مسجّلة</div>';
 }
+function dashboardNews(filter='all'){
+ return rankNews(NEWS.filter(n=>(n.scope==='macro'||newsAssets(n).some(assetVisible))&&(filter==='all'||newsAssets(n).includes(filter))));
+}
 function renderNews(){
  $('nwFl').innerHTML=[['all','الكل'],...Object.keys(AS).filter(k=>AS[k].yh&&assetVisible(k)).map(k=>[k,k])].map(([k,l])=>`<button class="${nwF===k?'on':''}" onclick="nwF='${k}';renderNews()">${l}</button>`).join('');
- const list=rankNews(NEWS.filter(n=>(n.scope==='macro'||newsAssets(n).some(assetVisible))&&(nwF==='all'||newsAssets(n).includes(nwF))));$('nwList').innerHTML=list.length?list.map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار مرتبطة متاحة حاليًا')+'</div>';
- let note=$('newsOrder');if(!note){note=document.createElement('div');note.id='newsOrder';note.className='news-order';$('nwList').before(note);}note.textContent=`${list.length} خبر · الأهمية تقديرية؛ النسبة حصتك المرتبطة وليست تغيرًا متوقعًا بالسعر${sourceErrors.news?' · '+sourceErrors.news:''}`;
+ const list=dashboardNews(nwF),all=dashboardNews();
+ $('nwList').innerHTML=(list.length?list.slice(0,4).map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار مرتبطة متاحة حاليًا')+'</div>')+`<button class="fbtn panel-more" onclick="openNewsFull()">كل الأخبار (${all.length}) <i class="ti ti-arrow-up-left"></i></button>`;
+ let note=$('newsOrder');if(!note){note=document.createElement('div');note.id='newsOrder';note.className='news-order';$('nwList').before(note);}
+ note.textContent=`أهم ${Math.min(4,list.length)} من ${list.length} خبر · الأهمية تقديرية${sourceErrors.news?' · '+sourceErrors.news:''}`;
+}
+function openNewsFull(filter='all'){
+ activeDialog={fn:'openNewsFull',args:[filter]};
+ const list=dashboardNews(filter),filters=[['all','الكل'],...Object.keys(AS).filter(k=>AS[k].yh&&assetVisible(k)).map(k=>[k,k])];
+ openHolo(modalHead('NEWS','كل الأخبار',`${list.length} خبر · حسب الأهمية والحداثة`)+`<div class="news-expanded"><div class="fl">${filters.map(([k,l])=>`<button class="${filter===k?'on':''}" onclick="openNewsFull('${k}')">${esc(l)}</button>`).join('')}</div><p class="sub">الأهمية تقديرية؛ النسبة حصتك المرتبطة وليست تغيرًا متوقعًا بالسعر.</p>${sourceErrors.news?`<p class="coverage-warning">${esc(sourceErrors.news)}</p>`:''}${list.map(newsRow).join('')||'<div class="empty">لا أخبار متاحة حاليًا</div>'}</div>`);
 }
 function newsAssets(n){return impactOf(n).positions.map(p=>p.name);}
 function newsExposure(n){return Math.max(0,...(n.related||[{a:n.a,via:n.via}]).map(r=>{const co=r.key?XR.companies[r.key]:Object.values(XR.companies).find(c=>c.ar===r.via);return co?.val??S.POS.find(p=>p.n===r.a)?.val??0;}));}

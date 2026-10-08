@@ -92,8 +92,10 @@ function renderMkt(){
 let nwF='all';
 function renderNews(){
  $('nwFl').innerHTML=[['all','الكل'],...Object.keys(AS).filter(k=>AS[k].yh&&assetVisible(k)).map(k=>[k,k])].map(([k,l])=>`<button class="${nwF===k?'on':''}" onclick="nwF='${k}';renderNews()">${l}</button>`).join('');
- const list=rankNews(NEWS.filter(n=>(n.scope==='macro'||newsAssets(n).some(assetVisible))&&(nwF==='all'||newsAssets(n).includes(nwF))));$('nwList').innerHTML=list.length?list.map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار مرتبطة متاحة حاليًا')+'</div>';
- let note=$('newsOrder');if(!note){note=document.createElement('div');note.id='newsOrder';note.className='news-order';$('nwList').before(note);}note.textContent=`${list.length} خبر · الأهمية تقديرية؛ النسبة حصتك المرتبطة وليست تغيرًا متوقعًا بالسعر${sourceErrors.news?' · '+sourceErrors.news:''}`;
+ const list=dashboardNews(nwF),all=dashboardNews();
+ $('nwList').innerHTML=(list.length?list.slice(0,4).map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار مرتبطة متاحة حاليًا')+'</div>')+`<button class="fbtn panel-more" onclick="openNewsFull()">كل الأخبار (${all.length}) <i class="ti ti-arrow-up-left"></i></button>`;
+ let note=$('newsOrder');if(!note){note=document.createElement('div');note.id='newsOrder';note.className='news-order';$('nwList').before(note);}
+ note.textContent=`أهم ${Math.min(4,list.length)} من ${list.length} خبر · الأهمية تقديرية${sourceErrors.news?' · '+sourceErrors.news:''}`;
 }
 const newsRow=x=>ratedNewsRow(x);
 
@@ -496,8 +498,9 @@ rcv.addEventListener('click',e=>{const r=rcv.getBoundingClientRect(),mx=e.client
 function cd(e){return TharwaPulse.dayLabel(e.d);}
 function renderEvList(){
  const n=EV[0];$('evNext').innerHTML=n?`<div class="l">الحدث القادم · ${esc(EV_CAT[n.c]?.[0]||'حدث')}</div><div class="next-event-title">${esc(n.t)}</div><div class="n" id="evCd">${cd(n)}</div>`:'<div class="mu">لا مواعيد قادمة متاحة</div>';
- let controls=$('radarControls');if(!controls){controls=document.createElement('div');controls.id='radarControls';controls.className='radar-controls';controls.innerHTML='<span>الأهمية: <b class="impact-high">مرتفعة</b> · <b class="impact-medium">متوسطة</b> · <b class="impact-low">منخفضة</b></span><button class="fbtn sm" onclick="openRadarFull()">عرض موسّع ↗</button>';$('evList').before(controls);}
- $('evList').innerHTML=(sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:'')+(EV.map(radarRow).join('')||'<div class="empty">لا أحداث متاحة من المصادر الحالية</div>');
+ let controls=$('radarControls');if(!controls){controls=document.createElement('div');controls.id='radarControls';controls.className='radar-controls';$('evList').before(controls);}
+ controls.innerHTML=`<span>أقرب ${Math.min(9,EV.length)} أحداث · <b class="impact-high">مرتفعة</b> · <b class="impact-medium">متوسطة</b> · <b class="impact-low">منخفضة</b></span>`;
+ $('evList').innerHTML=(sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:'')+`<div class="radar-card-grid">${EV.slice(0,9).map(radarCard).join('')||'<div class="empty">لا أحداث متاحة من المصادر الحالية</div>'}</div><button class="fbtn panel-more" onclick="openRadarFull()">كل الأحداث (${EV.length}) <i class="ti ti-arrow-up-left"></i></button>`;
 }
 setInterval(()=>{const el=$('evCd');if(el&&EV[0])el.textContent=cd(EV[0]);},1000);
 
@@ -1420,8 +1423,16 @@ function impactDetail(item){const a=impactOf(item);return `<div class="impact-ex
 function ratedNewsRow(x){const a=impactOf(x);return `<div class="nw clk importance-${a.tier}" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNews(${NEWS.indexOf(x)})}" onclick="openNews(${NEWS.indexOf(x)})"><span class="tg">${esc(x.scope==='macro'?'اقتصاد وأسواق':x.via||x.a)}</span><div class="tx">${esc(x.t)}${impactBadge(x)}<div class="mt">${esc(x.ago)} · ${esc(x.source||'Yahoo')}</div></div></div>`;}
 function eventTimeLabel(e){return e.d;}
 function radarRow(e,i){const a=e.importance||impactOf(e);return `<div class="row clk radar-event importance-${a.tier} ${evSel===i?'evon':''}" role="button" tabindex="0" onmouseenter="evSel=${i}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" onclick="${e.on}"><i class="ti ${EV_CAT[e.c]?.[1]||'ti-calendar'}" style="color:${a.color}"></i><div class="nm"><div class="t">${esc(e.t)}</div>${impactBadge(e)}<div class="s">${esc(eventTimeLabel(e))} · ${esc(e.src||e.s||'')}</div><div class="radar-reason">${esc(a.reason)}</div></div></div>`;}
-function openRadarFull(){openHolo(modalHead('EVENT RADAR','رادار الأحداث','المواعيد حسب اليوم')+`<div class="radar-expanded"><p class="sub">الألوان للأهمية، وليست لاتجاه السعر. النسبة تمثل حجم المراكز المرتبطة من إجمالي محفظتك.</p><div class="radar-controls"><button class="fbtn sm" onclick="radarViewMode('all')">كل الأحداث</button><button class="fbtn sm" onclick="radarViewMode('high')">الأهمية المرتفعة</button><button class="fbtn sm" onclick="radarViewMode('priority')">الأعلى أولوية</button></div><div id="expandedEvents">${EV.map(radarRow).join('')}</div>${sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:''}</div>`);}
-function radarViewMode(mode){const entries=EV.map((e,i)=>({e,i})).filter(({e})=>mode!=='high'||e.importance?.tier==='high');if(mode==='priority')entries.sort((a,b)=>(b.e.importance?.score??-1)-(a.e.importance?.score??-1)||a.e.days-b.e.days);$('expandedEvents').innerHTML=entries.map(({e,i})=>radarRow(e,i)).join('')||'<div class="empty">لا أحداث ضمن هذا التقييم</div>';}
+function openRadarFull(mode='all'){
+ activeDialog={fn:'openRadarFull',args:[mode]};
+ openHolo(modalHead('EVENT RADAR','كل الأحداث',`${EV.length} موعد · حسب اليوم`)+`<div class="radar-expanded"><p class="sub">الألوان للأهمية، وليست لاتجاه السعر. النسبة تمثل حجم المراكز المرتبطة من إجمالي محفظتك.</p><div class="radar-controls"><button class="fbtn sm" onclick="radarViewMode('all')">كل الأحداث</button><button class="fbtn sm" onclick="radarViewMode('high')">الأهمية المرتفعة</button><button class="fbtn sm" onclick="radarViewMode('priority')">الأعلى أولوية</button></div><div id="expandedEvents"></div>${sourceErrors.calendar?`<p class="coverage-warning">تغطية جزئية: ${esc(sourceErrors.calendar)}</p>`:''}</div>`);
+ radarViewMode(mode);
+}
+function radarViewMode(mode){
+ activeDialog={fn:'openRadarFull',args:[mode]};
+ const entries=EV.map((e,i)=>({e,i})).filter(({e})=>mode!=='high'||e.importance?.tier==='high');if(mode==='priority')entries.sort((a,b)=>(b.e.importance?.score??-1)-(a.e.importance?.score??-1)||a.e.days-b.e.days);
+ $('expandedEvents').innerHTML=entries.map(({e,i})=>radarRow(e,i)).join('')||'<div class="empty">لا أحداث ضمن هذا التقييم</div>';
+}
 function pulseState(){return window._marketPulse||(window._marketPulse={mode:'today',quotes:{},at:0,error:null,busy:false,brief:[],briefError:null});}
 function pulseMode(value){if(!['today','fx','events','exposure'].includes(value))return;pulseState().mode=value;renderGlobeHud();renderFocus();}
 function pulseChange(value){return Number.isFinite(value)?`<bdi class="${value<0?'dn':'up'}">${value>0?'+':''}${fmt(value,2)}%</bdi>`:'<span class="mu">غير متاح</span>';}
@@ -1479,5 +1490,17 @@ function pulseCountries(item){
   if(co?.cc)countries.add(co.cc);
  }
  return [...countries];
+}
+function dashboardNews(filter='all'){
+ return rankNews(NEWS.filter(n=>(n.scope==='macro'||newsAssets(n).some(assetVisible))&&(filter==='all'||newsAssets(n).includes(filter))));
+}
+function openNewsFull(filter='all'){
+ activeDialog={fn:'openNewsFull',args:[filter]};
+ const list=dashboardNews(filter),filters=[['all','الكل'],...Object.keys(AS).filter(k=>AS[k].yh&&assetVisible(k)).map(k=>[k,k])];
+ openHolo(modalHead('NEWS','كل الأخبار',`${list.length} خبر · حسب الأهمية والحداثة`)+`<div class="news-expanded"><div class="fl">${filters.map(([k,l])=>`<button class="${filter===k?'on':''}" onclick="openNewsFull('${k}')">${esc(l)}</button>`).join('')}</div><p class="sub">الأهمية تقديرية؛ النسبة حصتك المرتبطة وليست تغيرًا متوقعًا بالسعر.</p>${sourceErrors.news?`<p class="coverage-warning">${esc(sourceErrors.news)}</p>`:''}${list.map(newsRow).join('')||'<div class="empty">لا أخبار متاحة حاليًا</div>'}</div>`);
+}
+function radarCard(e,i){
+ const a=e.importance||impactOf(e);
+ return `<button class="radar-card importance-${a.tier}" style="--event-color:${a.color}" onmouseenter="evSel=${i}" onfocus="evSel=${i}" onclick="${e.on}"><span class="radar-card-category"><i class="ti ${EV_CAT[e.c]?.[1]||'ti-calendar'}"></i> ${esc(EV_CAT[e.c]?.[0]||'حدث')}</span><strong>${esc(e.t)}</strong><span class="radar-card-date"><bdi>${esc(eventTimeLabel(e))}</bdi> · ${esc(cd(e))}</span><span class="impact-badge impact-${a.tier}">${esc(a.label)}</span></button>`;
 }
 installCommandCenter();boot();
