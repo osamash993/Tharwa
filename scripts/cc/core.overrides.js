@@ -38,7 +38,7 @@ function syncSnapshot(force=false){
   if(TF.edit!=null){const t=TXNS[TF.edit];const now=t&&ENGINE.rawTxn(t[8].id);if(!now||JSON.stringify(now)!==TF.expected){TF.stale=true;$('tfMsg').innerHTML='<div class="fmsg wr">تغيّرت هذه الحركة من جهاز آخر. أغلق النموذج وافتح الحركة مجددًا قبل الحفظ.</div>';$('tfSave').disabled=true;}}
   if(!TF.stale)tfCalc();
  }else if(activeDialog&&$('ov').classList.contains('open')&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){
-  const scroll=$('hb').scrollTop,assetScroll=document.querySelector('.asset-scroll')?.scrollTop||0;refreshingDialog=true;try{window[activeDialog.fn](...activeDialog.args);}finally{refreshingDialog=false;$('hb').scrollTop=scroll;const asset=document.querySelector('.asset-scroll');if(asset)asset.scrollTop=assetScroll;}
+  const scroll=$('hb').scrollTop,assetScroll=document.querySelector('.asset-scroll')?.scrollTop||0;refreshingDialog=true;try{if(activeDialog.fn==='openSettings'&&$('stBody'))stRefresh();else window[activeDialog.fn](...activeDialog.args);}finally{refreshingDialog=false;$('hb').scrollTop=scroll;const asset=document.querySelector('.asset-scroll');if(asset)asset.scrollTop=assetScroll;}
  }
 }
 function updateConnection(){const el=document.querySelector('.live');if(!el)return;const st=parent.commandStorage.status();el.innerHTML='<i></i>'+(st.authRequired?'سجّل الدخول':!st.online?'غير متصل':!st.loaded?'جاري التحميل':st.busy?'جاري الحفظ':st.demo?'تجربة':'متصل');el.classList.toggle('offline',!st.online||st.authRequired);}
