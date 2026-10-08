@@ -148,6 +148,6 @@ body.reduce .holo,body.reduce .hb>*{animation:none!important;clip-path:none!impo
 #evList .radar-event .t,.radar-expanded .radar-event .t{font-size:13px;line-height:1.8;white-space:normal;overflow-wrap:anywhere}
 .radar-event .nm{min-width:0;flex:1}.radar-event .s,.radar-reason{font-size:11px;line-height:1.8;white-space:normal;overflow-wrap:anywhere}.radar-reason{color:#adc1ce;margin-top:5px}
 .nw[class*="importance-"]{padding-inline:9px}.impact-explanation{padding:12px;background:#75c9ff09;border:1px solid #75c9ff33;border-radius:7px;line-height:1.9;margin:10px 0}.impact-explanation small{color:#adc1ce;white-space:normal}
-.radar-expanded{max-width:100%;overflow-x:hidden}.radar-expanded .radar-event{width:auto}.coverage-warning{color:#f4b860;font-size:11px;line-height:1.9;overflow-wrap:anywhere}.next-event-title{font-size:13px;line-height:1.8;font-weight:600}#evCd{font-size:16px;color:#fff;line-height:1.8}
+.radar-expanded{max-width:100%;overflow-x:hidden}.radar-expanded .radar-event{width:auto}.coverage-warning{color:#f4b860;font-size:11px;line-height:1.9;overflow-wrap:anywhere}.next-event-title{font-size:13px;line-height:1.8;font-weight:600}#evCd{direction:rtl;unicode-bidi:isolate;text-align:right;font-family:var(--ui);font-size:16px;font-weight:600;letter-spacing:0;font-variant-numeric:tabular-nums;color:#fff;line-height:1.8}
 @media(max-width:1300px){.lab{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){.events-panel #evList{min-height:240px;max-height:420px}.events-panel #radarEv{max-width:260px}.impact-badges{font-size:10px}}
