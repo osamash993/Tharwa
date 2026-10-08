@@ -167,3 +167,12 @@ body.reduce .holo,body.reduce .hb>*{animation:none!important;clip-path:none!impo
 /* Interactive HUD panels carry .pe on the panel itself, not a child. */
 #globeWrap .hud.pe{pointer-events:auto}
 #globeWrap .pulse-country-list,#globeWrap .pulse-focus-body,#globeWrap #gChips{overscroll-behavior-y:contain;touch-action:pan-y}
+
+/* The map's country card is a summary; long explanations live in its dialog. */
+#globeWrap #focus{overflow:visible}
+.pulse-compact{max-height:none;overflow:visible}
+.pulse-compact .pulse-market{align-items:center}.pulse-compact .pulse-market>span{font-size:10px;line-height:1.6}
+.pulse-benchmark{font-size:10px;color:var(--muted);overflow-wrap:anywhere}
+.pulse-card-actions,.pulse-dialog-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.pulse-card-actions{justify-content:space-between;border-top:1px solid var(--c12);padding-top:5px}
+.pulse-dialog-actions{margin-top:14px}.pulse-dialog-actions .fbtn{white-space:normal;line-height:1.7;max-width:100%}
