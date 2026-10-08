@@ -110,3 +110,11 @@ function draw(now){
     });}
   requestAnimationFrame(draw);
 }
+
+function setFocus(cc){
+ if(cc===focusCC)return;
+ // Keep the country and its scroll position stable while reading a HUD panel.
+ if(mode==='auto'&&document.querySelector('#globeWrap .hud.pe:hover'))return;
+ focusCC=cc;focusT=performance.now();renderFocus();
+ document.querySelectorAll('#gList .gr').forEach(e=>e.classList.toggle('on',e.dataset.cc===cc));
+}

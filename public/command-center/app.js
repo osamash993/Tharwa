@@ -148,8 +148,11 @@ function resize(){const r=cv.getBoundingClientRect();DPR=Math.min(2,window.devic
 window.addEventListener('resize',resize);
 
 function setFocus(cc){
-  if(cc===focusCC)return;focusCC=cc;focusT=performance.now();renderFocus();
-  document.querySelectorAll('#gList .gr').forEach(e=>e.classList.toggle('on',e.dataset.cc===cc));
+ if(cc===focusCC)return;
+ // Keep the country and its scroll position stable while reading a HUD panel.
+ if(mode==='auto'&&document.querySelector('#globeWrap .hud.pe:hover'))return;
+ focusCC=cc;focusT=performance.now();renderFocus();
+ document.querySelectorAll('#gList .gr').forEach(e=>e.classList.toggle('on',e.dataset.cc===cc));
 }
 // طيران سلس نحو دولة (من القائمة أو بالضغط)
 function flyTo(cc){
