@@ -17,21 +17,26 @@ function openAsset(n){
     ${cell(p.hasPx?'القيمة الحالية':'القيمة بالتكلفة — السعر غير متاح',fmtC(p.val),'up')}${cell('المستثمر (تكلفة FIFO)',fmtC(p.cost))}${cell('الربح / الخسارة',`${p.pnl>=0?'▲':'▼'} ${fmtC(p.pnl)} (${p.pnl>=0?'+':''}${fmt(percent(p.pnl,p.cost),1)}%)`,p.pnl>=0?'up':'dn')}${cell('وزنه من الثروة',fmt(w,1)+'%')}
     ${cell('الكمية',fmt(p.qty,p.t==='Gold'?1:0)+(p.t==='Gold'?' غ':' وحدة'))}${cell('متوسط تكلفتك',natFmt(nat,p.cur))}${cell('متوسط 200 يوم',natFmt(p.ma,p.cur))}${cell('ربح محقق سابق',p.realized?sgn(p.realized):'—',p.realized<0?'dn':'')}
   </div>
-  <div class="mg">
+  <div class="mg asset-overview ${inside?'':'chart-only'}">
     <div>
       <div class="chartbox" id="assetHistory">${chart52(p)}</div>
       <div class="rng"><div style="font-size:10.5px;color:var(--muted)">نطاق 52 أسبوع — <span style="color:var(--text)">■ السعر</span> · <span style="color:#fff">| متوسطك</span></div>
         <div class="bar2">${p.hi>p.lo&&p.p!=null?`<s style="right:${ap}%"></s><i style="right:${Math.max(0,Math.min(100,rp))}%"></i>`:""}</div><div class="lb"><span class="n">${natFmt(p.lo,p.cur)}</span><span class="n">${natFmt(p.hi,p.cur)}</span></div></div>
+    </div>
+    ${inside?`<div class="asset-exposure"><div class="asset-exposure-list" tabindex="0" aria-label="الشركات والدول داخل الصندوق">${inside}</div></div>`:''}
+  </div>
+  <div class="asset-updates ${p.t==='Stock'?'':'news-only'}">
+    ${p.t==='Stock'?`<section>${assetDividendHTML(n,p)}</section>`:''}
+    <section class="asset-latest-news">
+      <div class="sect"><i class="ti ti-news"></i> أخبار ${n}</div>
+      <div class="asset-news-scroll">${news.length?news.slice(0,3).map(newsRow).join(''):'<div class="mu" style="font-size:11px">لا أخبار مرتبطة حالياً</div>'}</div>
+      ${news.length>3?`<button class="fbtn sm ghost" onclick="openNewsFull('${n}')">كل أخبار الأصل (${news.length})</button>`:''}
+    </section>
+  </div>
+  <div class="asset-transactions">
       <div class="sect"><i class="ti ti-list"></i> حركاتك على ${n} (${txs.length})</div>
       ${txs.map(t=>`<div class="row clk" onclick="openTx(${TXNS.indexOf(t)})" title="تفاصيل الحركة"><div class="nm"><div class="t">${t[2]==='Buy'?'شراء':'بيع'}</div><div class="s"><span class="n">${t[0]}</span> · ${fmt(t[3],p.t==='Gold'?1:0)} @ ${natFmt(t[4],t[8]?.currency||p.cur)}</div></div><span class="n" style="color:${t[2]==='Buy'?'var(--cb)':'var(--muted)'}">${t[2]==='Sell'?'+':''}${fmtC(txSAR(t))}</span></div>`).join('')}
       ${p.sells.map(s=>`<div class="row"><div class="nm"><div class="t mu">نتيجة البيع ${s.date}</div><div class="s">تكلفة FIFO ${fmtC(s.basis)}</div></div>${pnlTxt(s.pnl,s.basis)}</div>`).join('')}
-    </div>
-    <div>
-      ${inside}
-      ${assetDividendHTML(n,p)}
-      <div class="sect"><i class="ti ti-news"></i> أخبار ${n}</div>
-      <div class="asset-news-scroll">${news.length?news.map(newsRow).join(''):'<div class="mu" style="font-size:11px">لا أخبار مرتبطة حالياً</div>'}</div>
-    </div>
   </div></div><div class="asset-actions" role="group" aria-label="إجراءات الأصل"><button class="tourbtn"  onclick="openTxForm('${n}')"><i class="ti ti-plus"></i> حركة جديدة</button><button class="tourbtn"  onclick="openSettings('alerts','${n}')"><i class="ti ti-bell-plus"></i> نبّهني عند سعر</button></div></div>`);if(p.yh&&!historyData[p.yh])loadHistory(n);if(p.t==='Stock')loadDividendSources();
 }
 async function loadHistory(n){const a=AS[n];historyData[a.yh]={loading:true};const r=await ENGINE.market('getHistory',a.yh);historyData[a.yh]=r;const el=$('assetHistory');if(el&&activeDialog?.fn==='openAsset'&&activeDialog.args[0]===n)el.innerHTML=chart52(S.POS.find(p=>p.n===n)||{...a,n});}

@@ -188,3 +188,11 @@ body.reduce .holo,body.reduce .hb>*{animation:none!important;clip-path:none!impo
 .news-expanded,.news-expanded .nw,.news-expanded .tx{min-width:0;max-width:100%;overflow-wrap:anywhere}.news-expanded .nw{display:block;padding:14px 10px}.news-expanded .nw .tg{display:inline-block;margin-bottom:6px}.news-expanded .fl{flex-wrap:wrap}.news-expanded .tx{white-space:normal}
 @container(max-width:430px){.radar-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @container(max-width:260px){.radar-card-grid{grid-template-columns:minmax(0,1fr)}}
+
+/* Keep timely asset updates above long transaction and exposure histories. */
+.asset-dialog .asset-overview{margin-top:14px}.asset-dialog .asset-overview.chart-only{grid-template-columns:minmax(0,1fr)}
+.asset-exposure-list{max-height:330px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;padding-inline-end:7px}.asset-exposure-list>.sect:first-child{margin-top:0}
+.asset-updates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start;border-top:1px solid var(--c20);margin-top:14px;padding-top:14px}.asset-updates>section{min-width:0}.asset-updates.news-only{grid-template-columns:minmax(0,1fr)}
+.asset-updates .asset-dividends{margin:0}.asset-updates .sect{margin-top:0}.asset-updates .asset-news-scroll{max-height:none;overflow:visible;padding:0}.asset-updates .asset-news-scroll .nw{padding:9px 0}.asset-latest-news>.fbtn{margin-top:8px}
+.asset-transactions{margin-top:18px;border-top:1px solid var(--c20)}
+@media(max-width:700px){.asset-updates{grid-template-columns:minmax(0,1fr)}.asset-exposure-list{max-height:240px}}
