@@ -179,7 +179,7 @@ body.reduce .holo,body.reduce .hb>*{animation:none!important;clip-path:none!impo
 
 /* Dashboard previews; complete feeds live in their dedicated dialogs. */
 .news-panel #nwList,.events-panel #evList{height:auto;max-height:none;min-height:0;overflow:visible;padding-inline-end:0}
-.panel-more{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;min-height:38px;white-space:normal}
+.panel-more{display:flex;align-items:center;justify-content:center;gap:5px;width:max-content;max-width:100%;margin-top:10px;margin-inline-start:auto;min-height:28px;padding:5px 9px;font-size:10px;line-height:1.5;white-space:normal}
 .events-panel{container-type:inline-size}
 .radar-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .radar-card{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0;padding:11px 9px;border:1px solid #8aa6b52b;border-inline-start:3px solid var(--event-color);border-radius:7px;background:#8aa6b508;color:var(--text);font:inherit;text-align:start;cursor:pointer;overflow-wrap:anywhere}
