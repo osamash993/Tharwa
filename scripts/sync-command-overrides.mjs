@@ -16,6 +16,7 @@ for(const file of process.argv.slice(2))for(const fn of declarations(read(file))
 app=app.replace(/^const newsRow=.*$/m,'const newsRow=x=>ratedNewsRow(x);');
 app=app.replaceAll('cd(EV.find(e=>!e.atUTC||Date.parse(e.atUTC)>Date.now())||EV[0])','cd(EV[0])');
 app=app.replace("flyTo(best.cc);openCountry(best.cc);","flyTo(best.cc);if(pulseState().mode==='exposure')openCountry(best.cc);else openPulseCountry(best.cc);");
+app=app.replace("const tk=()=>$('clock').textContent=new Date().toTimeString().slice(0,8);tk();setInterval(tk,1000);","startServerClock();");
 parse(app,{sourceType:'script'});write('public/command-center/app.js',app);
 let html=read('public/command-center/index.html');
 if(!html.includes('./impact-policy.js'))html=html.replace(/<script src="\.\/app.js/, '<script src="./impact-policy.js"></script>\n<script src="./app.js');

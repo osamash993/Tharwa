@@ -100,6 +100,7 @@ js=re.sub(r'^.*حركات الشركات تجريبية.*$', '    <div class="su
 js=re.sub(r'/\*[\s\S]*?\*/','',js)
 js=re.sub(r'^//.*(?:تجريبي|بالتنفيذ).*$', '',js,flags=re.M)
 out=root/'public/command-center';out.mkdir(exist_ok=True)
+js=js.replace("const tk=()=>$('clock').textContent=new Date().toTimeString().slice(0,8);tk();setInterval(tk,1000);","startServerClock();")
 (out/'app.js').write_text(js)
 # Extract the existing self-contained d3/topojson/map vendor blocks unchanged.
 vendor='\n'.join(scripts[1:-1]);(out/'geo-vendor.js').write_text(vendor)
