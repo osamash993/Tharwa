@@ -68,9 +68,18 @@ function dashboardNews(filter='all'){
 function renderNews(){
  $('nwFl').innerHTML=[['all','الكل'],...Object.keys(AS).filter(k=>AS[k].yh&&assetVisible(k)).map(k=>[k,k])].map(([k,l])=>`<button class="${nwF===k?'on':''}" onclick="nwF='${k}';renderNews()">${l}</button>`).join('');
  const list=dashboardNews(nwF),all=dashboardNews();
- $('nwList').innerHTML=(list.length?list.slice(0,4).map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار مرتبطة متاحة حاليًا')+'</div>')+`<button class="fbtn panel-more" onclick="openNewsFull()">كل الأخبار (${all.length}) <i class="ti ti-arrow-up-left"></i></button>`;
+ $('nwList').innerHTML=(list.length?list.slice(0,3).map(newsRow).join(''):'<div class="empty">'+(sourceErrors.news?'الأخبار غير متاحة حاليًا':'لا أخبار مرتبطة متاحة حاليًا')+'</div>')+`<button class="fbtn panel-more" onclick="openNewsFull()">كل الأخبار (${all.length}) <i class="ti ti-arrow-up-left"></i></button>`;
  let note=$('newsOrder');if(!note){note=document.createElement('div');note.id='newsOrder';note.className='news-order';$('nwList').before(note);}
- note.textContent=`أهم ${Math.min(4,list.length)} من ${list.length} خبر · الأهمية تقديرية${sourceErrors.news?' · '+sourceErrors.news:''}`;
+ note.textContent=`أهم ${Math.min(3,list.length)} من ${list.length} خبر · الأهمية تقديرية${sourceErrors.news?' · '+sourceErrors.news:''}`;
+ if(typeof ResizeObserver!=='undefined'){const box=$('nwList');if(!box._previewObserver){box._previewObserver=new ResizeObserver(fitNewsPreview);box._previewObserver.observe(box);}fitNewsPreview();}
+}
+function fitNewsPreview(){
+ const list=$('nwList');if(!list)return;
+ const rows=[...list.querySelectorAll('.nw')],button=list.querySelector('.panel-more');if(!rows.length||!button)return;
+ rows.forEach(row=>row.hidden=false);
+ const available=list.clientHeight-button.offsetHeight-12;let used=0,shown=0,full=false;
+ rows.forEach(row=>{const style=getComputedStyle(row),height=row.offsetHeight+parseFloat(style.marginTop||0)+parseFloat(style.marginBottom||0);if(!full&&used+height<=available){used+=height;shown++;}else{row.hidden=true;full=true;}});
+ const total=dashboardNews(nwF).length;$('newsOrder').textContent=`أهم ${shown} من ${total} خبر · الأهمية تقديرية${sourceErrors.news?' · '+sourceErrors.news:''}`;
 }
 function openNewsFull(filter='all'){
  activeDialog={fn:'openNewsFull',args:[filter]};
