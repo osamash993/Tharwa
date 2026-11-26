@@ -527,6 +527,9 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
 </style>
 <link rel="stylesheet" href="./integration.css?v=c040dec6b3ea">
 <script src="./safety.js?v=ea4c0564aed2"></script>
+<style>
+#bnWorkspace[hidden],#bnDashboard[hidden]{display:none!important}#bnWorkspace{max-width:1500px;margin:auto;padding:14px 18px 80px;display:grid;gap:14px}.bn-title{font-size:clamp(20px,3vw,32px);color:var(--cb);margin:10px 0;font-weight:600}.bn-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0}.bn-stat{border:1px solid var(--c20);background:var(--c04);padding:12px}.bn-stat b{display:block;font:600 28px var(--num);color:var(--cb)}.bn-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.bn-controls .tabs{margin:0;width:auto}.bn-controls input,.bn-controls select{background:var(--bg);color:var(--text);border:1px solid var(--c20);padding:8px;font:inherit;min-width:0}.bn-controls input{flex:1;min-width:150px}.bn-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:10px;margin-top:12px}.bn-card{border:1px solid var(--c20);background:var(--c04);padding:14px;min-width:0;overflow-wrap:anywhere}.bn-card h4{font-size:17px;color:var(--cb);margin:6px 0}.bn-card dl{display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:12px;margin:12px 0}.bn-card dt{color:var(--muted)}.bn-card dd{margin:0}.bn-card a{color:var(--c)}.bn-log{padding:10px 0;border-bottom:1px solid var(--c12)}#bnNav[aria-pressed=true]{border-color:var(--c);color:var(--c);background:var(--c12)}@media(max-width:650px){#bnWorkspace{padding:10px 12px 70px}.bn-stat{padding:7px}.bn-stat b{font-size:23px}}
+</style>
 </head>
 <body class="booting">
 <div id="boot" onclick="window._skip&&window._skip()">
@@ -552,7 +555,7 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
 
 
 <header class="top">
-  <a class="ibtn" href="../bottleneck.html" target="_top" title="رادار الفرص" aria-label="رادار الفرص" style="text-decoration:none"><i class="ti ti-radar"></i><span class="tip">رادار الفرص</span></a>
+  <button class="ibtn" id="bnNav" type="button" aria-label="رادار الفرص" aria-pressed="false" title="رادار الفرص" style="width:auto;padding:0 9px;gap:5px"><i class="ti ti-radar"></i><span style="font-size:11px;font-family:inherit">الرادار</span></button>
   <div class="brand">O.db<small>COMMAND CENTER</small></div>
   <div class="fx"><div class="fx-t" id="fx"></div></div>
   <div class="seg" id="curSeg"><button data-c="SAR" class="on">SAR</button><button data-c="JOD">JOD</button><button data-c="USD">USD</button></div>
@@ -564,7 +567,7 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
   <div class="clock" id="clock">--:--:--</div>
 </header>
 
-<main class="grid">
+<main class="grid" id="bnDashboard">
 
   <section class="col">
     <div class="p">
@@ -713,7 +716,10 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
     </div>
   </section>
 </main>
-
+<section id="bnWorkspace" hidden aria-label="رادار الفرص الاستثمارية">
+<div class="p bn-head"><div class="ph"><h3><i class="ti ti-radar"></i> رادار الفرص الاستثمارية</h3><span class="tag">BOTTLENECK INTELLIGENCE</span></div><div class="bn-title">اكتشف الاختناق قبل السوق</div><div class="sub">شركات خاصة مبكرة وأسهم صغيرة مدرجة عالميًا · بحث مستقل متعدد القطاعات</div><div class="bn-stats" id="bnStats"></div><p id="bnStatus" role="status" class="sub"></p><p id="bnNote" class="sub"></p></div>
+<div class="p"><div class="ph"><h3><i class="ti ti-adjustments-horizontal"></i> مسح الفرص</h3><span class="tag">DISCOVERY</span></div><div class="bn-controls"><div class="tabs" id="bnTabs"><button class="on" data-type="all">الكل</button><button data-type="private">خاصة</button><button data-type="listed">مدرجة</button></div><input id="bnQuery" placeholder="اسم الشركة / الرمز / القطاع" aria-label="بحث"><select id="bnSector" aria-label="القطاع"><option value="">كل القطاعات</option></select><button class="ibtn" id="bnRefresh" title="إعادة تحميل" aria-label="إعادة تحميل"><i class="ti ti-refresh"></i></button></div><div class="sub" id="bnCount"></div><div id="bnCards" class="bn-cards"></div></div>
+<div class="p"><div class="ph"><h3><i class="ti ti-history"></i> سجل التحديثات</h3><span class="tag">RESEARCH LOG</span></div><div id="bnHistory"></div></div><div class="sub">المعلومات للبحث فقط؛ لا تعني توصية شراء أو اعتمادًا شرعيًا.</div></section>
 <div id="amb">
   <div class="amb-glow"></div>
   <div id="ambGlobe"></div>
@@ -738,5 +744,8 @@ body.reduce *{animation-duration:.01s!important;transition-duration:.01s!importa
 <script src="./impact-policy.js?v=8fb831f0310f"></script>
 <script src="./market-pulse.js?v=edbca7f8017b"></script>
 <script src="./app.js?v=72ad76e4a52a"></script>
+<script>
+(()=>{const $=id=>document.getElementById(id),make=(tag,t,cls)=>{const n=document.createElement(tag);if(t!=null)n.textContent=t;if(cls)n.className=cls;return n};let data=null,type='all',seq=0;const nav=$('bnNav'),work=$('bnWorkspace'),dash=$('bnDashboard');function show(open){work.hidden=!open;dash.hidden=open;nav.setAttribute('aria-pressed',String(open));if(open)load();else window.dispatchEvent(new Event('resize'));window.scrollTo(0,0)}nav.onclick=()=>show(work.hidden);function render(){if(!data)return;const companies=data.companies,query=$('bnQuery').value.toLowerCase(),sector=$('bnSector').value;const list=companies.filter(c=>(type==='all'||c.type===type)&&(!sector||c.sector===sector)&&[c.name,c.ticker,c.sector].join(' ').toLowerCase().includes(query));$('bnCount').textContent=list.length+' / '+companies.length+' شركة';const cards=$('bnCards');cards.replaceChildren();for(const c of list){const a=make('article',null,'bn-card');a.append(make('span',c.type==='listed'?'PUBLIC / مدرجة':'PRIVATE / خاصة','tag'),make('h4',c.name),make('p',c.sector,'sub'));const dl=make('dl');for(const [k,v] of [['المرحلة',c.stage],['القيمة بالدولار',Number.isFinite(c.valuationUsd)?new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact'}).format(c.valuationUsd):null],['السوق / الرمز',[c.exchange,c.ticker].filter(Boolean).join(' / ')],['التوافق الشرعي',c.sharia],['إمكانية الاستثمار',c.access],['المخاطر',c.risk],['تاريخ المعلومة',c.date]]){dl.append(make('dt',k),make('dd',v||'غير متحقق'))}a.append(dl,make('p',c.update,'sub'));try{const u=new URL(c.source);if(u.protocol==='https:'){const l=make('a','المصدر ↗');l.href=u.href;l.target='_blank';l.rel='noopener noreferrer';a.append(l)}}catch{}cards.append(a)}if(!list.length)cards.append(make('p','لا توجد نتائج متحققة لهذا الفلتر بعد.','sub'))}async function load(){const run=++seq;$('bnStatus').textContent='جاري تحميل أحدث بيانات الرادار…';try{const r=await fetch('../bottleneck-data.json',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const next=await r.json();if(!Array.isArray(next.companies))throw Error('invalid data');if(run!==seq)return;data=next;$('bnStatus').textContent='آخر تحديث للبيانات: '+data.updated;$('bnNote').textContent=data.note||'';const stats=$('bnStats');stats.replaceChildren();for(const [label,n] of [['إجمالي الشركات',data.companies.length],['شركات خاصة',data.companies.filter(c=>c.type==='private').length],['شركات مدرجة',data.companies.filter(c=>c.type==='listed').length]]){const x=make('div',null,'bn-stat');x.append(make('span',label,'sub'),make('b',n));stats.append(x)}const select=$('bnSector'),old=select.value;select.replaceChildren(new Option('كل القطاعات',''));for(const s of [...new Set(data.companies.map(c=>c.sector))].sort())select.add(new Option(s,s));select.value=[...select.options].some(o=>o.value===old)?old:'';const h=$('bnHistory');h.replaceChildren();for(const x of (data.history||[]).slice().reverse()){const row=make('div',null,'bn-log');row.append(make('span',x.date,'tag'),make('p',x.summary));h.append(row)}if(!h.children.length)h.append(make('p','لا توجد تحديثات يومية مسجلة بعد.','sub'));render()}catch(e){if(run===seq)$('bnStatus').textContent='تعذر تحميل أحدث البيانات؛ '+(data?'البيانات السابقة معروضة.':'حاول إعادة التحميل.')}}$('bnTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{type=b.dataset.type;$('bnTabs').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));render()});$('bnQuery').oninput=render;$('bnSector').onchange=render;$('bnRefresh').onclick=load;})();
+</script>
 </body>
 </html>
