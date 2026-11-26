@@ -657,6 +657,49 @@ body.bn-active .fab{display:none}
 @media(max-width:760px){.bn-screen{padding:8px 8px 65px}.bn-top>div:first-child>p{display:none}.bn-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.bn-kpi strong{font-size:23px}.bn-layout,.bn-dossier-layout{grid-template-columns:1fr}.bn-layout>.bn-rail{grid-column:auto;grid-template-columns:1fr 1fr}.bn-layout>.bn-rail>details{grid-column:1/-1}.bn-filters{grid-template-columns:1fr 1fr}.bn-dossier-facts,.bn-dossier-head>.bn-metrics{grid-template-columns:1fr 1fr}.bn-dossier-main,.bn-charts{grid-template-columns:1fr}.bn-intel{grid-template-columns:1fr 1fr}.bn-intel>.bn-panel:first-child{grid-column:1/-1}}
 @media(max-width:430px){.bn-table{--bn-cols:minmax(86px,1.2fr) minmax(65px,.9fr) 58px 12px}.bn-thead>span:nth-child(4),.bn-row>.bn-status{display:none}.bn-intel,.bn-layout>.bn-rail{grid-template-columns:1fr}.bn-intel>.bn-panel:first-child{grid-column:auto}.bn-name{font-size:11px}.bn-value strong{font-size:10px}.bn-top .bn-kicker{font-size:8px}.bn-top>div:first-child{gap:3px}}
 </style>
+
+<style id="bn-profile-command">
+.bn-selection-tip{font-size:9px;color:var(--bn-muted);margin-top:2px}
+.bn-row:hover{background:var(--c04);box-shadow:none}
+.bn-row.bn-selected,.bn-row.bn-selected:hover{background:var(--c12);box-shadow:inset -3px 0 var(--c);border-bottom-color:var(--c35)}
+.bn-row.bn-selected .bn-name{color:var(--cb)}
+.bn-row:focus-visible{outline:1px solid var(--c);outline-offset:-2px}
+.bn-preview-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;gap:5px;margin-top:7px}
+.bn-quick-link{display:flex!important;align-items:center;justify-content:flex-start;gap:5px;padding:5px 7px;border:1px solid var(--c20);background:var(--c04);color:var(--cb)!important;font-size:10.5px;line-height:1.4;text-decoration:none!important;min-width:0;overflow-wrap:anywhere}
+.bn-quick-link i{font-size:12px;color:var(--c);flex:none}.bn-quick-link i:last-child{margin-inline-start:auto;font-size:10px}
+.bn-quick-link:hover{background:var(--c12);border-color:var(--c)}
+.bn-profile-command{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;padding:8px 12px!important;background:linear-gradient(100deg,var(--c07),transparent 65%),var(--panel)!important}
+.bn-profile-identity{display:flex;align-items:center;gap:10px;min-width:0}.bn-profile-identity h1{font-size:23px;line-height:1.15;color:var(--cb);overflow-wrap:anywhere;unicode-bidi:plaintext}
+.bn-profile-identity .bn-muted{font-size:10px;margin-top:4px}.bn-emblem{width:46px;height:46px;display:grid;place-items:center;color:var(--c);border:1px solid var(--c35);background:var(--c07);box-shadow:inset 0 0 16px var(--c07);flex:none}.bn-emblem i{font-size:25px}
+.bn-profile-actions{display:flex;align-items:center;gap:8px;flex:none}
+.bn-profile-grid{display:grid;grid-template-columns:minmax(230px,.78fr) minmax(350px,1.55fr) minmax(240px,.86fr);gap:9px;align-items:start}
+.bn-profile-side,.bn-profile-main{display:grid;gap:9px;min-width:0}
+.bn-profile-facts{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px}
+.bn-profile-facts .bn-fact{padding:5px 6px;min-width:0}.bn-profile-facts .bn-fact b{overflow-wrap:anywhere;font-size:11px}.bn-profile-facts .bn-fact b.bn-number{font-size:20px}
+.bn-profile-tabs{margin:0;display:flex;overflow-x:auto;gap:3px;border:1px solid var(--c20);background:var(--panel);padding:3px}
+.bn-profile-tabs button{display:flex;align-items:center;justify-content:center;gap:4px;flex:1 0 auto;padding:6px 7px;border:1px solid transparent;font-size:10px;white-space:nowrap}
+.bn-profile-tabs button i{font-size:13px}.bn-profile-tabs button.on{background:var(--c12);border:1px solid var(--c35);color:var(--cb)}
+.bn-profile-content{display:grid;gap:8px;min-width:0}.bn-profile-content .bn-panel-head{border-bottom:1px solid var(--c12);padding-bottom:5px}
+.bn-memo-copy,.bn-decision-copy,.bn-thesis-copy{font-size:12px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere}
+.bn-decision-copy{color:var(--cb);border-inline-start:2px solid var(--c);padding-inline-start:8px}
+.bn-thesis-copy{font-size:11.5px;margin-top:6px!important;color:var(--bn-text)}
+.bn-factline{display:grid;grid-template-columns:1fr minmax(0,1.2fr);align-items:center;gap:5px;padding:5px 0;border-bottom:1px solid var(--c12);font-size:10.5px}.bn-factline b{font-weight:600;color:var(--cb);overflow-wrap:anywhere;text-align:left}
+.bn-gate-row,.bn-contact-row,.bn-route{padding:6px 0;border-bottom:1px solid var(--c12);overflow-wrap:anywhere}
+.bn-gate-row:last-child,.bn-contact-row:last-child,.bn-route:last-child{border:0}
+.bn-gate-row p{font-size:10.5px;line-height:1.65}
+.bn-contact-head{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--bn-muted);margin-bottom:3px}.bn-contact-head i{color:var(--c);font-size:12px}
+.bn-contact-row>a{display:block;font-size:10.5px;overflow-wrap:anywhere;line-height:1.6}.bn-contact-value{unicode-bidi:plaintext}.bn-contact-row .bn-evidence-link{font-size:9px;color:var(--bn-muted);margin-top:3px}
+.bn-route-status{display:block;font-size:9.5px;color:var(--cb);margin-top:4px}
+.bn-route .bn-muted,.bn-contact-row .bn-muted{margin-top:3px;font-size:10px}
+.bn-access-note{margin:6px 0!important;color:var(--cb);font-size:10.5px;line-height:1.65}
+.bn-alert-text{color:var(--warn)!important}
+.bn-profile-side>.bn-panel .bn-muted{line-height:1.65}
+.bn-profile-grid .bn-ring-label b{font-size:24px}.bn-profile-grid .bn-signal{grid-template-columns:96px minmax(0,1fr)}.bn-profile-grid .bn-ring{width:96px;height:96px}
+@media(min-width:1400px){.bn-profile-content{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.bn-profile-content>.bn-panel:has(.bn-charts),.bn-profile-content>.bn-panel:has(.bn-axis){grid-column:1/-1}}
+@media(max-width:1150px){.bn-profile-grid{grid-template-columns:minmax(210px,.7fr) minmax(300px,1.3fr)}.bn-profile-grid>.bn-profile-side:last-child{grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
+@media(max-width:760px){.bn-profile-grid{grid-template-columns:1fr}.bn-profile-grid>.bn-profile-side:last-child{grid-column:auto;grid-template-columns:1fr}.bn-profile-main{order:1}.bn-profile-grid>.bn-profile-side:first-child{grid-template-columns:1fr 1fr}.bn-profile-grid>.bn-profile-side:first-child>.bn-panel:first-child{grid-column:1/-1}.bn-profile-grid>.bn-profile-side:last-child{order:2}.bn-profile-command{flex-wrap:wrap}.bn-profile-identity h1{font-size:19px}.bn-profile-actions{gap:5px}.bn-profile-tabs button{flex:none}.bn-profile-grid .bn-signal{grid-template-columns:1fr}.bn-profile-grid .bn-ring{margin:auto}.bn-emblem{width:38px;height:38px}.bn-emblem i{font-size:22px}}
+@media(max-width:430px){.bn-profile-grid>.bn-profile-side:first-child{grid-template-columns:1fr}.bn-profile-grid .bn-signal{grid-template-columns:96px minmax(0,1fr)}.bn-profile-actions{width:100%;justify-content:space-between}}
+</style>
 </head>
 <body class="booting">
 <div id="boot" onclick="window._skip&&window._skip()">
@@ -851,7 +894,7 @@ body.bn-active .fab{display:none}
   <div id="bnStats" class="bn-kpis"></div>
   <div class="bn-layout">
     <section class="bn-panel bn-universe">
-      <div class="bn-panel-head"><div><h2>الشركات</h2><p class="bn-muted" id="bnCount">—</p></div><div class="bn-switch" id="bnTabs" aria-label="نوع الاستثمار"><button class="on" data-type="all" type="button">الكل</button><button data-type="listed" type="button">مدرجة</button><button data-type="private" type="button">خاصة</button></div></div>
+      <div class="bn-panel-head"><div><h2>الشركات</h2><p class="bn-muted" id="bnCount">—</p><p class="bn-selection-tip">اضغط على الشركة لتثبيت المعاينة</p></div><div class="bn-switch" id="bnTabs" aria-label="نوع الاستثمار"><button class="on" data-type="all" type="button">الكل</button><button data-type="listed" type="button">مدرجة</button><button data-type="private" type="button">خاصة</button></div></div>
       <div class="bn-filters"><label class="bn-search"><i class="ti ti-search"></i><input id="bnQuery" placeholder="بحث باسم الشركة أو الرمز" aria-label="بحث"></label><select id="bnSector" aria-label="القطاع"><option value="">كل القطاعات</option></select><select id="bnState" aria-label="حالة البحث"><option value="active">قائمة البحث</option><option value="qualified">مؤهلة</option><option value="research">قيد البحث</option><option value="excluded">مستبعدة</option><option value="all">جميع الحالات</option></select><select id="bnSort" aria-label="ترتيب الشركات"><option value="score">التقييم / التغطية</option><option value="name">الاسم</option><option value="value">القيمة السوقية</option></select></div>
       <div class="bn-table"><div class="bn-thead"><span>الشركة / القطاع</span><span>القيمة / التمويل</span><span>التقييم</span><span>الحالة</span><span></span></div><div id="bnCards"></div></div>
     </section>
@@ -921,6 +964,69 @@ function svgNode(tag,attrs={}) {
   for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));
   return n;
 }
+
+function quickLink(url,label,ico='external-link'){
+  const a=link(url,label);if(!a)return null;
+  a.className='bn-quick-link';a.prepend(icon(ico));a.append(icon('external-link'));return a;
+}
+function researchPanel(title,tag,ico){
+  const p=el('section',null,'bn-panel bn-hud'),h=el('div',null,'bn-panel-head'),t=el('h2');t.append(icon(ico),document.createTextNode(title));h.append(t,el('span',tag,'bn-kicker'));p.append(h);return p;
+}
+function readContact(item){
+  if(!item||typeof item!=='object')return null;
+  const v=clean(item.value),row=el('div',null,'bn-contact-row'),head=el('div',null,'bn-contact-head');
+  head.append(icon(item.kind==='email'?'mail':item.kind==='phone'?'phone':'message-circle'),el('span',item.label||'تواصل'));
+  row.append(head);
+  let a=null;
+  if(item.kind==='email'&&/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(v)){
+    a=el('a',v,'bn-contact-value');a.href='mailto:'+v;a.dir='ltr';
+  }else if(item.kind==='phone'&&/^\+?[0-9 ()-]{5,25}$/.test(v)){
+    a=el('a',v,'bn-contact-value');a.href='tel:'+v.replace(/[^+0-9]/g,'');a.dir='ltr';
+  }else a=link(item.url,'فتح صفحة التواصل ↗');
+  if(!a)return null;
+  row.append(a);
+  if(item.detail)row.append(el('p',item.detail,'bn-muted'));
+  if(item.source&&item.source!==item.url){const src=link(item.source,'مصدر جهة التواصل');if(src){src.className='bn-evidence-link';row.append(src)}}
+  return row;
+}
+const routeStates={'platform-page':'صفحة منصة مؤكدة · العرض غير متحقق','inquiry-only':'استفسار فقط · لا عرض متحقق','listed-reference':'مرجع إدراج','broker-search':'بحث عقد · الأهلية غير متحققة','open-offer':'عرض منشور · تحقق من الشروط والأهلية'};
+function routeNode(item){
+  if(!item||typeof item!=='object')return null;const a=quickLink(item.url,item.label||'فتح الرابط',item.kind==='broker'?'chart-candle':item.kind==='inquiry'?'message-circle':'external-link');
+  if(!a)return null;const r=el('div',null,'bn-route');r.append(a,el('span',routeStates[item.status]||'حالة التوفر غير متحققة','bn-route-status'));
+  if(item.detail)r.append(el('p',item.detail,'bn-muted'));return r;
+}
+function accessPanel(c){
+  const p=researchPanel('الموقع والتواصل','CONTACT / IR','world');
+  const a=quickLink(c.website,'الموقع الرسمي','world');if(a)p.append(a);else p.append(el('p','الموقع الرسمي غير متحقق.','bn-muted'));
+  const entries=(Array.isArray(c.contacts)?c.contacts:[]).map(readContact).filter(Boolean);for(const v of entries)p.append(v);
+  if(!entries.length)p.append(el('p','لا توجد جهة تواصل منشورة متحققة.','bn-muted'));
+  if(c.accessChecked)p.append(el('p','تحقق الروابط: '+c.accessChecked,'bn-muted'));return p;
+}
+function investmentPanel(c){
+  const p=researchPanel('طرق الاستثمار','ACCESS ROUTES','chart-candle');
+  if(state(c)==='excluded')p.append(el('p','مستبعدة من التفويض؛ الروابط للمراجعة فقط.','bn-muted bn-alert-text'));
+  const entries=(Array.isArray(c.investmentRoutes)?c.investmentRoutes:[]).map(routeNode).filter(Boolean);
+  for(const v of entries)p.append(v);
+  if(!entries.length)p.append(el('p','لا توجد طريقة دخول موثقة حتى الآن.','bn-muted'));
+  if(c.access)p.append(el('p',c.access,'bn-access-note'));
+  p.append(el('p','تحقق من نوع الحصة، التقييم، الرسوم، القيود والأهلية والتوافق الشرعي قبل أي استثمار.','bn-muted'));
+  return p;
+}
+function factList(c){
+  const f=researchPanel('بيانات الشركة','IDENTITY','id');const known=[['الدولة',c.country],['التأسيس',c.founded],['الإدراج',c.type==='listed'?c.listedSince:null],['الرمز / السوق',[c.ticker,c.exchange].filter(Boolean).join(' · ')],['تاريخ المعلومة',c.date],['آخر فحص',c.lastChecked]];
+  const missing=[];for(const [k,v] of known){if(!v){if(k!=='الرمز / السوق'&&(k!=='الإدراج'||c.type==='listed'))missing.push(k);continue}const z=el('div',null,'bn-factline');z.append(el('span',k,'bn-caption'),el('b',v));f.append(z)}
+  if(missing.length)f.append(el('p','بيانات غير متحققة: '+missing.join(' · '),'bn-muted'));return f;
+}
+function investmentGate(c){
+  const p=researchPanel('شروط التأهيل','RISK GATE','shield-check');
+  const rows=[['الحالة',label(c)],['التوافق الشرعي',c.sharia||'غير متحقق'],['الخطر الأبرز',c.risk||c.profile?.risk||'يحتاج تحققًا']];
+  for(const [k,v] of rows){const z=el('div',null,'bn-gate-row');z.append(el('span',k,'bn-caption'),el('p',v));p.append(z)}
+  return p;
+}
+function memoSection(title,content,ico='file-text'){
+  const p=researchPanel(title,'RESEARCH NOTE',ico);p.append(el('p',content,'bn-memo-copy'));return p;
+}
+
 function metrics(c) {
   const out=el('div',null,'bn-metrics');
   for(const m of (Array.isArray(c.metrics)?c.metrics:[]).slice(0,4)){
@@ -968,6 +1074,7 @@ function chart(series) {
 function snapshot(c) {
   if(!c)return;
   previewName=c.name;
+  for(const row of $('bnCards').querySelectorAll('.bn-row')){const active=row.dataset.company===c.name;row.classList.toggle('bn-selected',active);row.setAttribute('aria-pressed',String(active))}
   const out=$('bnSnapshot'),sig=$('bnSignal'),graphs=$('bnMiniCharts');
   out.replaceChildren();sig.replaceChildren();graphs.replaceChildren();
   const h=el('div',null,'bn-snapshot-title');h.append(el('h3',c.name),status(c));
@@ -977,7 +1084,7 @@ function snapshot(c) {
     if(!txt)continue;
     const z=el('div',null,'bn-intel-copy');z.append(el('strong',label),el('p',txt));out.append(z);
   }
-  const b=el('button','فتح الملف الكامل','bn-action');b.type='button';b.onclick=()=>{listScroll=window.scrollY;open(c,'overview')};out.append(b);
+  const actions=el('div',null,'bn-preview-actions');const b=el('button','فتح الملف الكامل','bn-action');b.type='button';b.onclick=()=>{listScroll=window.scrollY;open(c,'overview')};actions.append(b);const site=quickLink(c.website,'الموقع الرسمي','world');if(site)actions.append(site);out.append(actions);
   sig.append(signal(c),el('p','تغطية الأدلة '+rating(c).coverage+'% · ليست درجة نهائية','bn-muted'));
   const cs=Object.values(c.series||{}).map(chart).filter(Boolean);
   if(cs.length){for(const v of cs)graphs.append(v)}
@@ -1003,26 +1110,69 @@ function sectorMap(){
 
 function show(open){selected=null;detail.hidden=true;work.hidden=!open;dash.hidden=open;document.body.classList.toggle('bn-active',open);nav.setAttribute('aria-pressed',String(open));if(open){window.scrollTo(0,0);load()}else{window.scrollTo(0,0);window.dispatchEvent(new Event('resize'))}}
 nav.onclick=()=>show(work.hidden&&detail.hidden);
-function back(){selected=null;detail.hidden=true;work.hidden=false;requestAnimationFrame(()=>window.scrollTo(0,listScroll))}
+function back(){selected=null;detail.hidden=true;work.hidden=false;requestAnimationFrame(()=>{window.scrollTo(0,listScroll);const row=[...$('bnCards').querySelectorAll('.bn-row')].find(x=>x.dataset.company===previewName);if(row)row.focus({preventScroll:true})})}
 $('bnBack').onclick=back;
 function kpis(){const out=$('bnStats');out.replaceChildren();const cs=data.companies,active=cs.filter(c=>state(c)!=='excluded');for(const [title,num,desc,ico] of [['مدرجة',active.filter(c=>c.type==='listed').length,'أسهم في قائمة البحث','chart-candle'],['شركات خاصة',active.filter(c=>c.type==='private').length,'فرص قبل الطرح','rocket'],['مؤهلة',cs.filter(c=>state(c)==='qualified').length,'اجتازت معايير التأهيل','circle-check'],['مستبعدة',cs.filter(c=>state(c)==='excluded').length,'محفوظة مع أسباب الاستبعاد','shield-x']]){const k=el('div',null,'bn-kpi'),h=el('div',null,'bn-kpi-label');h.append(el('span',title),icon(ico));k.append(h,el('strong',num),el('small',desc));out.append(k)}}
-function render(){if(!data)return;const query=$('bnQuery').value.trim().toLowerCase(),sector=$('bnSector').value,st=$('bnState').value,sort=$('bnSort').value;const list=data.companies.filter(c=>(type==='all'||c.type===type)&&(!sector||c.sector===sector)&&(st==='all'||(st==='active'?state(c)!=='excluded':state(c)===st))&&[c.name,c.sector,c.ticker,c.country].filter(Boolean).join(' ').toLowerCase().includes(query));const cmp=(a,b)=>String(a.name).localeCompare(String(b.name),'en');list.sort((a,b)=>sort==='name'?cmp(a,b):sort==='value'?((b.valuationUsd??-1)-(a.valuationUsd??-1)||cmp(a,b)):((rating(b).total??-1)-(rating(a).total??-1)||rating(b).coverage-rating(a).coverage||rating(b).earned-rating(a).earned||cmp(a,b)));$('bnCount').textContent=list.length+' شركة معروضة من '+data.companies.length;const out=$('bnCards');out.replaceChildren();for(const c of list){const row=el('button',null,'bn-row');row.type='button';row.setAttribute('aria-label','فتح ملف '+c.name);const name=el('div',null,'bn-company');name.append(el('span',c.name,'bn-name'),el('span',[c.ticker,c.exchange,c.sector].filter(Boolean).join(' · '),'bn-meta'));const val=el('div',null,'bn-value'),market=value(c.valuationUsd);if(market){val.append(el('strong',market,'bn-number'),el('span',(c.type==='listed'?'قيمة سوقية':'تقييم')+(c.date?' · '+c.date:''),'bn-meta'))}else if(c.type==='private'&&clean(c.stage)){val.append(el('strong',c.stage),el('span','مرحلة / تمويل معلن، ليس تقييمًا','bn-meta'))}else val.append(el('strong','غير متاح'),el('span','القيمة السوقية','bn-meta'));const arrow=el('span',null,'bn-arrow');arrow.append(icon('chevron-left'));row.append(name,val,ratingNode(c),status(c),arrow);row.onclick=()=>{listScroll=window.scrollY;open(c,'overview')};row.onpointerenter=()=>snapshot(c);row.onfocus=()=>snapshot(c);out.append(row)}if(!list.length){out.append(el('p','لا توجد نتائج مطابقة.','bn-empty'));for(const id of ['bnSnapshot','bnSignal','bnMiniCharts'])$(id).replaceChildren(el('p','لا يوجد ملف مطابق للفلتر.','bn-muted'))}else snapshot(list.find(c=>c.name===previewName)||list[0])}
+function render(){if(!data)return;const query=$('bnQuery').value.trim().toLowerCase(),sector=$('bnSector').value,st=$('bnState').value,sort=$('bnSort').value;const list=data.companies.filter(c=>(type==='all'||c.type===type)&&(!sector||c.sector===sector)&&(st==='all'||(st==='active'?state(c)!=='excluded':state(c)===st))&&[c.name,c.sector,c.ticker,c.country].filter(Boolean).join(' ').toLowerCase().includes(query));const cmp=(a,b)=>String(a.name).localeCompare(String(b.name),'en');list.sort((a,b)=>sort==='name'?cmp(a,b):sort==='value'?((b.valuationUsd??-1)-(a.valuationUsd??-1)||cmp(a,b)):((rating(b).total??-1)-(rating(a).total??-1)||rating(b).coverage-rating(a).coverage||rating(b).earned-rating(a).earned||cmp(a,b)));$('bnCount').textContent=list.length+' شركة معروضة من '+data.companies.length;const out=$('bnCards');out.replaceChildren();for(const c of list){const row=el('button',null,'bn-row');row.type='button';row.setAttribute('aria-label','اختيار '+c.name);row.dataset.company=c.name;row.setAttribute('aria-pressed','false');const name=el('div',null,'bn-company');name.append(el('span',c.name,'bn-name'),el('span',[c.ticker,c.exchange,c.sector].filter(Boolean).join(' · '),'bn-meta'));const val=el('div',null,'bn-value'),market=value(c.valuationUsd);if(market){val.append(el('strong',market,'bn-number'),el('span',(c.type==='listed'?'قيمة سوقية':'تقييم')+(c.date?' · '+c.date:''),'bn-meta'))}else if(c.type==='private'&&clean(c.stage)){val.append(el('strong',c.stage),el('span','مرحلة / تمويل معلن، ليس تقييمًا','bn-meta'))}else val.append(el('strong','غير متاح'),el('span','القيمة السوقية','bn-meta'));const arrow=el('span',null,'bn-arrow');arrow.append(icon('chevron-left'));row.append(name,val,ratingNode(c),status(c),arrow);row.onclick=()=>{snapshot(c);if(window.matchMedia('(max-width:760px)').matches)$('bnSnapshot').scrollIntoView({block:'start',behavior:'auto'})};out.append(row)}if(!list.length){out.append(el('p','لا توجد نتائج مطابقة.','bn-empty'));for(const id of ['bnSnapshot','bnSignal','bnMiniCharts'])$(id).replaceChildren(el('p','لا يوجد ملف مطابق للفلتر.','bn-muted'))}else snapshot(list.find(c=>c.name===previewName)||list[0])}
 function section(title,content){const s=el('section',null,'bn-section');s.append(el('h3',title),el('p',content));return s}
 function gap(parent,labels){if(!labels.length)return;const g=el('div',null,'bn-gap');g.append(el('b','المعلومات المطلوبة لاستكمال الدراسة'),el('p',labels.join(' · ')));parent.append(g)}
 function meaningful(s){const t=clean(s);return t&&!/^(غير (مستكمل|معلن|متحقق|متاح)|لم يكتمل|يلزم (مقارنة|دراسة)|البيانات الكاملة|لا إيرادات أو ARR)/.test(t)?t:''}
 function sources(c){const out=[];const seen=new Set();for(const x of [...(Array.isArray(c.profile?.sources)?c.profile.sources:[]),...(c.source?[{url:c.source,label:'المصدر الأساسي',date:c.date}]:[]),...rating(c).rows.flatMap(x=>x.sources)]){const href=validUrl(x?.url);if(!href||seen.has(href))continue;seen.add(href);out.push({...x,url:href})}return out}
 function displayEvent(x){const n=el('div',null,'bn-event');n.append(el('time',x.date||'تاريخ غير محدد'),el('p',x.summary||'—'));return n}
 function sourceNode(x){const n=el('div',null,'bn-source'),l=link(x.url,x.label||x.url);if(l)n.append(l);if(x.date)n.append(el('time',x.date));return n}
-const tabs=[['overview','نظرة استثمارية'],['finance','المالية والتقييم'],['rating','التقييم والمخاطر'],['updates','المستجدات والمصادر']];
-function open(c,t){selected=c.name;tab=t;work.hidden=true;detail.hidden=false;$('bnCrumbName').textContent=c.name;const p=c.profile||{},root=$('bnDetailBody');root.replaceChildren();const head=el('section',null,'bn-dossier-head'),title=el('div',null,'bn-dossier-title'),identity=el('div');identity.append(el('div',c.type==='listed'?'PUBLIC EQUITY':'PRIVATE EQUITY','bn-kicker'),el('h1',c.name),el('p',[c.country,c.sector,c.ticker,c.exchange].filter(Boolean).join(' · '),'bn-muted'));title.append(identity,status(c));head.append(title);const f=el('div',null,'bn-dossier-facts'),a=rating(c);for(const [k,v,num] of [['القيمة السوقية / التقييم',value(c.valuationUsd)||'غير معلن / غير متحقق',Number.isFinite(c.valuationUsd)],['المرحلة / التمويل',c.stage||'غير متحقق',false],['التقييم الاستثماري',state(c)==='excluded'?'مستبعدة':a.coverage?a.earned+'/'+a.coverage+(a.coverage<100?' · جزئي':''):'—',a.coverage>0],['تغطية الأدلة',a.coverage+'%',true]]){const x=el('div',null,'bn-fact');x.append(el('span',k,'bn-caption'),el('b',v,num?'bn-number':''));f.append(x)}head.append(f);if(c.metrics?.length)head.append(metrics(c));const d=el('div',null,'bn-decision');d.append(el('b','الموقف البحثي'),el('p',p.decision||(state(c)==='excluded'?'خارج التفويض الاستثماري.':'مرشح للبحث، لا توجد موافقة استثمارية.')));head.append(d);root.append(head);const bar=el('nav',null,'bn-tabs');bar.setAttribute('aria-label','أقسام ملف الشركة');for(const [id,text] of tabs){const b=el('button',text,t===id?'on':'');b.type='button';b.setAttribute('aria-pressed',String(t===id));b.onclick=()=>open(c,id);bar.append(b)}root.append(bar);const layout=el('div',null,'bn-dossier-layout'),main=el('div',null,'bn-panel bn-hud bn-dossier-main'+(t==='updates'||t==='rating'?' bn-linear':'')),rail=el('aside',null,'bn-rail'),missing=[];let pairs=[];
-if(t==='overview')pairs=[['الشركة والمنتج',p.overview||c.update],['فرضية الاستثمار',p.thesis],['السوق والطلب',p.market],['المنافسة والميزة',p.competition],['الإدارة والملكية',p.management],['المحفزات',p.catalysts]];
-if(t==='finance'){const ch=el('div',null,'bn-charts');for(const s of Object.values(c.series||{})){const x=chart(s);if(x)ch.append(x)}if(ch.children.length)main.append(ch)}if(t==='finance')pairs=[['النتائج والسيولة',p.financials],['تاريخ الشركة والسهم والتخفيف',p.history],['التقييم وسعر الدخول',p.valuation],['السيناريوهات الاستثمارية',p.scenarios],['إمكانية الدخول',c.access],['التوافق الشرعي',c.sharia]];
-if(t==='rating'){for(const x of a.rows){const n=el('div',null,'bn-axis'),h=el('div',null,'bn-axis-head');h.append(el('span',x.name),el('b',x.points===null?'غير مقيم / '+x.max:x.points+' / '+x.max));n.append(h,track(x.points===null?0:x.points/x.max*100));if(x.reason)n.append(el('p',x.reason));for(const src of x.sources){const l=link(src.url,src.label||'المصدر');if(l){const z=el('p');z.append(l);n.append(z)}}main.append(n)}pairs=[['المخاطر الرئيسية',p.risk||c.risk],['متى تسقط فرضية الاستثمار؟',p.invalidation]]}
-if(t==='updates'){main.append(el('h2','سجل التغييرات'));for(const x of (c.events||[]).slice().reverse())main.append(displayEvent(x));if(!c.events?.length)main.append(el('p','لا توجد مستجدات موثقة في سجل هذه الشركة بعد.','bn-empty'));const sec=el('div',null,'bn-section');sec.append(el('h3','المصادر'));for(const x of sources(c))sec.append(sourceNode(x));if(!sources(c).length)sec.append(el('p','لا توجد مصادر مثبتة.'));main.append(sec)}
-for(const [k,v] of pairs){const text=meaningful(v);if(text)main.append(section(k,text));else missing.push(k)}
-if(t==='overview'||t==='finance')gap(main,missing);
-if(t==='rating')gap(main,missing);
-const facts=el('section',null,'bn-panel');facts.append(el('h2','بطاقة البيانات'));const known=[['الدولة',c.country],['التأسيس',c.founded],['الإدراج',c.type==='listed'?c.listedSince:null],['الرمز / البورصة',[c.ticker,c.exchange].filter(Boolean).join(' · ')],['تاريخ المعلومة',c.date],['آخر فحص موثق',c.lastChecked]];for(const [k,v] of known){if(!v)continue;const row=el('div',null,'bn-policy-row');row.append(el('span',k,'bn-caption'),el('b',v));facts.append(row)}gap(facts,known.filter(([k,v])=>!v&&k!=='الرمز / البورصة'&&(k!=='الإدراج'||c.type==='listed')).map(([k])=>k));rail.append(facts);const scores=el('section',null,'bn-panel bn-hud');scores.append(el('h2','مصفوفة التقييم'),signal(c));rail.append(scores);const next=el('section',null,'bn-panel');next.append(el('h2','الخطوة التالية'),el('p',p.nextSteps||'استكمال البحث قبل اعتماد الفرصة.','bn-body'));rail.append(next);if(t!=='updates'){const src=el('section',null,'bn-panel');src.append(el('h2','المصادر الرئيسية'));for(const x of sources(c).slice(0,4))src.append(sourceNode(x));rail.append(src)}layout.append(main,rail);root.append(layout);window.scrollTo(0,0)}
+
+const tabs=[['overview','نظرة استثمارية','focus-2'],['finance','المالية والتقييم','chart-line'],['rating','التقييم والمخاطر','chart-dots-3'],['updates','المستجدات والمصادر','history'],['access','التواصل والاستثمار','world']];
+function open(c,t,keepScroll=false){
+  selected=c.name;previewName=c.name;tab=t;work.hidden=true;detail.hidden=false;$('bnCrumbName').textContent=c.name;
+  const p=c.profile||{},root=$('bnDetailBody'),prevScroll=window.scrollY;
+  root.replaceChildren();
+  const head=el('section',null,'bn-profile-command bn-panel bn-hud');
+  const title=el('div',null,'bn-profile-identity'),id=el('div'),k=el('span',c.type==='listed'?'PUBLIC EQUITY / COMPANY INTEL':'PRIVATE EQUITY / COMPANY INTEL','bn-kicker');
+  id.append(k,el('h1',c.name),el('p',[c.country,c.sector,c.ticker,c.exchange].filter(Boolean).join(' · '),'bn-muted'));
+  const symbol=el('div',null,'bn-emblem');symbol.append(icon(c.type==='listed'?'chart-candle':'atom'));
+  title.append(symbol,id);
+  const actions=el('div',null,'bn-profile-actions');actions.append(status(c));const site=quickLink(c.website,'الموقع الرسمي','world');if(site)actions.append(site);
+  head.append(title,actions);
+  root.append(head);
+  const layout=el('div',null,'bn-profile-grid'),left=el('aside',null,'bn-profile-side'),center=el('main',null,'bn-profile-main'),right=el('aside',null,'bn-profile-side');
+  const facts=researchPanel('المؤشرات الأساسية','SNAPSHOT','activity');
+  const a=rating(c),f=el('div',null,'bn-profile-facts');
+  for(const [k,v,n] of [['القيمة / التقييم',value(c.valuationUsd)||'غير معلن / غير متحقق',Number.isFinite(c.valuationUsd)],['المرحلة / التمويل',c.stage||'غير متحقق',false],['التقييم',state(c)==='excluded'?'مستبعدة':a.coverage?a.earned+'/'+a.coverage:'—',a.coverage>0],['تغطية الأدلة',a.coverage+'%',true]]){
+    const x=el('div',null,'bn-fact');x.append(el('span',k,'bn-caption'),el('b',v,n?'bn-number':''));f.append(x)
+  }
+  facts.append(f);if(c.metrics?.length)facts.append(metrics(c));left.append(facts);
+  const scores=researchPanel('مصفوفة التقييم','SCORE MATRIX','chart-dots-3');scores.append(signal(c),el('p','نقاط المحاور المقيمة فقط · '+a.coverage+'% تغطية','bn-muted'));left.append(scores,factList(c));
+  const quick=researchPanel('الموقف البحثي','INVESTMENT THESIS','focus-2');
+  quick.append(el('p',p.decision||(state(c)==='excluded'?'خارج التفويض الاستثماري.':'مرشح للبحث، لا توجد موافقة استثمارية.'),'bn-decision-copy'));
+  if(p.thesis)quick.append(el('p',p.thesis,'bn-thesis-copy'));
+  center.append(quick);
+  const bar=el('nav',null,'bn-tabs bn-profile-tabs');bar.setAttribute('aria-label','أقسام ملف الشركة');
+  for(const [id,label,ico] of tabs){const b=el('button',null,t===id?'on':'');b.type='button';b.append(icon(ico),el('span',label));b.dataset.tab=id;b.setAttribute('aria-pressed',String(t===id));b.onclick=()=>open(c,id,true);bar.append(b)}
+  center.append(bar);
+  const main=el('div',null,'bn-profile-content'),missing=[];let pairs=[];
+  if(t==='overview')pairs=[['الشركة والمنتج',p.overview||c.update,'building-factory'],['السوق والطلب',p.market,'world'],['المنافسة والميزة',p.competition,'git-compare'],['الإدارة والملكية',p.management,'users'],['المحفزات',p.catalysts,'bolt'],['الخطوة التالية',p.nextSteps,'list-check']];
+  if(t==='finance'){
+    const graphs=Object.values(c.series||{}).map(chart).filter(Boolean);if(graphs.length){const ch=researchPanel('التاريخ المالي والسعري','HISTORICAL DATA','chart-line'),g=el('div',null,'bn-charts');g.append(...graphs);ch.append(g,el('p','نقاط تاريخية موثقة مختارة، وليست أسعارًا لحظية.','bn-muted'));main.append(ch)}
+    pairs=[['النتائج والسيولة',p.financials,'cash'],['تاريخ الشركة والسهم والتخفيف',p.history,'history'],['التقييم وسعر الدخول',p.valuation,'scale'],['السيناريوهات الاستثمارية',p.scenarios,'chart-arrows']];
+  }
+  if(t==='rating'){
+    const panel=researchPanel('تفصيل المحاور','ASSESSMENT','chart-dots-3');for(const x of a.rows){const n=el('div',null,'bn-axis'),h=el('div',null,'bn-axis-head');h.append(el('span',x.name),el('b',x.points===null?'غير مقيم / '+x.max:x.points+' / '+x.max));n.append(h,track(x.points===null?0:x.points/x.max*100));if(x.reason)n.append(el('p',x.reason));for(const src of x.sources){const l=link(src.url,src.label||'المصدر');if(l){const z=el('p');z.append(l);n.append(z)}}panel.append(n)}main.append(panel);
+    pairs=[['المخاطر الرئيسية',p.risk||c.risk,'alert-triangle'],['متى تسقط فرضية الاستثمار؟',p.invalidation,'shield-x']];
+  }
+  if(t==='updates'){
+    const e=researchPanel('سجل التغييرات','DAILY LOG','history');for(const x of (c.events||[]).slice().reverse())e.append(displayEvent(x));if(!c.events?.length)e.append(el('p','لا توجد مستجدات موثقة في سجل هذه الشركة بعد.','bn-empty'));main.append(e);
+    const src=researchPanel('المصادر والأدلة','EVIDENCE','files');for(const x of sources(c))src.append(sourceNode(x));if(!sources(c).length)src.append(el('p','لا توجد مصادر مثبتة.','bn-muted'));main.append(src)
+  }
+  if(t==='access'){main.append(accessPanel(c),investmentPanel(c));}
+  for(const [k,v,ico] of pairs){const text=meaningful(v);if(text)main.append(memoSection(k,text,ico));else missing.push(k)}
+  if(missing.length){const g=researchPanel('بيانات تحتاج استكمالًا','RESEARCH GAPS','alert-circle');g.append(el('p',missing.join(' · '),'bn-muted'));main.append(g)}
+  center.append(main);
+  right.append(investmentGate(c));
+  if(t!=='access'){right.append(accessPanel(c),investmentPanel(c))}
+  if(t!=='updates'){const src=researchPanel('المصادر الرئيسية','SOURCES','files');for(const x of sources(c).slice(0,3))src.append(sourceNode(x));if(sources(c).length>3){const b=el('button','عرض جميع المصادر','bn-action');b.type='button';b.onclick=()=>open(c,'updates',true);src.append(b)}right.append(src)}
+  layout.append(left,center,right);root.append(layout);
+  if(keepScroll)requestAnimationFrame(()=>{window.scrollTo(0,prevScroll);bar.querySelector('[data-tab="'+t+'"]')?.focus({preventScroll:true})});else window.scrollTo(0,0);
+}
 function policy(){const b=$('bnPolicyBody');b.replaceChildren();const p=data.policy||{};for(const [label,key] of [['الهدف','objective'],['الأسواق','markets'],['توزيع البحث','researchMix'],['الشركات المدرجة','publicRules'],['الشركات الخاصة','privateRules'],['شروط التأهيل','gates'],['منهج التقييم','scoring']]){if(!p[key])continue;const row=el('div',null,'bn-policy-row');row.append(el('b',label),el('p',p[key],'bn-body'));b.append(row)}for(const x of p.sources||[])b.append(sourceNode(x))}
 async function load(){const run=++seq;$('bnStatus').textContent='جاري التحميل…';$('bnRefresh').disabled=true;try{const r=await fetch('../bottleneck-data.json',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const next=await r.json();if(!Array.isArray(next.companies)||next.companies.some(c=>!c||typeof c.name!=='string'))throw Error('invalid data');if(run!==seq)return;data=next;$('bnStatus').textContent=data.updated||'غير مؤرخ';$('bnNote').textContent=data.note||'لا توجد ملاحظات إضافية.';kpis();const sel=$('bnSector'),old=sel.value;sel.replaceChildren(new Option('كل القطاعات',''));for(const sector of [...new Set(data.companies.map(c=>c.sector).filter(Boolean))].sort())sel.add(new Option(sector,sector));sel.value=[...sel.options].some(o=>o.value===old)?old:'';sectorMap();const h=$('bnHistory');h.replaceChildren();for(const x of (data.history||[]).slice(-5).reverse())h.append(displayEvent(x));if(!h.children.length)h.append(el('p','لا توجد تحديثات بعد.','bn-muted'));policy();render();if(selected&&!detail.hidden){const c=data.companies.find(c=>c.name===selected);if(c)open(c,tab);else back()}}catch(e){if(run===seq){$('bnStatus').textContent='تعذر تحديث البيانات';$('bnNote').textContent=data?'تظهر آخر بيانات محملة في هذه الجلسة.':'لم يتم تحميل قاعدة البيانات؛ أعد المحاولة.';if(!data)$('bnCards').replaceChildren(el('p','تعذر تحميل قائمة الشركات. اضغط زر التحديث.','bn-empty'))}}finally{if(run===seq)$('bnRefresh').disabled=false}}
 $('bnTabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{type=b.dataset.type;$('bnTabs').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));render()});$('bnQuery').oninput=render;for(const id of ['bnSector','bnState','bnSort'])$(id).onchange=render;$('bnRefresh').onclick=load;
