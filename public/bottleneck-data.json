@@ -12,7 +12,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "استفسار مباشر فقط؛ لا طرح مفتوح متحقق.",
       "risk": "التوسع في التكرير والكيميائيات؛ متانة الأغشية واقتصاديات المشروع",
       "update": "أغشية تفصل السوائل الصناعية بدل الفصل الحراري؛ MIT يذكر وفر طاقة يصل إلى 90% في تطبيقات محددة. إجمالي التمويل نحو $80M.",
       "date": "2026-05-11",
@@ -104,7 +104,33 @@
           "value": "2 yr",
           "detail": "مصنع لب · كندا"
         }
-      ]
+      ],
+      "website": "https://viaseparations.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "نموذج مخصص للمستثمرين",
+          "url": "https://viaseparations.com/contact/",
+          "source": "https://viaseparations.com/contact/",
+          "detail": "اختر Investor من قائمة سبب التواصل."
+        },
+        {
+          "kind": "email",
+          "label": "بريد الشركة",
+          "value": "info@viaseparations.com",
+          "source": "https://viaseparations.com/contact/"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "استفسار مباشر — Investor",
+          "kind": "inquiry",
+          "status": "inquiry-only",
+          "url": "https://viaseparations.com/contact/",
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "PQShield",
@@ -116,7 +142,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — تطبيقات مالية وعسكرية تستدعي تدقيق توزيع الإيرادات",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "صفحة سوق خاص متحققة؛ لا صفقة متحققة.",
       "risk": "المنافسة ودورات اعتماد العملاء",
       "update": "ملكية فكرية للتشفير المقاوم للحوسبة الكمية في الأجهزة والبرمجيات؛ جولة بقيادة Addition.",
       "date": "2024-06-20",
@@ -241,7 +267,27 @@
           "value": "85+",
           "detail": "بحسب الشركة"
         }
-      ]
+      ],
+      "website": "https://pqshield.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "نموذج التواصل والشراكات",
+          "url": "https://pqshield.com/contact-us/",
+          "source": "https://pqshield.com/contact-us/",
+          "detail": ""
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "EquityZen — صفحة الشركة",
+          "kind": "secondary",
+          "status": "platform-page",
+          "url": "https://equityzen.com/company/pqshield/",
+          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "ZwitterCo",
@@ -253,7 +299,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بعض التطبيقات المعلنة تشمل مصانع المشروبات الكحولية؛ يلزم فحص الإيرادات",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "صفحة سوق خاص متحققة؛ لا صفقة متحققة.",
       "risk": "عمر الأغشية وتكلفة التشغيل",
       "update": "أغشية مقاومة للتلوث العضوي لإعادة استخدام المياه الصناعية.",
       "date": "2024-07-09",
@@ -333,7 +379,33 @@
           "value": "2018",
           "detail": "USA"
         }
-      ]
+      ],
+      "website": "https://zwitterco.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "نموذج التواصل",
+          "url": "https://zwitterco.com/contact-us/",
+          "source": "https://zwitterco.com/contact-us/",
+          "detail": ""
+        },
+        {
+          "kind": "phone",
+          "label": "المقر الرئيسي",
+          "value": "+1 781 782 2689",
+          "source": "https://zwitterco.com/contact-us/"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "EquityZen — صفحة الشركة",
+          "kind": "secondary",
+          "status": "platform-page",
+          "url": "https://equityzen.com/company/zwitterco/",
+          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Qblox",
@@ -345,7 +417,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "استفسار مباشر فقط؛ لا طرح مفتوح متحقق.",
       "risk": "توقيت التوسع التجاري للحوسبة الكمية",
       "update": "إلكترونيات التحكم وقراءة الإشارات للحواسيب الكمية؛ مورد مستقل لمطوري الأجهزة.",
       "date": "2024-06-20",
@@ -446,7 +518,27 @@
           "value": "25",
           "detail": "Press kit"
         }
-      ]
+      ],
+      "website": "https://qblox.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "التواصل مع الفريق",
+          "url": "https://qblox.com/contact",
+          "source": "https://qblox.com/contact",
+          "detail": ""
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "الاستفسار من الشركة",
+          "kind": "inquiry",
+          "status": "inquiry-only",
+          "url": "https://qblox.com/contact",
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Tropic",
@@ -458,7 +550,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "صفحة سوق خاص متحققة؛ لا صفقة متحققة.",
       "risk": "التنظيم الجيني، سلاسل التكاثر، اعتماد المزارعين",
       "update": "أطلقت أصناف موز معدلة جينيًا تجاريًا في 2025؛ التمويل لتوسيع الموز والأرز.",
       "date": "2026-03-12",
@@ -554,7 +646,39 @@
           "value": "2027",
           "detail": "هدف طرح لا ضمان"
         }
-      ]
+      ],
+      "website": "https://tropic.bio/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "صفحة التواصل",
+          "url": "https://tropic.bio/contact/",
+          "source": "https://tropic.bio/contact/",
+          "detail": ""
+        },
+        {
+          "kind": "email",
+          "label": "استفسارات عامة",
+          "value": "info@tropic.bio",
+          "source": "https://tropic.bio/contact/"
+        },
+        {
+          "kind": "phone",
+          "label": "هاتف الشركة",
+          "value": "+44 1603 274441",
+          "source": "https://tropic.bio/contact/"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "EquityZen — صفحة الشركة",
+          "kind": "secondary",
+          "status": "platform-page",
+          "url": "https://equityzen.com/company/tropicbiosciences/",
+          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Amperesand",
@@ -566,7 +690,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "استفسار مباشر فقط؛ لا طرح مفتوح متحقق.",
       "risk": "التأهيل الصناعي، الاعتمادية، أسعار SiC والتصنيع",
       "update": "محولات حالة صلبة للجهد المتوسط؛ جولة بقيادة Temasek وWalden Catalyst.",
       "date": "2025-11",
@@ -668,7 +792,33 @@
           "value": "800V DC",
           "detail": "Data center"
         }
-      ]
+      ],
+      "website": "https://www.amperesand.io/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "صفحة التواصل",
+          "url": "https://www.amperesand.io/contact",
+          "source": "https://www.amperesand.io/contact",
+          "detail": ""
+        },
+        {
+          "kind": "email",
+          "label": "البريد العام",
+          "value": "info@amperesand.io",
+          "source": "https://www.amperesand.io/contact"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "الاستفسار من الشركة",
+          "kind": "inquiry",
+          "status": "inquiry-only",
+          "url": "https://www.amperesand.io/contact",
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "AILOS Robotics",
@@ -680,7 +830,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "استفسار مباشر فقط؛ لا طرح مفتوح متحقق.",
       "risk": "تأهيل gearbox لدى OEM والضمان والتكلفة",
       "update": "علب تروس دقيقة للروبوتات والأطراف الصناعية؛ فرصة في المكونات بدل الروبوت الكامل.",
       "date": "2025-12-02",
@@ -772,7 +922,26 @@
           "value": "2025",
           "detail": "VUB"
         }
-      ]
+      ],
+      "website": "https://sites.google.com/ailos-robotics.com/ailos/home",
+      "contacts": [
+        {
+          "kind": "email",
+          "label": "بريد العمل المنشور للمؤسس",
+          "value": "pablo@ailos-robotics.com",
+          "source": "https://sites.google.com/ailos-robotics.com/ailos/home"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "الاستفسار من الشركة",
+          "kind": "inquiry",
+          "status": "inquiry-only",
+          "url": "https://sites.google.com/ailos-robotics.com/ailos/home",
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Rainbow Crops",
@@ -784,7 +953,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "استفسار مباشر فقط؛ لا طرح مفتوح متحقق.",
       "risk": "مرحلة مبكرة، تجارب حقلية وتنظيم وتسويق",
       "update": "تحرير جيني متعدد المواضع لتحسين خصائص المحاصيل؛ دعم Corteva وLIFTT.",
       "date": "2026-06-23",
@@ -875,7 +1044,33 @@
           "value": "Trait Foundry",
           "detail": "Multiplex editing"
         }
-      ]
+      ],
+      "website": "https://www.rainbowcrops.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "التواصل — يشمل المستثمرين",
+          "url": "https://www.rainbowcrops.com/contact",
+          "source": "https://www.rainbowcrops.com/contact",
+          "detail": ""
+        },
+        {
+          "kind": "email",
+          "label": "الشراكات",
+          "value": "partnerships@rainbowcrops.com",
+          "source": "https://www.rainbowcrops.com/contact"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "الاستفسار من الشركة",
+          "kind": "inquiry",
+          "status": "inquiry-only",
+          "url": "https://www.rainbowcrops.com/contact",
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Nitricity",
@@ -887,7 +1082,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "استفسار مباشر فقط؛ لا طرح مفتوح متحقق.",
       "risk": "تكلفة الكهرباء والمواد، تأخير المصنع، اقتصاديات الأسمدة",
       "update": "إنتاج أسمدة نيتروجينية باستخدام الكهرباء ومخلفات اللوز؛ بدء مشروع أول مصنع.",
       "date": "2025-09-10",
@@ -978,7 +1173,27 @@
           "value": "100×",
           "detail": "مستهدف"
         }
-      ]
+      ],
+      "website": "https://www.nitricity.co/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "صفحة التواصل",
+          "url": "https://www.nitricity.co/contact-us",
+          "source": "https://www.nitricity.co/contact-us",
+          "detail": ""
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "الاستفسار من الشركة",
+          "kind": "inquiry",
+          "status": "inquiry-only",
+          "url": "https://www.nitricity.co/contact-us",
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Osmoses",
@@ -990,7 +1205,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "استفسار مباشر فقط؛ لا طرح مفتوح متحقق.",
       "risk": "نفاذية الغشاء والانتقائية والتوسع الصناعي",
       "update": "أغشية جزيئية لفصل الغازات وتقليل طاقة التنقية؛ تقنية نشأت من MIT.",
       "date": "2023",
@@ -1076,7 +1291,26 @@
           "value": "$3M",
           "detail": "NSF"
         }
-      ]
+      ],
+      "website": "https://osmoses.com/",
+      "contacts": [
+        {
+          "kind": "email",
+          "label": "الشراكات والاستفسارات",
+          "value": "info@osmoses.com",
+          "source": "https://osmoses.com/team/"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "الاستفسار من الشركة",
+          "kind": "inquiry",
+          "status": "inquiry-only",
+          "url": "https://osmoses.com/team/",
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Avicena",
@@ -1088,7 +1322,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "صفحة سوق خاص متحققة؛ لا صفقة متحققة.",
       "risk": "منافسة silicon photonics وتأهيل الشرائح؛ مرحلة C استثناء بحثي",
       "update": "وصلات ضوئية MicroLED لنقل البيانات بين الشرائح وتقليل استهلاك الطاقة.",
       "date": "2026-11-24",
@@ -1174,7 +1408,27 @@
           "value": "1 Tbps",
           "detail": "Aug 2026"
         }
-      ]
+      ],
+      "website": "https://avicena.tech/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "نموذج التواصل",
+          "url": "https://avicena.tech/contact-us/",
+          "source": "https://avicena.tech/contact-us/",
+          "detail": ""
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "EquityZen — صفحة الشركة",
+          "kind": "secondary",
+          "status": "platform-page",
+          "url": "https://equityzen.com/company/avicenatech/",
+          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Phoenix Tailings",
@@ -1186,7 +1440,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "دين استثماري $10M وتعهد دين مشروط $500M؛ نشاط دفاعي، لا تأهيل",
-      "access": "تواصل مع الشركة / تحقق من توافر الحصص",
+      "access": "صفحة سوق خاص متحققة؛ لا صفقة متحققة.",
       "risk": "تمويل بالدين ومخاطر تنفيذ المشروع والتعرض للدفاع",
       "update": "تكرير المعادن الأرضية النادرة؛ جولة B-3 تضمنت $10M دينًا استثماريًا؛ يلزم فحص شرعي خاص.",
       "date": "2026-10-20",
@@ -1282,7 +1536,33 @@
           "value": "$375M",
           "detail": "Oct 2026 · مخطط"
         }
-      ]
+      ],
+      "website": "https://phoenixtailings.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "نموذج التواصل",
+          "url": "https://phoenixtailings.com/contact",
+          "source": "https://phoenixtailings.com/contact",
+          "detail": ""
+        },
+        {
+          "kind": "email",
+          "label": "البريد العام",
+          "value": "info@phoenixtailings.com",
+          "source": "https://phoenixtailings.com/contact"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "EquityZen — صفحة الشركة",
+          "kind": "secondary",
+          "status": "platform-page",
+          "url": "https://equityzen.com/company/phoenixtailings/",
+          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Sono-Tek",
@@ -1329,7 +1609,33 @@
           "date": "2026-11-26",
           "summary": "خارج تفويض النمو المبكر: تأسست عام 1975؛ تُحفظ كمقارن صناعي لا كفرصة ناشئة."
         }
-      ]
+      ],
+      "website": "https://www.sono-tek.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "علاقات المستثمرين",
+          "url": "https://www.sono-tek.com/about-us/investors/investor-contacts/",
+          "source": "https://www.sono-tek.com/about-us/investors/investor-contacts/",
+          "detail": ""
+        },
+        {
+          "kind": "email",
+          "label": "بريد علاقات المستثمرين",
+          "value": "info@sono-tek.com",
+          "source": "https://www.sono-tek.com/about-us/investors/investor-contacts/"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "معلومات السهم الرسمية",
+          "kind": "listing",
+          "status": "listed-reference",
+          "url": "https://www.sono-tek.com/About%20Us/Investors/",
+          "detail": "NASDAQ: SOTK؛ مستبعدة من التفويض."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Nephros",
@@ -1390,7 +1696,33 @@
       ],
       "country": "الولايات المتحدة",
       "founded": "1997-04-03",
-      "listedSince": "2004 — نشرة طرح أولي"
+      "listedSince": "2004 — نشرة طرح أولي",
+      "website": "https://www.nephros.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "علاقات المستثمرين",
+          "url": "https://www.nephros.com/investors/",
+          "source": "https://www.nephros.com/investors/",
+          "detail": ""
+        },
+        {
+          "kind": "email",
+          "label": "بريد الاستفسارات",
+          "value": "info@nephros.com",
+          "source": "https://www.nephros.com/investors/"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "معلومات المستثمرين والسهم",
+          "kind": "listing",
+          "status": "listed-reference",
+          "url": "https://www.nephros.com/investors/",
+          "detail": "NASDAQ: NEPH؛ مستبعدة من التفويض."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Arbe Robotics",
@@ -1438,7 +1770,33 @@
           "date": "2026-11-26",
           "summary": "خارج التفويض حاليًا: خسائر ضخمة قياسًا بالإيرادات وتمويل متكرر ونشاط دفاعي يحتاج تدقيقًا."
         }
-      ]
+      ],
+      "website": "https://arberobotics.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "علاقات المستثمرين",
+          "url": "https://ir.arberobotics.com/company-information/contacts",
+          "source": "https://ir.arberobotics.com/company-information/contacts",
+          "detail": ""
+        },
+        {
+          "kind": "email",
+          "label": "بريد علاقات المستثمرين",
+          "value": "investors@arberobotics.com",
+          "source": "https://ir.arberobotics.com/company-information/contacts"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "معلومات تداول السهم الرسمية",
+          "kind": "listing",
+          "status": "listed-reference",
+          "url": "https://ir.arberobotics.com/company-information/faq",
+          "detail": "NASDAQ: ARBE؛ مستبعدة من التفويض."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "374Water",
@@ -1491,7 +1849,27 @@
           "summary": "استبعاد بناءً على إفصاح الاستمرارية في 10-Q، رغم نمو المبيعات."
         }
       ],
-      "country": "الولايات المتحدة"
+      "country": "الولايات المتحدة",
+      "website": "https://374water.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "علاقات المستثمرين",
+          "url": "https://374water.com/ir/",
+          "source": "https://374water.com/ir/",
+          "detail": ""
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "ملف المستثمرين الرسمي",
+          "kind": "listing",
+          "status": "listed-reference",
+          "url": "https://374water.com/ir/",
+          "detail": "NASDAQ: SCWO؛ مستبعدة بسبب الاستمرارية."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "UptimeAI",
@@ -1503,7 +1881,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — يلزم فحص التمويل والعقود",
-      "access": "تواصل مع الشركة؛ لا عرض متحقق",
+      "access": "استفسار مباشر فقط؛ لا طرح مفتوح متحقق.",
       "risk": "دورات المبيعات الصناعية والتكامل والمنافسة",
       "update": "اتفاق تجاري ثلاث سنوات مع Chevron بعد تجربة تقنية ناجحة.",
       "date": "2026-11-11",
@@ -1605,7 +1983,39 @@
           "value": "400%",
           "detail": "ادعاء الشركة · تاريخي"
         }
-      ]
+      ],
+      "website": "https://www.uptimeai.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "نموذج التواصل",
+          "url": "https://www.uptimeai.com/contact-us/",
+          "source": "https://www.uptimeai.com/contact-us/",
+          "detail": ""
+        },
+        {
+          "kind": "phone",
+          "label": "مكتب أمريكا",
+          "value": "+1 978 906 1195",
+          "source": "https://www.uptimeai.com/contact-us/"
+        },
+        {
+          "kind": "phone",
+          "label": "مكتب الهند",
+          "value": "+91 9441207708",
+          "source": "https://www.uptimeai.com/contact-us/"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "الاستفسار من الشركة",
+          "kind": "inquiry",
+          "status": "inquiry-only",
+          "url": "https://www.uptimeai.com/contact-us/",
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Samotics",
@@ -1617,7 +2027,7 @@
       "ticker": null,
       "exchange": null,
       "sharia": "تمويل EIB يحتاج مراجعة عقده ونسب الدين",
-      "access": "لا عرض متحقق",
+      "access": "استفسار مباشر فقط؛ لا طرح مفتوح متحقق.",
       "risk": "دقة ESA حسب نوع العطل؛ الاعتماد على شركاء التكامل والتمويل",
       "update": "تحليل البيانات الكهربائية لمراقبة المحركات وكفاءة الطاقة.",
       "date": "2025-01-27",
@@ -1732,7 +2142,33 @@
           "value": "2025",
           "detail": "دمج ESA"
         }
-      ]
+      ],
+      "website": "https://samotics.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "صفحة التواصل",
+          "url": "https://samotics.com/contact",
+          "source": "https://samotics.com/contact",
+          "detail": ""
+        },
+        {
+          "kind": "email",
+          "label": "بريد الاستفسارات العامة",
+          "value": "info@samotics.com",
+          "source": "https://samotics.com/contact"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "الاستفسار من الشركة",
+          "kind": "inquiry",
+          "status": "inquiry-only",
+          "url": "https://samotics.com/contact",
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Transense Technologies",
@@ -1767,7 +2203,27 @@
           "date": "2026-11-26",
           "summary": "استبعاد من تفويض النمو المبكر."
         }
-      ]
+      ],
+      "website": "https://www.transense.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "علاقات المستثمرين",
+          "url": "https://www.transense.com/investors/",
+          "source": "https://www.transense.com/investors/",
+          "detail": ""
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "معلومات التداول الرسمية",
+          "kind": "listing",
+          "status": "listed-reference",
+          "url": "https://www.transense.com/investors/",
+          "detail": "AIM: TRT؛ مستبعدة من التفويض."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "EnSilica",
@@ -1999,7 +2455,53 @@
           "date": "2026-11-26",
           "summary": "بحث أولي مبني على الطرح والنتائج المالية والتاريخ السعري."
         }
-      ]
+      ],
+      "website": "https://www.ensilica.com/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "صفحة الشركة للتواصل",
+          "url": "https://www.ensilica.com/contact-us/",
+          "source": "https://www.ensilica.com/contact-us/",
+          "detail": ""
+        },
+        {
+          "kind": "email",
+          "label": "علاقات المستثمرين عبر Novella Communications",
+          "value": "ensilica@novella-comms.com",
+          "source": "https://www.investegate.co.uk/index.php/announcement/rns/ensilica--ensi/notice-of-results-and-investor-presentation/9800277"
+        },
+        {
+          "kind": "phone",
+          "label": "علاقات المستثمرين",
+          "value": "+44 20 3151 7008",
+          "source": "https://www.investegate.co.uk/index.php/announcement/rns/ensilica--ensi/notice-of-results-and-investor-presentation/9800277"
+        },
+        {
+          "kind": "form",
+          "label": "Investor Meet Company",
+          "url": "https://www.investormeetcompany.com/ensilica-plc/register-investor",
+          "source": "https://www.investormeetcompany.com/ensilica-plc/register-investor",
+          "detail": "متابعة عروض الإدارة للمساهمين المحتملين؛ ليست منصة شراء."
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "بورصة لندن — ENSI",
+          "kind": "listing",
+          "status": "listed-reference",
+          "url": "https://www.londonstockexchange.com/en/quote/equity/ENSI/ensilica-plc",
+          "detail": "سهم عادي مدرج في AIM."
+        },
+        {
+          "label": "IBKR — البحث عن عقد السهم",
+          "kind": "broker",
+          "status": "broker-search",
+          "url": "https://www.interactivebrokers.com/cgi-pub/contractSearch/symbolsearch.pl",
+          "detail": "ابحث عن ENSI في LSE AIM؛ توافر العقد وصلاحيات الحساب غير متحققة. لا يعني ذلك توصية شراء."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     },
     {
       "name": "Ridge-i",
@@ -2212,7 +2714,47 @@
           "date": "2026-11-26",
           "summary": "إضافة مرشح بحث ياباني بعد مراجعة نتائج JPX وسعر الطرح والتاريخ السعري."
         }
-      ]
+      ],
+      "website": "https://ridge-i.com/en/",
+      "contacts": [
+        {
+          "kind": "form",
+          "label": "علاقات المستثمرين",
+          "url": "https://ridge-i.com/ir/",
+          "source": "https://ridge-i.com/ir/",
+          "detail": ""
+        },
+        {
+          "kind": "form",
+          "label": "نموذج التواصل بالإنجليزية",
+          "url": "https://ridge-i.com/en/contact/",
+          "source": "https://ridge-i.com/en/contact/",
+          "detail": ""
+        },
+        {
+          "kind": "phone",
+          "label": "جهة الاستفسار في الإفصاح المالي",
+          "value": "+81 3 4214 8558",
+          "source": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm"
+        }
+      ],
+      "investmentRoutes": [
+        {
+          "label": "بيانات السهم الرسمية — 5572",
+          "kind": "listing",
+          "status": "listed-reference",
+          "url": "https://ridge-i.com/ir/stock/",
+          "detail": "Tokyo Growth؛ وحدة التداول العادية 100 سهم بحسب الشركة."
+        },
+        {
+          "label": "IBKR — البحث عن عقد السهم",
+          "kind": "broker",
+          "status": "broker-search",
+          "url": "https://www.interactivebrokers.com/cgi-pub/contractSearch/symbolsearch.pl",
+          "detail": "ابحث عن 5572 في Tokyo Stock Exchange؛ توافر العقد وصلاحيات الحساب غير متحققة. لا يعني ذلك توصية شراء."
+        }
+      ],
+      "accessChecked": "2026-11-26"
     }
   ],
   "history": [
@@ -2235,6 +2777,10 @@
     {
       "date": "2026-11-26",
       "summary": "استكمال المراجعة العامة لبقية المرشحين Qblox وPQShield وإضافة مؤشرات رقمية موثقة للملفات الخاصة. جميع المرشحين النشطين لديهم نقاط بحث جزئية؛ لا يعني ذلك اكتمال العناية الواجبة."
+    },
+    {
+      "date": "2026-11-26",
+      "summary": "إضافة المواقع الرسمية وقنوات التواصل وروابط الاستفسار والاستثمار لجميع الشركات الـ21؛ توثيق صفحات EquityZen لخمس شركات خاصة، وبيانات الأسهم المدرجة النشطة مع رابط البحث لدى IBKR. لا تأكيد على وجود عرض مفتوح أو أهلية حساب."
     }
   ],
   "policy": {
