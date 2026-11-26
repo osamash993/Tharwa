@@ -1,43 +1,88 @@
 {
   "updated": "2026-11-26",
-  "note": "تدقيق انتقائي: استكمال ستة ملفات من مصادر الشركة وSEC. لا توجد فرص مؤهلة حتى الآن. التقييم النهائي محجوب حتى استكمال أدلة المحاور الستة، وبقية المرشحين أوليون.",
+  "note": "ملفات البحث العامة المطورة تتضمن أدلة ومصادر؛ النقاط الجزئية تُعرض مقابل وزن المحاور المدعومة فقط. بيانات الشركات الخاصة غير المتاحة علنًا تبقى غير معلنة؛ لا توجد موافقة شراء أو تأهيل شرعي.",
   "companies": [
     {
       "name": "Via Separations",
       "type": "private",
       "sector": "الفصل الصناعي",
       "source": "https://energy.mit.edu/news/via-separations-to-expand-into-new-markets-with-36-million-investment/",
-      "stage": "جولة نمو — $36M",
+      "stage": "Growth — $36M (2026)",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
       "access": "تواصل مع الشركة / تحقق من توافر الحصص",
-      "risk": "التوسع الصناعي وعمر الأغشية",
+      "risk": "التوسع في التكرير والكيميائيات؛ متانة الأغشية واقتصاديات المشروع",
       "update": "أغشية تفصل السوائل الصناعية بدل الفصل الحراري؛ MIT يذكر وفر طاقة يصل إلى 90% في تطبيقات محددة. إجمالي التمويل نحو $80M.",
-      "date": "2026-04",
+      "date": "2026-05-11",
       "status": "research",
-      "lastChecked": null,
+      "lastChecked": "2026-11-26",
       "profile": {
-        "overview": "أغشية تفصل السوائل الصناعية بدل الفصل الحراري؛ MIT يذكر وفر طاقة يصل إلى 90% في تطبيقات محددة. إجمالي التمويل نحو $80M.",
-        "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في الفصل الصناعي؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
+        "overview": "أنظمة أغشية ميكانيكية معيارية تُركب على العمليات الصناعية القائمة بدل جزء من الفصل الحراري كثيف الطاقة.",
+        "thesis": "بيع وحدات للفصل تقلل الطاقة وتزيد القدرة الإنتاجية دون استبدال المصنع بالكامل. MIT يذكر خفض الطاقة حتى 90% في تطبيقات معينة، لا كضمان لكل عملية.",
         "risk": "التوسع الصناعي وعمر الأغشية",
-        "financials": "البيانات الكاملة وتاريخ رأس المال والتقييم غير مستكملة.",
-        "competition": "يلزم مقارنة المنافسين والبدائل وتكاليف الانتقال.",
-        "management": "لم يكتمل تدقيق الإدارة والملكية.",
+        "financials": "$36M تمويل جديد في أبريل 2026، إجمالي التمويل نحو $80M. Aramco Ventures وMarathon Petroleum وClimate Investment شاركوا. الإيرادات والهامش والنقد غير منشورة في المصدر.",
+        "competition": "التقطير والتبخير الحراري، الأغشية التقليدية وموردو هندسة العمليات. يلزم مقارنة التدفق والانتقائية وعمر الغشاء تحت السوائل الصناعية.",
+        "management": "Shreya Dave (CEO)، Brent Keller (CTO)، Jeffrey Grossman (Chief Scientist)؛ مؤسسو الشركة الثلاثة من MIT.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
-        "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
-        "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
+        "catalysts": "تشغيل مستمر سنتين في مصنع لب كندي بحسب MIT، وتجربة في مصفاة كبيرة خلال 2025؛ المطلوب عقود تكرير مدفوعة وتوسعة تصنيع.",
+        "invalidation": "عدم تحقيق وفورات دورة الحياة أو الفشل في توسيع العملية إلى المذيبات وظروف التكرير.",
+        "nextSteps": "طلب نتائج التشغيل والعقود والتكلفة لكل وحدة وإجمالي قيمة الأعمال وقوائم التمويل.",
         "sources": [
           {
-            "label": "المصدر السابق — يحتاج مراجعة",
+            "label": "MIT Energy Initiative — التقنية والعملاء والتمويل",
             "url": "https://energy.mit.edu/news/via-separations-to-expand-into-new-markets-with-36-million-investment/",
-            "date": "2026-04"
+            "date": "2026-05-11"
           }
-        ]
+        ],
+        "market": "اللب والورق أول سوق تجاري؛ تستهدف التكرير والكيماويات حيث الفصل الحراري جزء أساسي من العملية.",
+        "decision": "بحث نمو صناعي؛ يوجد إثبات تشغيل تجاري، لكن لا تقييم أو شروط حصة متحققة."
       },
-      "events": []
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "استكمال المؤسسين وإثبات التشغيل التجاري وجولة أبريل."
+        }
+      ],
+      "country": "الولايات المتحدة",
+      "founded": "2017",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 17,
+          "reason": "الفصل الحراري حاجة متكررة عبر الصناعات؛ إمكانية التوسع خارج اللب والورق مثبتة كتوجه لا كحصة سوقية.",
+          "sources": [
+            {
+              "label": "MIT Energy Initiative — التقنية والعملاء والتمويل",
+              "url": "https://energy.mit.edu/news/via-separations-to-expand-into-new-markets-with-36-million-investment/",
+              "date": "2026-05-11"
+            }
+          ]
+        },
+        "moat": {
+          "points": 13,
+          "reason": "أبحاث MIT وتكامل معياري، لكن لا مقارنة مستقلة للبراءات والمنافسين.",
+          "sources": [
+            {
+              "label": "MIT Energy Initiative — التقنية والعملاء والتمويل",
+              "url": "https://energy.mit.edu/news/via-separations-to-expand-into-new-markets-with-36-million-investment/",
+              "date": "2026-05-11"
+            }
+          ]
+        },
+        "commercial": {
+          "points": 15,
+          "reason": "تشغيل مستمر سنتين بمصنع وتجربة مصفاة؛ لا بيانات إيرادات أو عقود موقعة بالتكرير.",
+          "sources": [
+            {
+              "label": "MIT Energy Initiative — التقنية والعملاء والتمويل",
+              "url": "https://energy.mit.edu/news/via-separations-to-expand-into-new-markets-with-36-million-investment/",
+              "date": "2026-05-11"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "PQShield",
@@ -145,10 +190,39 @@
         {
           "date": "2026-11-26",
           "summary": "استكمال التمويل والمؤسس والتطبيقات، وإظهار مخاطر نشاط بعض العملاء."
+        },
+        {
+          "date": "2026-11-26",
+          "summary": "إعادة فحص إعلان التمويل؛ نقاط السوق والتقنية فقط."
         }
       ],
       "country": "الولايات المتحدة",
-      "founded": "2018"
+      "founded": "2018",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 17,
+          "reason": "معالجة المياه غير التقليدية حاجة متعددة الصناعات.",
+          "sources": [
+            {
+              "label": "ZwitterCo — Series B",
+              "url": "https://zwitterco.com/blog/zwitterco-secures-series-b-funding-led-by-evok-innovations/",
+              "date": "2024-07-09"
+            }
+          ]
+        },
+        "moat": {
+          "points": 12,
+          "reason": "أغشية متخصصة بتقنية الشركة، لا مقارنة مستقلة للتكلفة.",
+          "sources": [
+            {
+              "label": "ZwitterCo — Series B",
+              "url": "https://zwitterco.com/blog/zwitterco-secures-series-b-funding-led-by-evok-innovations/",
+              "date": "2024-07-09"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Qblox",
@@ -210,296 +284,710 @@
       "type": "private",
       "sector": "الأمن الغذائي",
       "source": "https://tropic.bio/series-c-raise/",
-      "stage": "Series C — $105M",
+      "stage": "Series C — $105M (2026)",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
       "access": "تواصل مع الشركة / تحقق من توافر الحصص",
-      "risk": "التنظيم الحيوي والتوسع الزراعي",
+      "risk": "التنظيم الجيني، سلاسل التكاثر، اعتماد المزارعين",
       "update": "أطلقت أصناف موز معدلة جينيًا تجاريًا في 2025؛ التمويل لتوسيع الموز والأرز.",
       "date": "2026-03-12",
       "status": "research",
-      "lastChecked": null,
+      "lastChecked": "2026-11-26",
       "profile": {
-        "overview": "أطلقت أصناف موز معدلة جينيًا تجاريًا في 2025؛ التمويل لتوسيع الموز والأرز.",
-        "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في الأمن الغذائي؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
+        "overview": "أصناف موز وأرز معدلة جينيًا لتحسين مدة الصلاحية ومقاومة أمراض المحاصيل.",
+        "thesis": "تخفيض فقد المحاصيل والتلف في النقل بدل الرهان على أسعار الغذاء النهائية؛ تحويل الصفات المحسنة إلى دخل تراخيص/شتلات.",
         "risk": "التنظيم الحيوي والتوسع الزراعي",
-        "financials": "البيانات الكاملة وتاريخ رأس المال والتقييم غير مستكملة.",
-        "competition": "يلزم مقارنة المنافسين والبدائل وتكاليف الانتقال.",
-        "management": "لم يكتمل تدقيق الإدارة والملكية.",
+        "financials": "Series C $105M في مارس 2026، أكدها مستشار الصفقة. لا إفصاح متحقق عن الإيرادات أو التقييم.",
+        "competition": "برامج التربية التقليدية، شركات البذور الكبرى وتحرير الجينات. يلزم مقارنة غلة المحصول وتكلفة الشتلات وحقوق IP.",
+        "management": "مستثمران قائدان Forbion وCorteva Catalyst؛ شارك Temasek وIQ Capital وJust Climate. أسماء الإدارة الحالية تحتاج تحققًا مستقلًا.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
-        "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
-        "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
+        "catalysts": "توسع تكاثر الشتلات ومبيعات أصناف 2025؛ إطلاق TR4 بدءًا من 2027 إذا نجحت الخطة.",
+        "invalidation": "فشل الموافقات أو عدم تفوق المحاصيل اقتصاديًا أو مشاكل تكاثر واسعة.",
+        "nextSteps": "قياس المبيعات الفعلية، سعر الشتلات، أسواق الترخيص والتقييم.",
         "sources": [
           {
-            "label": "المصدر السابق — يحتاج مراجعة",
+            "label": "Tropic — تمويل C وإطلاق أصناف",
             "url": "https://tropic.bio/series-c-raise/",
             "date": "2026-03-12"
+          },
+          {
+            "label": "Taylor Wessing — تأكيد التمويل",
+            "url": "https://www.taylorwessing.com/en/insights-and-events/news/media-centre/press-releases/2026/03/advising-on-tropic-biosciences",
+            "date": "2026-03-25"
           }
-        ]
+        ],
+        "market": "أطلقت أصناف موز تجارية في 2025؛ تقول الشركة إن الطلب يتجاوز العرض. برنامج مقاومة Panama disease (TR4) يستهدف طرحًا تجاريًا من 2027.",
+        "decision": "استثناء Series C مع إثبات إطلاق تجاري؛ لا تأهيل دون سعر دخول ومالية وشروط شرعية."
       },
-      "events": []
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "تأكيد تمويل C ومراحل التوسع التجاري والبحثي."
+        }
+      ],
+      "country": "المملكة المتحدة",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 17,
+          "reason": "الأمن الغذائي وتلف المحاصيل احتياجات طويلة الأجل؛ السوق الفعلي يجب قياسه.",
+          "sources": [
+            {
+              "label": "Tropic — تمويل C وإطلاق أصناف",
+              "url": "https://tropic.bio/series-c-raise/",
+              "date": "2026-03-12"
+            }
+          ]
+        },
+        "moat": {
+          "points": 12,
+          "reason": "تحرير جيني متخصص، دون فحص البراءات أو تكاليف البدائل.",
+          "sources": [
+            {
+              "label": "Tropic — تمويل C وإطلاق أصناف",
+              "url": "https://tropic.bio/series-c-raise/",
+              "date": "2026-03-12"
+            }
+          ]
+        },
+        "commercial": {
+          "points": 15,
+          "reason": "أصناف تجارية مطروحة والطلب المعلن يفوق العرض؛ لا إيرادات منشورة.",
+          "sources": [
+            {
+              "label": "Tropic — تمويل C وإطلاق أصناف",
+              "url": "https://tropic.bio/series-c-raise/",
+              "date": "2026-03-12"
+            },
+            {
+              "label": "Taylor Wessing — تأكيد التمويل",
+              "url": "https://www.taylorwessing.com/en/insights-and-events/news/media-centre/press-releases/2026/03/advising-on-tropic-biosciences",
+              "date": "2026-03-25"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Amperesand",
       "type": "private",
       "sector": "محولات الحالة الصلبة",
-      "source": "https://fundingdata.com/company/amperesand",
-      "stage": "Series A — $80M",
+      "source": "https://careers.amperesand.io/",
+      "stage": "Series A — $80M (2025)",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
       "access": "تواصل مع الشركة / تحقق من توافر الحصص",
-      "risk": "الاعتمادات والاعتمادية والتكلفة",
+      "risk": "التأهيل الصناعي، الاعتمادية، أسعار SiC والتصنيع",
       "update": "محولات حالة صلبة للجهد المتوسط؛ جولة بقيادة Temasek وWalden Catalyst.",
-      "date": "2025-11-19",
+      "date": "2025-11",
       "status": "research",
-      "lastChecked": null,
+      "lastChecked": "2026-11-26",
       "profile": {
-        "overview": "محولات حالة صلبة للجهد المتوسط؛ جولة بقيادة Temasek وWalden Catalyst.",
-        "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في محولات الحالة الصلبة؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
+        "overview": "محولات حالة صلبة MV AC/LV DC بمكونات SiC، تستهدف بنية 800V DC لمراكز البيانات؛ تجمع التحويل في وحدات مصنعّية.",
+        "thesis": "تقليل مراحل التحويل وزمن التوريد والمساحة؛ الاستفادة من قيود البنية الكهربائية بدل الرهان على نموذج AI معين.",
         "risk": "الاعتمادات والاعتمادية والتكلفة",
-        "financials": "البيانات الكاملة وتاريخ رأس المال والتقييم غير مستكملة.",
-        "competition": "يلزم مقارنة المنافسين والبدائل وتكاليف الانتقال.",
-        "management": "لم يكتمل تدقيق الإدارة والملكية.",
+        "financials": "Seed $12.45M (2024)، Series A $80M (2025) بقيادة Temasek وWalden Catalyst؛ تقول الشركة إجمالي التمويل >$100M. لا إفصاح عن الإيرادات والتقييم.",
+        "competition": "المحولات التقليدية، rectifier وUPS ومنافسو SST مثل Heron Power. 18 عائلة براءة وفق الشركة؛ الاعتماد UL/IEC/IEEE قيد العمل، لا نفترض اكتماله.",
+        "management": "Brian Dow الرئيس التنفيذي، خبرة Tesla وGenerac؛ Tommy Joyner نائب رئيس الهندسة. انطلقت من أبحاث NTU منذ 2016.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
-        "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
-        "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
+        "catalysts": "تجربة ميناء سنغافورة 2024؛ مصنع Reno؛ أول وحدات تجارية مستهدفة في 2026، التسليم الفعلي يحتاج تأكيدًا.",
+        "invalidation": "تأخر الاعتماد أو أعطال الحقل أو تكلفة دورة حياة أعلى من المحول التقليدي.",
+        "nextSteps": "فحص اختبارات النوع والأمان والاعتمادية، عقود التسليم، المردود التصنيعي والمالية.",
         "sources": [
           {
-            "label": "المصدر السابق — يحتاج مراجعة",
-            "url": "https://fundingdata.com/company/amperesand",
-            "date": "2025-11-19"
+            "label": "Amperesand — التاريخ والتمويل",
+            "url": "https://careers.amperesand.io/",
+            "date": null
+          },
+          {
+            "label": "Amperesand — المنتج والمواصفات المستهدفة",
+            "url": "https://www.amperesand.io/",
+            "date": null
+          },
+          {
+            "label": "Amperesand — الإدارة والملكية الفكرية",
+            "url": "https://www.amperesand.io/about",
+            "date": null
           }
-        ]
+        ],
+        "market": "الطلب على الربط الكهربائي وكثافة الطاقة بمراكز البيانات؛ كذلك الموانئ والبنية التحتية. المواصفات المعلنة تشمل كفاءة 98.5% من MV AC إلى LV DC؛ لا اختبار مستقل في المصادر.",
+        "decision": "بحث تقني؛ لا نخلط التجارب أو موعد تسليم مخطط مع مبيعات مثبتة."
       },
-      "events": []
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "استبدال مصدر التمويل غير الأولي بمصادر الشركة؛ توضيح حالة الاعتماد والتسليم."
+        }
+      ],
+      "country": "سنغافورة / الولايات المتحدة",
+      "founded": "2023",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 17,
+          "reason": "منظومة كهرباء عالية الكثافة تخدم مراكز البيانات والبنية القائمة.",
+          "sources": [
+            {
+              "label": "Amperesand — المنتج والمواصفات المستهدفة",
+              "url": "https://www.amperesand.io/",
+              "date": null
+            }
+          ]
+        },
+        "moat": {
+          "points": 13,
+          "reason": "18 عائلة براءة وتطوير ممتد؛ لا بيانات مقارنة عمر أو تكلفة.",
+          "sources": [
+            {
+              "label": "Amperesand — الإدارة والملكية الفكرية",
+              "url": "https://www.amperesand.io/about",
+              "date": null
+            }
+          ]
+        },
+        "commercial": {
+          "points": 9,
+          "reason": "تجارب 2019–2024 ومنشأة تصنيع؛ لا إثبات تسليم تجاري مستقل.",
+          "sources": [
+            {
+              "label": "Amperesand — التاريخ والتمويل",
+              "url": "https://careers.amperesand.io/",
+              "date": null
+            }
+          ]
+        }
+      }
     },
     {
       "name": "AILOS Robotics",
       "type": "private",
       "sector": "علب التروس الدقيقة",
-      "source": "https://qbic.fund/nieuws/ailos-robotics-raises-eu3-5-million-in-seed-funding",
-      "stage": "Seed — €3.5M",
+      "source": "https://techtransfer.research.vub.be/ailos-robotics",
+      "stage": "Seed — €3.5M (2025)",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
       "access": "تواصل مع الشركة / تحقق من توافر الحصص",
-      "risk": "الإنتاج الكمي واعتماد المصنعين",
+      "risk": "تأهيل gearbox لدى OEM والضمان والتكلفة",
       "update": "علب تروس دقيقة للروبوتات والأطراف الصناعية؛ فرصة في المكونات بدل الروبوت الكامل.",
-      "date": "2025",
+      "date": "2025-12-02",
       "status": "research",
-      "lastChecked": null,
+      "lastChecked": "2026-11-26",
       "profile": {
-        "overview": "علب تروس دقيقة للروبوتات والأطراف الصناعية؛ فرصة في المكونات بدل الروبوت الكامل.",
-        "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في علب التروس الدقيقة؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
+        "overview": "علبة تروس كوكبية R2poweR تجمع كثافة عزم مرتفعة ومقاومة backdrive منخفضة للمفاصل الآمنة.",
+        "thesis": "توفير مكون حركة لمصنعي الروبوتات بدل الرهان على علامة روبوت نهائية.",
         "risk": "الإنتاج الكمي واعتماد المصنعين",
-        "financials": "البيانات الكاملة وتاريخ رأس المال والتقييم غير مستكملة.",
-        "competition": "يلزم مقارنة المنافسين والبدائل وتكاليف الانتقال.",
-        "management": "لم يكتمل تدقيق الإدارة والملكية.",
+        "financials": "€3.5M Seed في ديسمبر 2025 بقيادة Qbic وHTGF. VUB يؤكد اتفاق ترخيص 2025. التقييم والسيولة غير معلنين.",
+        "competition": "Harmonic Drive، Nabtesco ومفاهيم quasi-direct drive؛ يلزم قياس العزم/الوزن، backlash، العمر والكفاءة والتكلفة.",
+        "management": "المؤسسون Stein Crispel وPablo López García (CEO) وDirk Lefeber؛ spin-off من VUB وBruBotics.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
-        "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
-        "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
+        "catalysts": "عينات وتأهيل لدى OEM وعقود إنتاج متكرر.",
+        "invalidation": "فشل اختبارات العمر أو الضوضاء أو السعر أو عدم اعتماد العملاء.",
+        "nextSteps": "طلب منحنيات الأداء وبيانات عمر gearbox وعقود OEM وشروط IP.",
         "sources": [
           {
-            "label": "المصدر السابق — يحتاج مراجعة",
-            "url": "https://qbic.fund/nieuws/ailos-robotics-raises-eu3-5-million-in-seed-funding",
-            "date": "2025"
+            "label": "VUB — الترخيص والمؤسسون وR2poweR",
+            "url": "https://techtransfer.research.vub.be/ailos-robotics",
+            "date": null
+          },
+          {
+            "label": "Qbic — Seed",
+            "url": "https://www.qbic.be/nieuws/ailos-robotics-raises-eu3-5-million-in-seed-funding",
+            "date": "2025-12-02"
           }
-        ]
+        ],
+        "market": "Cobots، humanoids، الأطراف الصناعية والهياكل الخارجية. لا حجم مبيعات تجاري متحقق.",
+        "decision": "بحث مبكر؛ براءة وترخيص مثبتان حسب الجامعة، التصنيع التجاري غير مثبت."
       },
-      "events": []
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "تأكيد الجامعة للترخيص والمؤسسين ومرحلة التصنيع."
+        }
+      ],
+      "country": "بلجيكا",
+      "founded": "2025 (انطلاقة موثقة)",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 15,
+          "reason": "المفاصل مكونات أساسية لعدة أشكال روبوت، الطلب على humanoids ما زال مبكرًا.",
+          "sources": [
+            {
+              "label": "VUB — الترخيص والمؤسسون وR2poweR",
+              "url": "https://techtransfer.research.vub.be/ailos-robotics",
+              "date": null
+            }
+          ]
+        },
+        "moat": {
+          "points": 13,
+          "reason": "ترخيص جامعي وتقنية محمية معلنة، دون مقارنة مستقلة.",
+          "sources": [
+            {
+              "label": "VUB — الترخيص والمؤسسون وR2poweR",
+              "url": "https://techtransfer.research.vub.be/ailos-robotics",
+              "date": null
+            }
+          ]
+        },
+        "commercial": {
+          "points": 5,
+          "reason": "الانتقال من المختبر للمصنع؛ لا طلبات إنتاج مثبتة.",
+          "sources": [
+            {
+              "label": "VUB — الترخيص والمؤسسون وR2poweR",
+              "url": "https://techtransfer.research.vub.be/ailos-robotics",
+              "date": null
+            },
+            {
+              "label": "Qbic — Seed",
+              "url": "https://www.qbic.be/nieuws/ailos-robotics-raises-eu3-5-million-in-seed-funding",
+              "date": "2025-12-02"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Rainbow Crops",
       "type": "private",
       "sector": "تحسين المحاصيل",
       "source": "https://www.rainbowcrops.com/news/rainbow-crops-raises-9-7m-seed-round",
-      "stage": "Seed — €9.7M",
+      "stage": "Seed — €9.7M (2026)",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
       "access": "تواصل مع الشركة / تحقق من توافر الحصص",
-      "risk": "التجارب الحقلية والتنظيم",
+      "risk": "مرحلة مبكرة، تجارب حقلية وتنظيم وتسويق",
       "update": "تحرير جيني متعدد المواضع لتحسين خصائص المحاصيل؛ دعم Corteva وLIFTT.",
       "date": "2026-06-23",
       "status": "research",
-      "lastChecked": null,
+      "lastChecked": "2026-11-26",
       "profile": {
-        "overview": "تحرير جيني متعدد المواضع لتحسين خصائص المحاصيل؛ دعم Corteva وLIFTT.",
-        "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في تحسين المحاصيل؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
+        "overview": "منصة Trait Foundry لتحرير مواقع جينية متعددة مدعومة بالذكاء الاصطناعي، بهدف تحسين صفات زراعية معقدة.",
+        "thesis": "اختصار دورة تطوير المحاصيل عبر فهم شبكات الجينات، لكن تجارب الحقول ضرورية قبل إثبات القيمة الاقتصادية.",
         "risk": "التجارب الحقلية والتنظيم",
-        "financials": "البيانات الكاملة وتاريخ رأس المال والتقييم غير مستكملة.",
-        "competition": "يلزم مقارنة المنافسين والبدائل وتكاليف الانتقال.",
-        "management": "لم يكتمل تدقيق الإدارة والملكية.",
+        "financials": "Seed €9.7M يونيو 2026؛ لا تقييم أو إيرادات معلنة في المصدر.",
+        "competition": "التربية التقليدية، تقنيات CRISPR أحادية ومتعددة المواضع، وشركات البذور. يلزم فحص حقوق الجينات ونتائج الحقول.",
+        "management": "Giacomo Bastianelli (CEO/co-founder)، Hilde Nelissen (مؤسسة علمية)، Veerle De Schepper (R&D). الجولة بقيادة LIFTT مع مشاركة Corteva Catalyst وVIB.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
-        "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
-        "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
+        "catalysts": "نتائج تجارب متعددة المحاصيل وشراكات تطوير مدفوعة.",
+        "invalidation": "عدم انتقال الصفات من المختبر إلى الحقل، أو ارتفاع تكلفة الاعتماد.",
+        "nextSteps": "الحصول على نتائج الحقل والموافقات والعقود وحقوق IP وشروط الجولة.",
         "sources": [
           {
-            "label": "المصدر السابق — يحتاج مراجعة",
+            "label": "Rainbow Crops — الجولة Seed",
             "url": "https://www.rainbowcrops.com/news/rainbow-crops-raises-9-7m-seed-round",
             "date": "2026-06-23"
+          },
+          {
+            "label": "Rainbow Crops — الإدارة",
+            "url": "https://www.rainbowcrops.com/about",
+            "date": null
           }
-        ]
+        ],
+        "market": "تحسين الإنتاجية وتحمل الظروف البيئية؛ تمويل لتوسيع المنصة إلى محاصيل رئيسية. لا إعلان مبيعات تجارية متحقق.",
+        "decision": "بحث Seed مبكر؛ إثبات علمي وتمويل وليس إثباتًا تجاريًا كافيًا."
       },
-      "events": []
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "إضافة المؤسسين والمنصة والمستثمرين؛ لا خلط التمويل بالقبول التجاري."
+        }
+      ],
+      "country": "بلجيكا",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 15,
+          "reason": "تحسين صفات المحاصيل حاجة واسعة؛ السوق المستهدف غير مقاس.",
+          "sources": [
+            {
+              "label": "Rainbow Crops — الجولة Seed",
+              "url": "https://www.rainbowcrops.com/news/rainbow-crops-raises-9-7m-seed-round",
+              "date": "2026-06-23"
+            }
+          ]
+        },
+        "moat": {
+          "points": 11,
+          "reason": "أساس علمي VIB ومنصة متعددة المواضع؛ لا تحقق مستقل من التفوق.",
+          "sources": [
+            {
+              "label": "Rainbow Crops — الجولة Seed",
+              "url": "https://www.rainbowcrops.com/news/rainbow-crops-raises-9-7m-seed-round",
+              "date": "2026-06-23"
+            },
+            {
+              "label": "Rainbow Crops — الإدارة",
+              "url": "https://www.rainbowcrops.com/about",
+              "date": null
+            }
+          ]
+        },
+        "commercial": {
+          "points": 5,
+          "reason": "جولة Seed وشركاء استراتيجيون؛ لا عقود مدفوعة مثبتة.",
+          "sources": [
+            {
+              "label": "Rainbow Crops — الجولة Seed",
+              "url": "https://www.rainbowcrops.com/news/rainbow-crops-raises-9-7m-seed-round",
+              "date": "2026-06-23"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Nitricity",
       "type": "private",
       "sector": "الأسمدة",
       "source": "https://www.nitricity.co/news/nitricity-raises-50m-to-go-global-with-unique-tech-transforming-almond-waste-into-organic-fertilizer",
-      "stage": "Series B — $50M",
+      "stage": "Series B — $50M (2025)",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
       "access": "تواصل مع الشركة / تحقق من توافر الحصص",
-      "risk": "سعر المنتج والتوسع الرأسمالي",
+      "risk": "تكلفة الكهرباء والمواد، تأخير المصنع، اقتصاديات الأسمدة",
       "update": "إنتاج أسمدة نيتروجينية باستخدام الكهرباء ومخلفات اللوز؛ بدء مشروع أول مصنع.",
       "date": "2025-09-10",
       "status": "research",
-      "lastChecked": null,
+      "lastChecked": "2026-11-26",
       "profile": {
-        "overview": "إنتاج أسمدة نيتروجينية باستخدام الكهرباء ومخلفات اللوز؛ بدء مشروع أول مصنع.",
-        "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في الأسمدة؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
+        "overview": "إنتاج أسمدة نيتروجينية كهربائيًا باستخدام مخلفات اللوز؛ المنتج العضوي السائل موجه للمزارعين.",
+        "thesis": "تقليل الاعتماد على سلاسل توريد الأسمدة التقليدية وتحويل مخلفات محلية إلى منتج زراعي؛ يلزم إثبات تنافسية السعر.",
         "risk": "سعر المنتج والتوسع الرأسمالي",
-        "financials": "البيانات الكاملة وتاريخ رأس المال والتقييم غير مستكملة.",
-        "competition": "يلزم مقارنة المنافسين والبدائل وتكاليف الانتقال.",
-        "management": "لم يكتمل تدقيق الإدارة والملكية.",
+        "financials": "Series B $50M سبتمبر 2025. عقود الشراء لا تعني إيرادًا محققًا قبل الإنتاج؛ التقييم والهوامش والنقد غير معلنة.",
+        "competition": "الأسمدة العضوية والتقليدية ومشروعات الأمونيا منخفضة الانبعاثات. المعيار هو تكلفة وحدة النيتروجين والنتائج الزراعية.",
+        "management": "Nicolas Pinkowski (CEO)، Joshua McEnaney (CTO)، Jay Schwalbe (CSO). الجولة بقيادة World Fund وKhosla Ventures.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
-        "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
-        "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
+        "catalysts": "تشغيل أول مصنع تجاري المخطط في 2026؛ تحقق من التشغيل الفعلي والإنتاج والمبيعات.",
+        "invalidation": "تجاوز تكاليف المصنع أو فشل تحقيق السعر والجودة أو تأخر الإنتاج.",
+        "nextSteps": "تأكيد بدء التشغيل، قيمة العقود، هامش المنتج، رأس المال والتقييم.",
         "sources": [
           {
-            "label": "المصدر السابق — يحتاج مراجعة",
+            "label": "Nitricity — التمويل والمصنع والشراء المسبق",
             "url": "https://www.nitricity.co/news/nitricity-raises-50m-to-go-global-with-unique-tech-transforming-almond-waste-into-organic-fertilizer",
             "date": "2025-09-10"
+          },
+          {
+            "label": "Nitricity — أخبار الشراكات",
+            "url": "https://www.nitricity.co/news",
+            "date": null
           }
-        ]
+        ],
+        "market": "الأمن الغذائي والسماد العضوي؛ مصنع Delhi بكاليفورنيا يهدف لزيادة السعة 100 مرة. الشركة تقول إن الطاقة الإنتاجية محجوزة بعقود شراء ملزمة حتى 2028.",
+        "decision": "بحث نمو صناعي؛ عقود الشراء مؤشر مهم لكن التنفيذ غير مؤكد."
       },
-      "events": []
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "إضافة حجوزات المصنع حتى 2028 والتمييز بين الطلب والإيراد."
+        }
+      ],
+      "country": "الولايات المتحدة",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 17,
+          "reason": "الأسمدة مدخل زراعي أساسي؛ السوق المستهدف عضوي وليس كامل سوق الأسمدة.",
+          "sources": [
+            {
+              "label": "Nitricity — التمويل والمصنع والشراء المسبق",
+              "url": "https://www.nitricity.co/news/nitricity-raises-50m-to-go-global-with-unique-tech-transforming-almond-waste-into-organic-fertilizer",
+              "date": "2025-09-10"
+            }
+          ]
+        },
+        "moat": {
+          "points": 10,
+          "reason": "عملية إنتاج متميزة لكن لا مقارنة تكلفة مستقلة أو براءات موثقة.",
+          "sources": [
+            {
+              "label": "Nitricity — التمويل والمصنع والشراء المسبق",
+              "url": "https://www.nitricity.co/news/nitricity-raises-50m-to-go-global-with-unique-tech-transforming-almond-waste-into-organic-fertilizer",
+              "date": "2025-09-10"
+            }
+          ]
+        },
+        "commercial": {
+          "points": 14,
+          "reason": "عقود شراء ملزمة بحسب إعلان الشركة؛ تحقق من تنفيذها.",
+          "sources": [
+            {
+              "label": "Nitricity — التمويل والمصنع والشراء المسبق",
+              "url": "https://www.nitricity.co/news/nitricity-raises-50m-to-go-global-with-unique-tech-transforming-almond-waste-into-organic-fertilizer",
+              "date": "2025-09-10"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Osmoses",
       "type": "private",
       "sector": "فصل الغازات",
       "source": "https://www.nsf.gov/funding/initiatives/i-corps/osmoses",
-      "stage": "مرحلة مبكرة؛ الجولة غير مثبتة",
+      "stage": "Seed — $11M (2023)",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
       "access": "تواصل مع الشركة / تحقق من توافر الحصص",
-      "risk": "الإثبات الصناعي وعمر الأغشية",
+      "risk": "نفاذية الغشاء والانتقائية والتوسع الصناعي",
       "update": "أغشية جزيئية لفصل الغازات وتقليل طاقة التنقية؛ تقنية نشأت من MIT.",
-      "date": "2026-11-26",
+      "date": "2023",
       "status": "research",
-      "lastChecked": null,
+      "lastChecked": "2026-11-26",
       "profile": {
-        "overview": "أغشية جزيئية لفصل الغازات وتقليل طاقة التنقية؛ تقنية نشأت من MIT.",
-        "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في فصل الغازات؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
+        "overview": "أغشية بوليمرية ذات مسام دقيقة لفصل الغازات مثل الهيدروجين والهيليوم والغاز الطبيعي والأكسجين.",
+        "thesis": "الفصل بالغشاء قد يحل محل بعض خطوات التنقية الحرارية أو الضغط ويتيح استرداد غازات ضائعة؛ قياس التكاليف الصناعية حاسم.",
         "risk": "الإثبات الصناعي وعمر الأغشية",
-        "financials": "البيانات الكاملة وتاريخ رأس المال والتقييم غير مستكملة.",
-        "competition": "يلزم مقارنة المنافسين والبدائل وتكاليف الانتقال.",
-        "management": "لم يكتمل تدقيق الإدارة والملكية.",
+        "financials": "$3M تمويل مبكر بحسب NSF؛ $11M Seed في خريف 2023 بحسب Mass Innovation Network؛ لا نعتبر الرقم إجمالي التمويل الحالي.",
+        "competition": "PSA والأغشية التقليدية والفصل بالتبريد العميق؛ الأداء المطلوب يختلف حسب الغاز ونقاوة المنتج.",
+        "management": "مؤسسون Katherine Mizrahi Rodriguez، Holden Lai، Francesco Maria Benedetti، Zachary Smith وفق NSF.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
-        "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
-        "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
+        "catalysts": "تصنيع نماذج وحدات واختبارات مع شركاء تجاريين؛ يلزم تحقق من عقد إنتاج.",
+        "invalidation": "تدهور الانتقائية أو النفاذية مع الزمن أو عدم الجدوى الاقتصادية.",
+        "nextSteps": "طلب عمر الغشاء ونتائج التجارب والتمويل الحالي والعقود.",
         "sources": [
           {
-            "label": "المصدر السابق — يحتاج مراجعة",
+            "label": "NSF — Osmoses founders and technology",
             "url": "https://www.nsf.gov/funding/initiatives/i-corps/osmoses",
-            "date": "2026-11-26"
+            "date": null
+          },
+          {
+            "label": "Massachusetts Innovation Network — Seed and milestones",
+            "url": "https://www.massinnov.org/success-stories/osmoses",
+            "date": null
           }
-        ]
+        ],
+        "market": "NSF يذكر تطبيقات التنقية الطبية والصناعية والغاز والتقاط الكربون؛ لا حصة سوقية مثبتة.",
+        "decision": "بحث تقني في Seed؛ لا اعتماد للوفر المعلن بدون قياس على تدفقات حقيقية."
       },
-      "events": []
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "تحديث مرحلة Seed وتوثيق التقنية والمؤسسين."
+        }
+      ],
+      "country": "الولايات المتحدة",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 16,
+          "reason": "تنقية الغازات حاجة متعددة الصناعات.",
+          "sources": [
+            {
+              "label": "NSF — Osmoses founders and technology",
+              "url": "https://www.nsf.gov/funding/initiatives/i-corps/osmoses",
+              "date": null
+            }
+          ]
+        },
+        "moat": {
+          "points": 12,
+          "reason": "بوليمرات مبتكرة موصوفة لدى NSF؛ التفوق الصناعي غير محسوم.",
+          "sources": [
+            {
+              "label": "NSF — Osmoses founders and technology",
+              "url": "https://www.nsf.gov/funding/initiatives/i-corps/osmoses",
+              "date": null
+            }
+          ]
+        },
+        "commercial": {
+          "points": 6,
+          "reason": "نماذج واختبارات وشركاء؛ لا مبيعات إنتاج مثبتة.",
+          "sources": [
+            {
+              "label": "Massachusetts Innovation Network — Seed and milestones",
+              "url": "https://www.massinnov.org/success-stories/osmoses",
+              "date": null
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Avicena",
       "type": "private",
       "sector": "الربط الضوئي",
-      "source": "https://avicena.tech/avicena-announces-series-b-funding-round-led-by-tiger-global-with-participation-from-sk-hynix/",
-      "stage": "Series B — $65M",
+      "source": "https://avicena.tech/avicena-raises-100-million-series-c-to-accelerate-commercialization-of-microled-optical-interconnects-for-ai-infrastructure/",
+      "stage": "Series C — >$100M (2026)",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
       "sharia": "غير متحقق — بيانات مالية خاصة",
       "access": "تواصل مع الشركة / تحقق من توافر الحصص",
-      "risk": "المنافسة من silicon photonics وتأهيل العملاء",
+      "risk": "منافسة silicon photonics وتأهيل الشرائح؛ مرحلة C استثناء بحثي",
       "update": "وصلات ضوئية MicroLED لنقل البيانات بين الشرائح وتقليل استهلاك الطاقة.",
-      "date": "2025-05",
+      "date": "2026-11-24",
       "status": "research",
-      "lastChecked": null,
+      "lastChecked": "2026-11-26",
       "profile": {
-        "overview": "وصلات ضوئية MicroLED لنقل البيانات بين الشرائح وتقليل استهلاك الطاقة.",
-        "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في الربط الضوئي؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
+        "overview": "LightBundle: وصلات microLED ضوئية قصيرة المدى وعالية الكثافة لنقل البيانات داخل منظومات AI.",
+        "thesis": "مع توسع ربط المعالجات، تزداد الطاقة والقيود الحرارية للتوصيلات الكهربائية؛ تقنية microLED تستهدف هذه الطبقة.",
         "risk": "المنافسة من silicon photonics وتأهيل العملاء",
-        "financials": "البيانات الكاملة وتاريخ رأس المال والتقييم غير مستكملة.",
-        "competition": "يلزم مقارنة المنافسين والبدائل وتكاليف الانتقال.",
-        "management": "لم يكتمل تدقيق الإدارة والملكية.",
+        "financials": "Series B $65M في مايو 2025 وفق الإعلان السابق؛ Series C تجاوزت $100M بحسب خبر 24 نوفمبر 2026 (توجد مفارقة: متن نسخة الإعلان يذكر 24 سبتمبر؛ الفهرس يذكر نوفمبر). التقييم والإيرادات غير معلنين.",
+        "competition": "Silicon photonics، copper interconnects، Ayar Labs وحلول الربط داخل الحزمة. يلزم مقارنة الطاقة لكل بت، BER والعائد التصنيعي والتوافق.",
+        "management": "أعلن تعيين Kevin Pope خلفًا لـMarco Chisari ضمن الجولة الأخيرة. المستثمرون InterVest وTiger Global وSK hynix Ventures وAMD Ventures وSamsung Catalyst وProsperity7 وغيرهم.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
-        "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
-        "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
+        "catalysts": "انتقال وحدات التقييم إلى design wins وعقود حجمية؛ التوسع في التصنيع.",
+        "invalidation": "تبني العملاء بدائل ذات تكلفة/كفاءة أفضل أو تأخر التصنيع الكمي.",
+        "nextSteps": "تحقق من تاريخ الإعلان، نتائج تأهيل الوحدات، العقود، الملكية الفكرية والتقييم.",
         "sources": [
           {
-            "label": "المصدر السابق — يحتاج مراجعة",
-            "url": "https://avicena.tech/avicena-announces-series-b-funding-round-led-by-tiger-global-with-participation-from-sk-hynix/",
-            "date": "2025-05"
+            "label": "Avicena — Series C وإدارة جديدة",
+            "url": "https://avicena.tech/avicena-raises-100-million-series-c-to-accelerate-commercialization-of-microled-optical-interconnects-for-ai-infrastructure/",
+            "date": "2026-11-24"
+          },
+          {
+            "label": "Avicena — فهرس الإفصاحات",
+            "url": "https://avicena.tech/press-releases/",
+            "date": null
           }
-        ]
+        ],
+        "market": "بنية AI scale-in وscale-up. شحنت الشركة وحدات تقييم 1Tbps في أغسطس 2026 وعرضت وصلات قابلة للفصل في سبتمبر؛ ليست مبيعات إنتاج كمي مثبتة.",
+        "decision": "استثناء بحثي في Series C، لا اعتماد شراء؛ متابعة العملاء الفعليين وسعر الجولة."
       },
-      "events": []
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "جولة Series C >$100M وتغيير CEO؛ توضيح تعارض تاريخ متن الخبر والفهرس."
+        }
+      ],
+      "country": "الولايات المتحدة",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 18,
+          "reason": "الربط البيني مرتفع الكثافة هدف واضح في بنية AI؛ لا نفترض سيطرة الشركة.",
+          "sources": [
+            {
+              "label": "Avicena — Series C وإدارة جديدة",
+              "url": "https://avicena.tech/avicena-raises-100-million-series-c-to-accelerate-commercialization-of-microled-optical-interconnects-for-ai-infrastructure/",
+              "date": "2026-11-24"
+            }
+          ]
+        },
+        "moat": {
+          "points": 13,
+          "reason": "تصميم microLED متخصص، لكن بدائل الربط الضوئي قائمة.",
+          "sources": [
+            {
+              "label": "Avicena — فهرس الإفصاحات",
+              "url": "https://avicena.tech/press-releases/",
+              "date": null
+            }
+          ]
+        },
+        "commercial": {
+          "points": 10,
+          "reason": "شحنت وحدات تقييم؛ لم يثبت إنتاج تجاري كمي.",
+          "sources": [
+            {
+              "label": "Avicena — فهرس الإفصاحات",
+              "url": "https://avicena.tech/press-releases/",
+              "date": null
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Phoenix Tailings",
       "type": "private",
       "sector": "تكرير المعادن النادرة",
       "source": "https://phoenixtailings.com/press/phoenix-tailings-secures-40-2-million-in-strategic-capital-to-accelerate-u-s-rare-earth-metals-production",
-      "stage": "Series B — $116.6M",
+      "stage": "Series B — $116.6M incl. debt",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
-      "sharia": "دين استثماري معلن؛ يحتاج فحصًا",
+      "sharia": "دين استثماري $10M وتعهد دين مشروط $500M؛ نشاط دفاعي، لا تأهيل",
       "access": "تواصل مع الشركة / تحقق من توافر الحصص",
-      "risk": "الديون والتوسع الرأسمالي وتقلب أسعار المعادن",
+      "risk": "تمويل بالدين ومخاطر تنفيذ المشروع والتعرض للدفاع",
       "update": "تكرير المعادن الأرضية النادرة؛ جولة B-3 تضمنت $10M دينًا استثماريًا؛ يلزم فحص شرعي خاص.",
-      "date": "2026-02-19",
+      "date": "2026-10-20",
       "status": "research",
-      "lastChecked": null,
+      "lastChecked": "2026-11-26",
       "profile": {
-        "overview": "تكرير المعادن الأرضية النادرة؛ جولة B-3 تضمنت $10M دينًا استثماريًا؛ يلزم فحص شرعي خاص.",
-        "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في تكرير المعادن النادرة؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
+        "overview": "تكرير ومعالجة المعادن الأرضية النادرة وتحويلها إلى معادن صناعية.",
+        "thesis": "التكرير مرحلة مركزة في سلسلة التوريد، لكن دعم الدولة والطلب الدفاعي لا يضمن عائد المستثمر أو الملاءمة الشرعية.",
         "risk": "الديون والتوسع الرأسمالي وتقلب أسعار المعادن",
-        "financials": "البيانات الكاملة وتاريخ رأس المال والتقييم غير مستكملة.",
-        "competition": "يلزم مقارنة المنافسين والبدائل وتكاليف الانتقال.",
-        "management": "لم يكتمل تدقيق الإدارة والملكية.",
+        "financials": "B-3 $40.2M منها $30.2M حقوق ملكية و$10M دين Nomura؛ إجمالي Series B $116.6M. في يونيو تعهد مشروط بتمويل دين طويل الأجل $500M، لا نفترض صرفه.",
+        "competition": "موردو الفصل والتكرير التقليديون؛ يلزم مقارنة الاسترداد والطاقة وكلفة المعدن النقي.",
+        "management": "Nick Myers الرئيس التنفيذي وفق Reuters. المستثمرون والشركاء المعلنون Traxys وEni Next وآخرون.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
-        "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
-        "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
+        "catalysts": "تنفيذ منشأة الفصل، إثبات الاسترداد، تمويلها الفعلي وبدء التشغيل.",
+        "invalidation": "عدم الجدوى أو تأخر التمويل والتصنيع أو نشاط لا يطابق التفويض.",
+        "nextSteps": "الحصول على شروط التمويل وهيكل العملاء ومبيعات العمليات الفعلية والتقييم.",
         "sources": [
           {
-            "label": "المصدر السابق — يحتاج مراجعة",
+            "label": "Phoenix Tailings — B-3 equity and debt",
             "url": "https://phoenixtailings.com/press/phoenix-tailings-secures-40-2-million-in-strategic-capital-to-accelerate-u-s-rare-earth-metals-production",
             "date": "2026-02-19"
+          },
+          {
+            "label": "Phoenix Tailings — conditional government debt",
+            "url": "https://phoenixtailings.com/press/u-s-department-of-war-helps-launch-an-1b-initiative-with-phoenix-tailings-to-rebuild-americas-rare-earth-industrial-base",
+            "date": "2026-06-16"
+          },
+          {
+            "label": "Reuters — New York facility",
+            "url": "https://www.reuters.com/world/china/phoenix-tailings-build-375-million-rare-earths-facility-new-york-state-2026-10-20/",
+            "date": "2026-10-20"
           }
-        ]
+        ],
+        "market": "مشروع منشأة نيويورك بقيمة $375M أعلن في أكتوبر؛ إنتاج كامل مستهدف 2028، لا نعامل السعة المخططة كإنتاج قائم.",
+        "decision": "بحث فقط، حاجز شرعي ومالي واضح؛ لا ترقية قبل تدقيق الدين واستخدام المنتجات."
       },
-      "events": []
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "توثيق الدين المعلن والتعهد المشروط ومشروع نيويورك."
+        }
+      ],
+      "country": "الولايات المتحدة",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 17,
+          "reason": "الحاجة إلى معالجة المعادن الحرجة قائمة ومشروعات توسعة معلنة.",
+          "sources": [
+            {
+              "label": "Phoenix Tailings — B-3 equity and debt",
+              "url": "https://phoenixtailings.com/press/phoenix-tailings-secures-40-2-million-in-strategic-capital-to-accelerate-u-s-rare-earth-metals-production",
+              "date": "2026-02-19"
+            },
+            {
+              "label": "Reuters — New York facility",
+              "url": "https://www.reuters.com/world/china/phoenix-tailings-build-375-million-rare-earths-facility-new-york-state-2026-10-20/",
+              "date": "2026-10-20"
+            }
+          ]
+        },
+        "moat": null,
+        "commercial": {
+          "points": 8,
+          "reason": "تذكر الشركة إنتاج بعض المعادن لكن لا حجم عقود أو إيرادات موثقة؛ توسعة مستقبلية.",
+          "sources": [
+            {
+              "label": "Phoenix Tailings — B-3 equity and debt",
+              "url": "https://phoenixtailings.com/press/phoenix-tailings-secures-40-2-million-in-strategic-capital-to-accelerate-u-s-rare-earth-metals-production",
+              "date": "2026-02-19"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Sono-Tek",
@@ -729,7 +1217,7 @@
       "profile": {
         "overview": "منصة لتحليل بيانات العمليات الصناعية وتقديم تشخيص وتوصيات تشغيلية مبنية على المنطق الهندسي. تستهدف قطاعات الطاقة والكيماويات والتصنيع.",
         "thesis": "الفرصة في تحويل بيانات المصانع القائمة إلى إجراءات صيانة وتشغيل؛ الانتقال من تجربة تقنية إلى عقد متعدد السنوات أهم من عدد التنبيهات أو الحساسات.",
-        "decision": "مرشح بحث خاص ذو إثبات تجاري، لكن لا توجد موافقة استثمارية؛ التقييم والبيانات المالية الحالية وهيكل الحصة غير متاحة.",
+        "decision": "مرشح بحث خاص؛ عقد Chevron يثبت انتقالًا من pilot إلى عقد متعدد السنوات، لكنه لا يكشف قيمته أو الإيرادات أو التقييم.",
         "financials": "أعلنت الشركة جولة Series A بقيمة $14M في 2024، ونموًا قدره 400% في FY2023 وربحية وقت الإعلان، دون نشر الإيرادات المطلقة أو قوائم مدققة. لا يُستنتج من ذلك أنها رابحة حاليًا.",
         "competition": "تنافس منصات APM التقليدية وحلول تحليل بيانات العمليات الداخلية. تدعي الشركة امتلاك منهج محمي ببراءة لنمذجة الأنظمة؛ يلزم مقارنة رقم البراءة ودقة التشخيص وتكلفة التكامل.",
         "management": "Jag Gattu، المؤسس والرئيس التنفيذي. قاد WestBridge Capital جولة A بمشاركة Emergent Ventures وAditya Birla Ventures.",
@@ -764,50 +1252,153 @@
         {
           "date": "2026-11-26",
           "summary": "إضافة تفاصيل الجولة والعملاء والإدارة؛ الأرقام التشغيلية المعلنة ذاتيًا لا تمثل نتائج مدققة."
+        },
+        {
+          "date": "2026-11-26",
+          "summary": "إعادة فحص إعلان Chevron؛ نقاط جزئية مدعومة."
         }
-      ]
+      ],
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 17,
+          "reason": "حاجة صيانة وموثوقية عمليات المصانع، يبرهن عليها استخدام Chevron.",
+          "sources": [
+            {
+              "label": "UptimeAI — اتفاق Chevron",
+              "url": "https://www.uptimeai.com/resources/chevron-3-year-agreement/",
+              "date": "2026-11-11"
+            }
+          ]
+        },
+        "moat": {
+          "points": 10,
+          "reason": "منهج تحليل هندسي بحسب الشركة؛ لا قياس مستقل لتفوقه.",
+          "sources": [
+            {
+              "label": "UptimeAI — اتفاق Chevron",
+              "url": "https://www.uptimeai.com/resources/chevron-3-year-agreement/",
+              "date": "2026-11-11"
+            }
+          ]
+        },
+        "commercial": {
+          "points": 16,
+          "reason": "اتفاق 3 سنوات بعد pilot ناجح؛ قيمة العقد غير معلنة.",
+          "sources": [
+            {
+              "label": "UptimeAI — اتفاق Chevron",
+              "url": "https://www.uptimeai.com/resources/chevron-3-year-agreement/",
+              "date": "2026-11-11"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Samotics",
       "type": "private",
       "sector": "CMS / Electrical Signature Analysis",
-      "source": "https://www.eib.org/en/press/all/2025-024-samotics-secures-eur20-million-eib-financing-to-accelerate-the-transformation-of-industrial-efficiency-and-reliability-with-ai",
-      "stage": "تمويل EIB €20M (ليس تقييمًا)",
+      "source": "https://samotics.com/about",
+      "stage": "تمويل EIB €20M (2025)",
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
-      "sharia": "تمويل EIB معلن؛ يحتاج فحص هيكل التمويل",
+      "sharia": "تمويل EIB يحتاج مراجعة عقده ونسب الدين",
       "access": "لا عرض متحقق",
-      "risk": "المنافسة ودقة التشخيص ونوع التمويل",
+      "risk": "دقة ESA حسب نوع العطل؛ الاعتماد على شركاء التكامل والتمويل",
       "update": "تحليل البيانات الكهربائية لمراقبة المحركات وكفاءة الطاقة.",
       "date": "2025-01-27",
       "lastChecked": "2026-11-26",
       "status": "research",
       "profile": {
-        "overview": "شركة هولندية تطور مراقبة صحة المحركات وكفاءة الطاقة بتحليل البيانات الكهربائية.",
-        "thesis": "إتاحة مراقبة معدات قائمة دون تركيب حساسات مباشرة على كل أصل؛ يلزم إثبات التفوق على البدائل.",
-        "decision": "بحث فقط؛ التمويل يحتاج فحصًا شرعيًا.",
-        "financials": "EIB أعلن تمويلًا بقيمة 20 مليون يورو؛ تفاصيل الإيرادات والديون غير مستكملة.",
-        "competition": "مراقبة الاهتزاز والتيار ومنصات APM ومورّدو المحركات.",
-        "management": "غير مستكمل.",
+        "overview": "SAM4 يحلل التيار والجهد لمراقبة المحركات والمضخات والمعدات المتعذر الوصول إليها.",
+        "thesis": "تركيب المراقبة في اللوحة أو الـVFD يقلل الحساسات الميدانية. القيمة في اكتشاف العطل وتحويله إلى عمل صيانة.",
+        "decision": "بحث CMS بإثبات نشر؛ التمويل وشروطه حاسمان شرعيًا.",
+        "financials": "EIB €20M في يناير 2025؛ الإيرادات والهوامش والتقييم وشروط التمويل غير متحققة.",
+        "competition": "مراقبة الاهتزاز (مكملة وليست بديلًا دائمًا)، منصات APM وESA أخرى؛ ABB ACS880 دمجت SAM4 وأعلنت إطلاقها عالميًا في ADIPEC 2025.",
+        "management": "Simon Jagers (co-CEO/co-founder)، Jasper Hoogeweegen (co-CEO)، Gerben Gooijers (CTO/co-founder).",
         "valuation": "غير معلن.",
-        "catalysts": "اعتماد العملاء والتوسع في حلول مدمجة.",
-        "invalidation": "عدم القدرة على إثبات دقة التشخيص أو تكلفة مبررة.",
-        "nextSteps": "فحص شروط التمويل والعملاء والتجديد والتقييم.",
+        "catalysts": "زيادة انتشار ABB وعمليات التحديث fleet-wide؛ تحقق من تجديد العملاء وعائد التشغيل.",
+        "invalidation": "انخفاض دقة التشخيص في المعدات المتغيرة الحمل أو عدم استمرار عقود العملاء.",
+        "nextSteps": "طلب ARR، churn، تكلفة التنفيذ، التزامات ABB وعقد تمويل EIB.",
         "sources": [
+          {
+            "label": "Samotics — الانتشار والإدارة",
+            "url": "https://samotics.com/about",
+            "date": null
+          },
+          {
+            "label": "Samotics — إطلاق ABB العالمي",
+            "url": "https://samotics.com/resources/news/abb-launches-drive-with-esa-from-samotics",
+            "date": "2025-11-03"
+          },
           {
             "label": "EIB — financing",
             "url": "https://www.eib.org/en/press/all/2025-024-samotics-secures-eur20-million-eib-financing-to-accelerate-the-transformation-of-industrial-efficiency-and-reliability-with-ai",
             "date": "2025-01-27"
           }
-        ]
+        ],
+        "market": "7,000+ أصل و80+ عميل في خمس قارات وفق الشركة، تشمل المياه والكيماويات والنفط والتصنيع."
       },
       "events": [
         {
           "date": "2026-11-26",
           "summary": "إضافة مرشح CMS؛ لا اجتياز شرعي."
+        },
+        {
+          "date": "2026-11-26",
+          "summary": "استكمال بيانات الانتشار والإدارة وتكامل ABB."
         }
-      ]
+      ],
+      "country": "هولندا",
+      "founded": "2015",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 17,
+          "reason": "الأسطول الصناعي القائم يوفر طلبًا متعدد القطاعات.",
+          "sources": [
+            {
+              "label": "Samotics — الانتشار والإدارة",
+              "url": "https://samotics.com/about",
+              "date": null
+            }
+          ]
+        },
+        "moat": {
+          "points": 12,
+          "reason": "تكامل ABB وخبرة نشر، لكن علم ESA معروف والميزة التقنية تحتاج مقارنة.",
+          "sources": [
+            {
+              "label": "Samotics — الانتشار والإدارة",
+              "url": "https://samotics.com/about",
+              "date": null
+            },
+            {
+              "label": "Samotics — إطلاق ABB العالمي",
+              "url": "https://samotics.com/resources/news/abb-launches-drive-with-esa-from-samotics",
+              "date": "2025-11-03"
+            }
+          ]
+        },
+        "commercial": {
+          "points": 17,
+          "reason": "7,000 أصل و80 عميلًا بحسب الشركة وإطلاق شراكة ABB.",
+          "sources": [
+            {
+              "label": "Samotics — الانتشار والإدارة",
+              "url": "https://samotics.com/about",
+              "date": null
+            },
+            {
+              "label": "Samotics — إطلاق ABB العالمي",
+              "url": "https://samotics.com/resources/news/abb-launches-drive-with-esa-from-samotics",
+              "date": "2025-11-03"
+            }
+          ]
+        }
+      }
     },
     {
       "name": "Transense Technologies",
@@ -843,6 +1434,451 @@
           "summary": "استبعاد من تفويض النمو المبكر."
         }
       ]
+    },
+    {
+      "name": "EnSilica",
+      "type": "listed",
+      "country": "المملكة المتحدة",
+      "founded": "2001",
+      "listedSince": "2022-05-24",
+      "ticker": "ENSI",
+      "exchange": "LSE AIM",
+      "sector": "أشباه الموصلات / ASIC",
+      "stage": "مدرجة — استثناء نطاق 100–300M",
+      "valuationUsd": 131637510,
+      "date": "2026-11-25",
+      "source": "https://www.investormeetcompany.com/companies/ensilica-plc/rns/4906912/view",
+      "status": "research",
+      "reviewLevel": "public-reviewed",
+      "lastChecked": "2026-11-26",
+      "sharia": "غير متحقق؛ اقتراض وفوائد وتطبيقات دفاعية تحتاج فحصًا",
+      "access": "AIM؛ تحقق من صلاحيات IBKR",
+      "risk": "التخفيف، ارتفاع المضاعف، التذبذب والتطبيقات الدفاعية",
+      "update": "نمو إيرادات FY26 +53% وعودة الربحية؛ ليست فرصة شراء معتمدة.",
+      "profile": {
+        "overview": "مصمم ومورد ASIC مخصص (fabless) لقطاعات الاتصالات والصناعة والفوتونيات والسيارات. يدفع العميل رسوم تصميم NRE ثم تبدأ إيرادات توريد الشرائح بعد الاعتماد.",
+        "thesis": "تكاليف التصميم والاعتماد وتكامل الشريحة في منتج العميل قد تؤدي لإيرادات طويلة الأجل. ليست شركة حديثة التأسيس لكنها حديثة الإدراج ونموذج توريدها يتوسع.",
+        "market": "خمسة ASIC في توريد كمي و14 قيد التصميم بحسب FY26؛ $375M توقعات توريد طوال عمر العقود من توقعات العملاء، لا backlog مضمون ولا إيراد سنة واحدة.",
+        "competition": "بيوت تصميم ASIC، مزودو IP ومصممو الشرائح الداخليّون. المخاطر: الاعتماد على foundries، تأخر tape-out، تركّز العملاء.",
+        "management": "Ian Lankshear CEO، قيادة الشركة منذ الطرح. تأسست نحو 2001؛ لا تزال ملكية الإدارة الحالية والتعويضات بحاجة مراجعة.",
+        "financials": "FY24: إيرادات £25.27M وصافي -£0.18M؛ FY25: £18.18M و-£2.73M؛ FY26: £27.81M و+£1.24M. EBITDA £5.9M يتأثر بإيرادات/ائتمان R&D؛ نقد £7.6M، اقتراض £4.4M تقريبًا قبل الإيجارات. زيادة رأسمال £10M في مارس و£14.9M بعد السنة. لا نفترض نموًا عضويًا متصلًا.",
+        "history": "IPO 50p وقيمة £37.6M في 2022؛ إغلاقات نهاية 2022 95.5p، 2023 40p، 2024 43.5p، 2025 47p، 25 نوفمبر 2026 74.8p. +49.6% عن سعر الطرح قبل الرسوم. التراجع من القمم ملحوظ؛ ارتفاع القيمة السوقية لا يساوي العائد بسبب إصدارات الأسهم.",
+        "valuation": "القيمة السوقية £100.41M وفق S&P، نحو $131.6M بسعر 1.311. مضاعف المبيعات 3.61x ومضاعف الربح FY26 نحو 81x باستعمال الأرباح المدققة (مختلف عن مضاعف TTM في بعض المصادر). أعلى من نطاقنا الأساسي؛ استثناء بحثي وليس سعر دخول. يلزم تحديث الأسهم بعد تمويل يوليو.",
+        "scenarios": "تحليل حساسية توضيحي غير مستهدف: على إيرادات FY27 الموجهة £32–34M، مضاعف مبيعات 2x/3x/4x يعطي قيمة ملكية تقريبية £66M/£99M/£132M قبل ضبط صافي النقد والتخفيف؛ ليس DCF ولا توصية. السبب لاختيار هذه المضاعفات افتراض اختباري لا متوسط سوق مؤكد.",
+        "catalysts": "إعلان 23 نوفمبر: Heads of Terms لبرنامج GNSS >$80M خلال عشر سنوات من 2030، وليس عقدًا نهائيًا أو إيرادًا حاليًا. طلب شراء لبدء التطوير.",
+        "risk": "مضاعف مرتفع، الاعتماد على التصميم طويل الدورة، إصدارات رأسمالية، وتطبيقات دفاعية معلنة.",
+        "invalidation": "تأخر تحويل التصميم لتوريد كمي، استمرار تمويل رأس المال، أو عدم التوافق الشرعي.",
+        "decision": "مرشح بحث ضمن الاستثناء 100–300M؛ لا ترقية قبل تحليل النشاط والديون والتخفيف والتقييم.",
+        "nextSteps": "مراجعة نسبة النشاط الدفاعي، الديون والفوائد، عدد الأسهم الكامل وسيناريوهات ربحية 2027–30.",
+        "sources": [
+          {
+            "label": "RNS — IPO 24 May 2022",
+            "url": "https://www.lse.co.uk/rns/admission-to-aim-and-first-day-of-dealings-ncvexqrmggthooq.html",
+            "date": "2022-05-24"
+          },
+          {
+            "label": "RNS — corrected audited FY26 results",
+            "url": "https://www.investormeetcompany.com/companies/ensilica-plc/rns/4906912/view",
+            "date": "2026-10-05"
+          },
+          {
+            "label": "LSE — ENSI",
+            "url": "https://www.londonstockexchange.com/en/quote/equity/ENSI/ensilica-plc",
+            "date": "2026-11-23"
+          },
+          {
+            "label": "Historical prices — Digrin",
+            "url": "https://www.digrin.com/stocks/detail/ENSI.L/price",
+            "date": null
+          },
+          {
+            "label": "S&P data — market cap and close",
+            "url": "https://stockanalysis.com/quote/aim/ENSI/market-cap/",
+            "date": "2026-11-25"
+          },
+          {
+            "label": "Company — GNSS Heads of Terms",
+            "url": "https://www.ensilica.com/news-and-insight/ensilica-to-develop-resilient-gnss-asic-for-us80-million-programme/",
+            "date": "2026-11-23"
+          },
+          {
+            "label": "Wise — GBP/USD",
+            "url": "https://wise.com/gb/currency-converter/gbp-to-usd-rate/history/25-11-2026",
+            "date": "2026-11-25"
+          },
+          {
+            "label": "Morningstar — historical financials",
+            "url": "https://00215-prod-alb.eci0254d.eas.morningstar.com/1c6qh1t6k9/stockreport/default.aspx?ClientFund=0&CurrencyId=GBP&Id=0P0001P5S1&SecurityToken=0P0001P5S1%5D3%5D0%5DE0EXG%24XLON&tab=0&vw=sum",
+            "date": "2026-11-25"
+          }
+        ]
+      },
+      "metrics": [
+        {
+          "label": "إيرادات FY26",
+          "value": "£27.8M",
+          "detail": "+53% YoY"
+        },
+        {
+          "label": "صافي الربح",
+          "value": "£1.24M",
+          "detail": "FY26"
+        },
+        {
+          "label": "سعر السهم",
+          "value": "74.8p",
+          "detail": "25 Nov 2026"
+        },
+        {
+          "label": "سعر الطرح",
+          "value": "50p",
+          "detail": "24 May 2022"
+        }
+      ],
+      "series": {
+        "revenue": {
+          "label": "Revenue · GBP M",
+          "points": [
+            {
+              "date": "2024",
+              "value": 25.27
+            },
+            {
+              "date": "2025",
+              "value": 18.18
+            },
+            {
+              "date": "2026",
+              "value": 27.81
+            }
+          ]
+        },
+        "price": {
+          "label": "Share price · GBp",
+          "points": [
+            {
+              "date": "2022 IPO",
+              "value": 50
+            },
+            {
+              "date": "2022",
+              "value": 95.5
+            },
+            {
+              "date": "2023",
+              "value": 40
+            },
+            {
+              "date": "2024",
+              "value": 43.5
+            },
+            {
+              "date": "2025",
+              "value": 47
+            },
+            {
+              "date": "2026-11-25",
+              "value": 74.8
+            }
+          ]
+        }
+      },
+      "assessment": {
+        "market": {
+          "points": 15,
+          "reason": "ASIC مخصص لأسواق متنوعة؛ بعض القطاعات تحتاج تدقيقًا شرعيًا.",
+          "sources": [
+            {
+              "label": "RNS — corrected audited FY26 results",
+              "url": "https://www.investormeetcompany.com/companies/ensilica-plc/rns/4906912/view",
+              "date": "2026-10-05"
+            },
+            {
+              "label": "Company — GNSS Heads of Terms",
+              "url": "https://www.ensilica.com/news-and-insight/ensilica-to-develop-resilient-gnss-asic-for-us80-million-programme/",
+              "date": "2026-11-23"
+            }
+          ]
+        },
+        "moat": {
+          "points": 12,
+          "reason": "IP قابل لإعادة الاستخدام وتكامل التصميم، لا مقارنة مستقلة كاملة.",
+          "sources": [
+            {
+              "label": "RNS — corrected audited FY26 results",
+              "url": "https://www.investormeetcompany.com/companies/ensilica-plc/rns/4906912/view",
+              "date": "2026-10-05"
+            }
+          ]
+        },
+        "commercial": {
+          "points": 16,
+          "reason": "خمسة chips بتوريد و14 قيد التصميم؛ التوقعات ليست طلبات مضمونة.",
+          "sources": [
+            {
+              "label": "RNS — corrected audited FY26 results",
+              "url": "https://www.investormeetcompany.com/companies/ensilica-plc/rns/4906912/view",
+              "date": "2026-10-05"
+            }
+          ]
+        },
+        "financial": {
+          "points": 11,
+          "reason": "عودة الربحية ونمو السنة بعد انخفاض 2025، لكن تخفيف وتمويل كبيران.",
+          "sources": [
+            {
+              "label": "RNS — corrected audited FY26 results",
+              "url": "https://www.investormeetcompany.com/companies/ensilica-plc/rns/4906912/view",
+              "date": "2026-10-05"
+            },
+            {
+              "label": "Morningstar — historical financials",
+              "url": "https://00215-prod-alb.eci0254d.eas.morningstar.com/1c6qh1t6k9/stockreport/default.aspx?ClientFund=0&CurrencyId=GBP&Id=0P0001P5S1&SecurityToken=0P0001P5S1%5D3%5D0%5DE0EXG%24XLON&tab=0&vw=sum",
+              "date": "2026-11-25"
+            }
+          ]
+        },
+        "valuation": {
+          "points": 6,
+          "reason": "مضاعف المبيعات 3.6x ومضاعف ربح FY26 مرتفع؛ حساس للتمويل.",
+          "sources": [
+            {
+              "label": "RNS — corrected audited FY26 results",
+              "url": "https://www.investormeetcompany.com/companies/ensilica-plc/rns/4906912/view",
+              "date": "2026-10-05"
+            },
+            {
+              "label": "S&P data — market cap and close",
+              "url": "https://stockanalysis.com/quote/aim/ENSI/market-cap/",
+              "date": "2026-11-25"
+            }
+          ]
+        },
+        "governance": null
+      },
+      "events": [
+        {
+          "date": "2026-11-23",
+          "summary": "Heads of Terms لبرنامج GNSS >$80M مشروط بإتمام الاتفاق."
+        },
+        {
+          "date": "2026-11-26",
+          "summary": "بحث أولي مبني على الطرح والنتائج المالية والتاريخ السعري."
+        }
+      ]
+    },
+    {
+      "name": "Ridge-i",
+      "type": "listed",
+      "country": "اليابان",
+      "listedSince": "2023-04-26",
+      "ticker": "5572",
+      "exchange": "Tokyo Growth",
+      "sector": "Industrial AI / DX",
+      "stage": "مدرجة — Micro/Nano research",
+      "valuationUsd": 62354130,
+      "date": "2026-11-25",
+      "source": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm",
+      "status": "research",
+      "reviewLevel": "public-reviewed",
+      "lastChecked": "2026-11-26",
+      "sharia": "غير متحقق؛ يلزم فصل إيرادات العملاء الماليين ونسب الأصول والدين",
+      "access": "Tokyo Stock Exchange؛ تحقق من تفعيل اليابان في IBKR",
+      "risk": "تذبذب السهم، اعتماد المشاريع المخصصة، مخاطر الاستحواذ والتركيز",
+      "update": "FY26 إيرادات +15.4% وربح تشغيلي +93.3%؛ بحث فقط.",
+      "profile": {
+        "overview": "تطوير حلول AI مخصصة وترخيص خوارزميات وتحليل بيانات الأقمار الصناعية وتقديم خدمات تحول رقمي للشركات.",
+        "thesis": "الطلب على تحليل بيانات صناعية معقدة قائم، لكن يجب إثبات أن التكنولوجيا تتوسع كمنتج متكرر وليس مجرد استشارات وساعات عمل.",
+        "market": "التحول الرقمي الصناعي وتحليل صور وبيانات؛ لا يوجد حجم سوق قابل للخدمة موثق للشركة.",
+        "competition": "مزودو استشارات AI وفرق التطوير الداخلية ومنصات AI عامة. يلزم قياس نسبة الترخيص المتكرر والملكية الفكرية وتكاليف الانتقال.",
+        "management": "الرئيس التنفيذي 柳原尚史 وفق إفصاح JPX. لم يُستكمل تدقيق ملكية الإدارة وأثر عمليات الاستحواذ.",
+        "financials": "FY24 إيرادات ¥1,071M (منفردة)؛ FY25 ¥2,593M (موحدة) وربح تشغيلي ¥283M؛ FY26 ¥2,993M (+15.4%) وربح تشغيلي ¥547M (+93.3%) وصافي ¥407M (+191.9%). لا نستنتج نموًا عضويًا من تغير نطاق التوحيد؛ يلزم فصل المكاسب غير المتكررة.",
+        "history": "سعر طرح ¥1,750 في أبريل 2023؛ إغلاق نهاية 2023 ¥1,537، 2024 ¥2,410، 2025 ¥2,008، 25 نوفمبر 2026 ¥2,289 (+30.8% عن الطرح). إغلاق أول شهر ¥3,605، ما يدل على تذبذب مرتفع. لم يكتمل تدقيق تاريخ عدد الأسهم.",
+        "valuation": "تقدير قيمة سوقية ¥9.93B = 2,289 × 4.34M سهم (عدد الأسهم المعلن في لقطة FT يوم 26 نوفمبر)؛ ~US$62.4M بسعر ¥159.32/USD. مضاعف المبيعات نحو 3.32x، الربح المعلن نحو 24.4x. التقدير مؤرخ وليس قيمة عادلة.",
+        "scenarios": "حساسية افتراضية: أرباح FY27 الموجهة ¥450M × مضاعف P/E 15x/22x/30x = ¥6.75B/¥9.9B/¥13.5B؛ افتراضات بحثية لا أسعار مستهدفة؛ تحقق من الربح المتكرر والتخفيف.",
+        "catalysts": "استمرار نمو العقود ومنتجات AI القابلة لإعادة الاستخدام، وزيادة هامش النشاط الأساسي.",
+        "risk": "جزء من نمو المبيعات قد يرجع للتوحيد؛ عميل مالي كبير بحسب المواد، مخاطر التوافق الشرعي والمنافسة ومضاعف التقييم.",
+        "decision": "مرشح بحث ضمن 5–100M؛ نمو وربحية موجودان، لكن الميزة التنافسية والتخفيف والتوافق الشرعي غير مثبتة.",
+        "invalidation": "ضعف نمو الإيراد العضوي أو انخفاض الهوامش أو عدم القدرة على إثبات جودة الأعمال أو الشريعة.",
+        "nextSteps": "فحص القوائم التفصيلية والتدفق النقدي والدين والعقود والإيرادات حسب العملاء والسهم منذ الإدراج.",
+        "sources": [
+          {
+            "label": "JPX — 2026 July results",
+            "url": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm",
+            "date": "2026-09-11"
+          },
+          {
+            "label": "JPX — IPO pricing",
+            "url": "https://www.jpx.co.jp/news/1031/20230425-01.html",
+            "date": "2023-04-25"
+          },
+          {
+            "label": "FT/S&P — shares and price",
+            "url": "https://markets.ft.markitdigital.com/data/equities/tearsheet/summary?s=5572%3ATYO",
+            "date": "2026-11-26"
+          },
+          {
+            "label": "FT — closing prices",
+            "url": "https://markets.ft.markitdigital.com/data/equities/tearsheet/historical?s=5572%3ATYO",
+            "date": "2026-11-25"
+          },
+          {
+            "label": "Digrin — adjusted monthly prices",
+            "url": "https://www.digrin.com/stocks/detail/5572.T/price",
+            "date": null
+          },
+          {
+            "label": "ECB FX via YCharts",
+            "url": "https://ycharts.com/indicators/us_dollar_to_japanese_yen_exchange_rate",
+            "date": "2026-11-25"
+          },
+          {
+            "label": "Kabutan — financial comparison",
+            "url": "https://s.kabutan.jp/news/k202609110068/",
+            "date": "2026-09-11"
+          }
+        ]
+      },
+      "metrics": [
+        {
+          "label": "إيرادات FY26",
+          "value": "¥2.99B",
+          "detail": "+15.4%"
+        },
+        {
+          "label": "ربح تشغيلي",
+          "value": "¥547M",
+          "detail": "+93.3%"
+        },
+        {
+          "label": "سعر السهم",
+          "value": "¥2,289",
+          "detail": "25 Nov 2026"
+        },
+        {
+          "label": "سعر الطرح",
+          "value": "¥1,750",
+          "detail": "Apr 2023"
+        }
+      ],
+      "series": {
+        "revenue": {
+          "label": "Revenue · JPY M (FY24 standalone)",
+          "points": [
+            {
+              "date": "2024*",
+              "value": 1071
+            },
+            {
+              "date": "2025",
+              "value": 2593
+            },
+            {
+              "date": "2026",
+              "value": 2993
+            }
+          ]
+        },
+        "price": {
+          "label": "Share price · JPY",
+          "points": [
+            {
+              "date": "2023 IPO",
+              "value": 1750
+            },
+            {
+              "date": "2023",
+              "value": 1537
+            },
+            {
+              "date": "2024",
+              "value": 2410
+            },
+            {
+              "date": "2025",
+              "value": 2008
+            },
+            {
+              "date": "2026-11-25",
+              "value": 2289
+            }
+          ]
+        }
+      },
+      "assessment": {
+        "market": {
+          "points": 14,
+          "reason": "الطلب على رقمنة وتحليل صناعي قائم؛ حجم سوق المنتج غير مفصول.",
+          "sources": [
+            {
+              "label": "JPX — 2026 July results",
+              "url": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm",
+              "date": "2026-09-11"
+            },
+            {
+              "label": "FT/S&P — shares and price",
+              "url": "https://markets.ft.markitdigital.com/data/equities/tearsheet/summary?s=5572%3ATYO",
+              "date": "2026-11-26"
+            }
+          ]
+        },
+        "commercial": {
+          "points": 12,
+          "reason": "إيرادات وربحية حقيقية؛ نسبة عقود المنتج المتكرر غير معلنة.",
+          "sources": [
+            {
+              "label": "JPX — 2026 July results",
+              "url": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm",
+              "date": "2026-09-11"
+            }
+          ]
+        },
+        "financial": {
+          "points": 12,
+          "reason": "ربح تشغيلي متنامٍ، لكن يحتاج تدقيق النمو العضوي والنقد والتخفيف.",
+          "sources": [
+            {
+              "label": "JPX — 2026 July results",
+              "url": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm",
+              "date": "2026-09-11"
+            },
+            {
+              "label": "Kabutan — financial comparison",
+              "url": "https://s.kabutan.jp/news/k202609110068/",
+              "date": "2026-09-11"
+            }
+          ]
+        },
+        "valuation": {
+          "points": 9,
+          "reason": "مضاعفات أولية على أرباح ومبيعات معلنة، لا قيمة عادلة.",
+          "sources": [
+            {
+              "label": "JPX — 2026 July results",
+              "url": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm",
+              "date": "2026-09-11"
+            },
+            {
+              "label": "FT/S&P — shares and price",
+              "url": "https://markets.ft.markitdigital.com/data/equities/tearsheet/summary?s=5572%3ATYO",
+              "date": "2026-11-26"
+            },
+            {
+              "label": "FT — closing prices",
+              "url": "https://markets.ft.markitdigital.com/data/equities/tearsheet/historical?s=5572%3ATYO",
+              "date": "2026-11-25"
+            }
+          ]
+        },
+        "moat": null,
+        "governance": null
+      },
+      "events": [
+        {
+          "date": "2026-11-26",
+          "summary": "إضافة مرشح بحث ياباني بعد مراجعة نتائج JPX وسعر الطرح والتاريخ السعري."
+        }
+      ]
     }
   ],
   "history": [
@@ -857,6 +1893,10 @@
     {
       "date": "2026-11-26",
       "summary": "تحسين 4 ملفات خاصة؛ استبعاد Nephros بعد مراجعة تاريخ الطرح والعجز المتراكم، و374Water بسبب إفصاح الاستمرارية. لا ترقية إلى مؤهلة."
+    },
+    {
+      "date": "2026-11-26",
+      "summary": "تحديث 14 ملفًا (منها EnSilica وRidge-i)، ومراجعة تمويل Avicena الجديد، وبيانات التشغيل والتقنية والطلب والمنافسة. إضافة نقاط جزئية مدعومة؛ لا شركات مؤهلة."
     }
   ],
   "policy": {
