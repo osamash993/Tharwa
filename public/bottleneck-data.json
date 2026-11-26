@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-26",
-  "note": "ملفات البحث العامة المطورة تتضمن أدلة ومصادر؛ النقاط الجزئية تُعرض مقابل وزن المحاور المدعومة فقط. بيانات الشركات الخاصة غير المتاحة علنًا تبقى غير معلنة؛ لا توجد موافقة شراء أو تأهيل شرعي.",
+  "note": "16 مرشحًا نشطًا لديهم مراجعة مصادر عامة ونقاط جزئية، و5 مستبعدة. تظهر النقاط مقابل وزن المحاور المقيمة فقط؛ التقييم الكامل يتطلب معلومات مالية وشروط دخول وشريعة. الشركات الخاصة قد لا تنشر هذه المعلومات.",
   "companies": [
     {
       "name": "Via Separations",
@@ -82,7 +82,29 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "جولة نمو",
+          "value": "$36M",
+          "detail": "Apr 2026"
+        },
+        {
+          "label": "إجمالي التمويل",
+          "value": "~$80M",
+          "detail": "MIT · May 2026"
+        },
+        {
+          "label": "خفض الطاقة",
+          "value": "≤90%",
+          "detail": "في تطبيقات محددة"
+        },
+        {
+          "label": "تشغيل تجاري",
+          "value": "2 yr",
+          "detail": "مصنع لب · كندا"
+        }
+      ]
     },
     {
       "name": "PQShield",
@@ -105,8 +127,8 @@
         "thesis": "انتقال الأنظمة إلى تشفير مقاوم للحوسبة الكمية يخلق حاجة لتحديث الأجهزة والبرمجيات؛ يجب إثبات حصة الشركة وقدرتها على تحويل المعايير إلى عقود.",
         "risk": "المنافسة من تطبيقات المعايير المفتوحة، دورات تصميم الشرائح الطويلة، ووجود تطبيقات في الأنظمة المالية والاتصالات العسكرية يحتاج تدقيق نشاط الإيرادات.",
         "financials": "Series B بقيمة $37M بتاريخ 20 يونيو 2024. لم ينشر الإعلان الإيرادات أو الربحية أو التقييم أو النقد الحالي.",
-        "competition": "التحدي ليس امتلاك معيار التشفير العام، بل تقديم تطبيق آمن قابل للاعتماد في الأجهزة ذات الموارد المحدودة. المنافسة من مكتبات التشفير المفتوحة وموردي IP.",
-        "management": "د. Ali El Kaafarani — المؤسس والرئيس التنفيذي. Graeme Hickey — CTO. قادت Addition جولة B بمشاركة Chevron Technology Ventures وLegal & General وBraavos.",
+        "competition": "مكتبات التشفير المفتوحة وموردو IP مثل Rambus وحلول داخلية. تقول PQShield إن لديها 36+ طلب براءة و85+ ورقة بحثية؛ يلزم فحص البراءات الممنوحة والمزايا الفعلية.",
+        "management": "Ali El Kaafarani المؤسس وCEO. انضم Antonio J. Viana لمجلس الإدارة في ديسمبر 2024، مع مستشارين من Arm وIntel؛ يلزم فحص حقوق المساهمين.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
         "catalysts": "إفصاحات عقود واعتماد منتجات متوافقة مع NIST.",
         "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
@@ -126,6 +148,16 @@
             "label": "دليل قطاع الكم البريطاني",
             "url": "https://quantum.org.uk/organisations/pqshield/",
             "date": null
+          },
+          {
+            "label": "PQShield — IP and product assurances",
+            "url": "https://pqshield.com/ncsc-assured-cyber-security-consultancy/",
+            "date": null
+          },
+          {
+            "label": "PQShield — board expansion",
+            "url": "https://pqshield.com/pqshield-expands-boardroom-accelerating-momentum-into-2025/",
+            "date": "2024-12-12"
           }
         ],
         "decision": "بحث فقط؛ الطلب التنظيمي وقائمة العملاء إيجابيان، لكن التوافق الشرعي وشروط الحصة والمالية الحالية غير محسومة.",
@@ -139,10 +171,77 @@
         {
           "date": "2026-11-26",
           "summary": "استكمال التأسيس والإدارة والعملاء وتحديد مسألة التحقق الشرعي بدل الاكتفاء بالاسم."
+        },
+        {
+          "date": "2026-11-26",
+          "summary": "مراجعة قائمة العملاء والملكية الفكرية المعلنة ومجلس الإدارة؛ نقاط جزئية لا اعتماد شرعي."
         }
       ],
       "country": "المملكة المتحدة",
-      "founded": "2018"
+      "founded": "2018",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 17,
+          "reason": "الحاجة إلى حماية الأنظمة من مخاطر الكم، لكن لا نعطي درجة أعلى دون قياس السوق.",
+          "sources": [
+            {
+              "label": "PQShield — Series B and customers",
+              "url": "https://pqshield.com/pqshield-raises-37m-in-series-b-funding/",
+              "date": "2024-06-20"
+            }
+          ]
+        },
+        "moat": {
+          "points": 14,
+          "reason": "الشركة تعلن مساهمة في معايير NIST و36+ طلب براءة، لا يعني ذلك احتكار المعايير.",
+          "sources": [
+            {
+              "label": "PQShield — Series B and customers",
+              "url": "https://pqshield.com/pqshield-raises-37m-in-series-b-funding/",
+              "date": "2024-06-20"
+            },
+            {
+              "label": "PQShield — IP and product assurances",
+              "url": "https://pqshield.com/ncsc-assured-cyber-security-consultancy/",
+              "date": null
+            }
+          ]
+        },
+        "commercial": {
+          "points": 16,
+          "reason": "أسماء عملاء صناعيين مثل AMD وMicrochip معلنة؛ قيمة العقود غير معروفة.",
+          "sources": [
+            {
+              "label": "PQShield — Series B and customers",
+              "url": "https://pqshield.com/pqshield-raises-37m-in-series-b-funding/",
+              "date": "2024-06-20"
+            },
+            {
+              "label": "PQShield — IP and product assurances",
+              "url": "https://pqshield.com/ncsc-assured-cyber-security-consultancy/",
+              "date": null
+            }
+          ]
+        }
+      },
+      "metrics": [
+        {
+          "label": "Series B",
+          "value": "$37M",
+          "detail": "Jun 2024"
+        },
+        {
+          "label": "طلبات براءات",
+          "value": "36+",
+          "detail": "بحسب الشركة"
+        },
+        {
+          "label": "أوراق محكمة",
+          "value": "85+",
+          "detail": "بحسب الشركة"
+        }
+      ]
     },
     {
       "name": "ZwitterCo",
@@ -222,7 +321,19 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Series B",
+          "value": "$58.4M",
+          "detail": "Jul 2024"
+        },
+        {
+          "label": "التأسيس",
+          "value": "2018",
+          "detail": "USA"
+        }
+      ]
     },
     {
       "name": "Qblox",
@@ -244,7 +355,7 @@
         "overview": "تطوير إلكترونيات التحكم منخفضة التأخير وقراءة الكيوبتات للباحثين ومطوري الحواسيب الكمية؛ مقرها Delft ولديها مكتب في Boston.",
         "thesis": "الاستثمار في طبقة التحكم والقياس بدل اختيار تقنية حاسوب كمي واحدة. قابلية التوسع وسرعة التحكم قد تصبحان عنق زجاجة مع زيادة الكيوبتات.",
         "risk": "توقيت التوسع التجاري للحوسبة الكمية",
-        "financials": "إعلان 20 يونيو 2024 حدد الجولة عند $26M؛ حزمة الصحافة تذكر $26.6M. لم يُتحقق من الإيرادات أو الهامش أو تقييم الجولة؛ لا نجمع الرقمين.",
+        "financials": "جولة $26M في 20 يونيو 2024؛ press kit يذكر $26.6M. تقول الشركة إنها نمت سابقًا بإيراداتها قبل أول جولة equity، ولا تنشر مقدار الإيرادات أو الربحية.",
         "competition": "بدائل التحكم المخصصة داخليًا ومنصات إلكترونيات قياس منافسة؛ يلزم فحص قابلية التوسع بين أنواع الكيوبتات، زمن الاستجابة والأسعار.",
         "management": "Niels Bultink — CEO وشريك مؤسس؛ Jules van Oven — Chief Innovation Officer وشريك مؤسس. قيادة الجولة Quantonation وInvest-NL Deep Tech.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
@@ -253,31 +364,89 @@
         "nextSteps": "استكمال الأدلة الأولية والتاريخ المالي والتوافق الشرعي وإمكانية الشراء. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
         "sources": [
           {
-            "label": "Qblox — Series A",
+            "label": "Qblox — Series A and commercialization",
             "url": "https://qblox.com/newsroom/qblox-secures-series-a-funding-quantum-control-stack-development",
             "date": "2024-06-20"
           },
           {
-            "label": "Qblox — Press Kit",
+            "label": "Qblox — press kit",
             "url": "https://qblox.com/press-kit",
             "date": null
           },
           {
-            "label": "Qblox — الإدارة",
+            "label": "Qblox — management",
             "url": "https://qblox.com/about",
             "date": null
           }
         ],
         "market": "تقول الشركة إن لديها أكثر من 200 عميل في 25 دولة؛ الطلب الحالي يشمل المختبرات والجهات الصناعية، وليس دليلًا على نضج سوق الحوسبة الكمية بالكامل.",
-        "decision": "مرشح بحث؛ عدد العملاء المعلن يدعم الطلب الأولي، وليس دليلًا على الربحية أو إيرادات متكررة."
+        "decision": "مرشح بحث؛ عدد العملاء المعلن يدعم الطلب الأولي، وليس دليلًا على الربحية أو إيرادات متكررة.",
+        "history": "توسعت من أكثر من 100 عميل في إعلان يونيو 2024 إلى أكثر من 200 في حزمة الصحافة؛ تاريخ العدد الأحدث غير محدد بدقة."
       },
       "events": [
         {
           "date": "2026-11-26",
           "summary": "توثيق التمويل والمؤسسين والانتشار الجغرافي وعدد العملاء وفق إفصاحات الشركة."
+        },
+        {
+          "date": "2026-11-26",
+          "summary": "مراجعة إفصاحات الشركة وإضافة نقاط جزئية مع مصادر."
         }
       ],
-      "country": "هولندا"
+      "country": "هولندا",
+      "reviewLevel": "public-reviewed",
+      "assessment": {
+        "market": {
+          "points": 16,
+          "reason": "طبقة التحكم ضرورية للحوسبة الكمية، لكن توقيت التوسع الصناعي غير مضمون.",
+          "sources": [
+            {
+              "label": "Qblox — Series A and commercialization",
+              "url": "https://qblox.com/newsroom/qblox-secures-series-a-funding-quantum-control-stack-development",
+              "date": "2024-06-20"
+            }
+          ]
+        },
+        "moat": {
+          "points": 13,
+          "reason": "معمارية Cluster معيارية تدعم أنواع كيوبت مختلفة؛ التفوق المقارن غير مثبت.",
+          "sources": [
+            {
+              "label": "Qblox — Series A and commercialization",
+              "url": "https://qblox.com/newsroom/qblox-secures-series-a-funding-quantum-control-stack-development",
+              "date": "2024-06-20"
+            }
+          ]
+        },
+        "commercial": {
+          "points": 16,
+          "reason": "أكثر من 200 عميل في 25 دولة بحسب press kit؛ الإيرادات المطلقة غير متاحة.",
+          "sources": [
+            {
+              "label": "Qblox — press kit",
+              "url": "https://qblox.com/press-kit",
+              "date": null
+            }
+          ]
+        }
+      },
+      "metrics": [
+        {
+          "label": "Series A",
+          "value": "$26M",
+          "detail": "Jun 2024"
+        },
+        {
+          "label": "العملاء",
+          "value": "200+",
+          "detail": "إعلان الشركة"
+        },
+        {
+          "label": "الدول",
+          "value": "25",
+          "detail": "Press kit"
+        }
+      ]
     },
     {
       "name": "Tropic",
@@ -368,7 +537,24 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Series C",
+          "value": "$105M",
+          "detail": "Mar 2026"
+        },
+        {
+          "label": "إطلاق تجاري",
+          "value": "2025",
+          "detail": "موز معدل جينيًا"
+        },
+        {
+          "label": "TR4",
+          "value": "2027",
+          "detail": "هدف طرح لا ضمان"
+        }
+      ]
     },
     {
       "name": "Amperesand",
@@ -460,7 +646,29 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Series A",
+          "value": "$80M",
+          "detail": "2025"
+        },
+        {
+          "label": "عائلات البراءات",
+          "value": "18",
+          "detail": "إفصاح الشركة"
+        },
+        {
+          "label": "كفاءة مستهدفة",
+          "value": "98.5%",
+          "detail": "MV AC / LV DC"
+        },
+        {
+          "label": "معمارية",
+          "value": "800V DC",
+          "detail": "Data center"
+        }
+      ]
     },
     {
       "name": "AILOS Robotics",
@@ -552,7 +760,19 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Seed",
+          "value": "€3.5M",
+          "detail": "Dec 2025"
+        },
+        {
+          "label": "ترخيص IP",
+          "value": "2025",
+          "detail": "VUB"
+        }
+      ]
     },
     {
       "name": "Rainbow Crops",
@@ -643,7 +863,19 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Seed",
+          "value": "€9.7M",
+          "detail": "Jun 2026"
+        },
+        {
+          "label": "التقنية",
+          "value": "Trait Foundry",
+          "detail": "Multiplex editing"
+        }
+      ]
     },
     {
       "name": "Nitricity",
@@ -729,7 +961,24 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Series B",
+          "value": "$50M",
+          "detail": "Sep 2025"
+        },
+        {
+          "label": "حجز الإنتاج",
+          "value": "2028",
+          "detail": "عقود معلنة"
+        },
+        {
+          "label": "توسع السعة",
+          "value": "100×",
+          "detail": "مستهدف"
+        }
+      ]
     },
     {
       "name": "Osmoses",
@@ -815,7 +1064,19 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Seed",
+          "value": "$11M",
+          "detail": "2023"
+        },
+        {
+          "label": "تمويل مبكر",
+          "value": "$3M",
+          "detail": "NSF"
+        }
+      ]
     },
     {
       "name": "Avicena",
@@ -901,7 +1162,19 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Series C",
+          "value": ">$100M",
+          "detail": "2026"
+        },
+        {
+          "label": "وحدات تقييم",
+          "value": "1 Tbps",
+          "detail": "Aug 2026"
+        }
+      ]
     },
     {
       "name": "Phoenix Tailings",
@@ -987,7 +1260,29 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Series B",
+          "value": "$116.6M",
+          "detail": "Feb 2026 · incl. debt"
+        },
+        {
+          "label": "دين الجولة",
+          "value": "$10M",
+          "detail": "معلن"
+        },
+        {
+          "label": "دين مشروط",
+          "value": "$500M",
+          "detail": "Jun 2026"
+        },
+        {
+          "label": "مشروع NY",
+          "value": "$375M",
+          "detail": "Oct 2026 · مخطط"
+        }
+      ]
     },
     {
       "name": "Sono-Tek",
@@ -1293,7 +1588,24 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "Series A",
+          "value": "$14M",
+          "detail": "2024"
+        },
+        {
+          "label": "Chevron",
+          "value": "3 yr",
+          "detail": "عقد تجاري"
+        },
+        {
+          "label": "نمو FY23",
+          "value": "400%",
+          "detail": "ادعاء الشركة · تاريخي"
+        }
+      ]
     },
     {
       "name": "Samotics",
@@ -1398,7 +1710,29 @@
             }
           ]
         }
-      }
+      },
+      "metrics": [
+        {
+          "label": "أصول مراقبة",
+          "value": "7,000+",
+          "detail": "الشركة"
+        },
+        {
+          "label": "عملاء",
+          "value": "80+",
+          "detail": "الشركة"
+        },
+        {
+          "label": "تمويل EIB",
+          "value": "€20M",
+          "detail": "Jan 2025"
+        },
+        {
+          "label": "ABB ACS880",
+          "value": "2025",
+          "detail": "دمج ESA"
+        }
+      ]
     },
     {
       "name": "Transense Technologies",
@@ -1897,6 +2231,10 @@
     {
       "date": "2026-11-26",
       "summary": "تحديث 14 ملفًا (منها EnSilica وRidge-i)، ومراجعة تمويل Avicena الجديد، وبيانات التشغيل والتقنية والطلب والمنافسة. إضافة نقاط جزئية مدعومة؛ لا شركات مؤهلة."
+    },
+    {
+      "date": "2026-11-26",
+      "summary": "استكمال المراجعة العامة لبقية المرشحين Qblox وPQShield وإضافة مؤشرات رقمية موثقة للملفات الخاصة. جميع المرشحين النشطين لديهم نقاط بحث جزئية؛ لا يعني ذلك اكتمال العناية الواجبة."
     }
   ],
   "policy": {
