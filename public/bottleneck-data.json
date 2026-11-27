@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-26",
-  "note": "16 مرشحًا نشطًا لديهم مراجعة مصادر عامة ونقاط جزئية، و5 مستبعدة. تظهر النقاط مقابل وزن المحاور المقيمة فقط؛ التقييم الكامل يتطلب معلومات مالية وشروط دخول وشريعة. الشركات الخاصة قد لا تنشر هذه المعلومات.",
+  "updated": "2026-11-27",
+  "note": "دورة 27 نوفمبر: مراجعة مستند أو مصدر لكل شركة من 21 شركة، مع تعميق ملفات 13 مرشحًا نشطًا. فحص الأخبار ليس عناية واجبة مكتملة. 16 مرشحًا و5 مستبعدة؛ لا تأهيل شرعي أو صفقة شراء متحققة. التواريخ الفردية تعكس الفحص المتاح، لا تاريخًا لحظيًا للبيانات.",
   "companies": [
     {
       "name": "Via Separations",
@@ -17,7 +17,7 @@
       "update": "أغشية تفصل السوائل الصناعية بدل الفصل الحراري؛ MIT يذكر وفر طاقة يصل إلى 90% في تطبيقات محددة. إجمالي التمويل نحو $80M.",
       "date": "2026-05-11",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "أنظمة أغشية ميكانيكية معيارية تُركب على العمليات الصناعية القائمة بدل جزء من الفصل الحراري كثيف الطاقة.",
         "thesis": "بيع وحدات للفصل تقلل الطاقة وتزيد القدرة الإنتاجية دون استبدال المصنع بالكامل. MIT يذكر خفض الطاقة حتى 90% في تطبيقات معينة، لا كضمان لكل عملية.",
@@ -34,6 +34,11 @@
             "label": "MIT Energy Initiative — التقنية والعملاء والتمويل",
             "url": "https://energy.mit.edu/news/via-separations-to-expand-into-new-markets-with-36-million-investment/",
             "date": "2026-05-11"
+          },
+          {
+            "label": "Via — صفحة الشركة وأحدث أخبار ظاهرة",
+            "url": "https://viaseparations.com/",
+            "date": null
           }
         ],
         "market": "اللب والورق أول سوق تجاري؛ تستهدف التكرير والكيماويات حيث الفصل الحراري جزء أساسي من العملية.",
@@ -43,6 +48,10 @@
         {
           "date": "2026-11-26",
           "summary": "استكمال المؤسسين وإثبات التشغيل التجاري وجولة أبريل."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "فحص صفحة الشركة؛ أحدث أخبار ظاهرة في يونيو 2026، وجولة أبريل مسجلة مسبقًا؛ لا مستجد جوهري أحدث متحقق."
         }
       ],
       "country": "الولايات المتحدة",
@@ -81,6 +90,21 @@
               "date": "2026-05-11"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -112,7 +136,8 @@
           "label": "نموذج مخصص للمستثمرين",
           "url": "https://viaseparations.com/contact/",
           "source": "https://viaseparations.com/contact/",
-          "detail": "اختر Investor من قائمة سبب التواصل."
+          "detail": "اختر Investor من قائمة سبب التواصل.",
+          "checked": "2026-11-27"
         },
         {
           "kind": "email",
@@ -127,10 +152,12 @@
           "kind": "inquiry",
           "status": "inquiry-only",
           "url": "https://viaseparations.com/contact/",
-          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "PQShield",
@@ -141,20 +168,20 @@
       "valuationUsd": null,
       "ticker": null,
       "exchange": null,
-      "sharia": "غير متحقق — تطبيقات مالية وعسكرية تستدعي تدقيق توزيع الإيرادات",
+      "sharia": "لا اعتماد: الموقع يعرض Military and Aerospace وIdentity and Paymentech ضمن الأسواق؛ يلزم تفصيل الإيرادات وطبيعة العملاء والعقود والدين والفوائد. نشاط التشفير العام وحده لا يحسم التأهيل.",
       "access": "صفحة سوق خاص متحققة؛ لا صفقة متحققة.",
       "risk": "المنافسة ودورات اعتماد العملاء",
       "update": "ملكية فكرية للتشفير المقاوم للحوسبة الكمية في الأجهزة والبرمجيات؛ جولة بقيادة Addition.",
       "date": "2024-06-20",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "تطور ملكية فكرية وبرمجيات ومكونات أجهزة للتشفير المقاوم للحوسبة الكمية، تشمل حماية إقلاع الأجهزة وتحديثها والاتصالات.",
         "thesis": "انتقال الأنظمة إلى تشفير مقاوم للحوسبة الكمية يخلق حاجة لتحديث الأجهزة والبرمجيات؛ يجب إثبات حصة الشركة وقدرتها على تحويل المعايير إلى عقود.",
         "risk": "المنافسة من تطبيقات المعايير المفتوحة، دورات تصميم الشرائح الطويلة، ووجود تطبيقات في الأنظمة المالية والاتصالات العسكرية يحتاج تدقيق نشاط الإيرادات.",
         "financials": "Series B بقيمة $37M بتاريخ 20 يونيو 2024. لم ينشر الإعلان الإيرادات أو الربحية أو التقييم أو النقد الحالي.",
         "competition": "مكتبات التشفير المفتوحة وموردو IP مثل Rambus وحلول داخلية. تقول PQShield إن لديها 36+ طلب براءة و85+ ورقة بحثية؛ يلزم فحص البراءات الممنوحة والمزايا الفعلية.",
-        "management": "Ali El Kaafarani المؤسس وCEO. انضم Antonio J. Viana لمجلس الإدارة في ديسمبر 2024، مع مستشارين من Arm وIntel؛ يلزم فحص حقوق المساهمين.",
+        "management": "Ali El Kaafarani المؤسس وCEO. انضم Antonio J. Viana لمجلس الإدارة في ديسمبر 2024، مع مستشارين من Arm وIntel؛ يلزم فحص حقوق المساهمين.\n\nأعلن 6 أكتوبر 2026 تعيين Hal Conklin مديرًا تجاريًا وGemma Ungoed-Thomas مستشارة سيادية؛ لا إثبات مستقل لحقوق الحوكمة أو ملكية الحصة.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
         "catalysts": "إفصاحات عقود واعتماد منتجات متوافقة مع NIST.",
         "invalidation": "فشل المنتج تجاريًا أو تدهور السيولة أو فقد الميزة أو تخفيف مفرط.",
@@ -184,6 +211,26 @@
             "label": "PQShield — board expansion",
             "url": "https://pqshield.com/pqshield-expands-boardroom-accelerating-momentum-into-2025/",
             "date": "2024-12-12"
+          },
+          {
+            "label": "PQShield — تعيينات القيادة",
+            "url": "https://pqshield.com/pqshield-expands-leadership-as-pqc-adoption-accelerates/",
+            "date": "2026-10-06"
+          },
+          {
+            "label": "PQShield — الأسواق وقنوات الاتصال",
+            "url": "https://pqshield.com/contact-us/",
+            "date": null
+          },
+          {
+            "label": "EquityZen — شروط الاستثمار والرسوم",
+            "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+            "date": null
+          },
+          {
+            "label": "EquityZen — المستثمر الدولي",
+            "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+            "date": "2026-02-26"
           }
         ],
         "decision": "بحث فقط؛ الطلب التنظيمي وقائمة العملاء إيجابيان، لكن التوافق الشرعي وشروط الحصة والمالية الحالية غير محسومة.",
@@ -201,6 +248,10 @@
         {
           "date": "2026-11-26",
           "summary": "مراجعة قائمة العملاء والملكية الفكرية المعلنة ومجلس الإدارة؛ نقاط جزئية لا اعتماد شرعي."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إضافة CCO ومستشارة الشؤون السيادية؛ موقع الشركة يؤكد قطاع Military and Aerospace. لا عقد أو جولة أحدث متحققة."
         }
       ],
       "country": "المملكة المتحدة",
@@ -249,6 +300,21 @@
               "date": null
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -275,7 +341,8 @@
           "label": "نموذج التواصل والشراكات",
           "url": "https://pqshield.com/contact-us/",
           "source": "https://pqshield.com/contact-us/",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         }
       ],
       "investmentRoutes": [
@@ -284,10 +351,24 @@
           "kind": "secondary",
           "status": "platform-page",
           "url": "https://equityzen.com/company/pqshield/",
-          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+          "detail": "تم فتح صفحة الشركة في 27 نوفمبر؛ لا عرض مفتوح أو سعر أو توافر حصة متحقق. الشروط العامة للمنصة: عادة $10,000 وقد تبدأ فرص مختارة من $5,000؛ رسم Standard Deals 2.5% حتى $1M. المستثمر الدولي يحتاج صفة accredited ومراجعة حالة بحالة؛ لا تأكيد لأهلية حساب بعينه. الصندوق/SPV ليس ملكية مباشرة تلقائيًا؛ وثائق الصفقة والهيكل والشريعة غير متحققة.",
+          "checked": "2026-11-27",
+          "sources": [
+            {
+              "label": "EquityZen — شروط الاستثمار والرسوم",
+              "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+              "date": null
+            },
+            {
+              "label": "EquityZen — المستثمر الدولي",
+              "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+              "date": "2026-02-26"
+            }
+          ]
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "ZwitterCo",
@@ -304,13 +385,13 @@
       "update": "أغشية مقاومة للتلوث العضوي لإعادة استخدام المياه الصناعية.",
       "date": "2024-07-09",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "أغشية بتركيب كيميائي zwitterionic لمعالجة المياه الغنية بالمواد العضوية التي تسبب انسدادًا وتلوثًا للأغشية التقليدية.",
         "thesis": "إعادة استخدام مياه صناعية كان يصعب معالجتها يمكن أن تقلل استهلاك المياه العذبة وتكاليف التخلص من النفايات؛ يجب إثبات التكلفة الكلية لكل متر مكعب.",
         "risk": "عمر الأغشية الفعلي والتوسع الصناعي، منافسة الموردين التقليديين، وخدمة قطاعات منها مصانع المشروبات الكحولية بحسب الشركة؛ لا اعتماد شرعي قبل معرفة الإيرادات حسب القطاع.",
         "financials": "جولة Series B بقيمة $58.4M معلنة في 9 يوليو 2024؛ لا تتضمن الإفصاحات المتاحة الإيرادات أو تقييم الشركة أو تكاليف الإنتاج.",
-        "competition": "الأغشية التقليدية والتنظيف الكيميائي ومعالجة المياه الحرارية. يلزم مقارنة العمر التشغيلي والتدفق ونسبة الاسترداد والتكلفة.",
+        "competition": "الأغشية التقليدية والتنظيف الكيميائي ومعالجة المياه الحرارية. يلزم مقارنة العمر التشغيلي والتدفق ونسبة الاسترداد والتكلفة.\n\nخط Evolution المعلن تجاريًا يضيف RO وPCM لتطبيقات الألبان؛ الشركة تعلن مطابقة متطلبات FDA وتخدم مصانع في أكثر من 20 دولة. لا يعني ذلك شهادة اعتماد FDA أو إثبات حجم إيرادات. شهادة المنتج Halal التي تسعى إليها الشركة لا تعادل فحص الأسهم شرعيًا.",
         "management": "Alex Rappaport — المؤسس المشارك والرئيس التنفيذي بحسب إعلان الجولة. المستثمرون Evok Innovations وDCVC وBHP وMunich Re Ventures وآخرون.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
         "catalysts": "تحقق من عقود مدفوعة وإفصاحات مالية جديدة.",
@@ -326,6 +407,26 @@
             "label": "ZwitterCo — التقنية والتأسيس والتطبيقات",
             "url": "https://zwitterco.com/about-us/",
             "date": null
+          },
+          {
+            "label": "ZwitterCo — إطلاق Evolution",
+            "url": "https://zwitterco.com/blog/zwitterco-launches-evolution-membranes-transforming-dairy-and-food-processing-efficiency/",
+            "date": "2025-09-04"
+          },
+          {
+            "label": "ZwitterCo — توافق FDA واستخدامات الألبان",
+            "url": "https://zwitterco.com/blog/fda-compliance-for-evolution-ro-and-pcm-membranes/",
+            "date": "2025-11-05"
+          },
+          {
+            "label": "EquityZen — شروط الاستثمار والرسوم",
+            "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+            "date": null
+          },
+          {
+            "label": "EquityZen — المستثمر الدولي",
+            "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+            "date": "2026-02-26"
           }
         ],
         "market": "تستهدف المياه الصناعية، الأغذية والألبان، المعالجة الحيوية ومياه الرشاحة. السوق متعدد القطاعات؛ حجم السوق القابل للخدمة غير متحقق.",
@@ -339,6 +440,14 @@
         {
           "date": "2026-11-26",
           "summary": "إعادة فحص إعلان التمويل؛ نقاط السوق والتقنية فقط."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إضافة إثبات توافر منتج تجاري من 2025؛ لا خبر جوهري أحدث متحقق في هذه المراجعة."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "المحور commercial: غير مقيم ← 12. توافر تجاري لمنتجات فصل صناعي وتغطية جغرافية بحسب الشركة؛ عقود مدفوعة وكميات وتجديد وإيرادات غير متحققة."
         }
       ],
       "country": "الولايات المتحدة",
@@ -366,6 +475,37 @@
               "date": "2024-07-09"
             }
           ]
+        },
+        "commercial": {
+          "points": 12,
+          "reason": "توافر تجاري لمنتجات فصل صناعي وتغطية جغرافية بحسب الشركة؛ عقود مدفوعة وكميات وتجديد وإيرادات غير متحققة.",
+          "sources": [
+            {
+              "label": "ZwitterCo — إطلاق Evolution",
+              "url": "https://zwitterco.com/blog/zwitterco-launches-evolution-membranes-transforming-dairy-and-food-processing-efficiency/",
+              "date": "2025-09-04"
+            },
+            {
+              "label": "ZwitterCo — توافق FDA واستخدامات الألبان",
+              "url": "https://zwitterco.com/blog/fda-compliance-for-evolution-ro-and-pcm-membranes/",
+              "date": "2025-11-05"
+            }
+          ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -378,6 +518,11 @@
           "label": "التأسيس",
           "value": "2018",
           "detail": "USA"
+        },
+        {
+          "label": "الانتشار",
+          "value": "20+ دولة",
+          "detail": "إعلان الشركة · Nov 2025"
         }
       ],
       "website": "https://zwitterco.com/",
@@ -387,7 +532,8 @@
           "label": "نموذج التواصل",
           "url": "https://zwitterco.com/contact-us/",
           "source": "https://zwitterco.com/contact-us/",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         },
         {
           "kind": "phone",
@@ -402,10 +548,24 @@
           "kind": "secondary",
           "status": "platform-page",
           "url": "https://equityzen.com/company/zwitterco/",
-          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+          "detail": "تم فتح صفحة الشركة في 27 نوفمبر؛ لا عرض مفتوح أو سعر أو توافر حصة متحقق. الشروط العامة للمنصة: عادة $10,000 وقد تبدأ فرص مختارة من $5,000؛ رسم Standard Deals 2.5% حتى $1M. المستثمر الدولي يحتاج صفة accredited ومراجعة حالة بحالة؛ لا تأكيد لأهلية حساب بعينه. الصندوق/SPV ليس ملكية مباشرة تلقائيًا؛ وثائق الصفقة والهيكل والشريعة غير متحققة.",
+          "checked": "2026-11-27",
+          "sources": [
+            {
+              "label": "EquityZen — شروط الاستثمار والرسوم",
+              "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+              "date": null
+            },
+            {
+              "label": "EquityZen — المستثمر الدولي",
+              "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+              "date": "2026-02-26"
+            }
+          ]
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "Qblox",
@@ -422,13 +582,13 @@
       "update": "إلكترونيات التحكم وقراءة الإشارات للحواسيب الكمية؛ مورد مستقل لمطوري الأجهزة.",
       "date": "2024-06-20",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "تطوير إلكترونيات التحكم منخفضة التأخير وقراءة الكيوبتات للباحثين ومطوري الحواسيب الكمية؛ مقرها Delft ولديها مكتب في Boston.",
         "thesis": "الاستثمار في طبقة التحكم والقياس بدل اختيار تقنية حاسوب كمي واحدة. قابلية التوسع وسرعة التحكم قد تصبحان عنق زجاجة مع زيادة الكيوبتات.",
         "risk": "توقيت التوسع التجاري للحوسبة الكمية",
         "financials": "جولة $26M في 20 يونيو 2024؛ press kit يذكر $26.6M. تقول الشركة إنها نمت سابقًا بإيراداتها قبل أول جولة equity، ولا تنشر مقدار الإيرادات أو الربحية.",
-        "competition": "بدائل التحكم المخصصة داخليًا ومنصات إلكترونيات قياس منافسة؛ يلزم فحص قابلية التوسع بين أنواع الكيوبتات، زمن الاستجابة والأسعار.",
+        "competition": "بدائل التحكم المخصصة داخليًا ومنصات إلكترونيات قياس منافسة؛ يلزم فحص قابلية التوسع بين أنواع الكيوبتات، زمن الاستجابة والأسعار.\n\nيدعم التكامل المعلن مع AMD في 12 نوفمبر 2026 انتقال بيانات القياس مباشرة إلى المسرعات. تجربة NVIDIA في 22 أكتوبر أظهرت زمن دورة أقل من 4 µs على RTX PRO 6000 وأقل من 7.2 µs على DGX Spark وفق الشركة؛ دليل أداء تكامل محدد لا تفوق مستقل لكل التطبيقات.",
         "management": "Niels Bultink — CEO وشريك مؤسس؛ Jules van Oven — Chief Innovation Officer وشريك مؤسس. قيادة الجولة Quantonation وInvest-NL Deep Tech.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
         "catalysts": "زيادة العملاء وتحول المشتريات البحثية إلى أنظمة إنتاجية؛ نشر مؤشرات الأداء التجاري والتمويل.",
@@ -449,6 +609,16 @@
             "label": "Qblox — management",
             "url": "https://qblox.com/about",
             "date": null
+          },
+          {
+            "label": "Qblox — تكامل AMD",
+            "url": "https://qblox.com/newsroom/amd-qblox-open-gpu-integration",
+            "date": "2026-11-12"
+          },
+          {
+            "label": "Qblox — اختبار NVIDIA",
+            "url": "https://qblox.com/newsroom/qblox-advances-hybrid-quantum-computing-with-integration-of-nvidia-dgx-spark-leveraging-nvidia-nvqlink",
+            "date": "2026-10-22"
           }
         ],
         "market": "تقول الشركة إن لديها أكثر من 200 عميل في 25 دولة؛ الطلب الحالي يشمل المختبرات والجهات الصناعية، وليس دليلًا على نضج سوق الحوسبة الكمية بالكامل.",
@@ -463,6 +633,14 @@
         {
           "date": "2026-11-26",
           "summary": "مراجعة إفصاحات الشركة وإضافة نقاط جزئية مع مصادر."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إضافة نتائج زمن الاستجابة وتكامل AMD/NVIDIA؛ لا بيانات مبيعات من الاتفاقات."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "المحور moat: 13 ← 14. توافق مع مسرعات متعددة وقياس زمني منشور من الشركة يقوي فرضية منصة التحكم؛ لا مقارنة مستقلة أو تكلفة انتقال مثبتة."
         }
       ],
       "country": "هولندا",
@@ -480,13 +658,18 @@
           ]
         },
         "moat": {
-          "points": 13,
-          "reason": "معمارية Cluster معيارية تدعم أنواع كيوبت مختلفة؛ التفوق المقارن غير مثبت.",
+          "points": 14,
+          "reason": "توافق مع مسرعات متعددة وقياس زمني منشور من الشركة يقوي فرضية منصة التحكم؛ لا مقارنة مستقلة أو تكلفة انتقال مثبتة.",
           "sources": [
             {
-              "label": "Qblox — Series A and commercialization",
-              "url": "https://qblox.com/newsroom/qblox-secures-series-a-funding-quantum-control-stack-development",
-              "date": "2024-06-20"
+              "label": "Qblox — تكامل AMD",
+              "url": "https://qblox.com/newsroom/amd-qblox-open-gpu-integration",
+              "date": "2026-11-12"
+            },
+            {
+              "label": "Qblox — اختبار NVIDIA",
+              "url": "https://qblox.com/newsroom/qblox-advances-hybrid-quantum-computing-with-integration-of-nvidia-dgx-spark-leveraging-nvidia-nvqlink",
+              "date": "2026-10-22"
             }
           ]
         },
@@ -500,6 +683,21 @@
               "date": null
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -517,6 +715,11 @@
           "label": "الدول",
           "value": "25",
           "detail": "Press kit"
+        },
+        {
+          "label": "زمن دورة NVIDIA",
+          "value": "<4 µs",
+          "detail": "RTX PRO 6000 · اختبار الشركة"
         }
       ],
       "website": "https://qblox.com/",
@@ -526,7 +729,8 @@
           "label": "التواصل مع الفريق",
           "url": "https://qblox.com/contact",
           "source": "https://qblox.com/contact",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         }
       ],
       "investmentRoutes": [
@@ -535,10 +739,12 @@
           "kind": "inquiry",
           "status": "inquiry-only",
           "url": "https://qblox.com/contact",
-          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "Tropic",
@@ -555,7 +761,7 @@
       "update": "أطلقت أصناف موز معدلة جينيًا تجاريًا في 2025؛ التمويل لتوسيع الموز والأرز.",
       "date": "2026-03-12",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "أصناف موز وأرز معدلة جينيًا لتحسين مدة الصلاحية ومقاومة أمراض المحاصيل.",
         "thesis": "تخفيض فقد المحاصيل والتلف في النقل بدل الرهان على أسعار الغذاء النهائية؛ تحويل الصفات المحسنة إلى دخل تراخيص/شتلات.",
@@ -577,6 +783,16 @@
             "label": "Taylor Wessing — تأكيد التمويل",
             "url": "https://www.taylorwessing.com/en/insights-and-events/news/media-centre/press-releases/2026/03/advising-on-tropic-biosciences",
             "date": "2026-03-25"
+          },
+          {
+            "label": "EquityZen — شروط الاستثمار والرسوم",
+            "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+            "date": null
+          },
+          {
+            "label": "EquityZen — المستثمر الدولي",
+            "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+            "date": "2026-02-26"
           }
         ],
         "market": "أطلقت أصناف موز تجارية في 2025؛ تقول الشركة إن الطلب يتجاوز العرض. برنامج مقاومة Panama disease (TR4) يستهدف طرحًا تجاريًا من 2027.",
@@ -586,6 +802,10 @@
         {
           "date": "2026-11-26",
           "summary": "تأكيد تمويل C ومراحل التوسع التجاري والبحثي."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إعادة فحص جولة مارس؛ لا إفصاح مالي أو مستجد أحدث متحقق في البحث. تعذر فتح صفحة الاتصال (403)، فلا يُحدّث تاريخ تحقق الاتصال."
         }
       ],
       "country": "المملكة المتحدة",
@@ -628,6 +848,21 @@
               "date": "2026-03-25"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -675,10 +910,24 @@
           "kind": "secondary",
           "status": "platform-page",
           "url": "https://equityzen.com/company/tropicbiosciences/",
-          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+          "detail": "تم فتح صفحة الشركة في 27 نوفمبر؛ لا عرض مفتوح أو سعر أو توافر حصة متحقق. الشروط العامة للمنصة: عادة $10,000 وقد تبدأ فرص مختارة من $5,000؛ رسم Standard Deals 2.5% حتى $1M. المستثمر الدولي يحتاج صفة accredited ومراجعة حالة بحالة؛ لا تأكيد لأهلية حساب بعينه. الصندوق/SPV ليس ملكية مباشرة تلقائيًا؛ وثائق الصفقة والهيكل والشريعة غير متحققة.",
+          "checked": "2026-11-27",
+          "sources": [
+            {
+              "label": "EquityZen — شروط الاستثمار والرسوم",
+              "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+              "date": null
+            },
+            {
+              "label": "EquityZen — المستثمر الدولي",
+              "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+              "date": "2026-02-26"
+            }
+          ]
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "accessCheckNote": "2026-11-27: صفحة EquityZen مفتوحة؛ صفحة تواصل الشركة 403، تاريخ تحقق التواصل السابق محفوظ."
     },
     {
       "name": "Amperesand",
@@ -695,7 +944,7 @@
       "update": "محولات حالة صلبة للجهد المتوسط؛ جولة بقيادة Temasek وWalden Catalyst.",
       "date": "2025-11",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "محولات حالة صلبة MV AC/LV DC بمكونات SiC، تستهدف بنية 800V DC لمراكز البيانات؛ تجمع التحويل في وحدات مصنعّية.",
         "thesis": "تقليل مراحل التحويل وزمن التوريد والمساحة؛ الاستفادة من قيود البنية الكهربائية بدل الرهان على نموذج AI معين.",
@@ -704,7 +953,7 @@
         "competition": "المحولات التقليدية، rectifier وUPS ومنافسو SST مثل Heron Power. 18 عائلة براءة وفق الشركة؛ الاعتماد UL/IEC/IEEE قيد العمل، لا نفترض اكتماله.",
         "management": "Brian Dow الرئيس التنفيذي، خبرة Tesla وGenerac؛ Tommy Joyner نائب رئيس الهندسة. انطلقت من أبحاث NTU منذ 2016.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تجربة ميناء سنغافورة 2024؛ مصنع Reno؛ أول وحدات تجارية مستهدفة في 2026، التسليم الفعلي يحتاج تأكيدًا.",
+        "catalysts": "تجربة ميناء سنغافورة 2024؛ مصنع Reno؛ أول وحدات تجارية مستهدفة في 2026، التسليم الفعلي يحتاج تأكيدًا.\n\nفي 8 أكتوبر 2026 أكدت ولاية نيفادا افتتاح منشأة Reno؛ أعلن المدير التنفيذي إطلاق أول خط إنتاج وقدرة اختبار Gen 3. خطة الاستثمار >$65M منها >$15M للموقع الحالي و>$50M توسع مستقبلي. 20GW سنويًا هدف قدرة مستقبلي وليس سعة إنتاج قائمة، وبدء التسليم في 2026 هدف معلن لا فاتورة مثبتة.",
         "invalidation": "تأخر الاعتماد أو أعطال الحقل أو تكلفة دورة حياة أعلى من المحول التقليدي.",
         "nextSteps": "فحص اختبارات النوع والأمان والاعتمادية، عقود التسليم، المردود التصنيعي والمالية.",
         "sources": [
@@ -722,6 +971,11 @@
             "label": "Amperesand — الإدارة والملكية الفكرية",
             "url": "https://www.amperesand.io/about",
             "date": null
+          },
+          {
+            "label": "ولاية نيفادا — افتتاح منشأة Amperesand",
+            "url": "https://www.gov.nv.gov/press-releases/governor-lombardo-joins-amperesand-to-celebrate-new-advanced-manufacturing-facility-in-reno/",
+            "date": "2026-10-08"
           }
         ],
         "market": "الطلب على الربط الكهربائي وكثافة الطاقة بمراكز البيانات؛ كذلك الموانئ والبنية التحتية. المواصفات المعلنة تشمل كفاءة 98.5% من MV AC إلى LV DC؛ لا اختبار مستقل في المصادر.",
@@ -731,6 +985,14 @@
         {
           "date": "2026-11-26",
           "summary": "استبدال مصدر التمويل غير الأولي بمصادر الشركة؛ توضيح حالة الاعتماد والتسليم."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إضافة تأكيد مستقل من ولاية نيفادا لخط إنتاج واختبار SST في Reno؛ لا إثبات تسليم تجاري مدفوع حتى الآن."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "المحور commercial: 9 ← 11. مصدر حكومي يؤكد المنشأة وخط الإنتاج وقدرة الاختبار، دون أسماء عملاء مدفوعين أو حجم تسليم محقق."
         }
       ],
       "country": "سنغافورة / الولايات المتحدة",
@@ -760,15 +1022,30 @@
           ]
         },
         "commercial": {
-          "points": 9,
-          "reason": "تجارب 2019–2024 ومنشأة تصنيع؛ لا إثبات تسليم تجاري مستقل.",
+          "points": 11,
+          "reason": "مصدر حكومي يؤكد المنشأة وخط الإنتاج وقدرة الاختبار، دون أسماء عملاء مدفوعين أو حجم تسليم محقق.",
           "sources": [
             {
-              "label": "Amperesand — التاريخ والتمويل",
-              "url": "https://careers.amperesand.io/",
-              "date": null
+              "label": "ولاية نيفادا — افتتاح منشأة Amperesand",
+              "url": "https://www.gov.nv.gov/press-releases/governor-lombardo-joins-amperesand-to-celebrate-new-advanced-manufacturing-facility-in-reno/",
+              "date": "2026-10-08"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -791,6 +1068,11 @@
           "label": "معمارية",
           "value": "800V DC",
           "detail": "Data center"
+        },
+        {
+          "label": "استثمار صناعي مخطط",
+          "value": ">$65M",
+          "detail": "Nevada · 8 Oct 2026"
         }
       ],
       "website": "https://www.amperesand.io/",
@@ -800,7 +1082,8 @@
           "label": "صفحة التواصل",
           "url": "https://www.amperesand.io/contact",
           "source": "https://www.amperesand.io/contact",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         },
         {
           "kind": "email",
@@ -815,10 +1098,13 @@
           "kind": "inquiry",
           "status": "inquiry-only",
           "url": "https://www.amperesand.io/contact",
-          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "contactPageChecked": "2026-11-27",
+      "accessCheckNote": "2026-11-27: تم فتح صفحة التواصل الأساسية؛ لم تعد مطابقة جميع عناوين البريد/الهاتف أو صلاحية الحساب."
     },
     {
       "name": "AILOS Robotics",
@@ -835,7 +1121,7 @@
       "update": "علب تروس دقيقة للروبوتات والأطراف الصناعية؛ فرصة في المكونات بدل الروبوت الكامل.",
       "date": "2025-12-02",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "علبة تروس كوكبية R2poweR تجمع كثافة عزم مرتفعة ومقاومة backdrive منخفضة للمفاصل الآمنة.",
         "thesis": "توفير مكون حركة لمصنعي الروبوتات بدل الرهان على علامة روبوت نهائية.",
@@ -866,6 +1152,10 @@
         {
           "date": "2026-11-26",
           "summary": "تأكيد الجامعة للترخيص والمؤسسين ومرحلة التصنيع."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "فحص إعلان المستثمر والموقع؛ لم يظهر عقد إنتاج جديد أو إيراد متحقق."
         }
       ],
       "country": "بلجيكا",
@@ -909,6 +1199,21 @@
               "date": "2025-12-02"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -938,10 +1243,12 @@
           "kind": "inquiry",
           "status": "inquiry-only",
           "url": "https://sites.google.com/ailos-robotics.com/ailos/home",
-          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "Rainbow Crops",
@@ -958,12 +1265,12 @@
       "update": "تحرير جيني متعدد المواضع لتحسين خصائص المحاصيل؛ دعم Corteva وLIFTT.",
       "date": "2026-06-23",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "منصة Trait Foundry لتحرير مواقع جينية متعددة مدعومة بالذكاء الاصطناعي، بهدف تحسين صفات زراعية معقدة.",
         "thesis": "اختصار دورة تطوير المحاصيل عبر فهم شبكات الجينات، لكن تجارب الحقول ضرورية قبل إثبات القيمة الاقتصادية.",
         "risk": "التجارب الحقلية والتنظيم",
-        "financials": "Seed €9.7M يونيو 2026؛ لا تقييم أو إيرادات معلنة في المصدر.",
+        "financials": "Seed €9.7M يونيو 2026؛ لا تقييم أو إيرادات معلنة في المصدر.\n\nمنحة بحثية $7M من Gates Foundation أعلنت 2 مارس 2026. تفصل عن جولة €9.7M ولا تُجمع العملات أو تُحسب المنحة إيراد عملاء. تاريخ إعلان VIB للجولة 16 يونيو وصفحة الشركة 23 يونيو.",
         "competition": "التربية التقليدية، تقنيات CRISPR أحادية ومتعددة المواضع، وشركات البذور. يلزم فحص حقوق الجينات ونتائج الحقول.",
         "management": "Giacomo Bastianelli (CEO/co-founder)، Hilde Nelissen (مؤسسة علمية)، Veerle De Schepper (R&D). الجولة بقيادة LIFTT مع مشاركة Corteva Catalyst وVIB.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
@@ -980,6 +1287,16 @@
             "label": "Rainbow Crops — الإدارة",
             "url": "https://www.rainbowcrops.com/about",
             "date": null
+          },
+          {
+            "label": "Rainbow Crops — منحة Gates Foundation",
+            "url": "https://www.rainbowcrops.com/news/rainbow-crops-awarded-7-million-grant-to-advance-climate-resilient-crops",
+            "date": "2026-03-02"
+          },
+          {
+            "label": "VIB — تأكيد جولة Seed",
+            "url": "https://press.vib.be/rainbow-crops-raises-97m-seed-round-to-scale-ai-driven-multiplex-gene-editing-for-next-generation-crops",
+            "date": "2026-06-16"
           }
         ],
         "market": "تحسين الإنتاجية وتحمل الظروف البيئية؛ تمويل لتوسيع المنصة إلى محاصيل رئيسية. لا إعلان مبيعات تجارية متحقق.",
@@ -989,6 +1306,10 @@
         {
           "date": "2026-11-26",
           "summary": "إضافة المؤسسين والمنصة والمستثمرين؛ لا خلط التمويل بالقبول التجاري."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إضافة منحة بحثية $7M منفصلة عن Seed €9.7M؛ تأكيد مستقل من VIB، ولا مبيعات مثبتة."
         }
       ],
       "country": "بلجيكا",
@@ -1031,6 +1352,21 @@
               "date": "2026-06-23"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -1043,6 +1379,11 @@
           "label": "التقنية",
           "value": "Trait Foundry",
           "detail": "Multiplex editing"
+        },
+        {
+          "label": "منحة بحثية",
+          "value": "$7M",
+          "detail": "Mar 2026 · ليست Equity"
         }
       ],
       "website": "https://www.rainbowcrops.com/",
@@ -1052,7 +1393,8 @@
           "label": "التواصل — يشمل المستثمرين",
           "url": "https://www.rainbowcrops.com/contact",
           "source": "https://www.rainbowcrops.com/contact",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         },
         {
           "kind": "email",
@@ -1067,10 +1409,12 @@
           "kind": "inquiry",
           "status": "inquiry-only",
           "url": "https://www.rainbowcrops.com/contact",
-          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "Nitricity",
@@ -1087,7 +1431,7 @@
       "update": "إنتاج أسمدة نيتروجينية باستخدام الكهرباء ومخلفات اللوز؛ بدء مشروع أول مصنع.",
       "date": "2025-09-10",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "إنتاج أسمدة نيتروجينية كهربائيًا باستخدام مخلفات اللوز؛ المنتج العضوي السائل موجه للمزارعين.",
         "thesis": "تقليل الاعتماد على سلاسل توريد الأسمدة التقليدية وتحويل مخلفات محلية إلى منتج زراعي؛ يلزم إثبات تنافسية السعر.",
@@ -1118,6 +1462,10 @@
         {
           "date": "2026-11-26",
           "summary": "إضافة حجوزات المصنع حتى 2028 والتمييز بين الطلب والإيراد."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "غرفة الأخبار ما زالت تعرض إعلان سبتمبر 2025؛ تشغيل المصنع الفعلي في 2026 غير متحقق. لا يُعامل موعد التشغيل المخطط كواقع."
         }
       ],
       "country": "الولايات المتحدة",
@@ -1155,6 +1503,21 @@
               "date": "2025-09-10"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -1181,7 +1544,8 @@
           "label": "صفحة التواصل",
           "url": "https://www.nitricity.co/contact-us",
           "source": "https://www.nitricity.co/contact-us",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         }
       ],
       "investmentRoutes": [
@@ -1190,10 +1554,12 @@
           "kind": "inquiry",
           "status": "inquiry-only",
           "url": "https://www.nitricity.co/contact-us",
-          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "Osmoses",
@@ -1210,16 +1576,16 @@
       "update": "أغشية جزيئية لفصل الغازات وتقليل طاقة التنقية؛ تقنية نشأت من MIT.",
       "date": "2023",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "أغشية بوليمرية ذات مسام دقيقة لفصل الغازات مثل الهيدروجين والهيليوم والغاز الطبيعي والأكسجين.",
         "thesis": "الفصل بالغشاء قد يحل محل بعض خطوات التنقية الحرارية أو الضغط ويتيح استرداد غازات ضائعة؛ قياس التكاليف الصناعية حاسم.",
         "risk": "الإثبات الصناعي وعمر الأغشية",
         "financials": "$3M تمويل مبكر بحسب NSF؛ $11M Seed في خريف 2023 بحسب Mass Innovation Network؛ لا نعتبر الرقم إجمالي التمويل الحالي.",
         "competition": "PSA والأغشية التقليدية والفصل بالتبريد العميق؛ الأداء المطلوب يختلف حسب الغاز ونقاوة المنتج.",
-        "management": "مؤسسون Katherine Mizrahi Rodriguez، Holden Lai، Francesco Maria Benedetti، Zachary Smith وفق NSF.",
+        "management": "مؤسسون Katherine Mizrahi Rodriguez، Holden Lai، Francesco Maria Benedetti، Zachary Smith وفق NSF.\n\nصفحة الفريق الحالية تعرّف Francesco Benedetti مؤسسًا ورئيسًا تنفيذيًا وKatherine Mizrahi Rodriguez مسؤولة تنفيذ؛ يلزم تدقيق ملكية الحصص.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تصنيع نماذج وحدات واختبارات مع شركاء تجاريين؛ يلزم تحقق من عقد إنتاج.",
+        "catalysts": "تصنيع نماذج وحدات واختبارات مع شركاء تجاريين؛ يلزم تحقق من عقد إنتاج.\n\nMIT في يناير 2026 ذكر العمل على تجربة غاز مكب مع شركة مرافق في أمريكا الشمالية، وتجربة مزرعة ألبان قيد التخطيط ومشروعات لاسترداد الغازات منها الهيليوم مع DOE. التجارب ممولة بحسب المؤسس، وليس مؤكدًا أن جميعها مدفوعة من عملاء تجاريين.",
         "invalidation": "تدهور الانتقائية أو النفاذية مع الزمن أو عدم الجدوى الاقتصادية.",
         "nextSteps": "طلب عمر الغشاء ونتائج التجارب والتمويل الحالي والعقود.",
         "sources": [
@@ -1232,6 +1598,16 @@
             "label": "Massachusetts Innovation Network — Seed and milestones",
             "url": "https://www.massinnov.org/success-stories/osmoses",
             "date": null
+          },
+          {
+            "label": "MIT — funded pilots for Osmoses",
+            "url": "https://news.mit.edu/2026/osmoses-takes-heat-out-industrial-chemical-separations-0130",
+            "date": "2026-01-30"
+          },
+          {
+            "label": "Osmoses — الفريق والتواصل",
+            "url": "https://osmoses.com/team/",
+            "date": null
           }
         ],
         "market": "NSF يذكر تطبيقات التنقية الطبية والصناعية والغاز والتقاط الكربون؛ لا حصة سوقية مثبتة.",
@@ -1241,6 +1617,14 @@
         {
           "date": "2026-11-26",
           "summary": "تحديث مرحلة Seed وتوثيق التقنية والمؤسسين."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إضافة المشاريع التجريبية الممولة في الغاز الحيوي والهيليوم وفق MIT؛ لا عقود تصنيع واسعة مثبتة."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "المحور commercial: 6 ← 8. تجارب ممولة متعددة مثبتة بتقرير جامعي، لكن حجم العقود، تشغيلها الفعلي والإيراد المتكرر غير مثبت."
         }
       ],
       "country": "الولايات المتحدة",
@@ -1269,15 +1653,30 @@
           ]
         },
         "commercial": {
-          "points": 6,
-          "reason": "نماذج واختبارات وشركاء؛ لا مبيعات إنتاج مثبتة.",
+          "points": 8,
+          "reason": "تجارب ممولة متعددة مثبتة بتقرير جامعي، لكن حجم العقود، تشغيلها الفعلي والإيراد المتكرر غير مثبت.",
           "sources": [
             {
-              "label": "Massachusetts Innovation Network — Seed and milestones",
-              "url": "https://www.massinnov.org/success-stories/osmoses",
-              "date": null
+              "label": "MIT — funded pilots for Osmoses",
+              "url": "https://news.mit.edu/2026/osmoses-takes-heat-out-industrial-chemical-separations-0130",
+              "date": "2026-01-30"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -1307,16 +1706,18 @@
           "kind": "inquiry",
           "status": "inquiry-only",
           "url": "https://osmoses.com/team/",
-          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "Avicena",
       "type": "private",
       "sector": "الربط الضوئي",
-      "source": "https://avicena.tech/avicena-raises-100-million-series-c-to-accelerate-commercialization-of-microled-optical-interconnects-for-ai-infrastructure/",
+      "source": "https://avicena.tech/forward/avicena-raises-100-million-series-c-to-accelerate-commercialization-of-microled-optical-interconnects-for-ai-infrastructure/",
       "stage": "Series C — >$100M (2026)",
       "valuationUsd": null,
       "ticker": null,
@@ -1327,12 +1728,12 @@
       "update": "وصلات ضوئية MicroLED لنقل البيانات بين الشرائح وتقليل استهلاك الطاقة.",
       "date": "2026-11-24",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "LightBundle: وصلات microLED ضوئية قصيرة المدى وعالية الكثافة لنقل البيانات داخل منظومات AI.",
         "thesis": "مع توسع ربط المعالجات، تزداد الطاقة والقيود الحرارية للتوصيلات الكهربائية؛ تقنية microLED تستهدف هذه الطبقة.",
         "risk": "المنافسة من silicon photonics وتأهيل العملاء",
-        "financials": "Series B $65M في مايو 2025 وفق الإعلان السابق؛ Series C تجاوزت $100M بحسب خبر 24 نوفمبر 2026 (توجد مفارقة: متن نسخة الإعلان يذكر 24 سبتمبر؛ الفهرس يذكر نوفمبر). التقييم والإيرادات غير معلنين.",
+        "financials": "Series B $65M في مايو 2025 بحسب الإعلان السابق؛ Series C تجاوزت $100M وفق البيان الرسمي المؤرخ 24 نوفمبر 2026. تولى Kevin Pope قيادة المرحلة المقبلة بحسب الإعلان. التقييم والإيرادات وحقوق الحصص غير معلنة؛ لا نعتبر الجولة تقييمًا.",
         "competition": "Silicon photonics، copper interconnects، Ayar Labs وحلول الربط داخل الحزمة. يلزم مقارنة الطاقة لكل بت، BER والعائد التصنيعي والتوافق.",
         "management": "أعلن تعيين Kevin Pope خلفًا لـMarco Chisari ضمن الجولة الأخيرة. المستثمرون InterVest وTiger Global وSK hynix Ventures وAMD Ventures وSamsung Catalyst وProsperity7 وغيرهم.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
@@ -1349,6 +1750,21 @@
             "label": "Avicena — فهرس الإفصاحات",
             "url": "https://avicena.tech/press-releases/",
             "date": null
+          },
+          {
+            "label": "Avicena — البيان المؤرخ 24 نوفمبر",
+            "url": "https://avicena.tech/forward/avicena-raises-100-million-series-c-to-accelerate-commercialization-of-microled-optical-interconnects-for-ai-infrastructure/",
+            "date": "2026-11-24"
+          },
+          {
+            "label": "EquityZen — شروط الاستثمار والرسوم",
+            "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+            "date": null
+          },
+          {
+            "label": "EquityZen — المستثمر الدولي",
+            "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+            "date": "2026-02-26"
           }
         ],
         "market": "بنية AI scale-in وscale-up. شحنت الشركة وحدات تقييم 1Tbps في أغسطس 2026 وعرضت وصلات قابلة للفصل في سبتمبر؛ ليست مبيعات إنتاج كمي مثبتة.",
@@ -1358,6 +1774,10 @@
         {
           "date": "2026-11-26",
           "summary": "جولة Series C >$100M وتغيير CEO؛ توضيح تعارض تاريخ متن الخبر والفهرس."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "تصحيح التباس تاريخ Series C: النسخة الرسمية المفتوحة الآن تؤكد 24 نوفمبر 2026 في المتن والعنوان؛ ليست جولة إضافية."
         }
       ],
       "country": "الولايات المتحدة",
@@ -1395,6 +1815,21 @@
               "date": null
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -1416,7 +1851,8 @@
           "label": "نموذج التواصل",
           "url": "https://avicena.tech/contact-us/",
           "source": "https://avicena.tech/contact-us/",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         }
       ],
       "investmentRoutes": [
@@ -1425,10 +1861,25 @@
           "kind": "secondary",
           "status": "platform-page",
           "url": "https://equityzen.com/company/avicenatech/",
-          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+          "detail": "تم فتح صفحة الشركة في 27 نوفمبر؛ لا عرض مفتوح أو سعر أو توافر حصة متحقق. الشروط العامة للمنصة: عادة $10,000 وقد تبدأ فرص مختارة من $5,000؛ رسم Standard Deals 2.5% حتى $1M. المستثمر الدولي يحتاج صفة accredited ومراجعة حالة بحالة؛ لا تأكيد لأهلية حساب بعينه. الصندوق/SPV ليس ملكية مباشرة تلقائيًا؛ وثائق الصفقة والهيكل والشريعة غير متحققة.",
+          "checked": "2026-11-27",
+          "sources": [
+            {
+              "label": "EquityZen — شروط الاستثمار والرسوم",
+              "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+              "date": null
+            },
+            {
+              "label": "EquityZen — المستثمر الدولي",
+              "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+              "date": "2026-02-26"
+            }
+          ]
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "founded": "2019",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "Phoenix Tailings",
@@ -1445,16 +1896,16 @@
       "update": "تكرير المعادن الأرضية النادرة؛ جولة B-3 تضمنت $10M دينًا استثماريًا؛ يلزم فحص شرعي خاص.",
       "date": "2026-10-20",
       "status": "research",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "تكرير ومعالجة المعادن الأرضية النادرة وتحويلها إلى معادن صناعية.",
         "thesis": "التكرير مرحلة مركزة في سلسلة التوريد، لكن دعم الدولة والطلب الدفاعي لا يضمن عائد المستثمر أو الملاءمة الشرعية.",
         "risk": "الديون والتوسع الرأسمالي وتقلب أسعار المعادن",
-        "financials": "B-3 $40.2M منها $30.2M حقوق ملكية و$10M دين Nomura؛ إجمالي Series B $116.6M. في يونيو تعهد مشروط بتمويل دين طويل الأجل $500M، لا نفترض صرفه.",
+        "financials": "B-3 $40.2M منها $30.2M حقوق ملكية و$10M دين Nomura؛ إجمالي Series B $116.6M. في يونيو تعهد مشروط بتمويل دين طويل الأجل $500M، لا نفترض صرفه.\n\nحوافز حكومية/محلية وبنية تحتية مقدرة $54.2M لمشروع Freedom في إعلان 5 نوفمبر 2026؛ لا تعتبر نقدًا مقبوضًا أو حقوق ملكية.",
         "competition": "موردو الفصل والتكرير التقليديون؛ يلزم مقارنة الاسترداد والطاقة وكلفة المعدن النقي.",
         "management": "Nick Myers الرئيس التنفيذي وفق Reuters. المستثمرون والشركاء المعلنون Traxys وEni Next وآخرون.",
         "valuation": "التقييم غير معلن أو غير متحقق؛ حجم الجولة لا يمثل قيمة الشركة.",
-        "catalysts": "تنفيذ منشأة الفصل، إثبات الاسترداد، تمويلها الفعلي وبدء التشغيل.",
+        "catalysts": "تنفيذ منشأة الفصل، إثبات الاسترداد، تمويلها الفعلي وبدء التشغيل.\n\nFAST-41 Transparency coverage بتاريخ 24 نوفمبر يوفر تنسيقًا لمسار التصاريح، ولا يعادل صدور جميع التراخيص. حاجز الدين والتعرض للدفاع باقٍ.",
         "invalidation": "عدم الجدوى أو تأخر التمويل والتصنيع أو نشاط لا يطابق التفويض.",
         "nextSteps": "الحصول على شروط التمويل وهيكل العملاء ومبيعات العمليات الفعلية والتقييم.",
         "sources": [
@@ -1472,6 +1923,26 @@
             "label": "Reuters — New York facility",
             "url": "https://www.reuters.com/world/china/phoenix-tailings-build-375-million-rare-earths-facility-new-york-state-2026-10-20/",
             "date": "2026-10-20"
+          },
+          {
+            "label": "Phoenix Tailings — FAST-41",
+            "url": "https://phoenixtailings.com/press/phoenix-tailings-freedom-project-gains-white-house-fast-41-coverage",
+            "date": "2026-11-24"
+          },
+          {
+            "label": "Phoenix Tailings — حوافز نيويورك",
+            "url": "https://phoenixtailings.com/press/new-york-state-supports-phoenix-tailings-freedom-project-for-rare-earth-separation",
+            "date": "2026-11-05"
+          },
+          {
+            "label": "EquityZen — شروط الاستثمار والرسوم",
+            "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+            "date": null
+          },
+          {
+            "label": "EquityZen — المستثمر الدولي",
+            "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+            "date": "2026-02-26"
           }
         ],
         "market": "مشروع منشأة نيويورك بقيمة $375M أعلن في أكتوبر؛ إنتاج كامل مستهدف 2028، لا نعامل السعة المخططة كإنتاج قائم.",
@@ -1481,6 +1952,10 @@
         {
           "date": "2026-11-26",
           "summary": "توثيق الدين المعلن والتعهد المشروط ومشروع نيويورك."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إضافة حوافز مقدرة $54.2M وتغطية FAST-41 في 24 نوفمبر؛ لا صرف مؤكد أو ترخيص نهائي أو إنتاج محقق."
         }
       ],
       "country": "الولايات المتحدة",
@@ -1502,7 +1977,11 @@
             }
           ]
         },
-        "moat": null,
+        "moat": {
+          "points": null,
+          "reason": "الدليل الكافي لتقييم المحور غير مكتمل.",
+          "sources": []
+        },
         "commercial": {
           "points": 8,
           "reason": "تذكر الشركة إنتاج بعض المعادن لكن لا حجم عقود أو إيرادات موثقة؛ توسعة مستقبلية.",
@@ -1513,6 +1992,21 @@
               "date": "2026-02-19"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -1535,6 +2029,11 @@
           "label": "مشروع NY",
           "value": "$375M",
           "detail": "Oct 2026 · مخطط"
+        },
+        {
+          "label": "حوافز مقدرة",
+          "value": "$54.2M",
+          "detail": "Nov 2026 · ليست نقدًا مقبوضًا"
         }
       ],
       "website": "https://phoenixtailings.com/",
@@ -1544,7 +2043,8 @@
           "label": "نموذج التواصل",
           "url": "https://phoenixtailings.com/contact",
           "source": "https://phoenixtailings.com/contact",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         },
         {
           "kind": "email",
@@ -1559,10 +2059,24 @@
           "kind": "secondary",
           "status": "platform-page",
           "url": "https://equityzen.com/company/phoenixtailings/",
-          "detail": "صفحة مخصصة مؤكدة؛ العرض الحالي والسعر والحد الأدنى والأهلية للمقيم في السعودية غير متحققة. غالبًا عبر حصة في صندوق/SPV، وليست ملكية مباشرة تلقائيًا. يلزم فحص الشروط والشريعة."
+          "detail": "تم فتح صفحة الشركة في 27 نوفمبر؛ لا عرض مفتوح أو سعر أو توافر حصة متحقق. الشروط العامة للمنصة: عادة $10,000 وقد تبدأ فرص مختارة من $5,000؛ رسم Standard Deals 2.5% حتى $1M. المستثمر الدولي يحتاج صفة accredited ومراجعة حالة بحالة؛ لا تأكيد لأهلية حساب بعينه. الصندوق/SPV ليس ملكية مباشرة تلقائيًا؛ وثائق الصفقة والهيكل والشريعة غير متحققة.",
+          "checked": "2026-11-27",
+          "sources": [
+            {
+              "label": "EquityZen — شروط الاستثمار والرسوم",
+              "url": "https://help.equityzen.com/en/articles/2663417-how-do-i-invest-on-equityzen",
+              "date": null
+            },
+            {
+              "label": "EquityZen — المستثمر الدولي",
+              "url": "https://help.equityzen.com/en/articles/2856356-can-i-invest-via-equityzen-if-i-don-t-live-in-the-united-states",
+              "date": "2026-02-26"
+            }
+          ]
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-27",
+      "contactPageChecked": "2026-11-27"
     },
     {
       "name": "Sono-Tek",
@@ -1579,7 +2093,7 @@
       "access": "مدرجة؛ تحقق من صلاحية التداول في IBKR",
       "sharia": "غير متحقق — يلزم فحص القوائم",
       "status": "excluded",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "معدات طلاء فوق صوتي دقيقة للأسواق الصناعية والطبية والإلكترونية.",
         "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في معدات التصنيع الدقيق؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
@@ -1608,6 +2122,10 @@
         {
           "date": "2026-11-26",
           "summary": "خارج تفويض النمو المبكر: تأسست عام 1975؛ تُحفظ كمقارن صناعي لا كفرصة ناشئة."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إعادة فحص 10-Q؛ عدد الأسهم 15,751,736 في 9 أكتوبر. لا مبرر لتغيير الاستبعاد التاريخي."
         }
       ],
       "website": "https://www.sono-tek.com/",
@@ -1635,7 +2153,39 @@
           "detail": "NASDAQ: SOTK؛ مستبعدة من التفويض."
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "assessment": {
+        "market": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "moat": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "commercial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "financial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        }
+      }
     },
     {
       "name": "Nephros",
@@ -1652,7 +2202,7 @@
       "access": "مدرجة؛ تحقق من صلاحية التداول في IBKR",
       "sharia": "غير متحقق — يلزم فحص القوائم",
       "status": "excluded",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "أغشية ترشيح للمستشفيات وغسيل الكلى؛ إيرادات TTM $21.58M وصافي ربح $1.91M.",
         "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في الترشيح الطبي؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
@@ -1692,6 +2242,10 @@
         {
           "date": "2026-11-26",
           "summary": "استبعاد من تفويض النمو المبكر بعد الرجوع إلى نشرة 2004 والتقرير السنوي؛ لا إنكار لنمو الإيرادات الأخير."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إعادة فحص إفصاح 5 نوفمبر؛ لا مستجد أحدث متحقق ولا تغير في قرار الاستبعاد."
         }
       ],
       "country": "الولايات المتحدة",
@@ -1722,7 +2276,39 @@
           "detail": "NASDAQ: NEPH؛ مستبعدة من التفويض."
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "assessment": {
+        "market": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "moat": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "commercial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "financial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        }
+      }
     },
     {
       "name": "Arbe Robotics",
@@ -1739,7 +2325,7 @@
       "access": "مدرجة؛ تحقق من صلاحية التداول في IBKR",
       "sharia": "غير متحقق — يلزم فحص القوائم",
       "status": "excluded",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "شرائح رادار تصويري 4D؛ إيرادات TTM $2.37M وخسارة $38.92M.",
         "thesis": "فرضية أولية: مورد متخصص يعالج اختناقًا في رادار المركبات؛ لم تثبت بعد قدرته على الاحتفاظ بقوة تسعيرية.",
@@ -1769,6 +2355,10 @@
         {
           "date": "2026-11-26",
           "summary": "خارج التفويض حاليًا: خسائر ضخمة قياسًا بالإيرادات وتمويل متكرر ونشاط دفاعي يحتاج تدقيقًا."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إعادة فحص نتائج 19 نوفمبر؛ المبيعات المتواضعة والخسائر والتمويل والتعرض الدفاعي لا تبرر تغيير الاستبعاد."
         }
       ],
       "website": "https://arberobotics.com/",
@@ -1796,7 +2386,39 @@
           "detail": "NASDAQ: ARBE؛ مستبعدة من التفويض."
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "assessment": {
+        "market": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "moat": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "commercial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "financial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        }
+      }
     },
     {
       "name": "374Water",
@@ -1813,7 +2435,7 @@
       "access": "مدرجة؛ تحقق من صلاحية التداول في IBKR",
       "sharia": "غير متحقق — يلزم فحص القوائم",
       "status": "excluded",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "profile": {
         "overview": "أكسدة المياه فوق الحرجة لمعالجة الحمأة وملوثات PFAS.",
         "thesis": "تقنية التخلص من النفايات العضوية وPFAS تعالج مشكلة حقيقية، لكن سلامة الاستثمار منفصلة عن جاذبية المنتج.",
@@ -1847,6 +2469,10 @@
         {
           "date": "2026-11-26",
           "summary": "استبعاد بناءً على إفصاح الاستمرارية في 10-Q، رغم نمو المبيعات."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إعادة فحص 10-Q؛ شك الاستمرارية لا يزول بتقدم المنتج. لا إفصاح أحدث متحقق يزيل سبب الاستبعاد."
         }
       ],
       "country": "الولايات المتحدة",
@@ -1869,7 +2495,39 @@
           "detail": "NASDAQ: SCWO؛ مستبعدة بسبب الاستمرارية."
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "assessment": {
+        "market": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "moat": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "commercial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "financial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        }
+      }
     },
     {
       "name": "UptimeAI",
@@ -1885,14 +2543,14 @@
       "risk": "دورات المبيعات الصناعية والتكامل والمنافسة",
       "update": "اتفاق تجاري ثلاث سنوات مع Chevron بعد تجربة تقنية ناجحة.",
       "date": "2026-11-11",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "status": "research",
       "profile": {
         "overview": "منصة لتحليل بيانات العمليات الصناعية وتقديم تشخيص وتوصيات تشغيلية مبنية على المنطق الهندسي. تستهدف قطاعات الطاقة والكيماويات والتصنيع.",
         "thesis": "الفرصة في تحويل بيانات المصانع القائمة إلى إجراءات صيانة وتشغيل؛ الانتقال من تجربة تقنية إلى عقد متعدد السنوات أهم من عدد التنبيهات أو الحساسات.",
         "decision": "مرشح بحث خاص؛ عقد Chevron يثبت انتقالًا من pilot إلى عقد متعدد السنوات، لكنه لا يكشف قيمته أو الإيرادات أو التقييم.",
         "financials": "أعلنت الشركة جولة Series A بقيمة $14M في 2024، ونموًا قدره 400% في FY2023 وربحية وقت الإعلان، دون نشر الإيرادات المطلقة أو قوائم مدققة. لا يُستنتج من ذلك أنها رابحة حاليًا.",
-        "competition": "تنافس منصات APM التقليدية وحلول تحليل بيانات العمليات الداخلية. تدعي الشركة امتلاك منهج محمي ببراءة لنمذجة الأنظمة؛ يلزم مقارنة رقم البراءة ودقة التشخيص وتكلفة التكامل.",
+        "competition": "تنافس منصات APM التقليدية وحلول تحليل بيانات العمليات الداخلية. تدعي الشركة امتلاك منهج محمي ببراءة لنمذجة الأنظمة؛ يلزم مقارنة رقم البراءة ودقة التشخيص وتكلفة التكامل.\n\nتعلن الشركة اختيارها ضمن Leaders في ARC MarketMap 2026 للعمليات الصناعية بعد تقييم 27 موردًا. مؤشر مقارن منقول عن الشركة؛ لم نطّلع على التقرير الكامل أو نتائج العملاء، فلا نرفع درجة الميزة بسبب الجائزة فقط.",
         "management": "Jag Gattu، المؤسس والرئيس التنفيذي. قاد WestBridge Capital جولة A بمشاركة Emergent Ventures وAditya Birla Ventures.",
         "valuation": "غير معلن في المصدر.",
         "catalysts": "اتفاقية Chevron لمدة ثلاث سنوات لتطبيق الحل في عمليات مختارة بعد تجربة ناجحة، أعلن عنها في نوفمبر 2026. قيمة العقد وعدد المواقع غير معلنين.",
@@ -1913,6 +2571,11 @@
             "label": "UptimeAI — المؤسس والعقد",
             "url": "https://www.uptimeai.com/resources/from-pilot-to-production-what-chevrons-partnership-proves-about-scaling-ai/",
             "date": "2026-11"
+          },
+          {
+            "label": "UptimeAI — ARC MarketMap",
+            "url": "https://www.uptimeai.com/resources/arc-2026-industrial-copilots-marketmap-leader/",
+            "date": "2026-11-02"
           }
         ],
         "market": "قطاع موثوقية الأصول الصناعية وتحسين العمليات. أعلنت الشركة في 2024 أن 90% من إيراداتها تأتي من الولايات المتحدة والشرق الأوسط؛ لم تنشر حجم السوق القابل للخدمة أو معدل نمو مستقلًا."
@@ -1929,6 +2592,10 @@
         {
           "date": "2026-11-26",
           "summary": "إعادة فحص إعلان Chevron؛ نقاط جزئية مدعومة."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "إضافة تقييم ARC لـ27 مزودًا كما نقلته الشركة؛ لم يُراجع التقرير الكامل مستقلًا. لا عقد مالي جديد بعد Chevron متحقق."
         }
       ],
       "reviewLevel": "public-reviewed",
@@ -1965,6 +2632,21 @@
               "date": "2026-11-11"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -1991,7 +2673,8 @@
           "label": "نموذج التواصل",
           "url": "https://www.uptimeai.com/contact-us/",
           "source": "https://www.uptimeai.com/contact-us/",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         },
         {
           "kind": "phone",
@@ -2012,10 +2695,13 @@
           "kind": "inquiry",
           "status": "inquiry-only",
           "url": "https://www.uptimeai.com/contact-us/",
-          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "contactPageChecked": "2026-11-27",
+      "accessCheckNote": "2026-11-27: تم فتح صفحة التواصل الأساسية؛ لم تعد مطابقة جميع عناوين البريد/الهاتف أو صلاحية الحساب."
     },
     {
       "name": "Samotics",
@@ -2031,14 +2717,14 @@
       "risk": "دقة ESA حسب نوع العطل؛ الاعتماد على شركاء التكامل والتمويل",
       "update": "تحليل البيانات الكهربائية لمراقبة المحركات وكفاءة الطاقة.",
       "date": "2025-01-27",
-      "lastChecked": "2026-11-26",
+      "lastChecked": "2026-11-27",
       "status": "research",
       "profile": {
         "overview": "SAM4 يحلل التيار والجهد لمراقبة المحركات والمضخات والمعدات المتعذر الوصول إليها.",
         "thesis": "تركيب المراقبة في اللوحة أو الـVFD يقلل الحساسات الميدانية. القيمة في اكتشاف العطل وتحويله إلى عمل صيانة.",
         "decision": "بحث CMS بإثبات نشر؛ التمويل وشروطه حاسمان شرعيًا.",
         "financials": "EIB €20M في يناير 2025؛ الإيرادات والهوامش والتقييم وشروط التمويل غير متحققة.",
-        "competition": "مراقبة الاهتزاز (مكملة وليست بديلًا دائمًا)، منصات APM وESA أخرى؛ ABB ACS880 دمجت SAM4 وأعلنت إطلاقها عالميًا في ADIPEC 2025.",
+        "competition": "مراقبة الاهتزاز (مكملة وليست بديلًا دائمًا)، منصات APM وESA أخرى؛ ABB ACS880 دمجت SAM4 وأعلنت إطلاقها عالميًا في ADIPEC 2025.\n\nإعلان 2 نوفمبر 2026 يؤكد تشغيل دمج SAM4 مع Skewb Vantage لدى Southern Water عبر API. دليل تكامل ميداني إضافي، لا يثبت حصرية التقنية أو حجم عقد مدفوع.",
         "management": "Simon Jagers (co-CEO/co-founder)، Jasper Hoogeweegen (co-CEO)، Gerben Gooijers (CTO/co-founder).",
         "valuation": "غير معلن.",
         "catalysts": "زيادة انتشار ABB وعمليات التحديث fleet-wide؛ تحقق من تجديد العملاء وعائد التشغيل.",
@@ -2059,6 +2745,11 @@
             "label": "EIB — financing",
             "url": "https://www.eib.org/en/press/all/2025-024-samotics-secures-eur20-million-eib-financing-to-accelerate-the-transformation-of-industrial-efficiency-and-reliability-with-ai",
             "date": "2025-01-27"
+          },
+          {
+            "label": "Samotics — Southern Water control room",
+            "url": "https://samotics.com/resources/news/southern-water-consolidates-condition-monitoring",
+            "date": "2026-11-02"
           }
         ],
         "market": "7,000+ أصل و80+ عميل في خمس قارات وفق الشركة، تشمل المياه والكيماويات والنفط والتصنيع."
@@ -2071,6 +2762,14 @@
         {
           "date": "2026-11-26",
           "summary": "استكمال بيانات الانتشار والإدارة وتكامل ABB."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "تأكيد دمج SAM4 عبر API داخل غرفة تحكم Southern Water؛ لا قيمة عقد أو إيرادات معلنة."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "المحور commercial: 17 ← 18. انتشار سابق 7,000 أصل/80 عميلًا وفق الشركة؛ دمج ABB ودمج فعلي داخل غرفة تحكم Southern Water. قيمة العقود غير معلنة."
         }
       ],
       "country": "هولندا",
@@ -2105,8 +2804,8 @@
           ]
         },
         "commercial": {
-          "points": 17,
-          "reason": "7,000 أصل و80 عميلًا بحسب الشركة وإطلاق شراكة ABB.",
+          "points": 18,
+          "reason": "انتشار سابق 7,000 أصل/80 عميلًا وفق الشركة؛ دمج ABB ودمج فعلي داخل غرفة تحكم Southern Water. قيمة العقود غير معلنة.",
           "sources": [
             {
               "label": "Samotics — الانتشار والإدارة",
@@ -2117,8 +2816,28 @@
               "label": "Samotics — إطلاق ABB العالمي",
               "url": "https://samotics.com/resources/news/abb-launches-drive-with-esa-from-samotics",
               "date": "2025-11-03"
+            },
+            {
+              "label": "Samotics — Southern Water control room",
+              "url": "https://samotics.com/resources/news/southern-water-consolidates-condition-monitoring",
+              "date": "2026-11-02"
             }
           ]
+        },
+        "financial": {
+          "points": null,
+          "reason": "القوائم والهوامش والسيولة ومدة التشغيل غير متحققة بصورة كافية.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "سعر الدخول وحقوق الحصة أو القيمة العادلة غير مثبتة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
         }
       },
       "metrics": [
@@ -2150,7 +2869,8 @@
           "label": "صفحة التواصل",
           "url": "https://samotics.com/contact",
           "source": "https://samotics.com/contact",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         },
         {
           "kind": "email",
@@ -2165,10 +2885,13 @@
           "kind": "inquiry",
           "status": "inquiry-only",
           "url": "https://samotics.com/contact",
-          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي."
+          "detail": "قناة للاستفسار عن جولة تمويل أو نقل حصص، وليست عرضًا استثماريًا مفتوحًا أو تأكيد قبول مستثمر فردي.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "contactPageChecked": "2026-11-27",
+      "accessCheckNote": "2026-11-27: تم فتح صفحة التواصل الأساسية؛ لم تعد مطابقة جميع عناوين البريد/الهاتف أو صلاحية الحساب."
     },
     {
       "name": "Transense Technologies",
@@ -2184,10 +2907,10 @@
       "risk": "تاريخ انهيار سعري طويل وتراجع الإيرادات",
       "update": "مستبعدة من استراتيجية النمو المبكر؛ لا يعاد ترشيحها بسبب صغر القيمة.",
       "date": "2026-11-26",
-      "lastChecked": null,
+      "lastChecked": "2026-11-27",
       "status": "excluded",
       "profile": {
-        "overview": "حساسات SAW وتقنيات قياس صناعية.",
+        "overview": "حساسات SAW وتقنيات قياس صناعية.\n\nأعلن عقد تطوير وتوريد مع Continental في 15 سبتمبر، ودورًا بنحو £0.6M في مشروع DriveSense مع Cummins في أبريل. لا تغير هذه العقود تاريخ الشركة أو سبب الاستبعاد.",
         "decision": "استبعاد وفق توجيه المستخدم وتاريخ التداول الطويل؛ يلزم تدقيق سلسلة السعر قبل استخدام نسبة هبوط دقيقة.",
         "financials": "نتائج FY2026 تُظهر تراجع الإيرادات وتحولًا إلى خسارة تشغيلية بحسب الدراسة السابقة؛ يحتاج إعادة تحقق.",
         "nextSteps": "لا ترقية تلقائية؛ تحفظ كمثال على فشل الفلترة السابقة. لم تُعد مراجعة إفصاحات الشركة اليوم؛ تاريخ تحديث القائمة ليس تاريخ فحص الشركة.",
@@ -2195,6 +2918,16 @@
           {
             "label": "الإفصاح السنوي المشار إليه سابقًا",
             "url": "https://www.investegate.info/announcement/rns/transense-technologies--trt/final-results/9783219"
+          },
+          {
+            "label": "Transense — عقد Continental",
+            "url": "https://www.transense.com/news/transense-secures-continental-contract-for-next-generation-smart-tyre-tool",
+            "date": "2026-09-15"
+          },
+          {
+            "label": "Transense — عقد Cummins",
+            "url": "https://www.transense.com/news/transense-wins-key-role-in-apc-backed-smart-motor-project-with-cummins",
+            "date": "2026-04-20"
           }
         ]
       },
@@ -2202,6 +2935,10 @@
         {
           "date": "2026-11-26",
           "summary": "استبعاد من تفويض النمو المبكر."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "مراجعة عقدي Continental وCummins الرسميين؛ تعذر الوصول لنص RNS الكامل لنتائج FY26، فلا يُعد فحصًا ماليًا كاملًا. قرار الاستبعاد قائم."
         }
       ],
       "website": "https://www.transense.com/",
@@ -2223,7 +2960,39 @@
           "detail": "AIM: TRT؛ مستبعدة من التفويض."
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "assessment": {
+        "market": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "moat": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "commercial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "financial": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "valuation": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "خارج التفويض؛ لا تقييم رقمي دون إعادة بحث مبررة.",
+          "sources": []
+        }
+      }
     },
     {
       "name": "EnSilica",
@@ -2240,8 +3009,8 @@
       "source": "https://www.investormeetcompany.com/companies/ensilica-plc/rns/4906912/view",
       "status": "research",
       "reviewLevel": "public-reviewed",
-      "lastChecked": "2026-11-26",
-      "sharia": "غير متحقق؛ اقتراض وفوائد وتطبيقات دفاعية تحتاج فحصًا",
+      "lastChecked": "2026-11-27",
+      "sharia": "فحص مالي أولي FY26: القروض/الأصول 7.86%، القروض/القيمة السوقية التاريخية 4.40%، دخل الفوائد/الإيرادات 0.097% (27 ألفًا/27.807 مليون جنيه). هذه نسب وصفية غير كافية لاعتماد شرعي: عقد قرض تقليدي قائم، الذمم والأرصدة المربحة، مصدر الإيرادات والتطبيقات الحساسة غير مفصولة، وضرورة تطبيق معيار شرعي محدد.",
       "access": "AIM؛ تحقق من صلاحيات IBKR",
       "risk": "التخفيف، ارتفاع المضاعف، التذبذب والتطبيقات الدفاعية",
       "update": "نمو إيرادات FY26 +53% وعودة الربحية؛ ليست فرصة شراء معتمدة.",
@@ -2250,10 +3019,10 @@
         "thesis": "تكاليف التصميم والاعتماد وتكامل الشريحة في منتج العميل قد تؤدي لإيرادات طويلة الأجل. ليست شركة حديثة التأسيس لكنها حديثة الإدراج ونموذج توريدها يتوسع.",
         "market": "خمسة ASIC في توريد كمي و14 قيد التصميم بحسب FY26؛ $375M توقعات توريد طوال عمر العقود من توقعات العملاء، لا backlog مضمون ولا إيراد سنة واحدة.",
         "competition": "بيوت تصميم ASIC، مزودو IP ومصممو الشرائح الداخليّون. المخاطر: الاعتماد على foundries، تأخر tape-out، تركّز العملاء.",
-        "management": "Ian Lankshear CEO، قيادة الشركة منذ الطرح. تأسست نحو 2001؛ لا تزال ملكية الإدارة الحالية والتعويضات بحاجة مراجعة.",
-        "financials": "FY24: إيرادات £25.27M وصافي -£0.18M؛ FY25: £18.18M و-£2.73M؛ FY26: £27.81M و+£1.24M. EBITDA £5.9M يتأثر بإيرادات/ائتمان R&D؛ نقد £7.6M، اقتراض £4.4M تقريبًا قبل الإيجارات. زيادة رأسمال £10M في مارس و£14.9M بعد السنة. لا نفترض نموًا عضويًا متصلًا.",
-        "history": "IPO 50p وقيمة £37.6M في 2022؛ إغلاقات نهاية 2022 95.5p، 2023 40p، 2024 43.5p، 2025 47p، 25 نوفمبر 2026 74.8p. +49.6% عن سعر الطرح قبل الرسوم. التراجع من القمم ملحوظ؛ ارتفاع القيمة السوقية لا يساوي العائد بسبب إصدارات الأسهم.",
-        "valuation": "القيمة السوقية £100.41M وفق S&P، نحو $131.6M بسعر 1.311. مضاعف المبيعات 3.61x ومضاعف الربح FY26 نحو 81x باستعمال الأرباح المدققة (مختلف عن مضاعف TTM في بعض المصادر). أعلى من نطاقنا الأساسي؛ استثناء بحثي وليس سعر دخول. يلزم تحديث الأسهم بعد تمويل يوليو.",
+        "management": "Ian Lankshear CEO، قيادة الشركة منذ الطرح. تأسست نحو 2001؛ لا تزال ملكية الإدارة الحالية والتعويضات بحاجة مراجعة.\n\nاجتماع 30 أكتوبر 2026 أقر جميع القرارات. لا يكفي ذلك لإثبات استقلال المجلس أو جودة حماية الأقلية؛ تفاصيل الملكية الحالية والمكافآت تحتاج استكمالًا.",
+        "financials": "FY24: إيرادات £25.27M وصافي -£0.18M؛ FY25: £18.18M و-£2.73M؛ FY26: £27.81M و+£1.24M. EBITDA £5.9M يتأثر بإيرادات/ائتمان R&D؛ نقد £7.6M، اقتراض £4.4M تقريبًا قبل الإيجارات. زيادة رأسمال £10M في مارس و£14.9M بعد السنة. لا نفترض نموًا عضويًا متصلًا.\n\nتدقيق إضافي FY25 → FY26 (£M): الهامش الإجمالي 40.3% → 34.5%، النقد التشغيلي 2.110 → 6.203؛ الإنفاق على الممتلكات والأصول غير الملموسة 6.478 → 6.915. التدفق بعد هذا الإنفاق (حساب بحثي) -4.368 → -0.712، قبل فوائد وإيجارات وتمويل. FY26 النقد 7.560، القروض 4.414، الإيجارات 2.445، الأصول 56.132، الأصول غير الملموسة 27.301. صافي الدخل 1.238 يتضمن أثر ائتمان R&D قدره 2.488 ضمن الدخل الآخر؛ لا يجوز اعتباره ربحًا متكررًا مضمونًا. التمويل الصافي بإصدار أسهم في السنة 9.456، ثم 14.2 صافيًا في يوليو. تغطية 18 شهرًا لا تستنتج من رصيد السنة وحده.",
+        "history": "IPO 50p وقيمة £37.6M في 2022؛ إغلاقات نهاية 2022 95.5p، 2023 40p، 2024 43.5p، 2025 47p، 25 نوفمبر 2026 74.8p. +49.6% عن سعر الطرح قبل الرسوم. التراجع من القمم ملحوظ؛ ارتفاع القيمة السوقية لا يساوي العائد بسبب إصدارات الأسهم.\n\nعدد الأسهم العادية: 96,600,636 في مايو 2025؛ 117,877,230 في مايو 2026؛ 134,235,414 في 31 يوليو 2026 (+39.0% مقارنة بمايو 2025). مساهم لم يشارك في الإصدارات تنخفض حصته النسبية نحو 28.0% خلال تلك الفترة. طرح مارس 2026 بسعر 47p، ويوليو 91p. عدد الأسهم بعد يوليو يحتاج تحديثًا؛ سجل كامل للتجزئات منذ IPO لم يتحقق.",
+        "valuation": "القيمة السوقية £100.41M وفق S&P، نحو $131.6M بسعر 1.311. مضاعف المبيعات 3.61x ومضاعف الربح FY26 نحو 81x باستعمال الأرباح المدققة (مختلف عن مضاعف TTM في بعض المصادر). أعلى من نطاقنا الأساسي؛ استثناء بحثي وليس سعر دخول. يلزم تحديث الأسهم بعد تمويل يوليو.\n\nعلى القيمة السوقية المؤرخة £100.41M في 25 نوفمبر، مضاعف المبيعات 3.61x. تقدير P/E باستخدام أرباح FY26 وعدد الأسهم الموسع نحو 81x، وليس مكرر EPS التاريخي. لا يُعطى سعر دخول قبل تطبيع الأرباح والإنفاق الرأسمالي.",
         "scenarios": "تحليل حساسية توضيحي غير مستهدف: على إيرادات FY27 الموجهة £32–34M، مضاعف مبيعات 2x/3x/4x يعطي قيمة ملكية تقريبية £66M/£99M/£132M قبل ضبط صافي النقد والتخفيف؛ ليس DCF ولا توصية. السبب لاختيار هذه المضاعفات افتراض اختباري لا متوسط سوق مؤكد.",
         "catalysts": "إعلان 23 نوفمبر: Heads of Terms لبرنامج GNSS >$80M خلال عشر سنوات من 2030، وليس عقدًا نهائيًا أو إيرادًا حاليًا. طلب شراء لبدء التطوير.",
         "risk": "مضاعف مرتفع، الاعتماد على التصميم طويل الدورة، إصدارات رأسمالية، وتطبيقات دفاعية معلنة.",
@@ -2300,6 +3069,16 @@
             "label": "Morningstar — historical financials",
             "url": "https://00215-prod-alb.eci0254d.eas.morningstar.com/1c6qh1t6k9/stockreport/default.aspx?ClientFund=0&CurrencyId=GBP&Id=0P0001P5S1&SecurityToken=0P0001P5S1%5D3%5D0%5DE0EXG%24XLON&tab=0&vw=sum",
             "date": "2026-11-25"
+          },
+          {
+            "label": "RNS — عدد الأسهم وحقوق التصويت",
+            "url": "https://www.investegate.eu/announcement/rns/ensilica--ensi/total-voting-rights/9699363",
+            "date": "2026-07-31"
+          },
+          {
+            "label": "RNS — AGM",
+            "url": "https://www.investegate.co.uk/index.php/announcement/rns/ensilica--ensi/result-of-agm/9851452",
+            "date": "2026-10-30"
           }
         ]
       },
@@ -2323,6 +3102,11 @@
           "label": "سعر الطرح",
           "value": "50p",
           "detail": "24 May 2022"
+        },
+        {
+          "label": "التدفق بعد الاستثمار",
+          "value": "-£0.71M",
+          "detail": "FY26 · OCF ناقص PPE والأصول غير الملموسة"
         }
       ],
       "series": {
@@ -2371,6 +3155,49 @@
               "value": 74.8
             }
           ]
+        },
+        "operatingCashFlow": {
+          "label": "Operating cash flow · GBP M",
+          "points": [
+            {
+              "date": "2025",
+              "value": 2.11
+            },
+            {
+              "date": "2026",
+              "value": 6.203
+            }
+          ]
+        },
+        "grossMargin": {
+          "label": "Gross margin · %",
+          "points": [
+            {
+              "date": "2025",
+              "value": 40.3
+            },
+            {
+              "date": "2026",
+              "value": 34.5
+            }
+          ]
+        },
+        "shares": {
+          "label": "Ordinary shares · M",
+          "points": [
+            {
+              "date": "2025-05",
+              "value": 96.600636
+            },
+            {
+              "date": "2026-05",
+              "value": 117.87723
+            },
+            {
+              "date": "2026-07",
+              "value": 134.235414
+            }
+          ]
         }
       },
       "assessment": {
@@ -2413,18 +3240,18 @@
           ]
         },
         "financial": {
-          "points": 11,
-          "reason": "عودة الربحية ونمو السنة بعد انخفاض 2025، لكن تخفيف وتمويل كبيران.",
+          "points": 10,
+          "reason": "تحسن التشغيل لكن الإنفاق على تطوير الأصول يستهلك كامل النقد التشغيلي تقريبًا، وتخفيف كبير؛ لا دليل مستقل على runway 18 شهرًا.",
           "sources": [
             {
-              "label": "RNS — corrected audited FY26 results",
+              "label": "RNS — نتائج FY26 المدققة، القوائم والإصدارات",
               "url": "https://www.investormeetcompany.com/companies/ensilica-plc/rns/4906912/view",
               "date": "2026-10-05"
             },
             {
-              "label": "Morningstar — historical financials",
-              "url": "https://00215-prod-alb.eci0254d.eas.morningstar.com/1c6qh1t6k9/stockreport/default.aspx?ClientFund=0&CurrencyId=GBP&Id=0P0001P5S1&SecurityToken=0P0001P5S1%5D3%5D0%5DE0EXG%24XLON&tab=0&vw=sum",
-              "date": "2026-11-25"
+              "label": "RNS — عدد الأسهم وحقوق التصويت",
+              "url": "https://www.investegate.eu/announcement/rns/ensilica--ensi/total-voting-rights/9699363",
+              "date": "2026-07-31"
             }
           ]
         },
@@ -2444,7 +3271,11 @@
             }
           ]
         },
-        "governance": null
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
+        }
       },
       "events": [
         {
@@ -2454,6 +3285,14 @@
         {
           "date": "2026-11-26",
           "summary": "بحث أولي مبني على الطرح والنتائج المالية والتاريخ السعري."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "استكمال التدفقات النقدية والتخفيف من نتائج 5 أكتوبر وحقوق التصويت؛ آخر إعلان جوهري عُثر عليه 23 نوفمبر سبق تسجيله. لا إفصاح أحدث متحقق في هذه المراجعة."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "المحور financial: 11 ← 10. تحسن التشغيل لكن الإنفاق على تطوير الأصول يستهلك كامل النقد التشغيلي تقريبًا، وتخفيف كبير؛ لا دليل مستقل على runway 18 شهرًا."
         }
       ],
       "website": "https://www.ensilica.com/",
@@ -2463,7 +3302,8 @@
           "label": "صفحة الشركة للتواصل",
           "url": "https://www.ensilica.com/contact-us/",
           "source": "https://www.ensilica.com/contact-us/",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         },
         {
           "kind": "email",
@@ -2491,17 +3331,21 @@
           "kind": "listing",
           "status": "listed-reference",
           "url": "https://www.londonstockexchange.com/en/quote/equity/ENSI/ensilica-plc",
-          "detail": "سهم عادي مدرج في AIM."
+          "detail": "سهم عادي مدرج في AIM.",
+          "checked": "2026-11-27"
         },
         {
           "label": "IBKR — البحث عن عقد السهم",
           "kind": "broker",
           "status": "broker-search",
           "url": "https://www.interactivebrokers.com/cgi-pub/contractSearch/symbolsearch.pl",
-          "detail": "ابحث عن ENSI في LSE AIM؛ توافر العقد وصلاحيات الحساب غير متحققة. لا يعني ذلك توصية شراء."
+          "detail": "تم فتح محرك البحث الرسمي لـIBKR في 27 نوفمبر؛ البحث العام عن العقد لم يعط نتيجة خاصة مؤكدة بالرمز. تحقق داخل الحساب من ENSI والسوق LSE AIM وصلاحيات التداول؛ لا تأكيد لتوافر العقد.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "contactPageChecked": "2026-11-27",
+      "accessCheckNote": "2026-11-27: تم فتح صفحة التواصل الأساسية؛ لم تعد مطابقة جميع عناوين البريد/الهاتف أو صلاحية الحساب."
     },
     {
       "name": "Ridge-i",
@@ -2517,8 +3361,8 @@
       "source": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm",
       "status": "research",
       "reviewLevel": "public-reviewed",
-      "lastChecked": "2026-11-26",
-      "sharia": "غير متحقق؛ يلزم فصل إيرادات العملاء الماليين ونسب الأصول والدين",
+      "lastChecked": "2026-11-27",
+      "sharia": "حاجز شرعي مهم: الشركة تسمي SBI Holdings وSBI Securities ضمن العملاء، وخدمة دعم الوساطة بالذكاء الاصطناعي تعمل فعليًا منذ 30 أكتوبر. تعرض أيضًا خدمات AI للأمن والدفاع. يلزم تحديد طبيعة الخدمة ونسب الإيرادات ذات الصلة والديون والفوائد والأصول وفق معيار شرعي؛ لا اعتماد حاليًا.",
       "access": "Tokyo Stock Exchange؛ تحقق من تفعيل اليابان في IBKR",
       "risk": "تذبذب السهم، اعتماد المشاريع المخصصة، مخاطر الاستحواذ والتركيز",
       "update": "FY26 إيرادات +15.4% وربح تشغيلي +93.3%؛ بحث فقط.",
@@ -2526,15 +3370,15 @@
         "overview": "تطوير حلول AI مخصصة وترخيص خوارزميات وتحليل بيانات الأقمار الصناعية وتقديم خدمات تحول رقمي للشركات.",
         "thesis": "الطلب على تحليل بيانات صناعية معقدة قائم، لكن يجب إثبات أن التكنولوجيا تتوسع كمنتج متكرر وليس مجرد استشارات وساعات عمل.",
         "market": "التحول الرقمي الصناعي وتحليل صور وبيانات؛ لا يوجد حجم سوق قابل للخدمة موثق للشركة.",
-        "competition": "مزودو استشارات AI وفرق التطوير الداخلية ومنصات AI عامة. يلزم قياس نسبة الترخيص المتكرر والملكية الفكرية وتكاليف الانتقال.",
-        "management": "الرئيس التنفيذي 柳原尚史 وفق إفصاح JPX. لم يُستكمل تدقيق ملكية الإدارة وأثر عمليات الاستحواذ.",
-        "financials": "FY24 إيرادات ¥1,071M (منفردة)؛ FY25 ¥2,593M (موحدة) وربح تشغيلي ¥283M؛ FY26 ¥2,993M (+15.4%) وربح تشغيلي ¥547M (+93.3%) وصافي ¥407M (+191.9%). لا نستنتج نموًا عضويًا من تغير نطاق التوحيد؛ يلزم فصل المكاسب غير المتكررة.",
-        "history": "سعر طرح ¥1,750 في أبريل 2023؛ إغلاق نهاية 2023 ¥1,537، 2024 ¥2,410، 2025 ¥2,008، 25 نوفمبر 2026 ¥2,289 (+30.8% عن الطرح). إغلاق أول شهر ¥3,605، ما يدل على تذبذب مرتفع. لم يكتمل تدقيق تاريخ عدد الأسهم.",
-        "valuation": "تقدير قيمة سوقية ¥9.93B = 2,289 × 4.34M سهم (عدد الأسهم المعلن في لقطة FT يوم 26 نوفمبر)؛ ~US$62.4M بسعر ¥159.32/USD. مضاعف المبيعات نحو 3.32x، الربح المعلن نحو 24.4x. التقدير مؤرخ وليس قيمة عادلة.",
+        "competition": "مزودو استشارات AI وفرق التطوير الداخلية ومنصات AI عامة. يلزم قياس نسبة الترخيص المتكرر والملكية الفكرية وتكاليف الانتقال.\n\nتقول الشركة إنها تعاملت مع أكثر من 150 مؤسسة؛ من العملاء Toyota وEBARA وNippon Steel Engineering وSBI Securities. نشر خدمة المحادثة المشتركة مع شركة الوساطة SBI في 30 أكتوبر، لكن ليس لدينا قيمة العقد أو إيراد الترخيص. لا يثبت ذلك ميزة حصرية أو اقتصاديات منتج متكرر.",
+        "management": "الرئيس التنفيذي 柳原尚史 وفق إفصاح JPX. لم يُستكمل تدقيق ملكية الإدارة وأثر عمليات الاستحواذ.\n\nTakashi Yanagihara مؤسس ورئيس تنفيذي. أعلنت الشركة 14 أبريل ترشيحه عضوًا خارجيًا غير متفرغ في مجلس SBI Holdings ضمن شراكة رأسمالية؛ لا يُفترض تمام التعيين من إعلان الترشيح. يلزم فحص تعارض المصالح والمعاملات مع الطرف ذي العلاقة.",
+        "financials": "FY24 إيرادات ¥1,071M (منفردة)؛ FY25 ¥2,593M (موحدة) وربح تشغيلي ¥283M؛ FY26 ¥2,993M (+15.4%) وربح تشغيلي ¥547M (+93.3%) وصافي ¥407M (+191.9%). لا نستنتج نموًا عضويًا من تغير نطاق التوحيد؛ يلزم فصل المكاسب غير المتكررة.\n\nFY25 → FY26 بالمليون ين: النقد 1,827 → 2,317، التدفق التشغيلي 51 → 562، الاستثمار -53 → -1,071، التمويل -286 → +998. التدفق التشغيلي زائد الاستثماري FY26 = -509، لكنه يتضمن صفقات استحواذ وتغير نطاق التوحيد؛ ليس احتراقًا تشغيليًا شهريًا. الأصول 4,484 وحقوق الملكية المنسوبة 3,699؛ نسبة الملكية 82.5%. تغير نطاق التوحيد بدخول شركتين وخروج واحدة. توقع الإدارة FY27: الإيرادات 3,200 (+6.9%) والربح التشغيلي 630 (+15.1%) وصافي الربح 450 (+10.4%). نمو الإيراد المتوقع أقل من هدف 15–20% في المنهجية.",
+        "history": "سعر طرح ¥1,750 في أبريل 2023؛ إغلاق نهاية 2023 ¥1,537، 2024 ¥2,410، 2025 ¥2,008، 25 نوفمبر 2026 ¥2,289 (+30.8% عن الطرح). إغلاق أول شهر ¥3,605، ما يدل على تذبذب مرتفع. لم يكتمل تدقيق تاريخ عدد الأسهم.\n\nعدد الأسهم الرسمية في نهاية يوليو 2025: 3,909,880؛ يوليو 2026: 4,317,440 (+10.4%). هذا يخفض حصة المساهم الثابت نسبيًا 9.4%؛ عدد الأسهم الأحدث من مصادر السوق 4.34M تقريبي ولم يُطابق مع إفصاح حقوق التصويت. لا يُفترض عدم وجود تجزئات دون سجل كامل.",
+        "valuation": "تقدير قيمة سوقية ¥9.93B = 2,289 × 4.34M سهم (عدد الأسهم المعلن في لقطة FT يوم 26 نوفمبر)؛ ~US$62.4M بسعر ¥159.32/USD. مضاعف المبيعات نحو 3.32x، الربح المعلن نحو 24.4x. التقدير مؤرخ وليس قيمة عادلة.\n\nإغلاق 26 نوفمبر 2,351 ين. لم يتم تحديث قيمة السوق بالدولار لغياب مطابقة عدد الأسهم وسعر الصرف في التاريخ نفسه؛ تبقى القيمة السوقية السابقة مؤرخة 25 نوفمبر.",
         "scenarios": "حساسية افتراضية: أرباح FY27 الموجهة ¥450M × مضاعف P/E 15x/22x/30x = ¥6.75B/¥9.9B/¥13.5B؛ افتراضات بحثية لا أسعار مستهدفة؛ تحقق من الربح المتكرر والتخفيف.",
         "catalysts": "استمرار نمو العقود ومنتجات AI القابلة لإعادة الاستخدام، وزيادة هامش النشاط الأساسي.",
         "risk": "جزء من نمو المبيعات قد يرجع للتوحيد؛ عميل مالي كبير بحسب المواد، مخاطر التوافق الشرعي والمنافسة ومضاعف التقييم.",
-        "decision": "مرشح بحث ضمن 5–100M؛ نمو وربحية موجودان، لكن الميزة التنافسية والتخفيف والتوافق الشرعي غير مثبتة.",
+        "decision": "مرشح بحث ضمن 5–100M؛ نمو وربحية موجودان، لكن الميزة التنافسية والتخفيف والتوافق الشرعي غير مثبتة.\n\nلا ترقية: توقع نمو الإيرادات 6.9%، التخفيف والاستحواذات والتعرض للخدمات المالية والدفاعية يحتاج فحصًا. تقدم الربحية ليس كافيًا لتجاوز البوابات.",
         "invalidation": "ضعف نمو الإيراد العضوي أو انخفاض الهوامش أو عدم القدرة على إثبات جودة الأعمال أو الشريعة.",
         "nextSteps": "فحص القوائم التفصيلية والتدفق النقدي والدين والعقود والإيرادات حسب العملاء والسهم منذ الإدراج.",
         "sources": [
@@ -2572,6 +3416,31 @@
             "label": "Kabutan — financial comparison",
             "url": "https://s.kabutan.jp/news/k202609110068/",
             "date": "2026-09-11"
+          },
+          {
+            "label": "Ridge-i — الشركة والعملاء والخدمات",
+            "url": "https://ridge-i.com/en/",
+            "date": null
+          },
+          {
+            "label": "Ridge-i — تشغيل خدمة SBI Securities",
+            "url": "https://ridge-i.com/news/5048/",
+            "date": "2026-11-02"
+          },
+          {
+            "label": "Ridge-i — ترشيح الرئيس لمجلس SBI",
+            "url": "https://ridge-i.com/news/4794/",
+            "date": "2026-04-14"
+          },
+          {
+            "label": "Ridge-i — تطبيق Zeus على بيانات الأقمار",
+            "url": "https://ridge-i.com/news/5060/",
+            "date": "2026-11-24"
+          },
+          {
+            "label": "Yahoo Finance Japan — إغلاق 26 نوفمبر",
+            "url": "https://finance.yahoo.co.jp/quote/5572.T/performance",
+            "date": "2026-11-26"
           }
         ]
       },
@@ -2588,8 +3457,8 @@
         },
         {
           "label": "سعر السهم",
-          "value": "¥2,289",
-          "detail": "25 Nov 2026"
+          "value": "¥2,351",
+          "detail": "26 Nov 2026 · Yahoo Finance Japan"
         },
         {
           "label": "سعر الطرح",
@@ -2637,6 +3506,36 @@
             {
               "date": "2026-11-25",
               "value": 2289
+            },
+            {
+              "date": "2026-11-26",
+              "value": 2351
+            }
+          ]
+        },
+        "operatingCashFlow": {
+          "label": "Operating cash flow · JPY M",
+          "points": [
+            {
+              "date": "2025",
+              "value": 51
+            },
+            {
+              "date": "2026",
+              "value": 562
+            }
+          ]
+        },
+        "shares": {
+          "label": "Shares outstanding · M",
+          "points": [
+            {
+              "date": "2025-07",
+              "value": 3.90988
+            },
+            {
+              "date": "2026-07",
+              "value": 4.31744
             }
           ]
         }
@@ -2659,28 +3558,28 @@
           ]
         },
         "commercial": {
-          "points": 12,
-          "reason": "إيرادات وربحية حقيقية؛ نسبة عقود المنتج المتكرر غير معلنة.",
+          "points": 13,
+          "reason": "أكثر من 150 عميلًا/شريكًا تاريخيًا بحسب الشركة، وخدمة SBI دخلت التشغيل؛ الإيراد المتكرر وقيمة العقد غير معلنين، ومخاطر النشاط المالي منفصلة.",
           "sources": [
             {
-              "label": "JPX — 2026 July results",
-              "url": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm",
-              "date": "2026-09-11"
+              "label": "Ridge-i — الشركة والعملاء والخدمات",
+              "url": "https://ridge-i.com/en/",
+              "date": null
+            },
+            {
+              "label": "Ridge-i — تشغيل خدمة SBI Securities",
+              "url": "https://ridge-i.com/news/5048/",
+              "date": "2026-11-02"
             }
           ]
         },
         "financial": {
-          "points": 12,
-          "reason": "ربح تشغيلي متنامٍ، لكن يحتاج تدقيق النمو العضوي والنقد والتخفيف.",
+          "points": 11,
+          "reason": "OCF موجب وحقوق ملكية قوية، لكن التوسع بالاستحواذ والتمويل، والتوجيه بنمو إيراد 6.9% دون الهدف، يحدان من التقييم.",
           "sources": [
             {
-              "label": "JPX — 2026 July results",
+              "label": "JPX — النتائج المالية السنوية FY26",
               "url": "https://www2.jpx.co.jp/disc/55720/081220260910534570_tse-acedjpsm-55720-20260911355720-ixbrl.htm",
-              "date": "2026-09-11"
-            },
-            {
-              "label": "Kabutan — financial comparison",
-              "url": "https://s.kabutan.jp/news/k202609110068/",
               "date": "2026-09-11"
             }
           ]
@@ -2706,13 +3605,33 @@
             }
           ]
         },
-        "moat": null,
-        "governance": null
+        "moat": {
+          "points": null,
+          "reason": "الدليل الكافي لتقييم المحور غير مكتمل.",
+          "sources": []
+        },
+        "governance": {
+          "points": null,
+          "reason": "ملكية الحصص واستقلال المجلس وحقوق المستثمر غير مستكملة.",
+          "sources": []
+        }
       },
       "events": [
         {
           "date": "2026-11-26",
           "summary": "إضافة مرشح بحث ياباني بعد مراجعة نتائج JPX وسعر الطرح والتاريخ السعري."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "استكمال نقد وتدفقات وأسهم FY26؛ كشف تعرض أوضح للقطاع المالي وخدمات الأمن/الدفاع. تحديث سعر 26 نوفمبر ومراجعة إطلاق SBI في أكتوبر. آخر خبر 24 نوفمبر عرض تجربة تقنية لا عقد جديد."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "المحور financial: 12 ← 11. OCF موجب وحقوق ملكية قوية، لكن التوسع بالاستحواذ والتمويل، والتوجيه بنمو إيراد 6.9% دون الهدف، يحدان من التقييم."
+        },
+        {
+          "date": "2026-11-27",
+          "summary": "المحور commercial: 12 ← 13. أكثر من 150 عميلًا/شريكًا تاريخيًا بحسب الشركة، وخدمة SBI دخلت التشغيل؛ الإيراد المتكرر وقيمة العقد غير معلنين، ومخاطر النشاط المالي منفصلة."
         }
       ],
       "website": "https://ridge-i.com/en/",
@@ -2729,7 +3648,8 @@
           "label": "نموذج التواصل بالإنجليزية",
           "url": "https://ridge-i.com/en/contact/",
           "source": "https://ridge-i.com/en/contact/",
-          "detail": ""
+          "detail": "",
+          "checked": "2026-11-27"
         },
         {
           "kind": "phone",
@@ -2744,17 +3664,22 @@
           "kind": "listing",
           "status": "listed-reference",
           "url": "https://ridge-i.com/ir/stock/",
-          "detail": "Tokyo Growth؛ وحدة التداول العادية 100 سهم بحسب الشركة."
+          "detail": "Tokyo Growth؛ وحدة التداول العادية 100 سهم بحسب الشركة.",
+          "checked": "2026-11-27"
         },
         {
           "label": "IBKR — البحث عن عقد السهم",
           "kind": "broker",
           "status": "broker-search",
           "url": "https://www.interactivebrokers.com/cgi-pub/contractSearch/symbolsearch.pl",
-          "detail": "ابحث عن 5572 في Tokyo Stock Exchange؛ توافر العقد وصلاحيات الحساب غير متحققة. لا يعني ذلك توصية شراء."
+          "detail": "تم فتح محرك البحث الرسمي لـIBKR في 27 نوفمبر؛ البحث العام عن العقد لم يعط نتيجة خاصة مؤكدة بالرمز. تحقق داخل الحساب من 5572 والسوق Tokyo Growth وصلاحيات التداول؛ لا تأكيد لتوافر العقد.",
+          "checked": "2026-11-27"
         }
       ],
-      "accessChecked": "2026-11-26"
+      "accessChecked": "2026-11-26",
+      "founded": "2016-07-29",
+      "contactPageChecked": "2026-11-27",
+      "accessCheckNote": "2026-11-27: تم فتح صفحة التواصل الأساسية؛ لم تعد مطابقة جميع عناوين البريد/الهاتف أو صلاحية الحساب."
     }
   ],
   "history": [
@@ -2781,6 +3706,10 @@
     {
       "date": "2026-11-26",
       "summary": "إضافة المواقع الرسمية وقنوات التواصل وروابط الاستفسار والاستثمار لجميع الشركات الـ21؛ توثيق صفحات EquityZen لخمس شركات خاصة، وبيانات الأسهم المدرجة النشطة مع رابط البحث لدى IBKR. لا تأكيد على وجود عرض مفتوح أو أهلية حساب."
+    },
+    {
+      "date": "2026-11-27",
+      "summary": "مراجعة 21 شركة من مصادر عامة؛ إضافة تدفقات نقدية وتخفيف للمدرجتين EnSilica وRidge-i، ومراجعة تعرض Ridge-i المالي/DX والأمن. إضافة خط إنتاج Amperesand، تكامل Qblox/Samotics، تجارب Osmoses، منحة Rainbow، تقدم Phoenix وتصحيح تاريخ Avicena؛ تحديث 13 ملفًا دون إضافة مرشحين. مراجعة صفحات EquityZen الخمس وشروط الدخول العامة؛ لا صفقة مفتوحة متحققة."
     }
   ],
   "policy": {
